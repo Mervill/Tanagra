@@ -89,6 +89,7 @@ namespace Tanagra.Generator
             WriteLine("");
             WriteLine("internal IntPtr NativeHandle;");
             WriteLine("");
+            WriteLine("public override string ToString() => NativeHandle.ToString();");
 
             _tabs--;
 

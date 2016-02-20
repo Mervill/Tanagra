@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static Event Null = new Event();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

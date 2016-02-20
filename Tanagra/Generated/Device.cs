@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static Device Null = new Device();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

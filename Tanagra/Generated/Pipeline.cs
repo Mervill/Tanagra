@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static Pipeline Null = new Pipeline();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

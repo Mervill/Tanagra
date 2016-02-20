@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static Sampler Null = new Sampler();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

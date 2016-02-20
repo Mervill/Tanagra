@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static SwapchainKHR Null = new SwapchainKHR();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

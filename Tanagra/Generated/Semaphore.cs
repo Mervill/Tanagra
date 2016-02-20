@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static Semaphore Null = new Semaphore();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }

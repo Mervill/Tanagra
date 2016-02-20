@@ -9,6 +9,7 @@ namespace Vulkan
         public readonly static CommandPool Null = new CommandPool();
         
         internal IntPtr NativeHandle;
-        
+
+        public override string ToString() => NativeHandle.ToString();
     }
 }
