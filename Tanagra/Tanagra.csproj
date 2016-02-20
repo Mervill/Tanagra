@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{907B0145-3C85-4517-AE82-CEBAD3773F4D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tanagra</RootNamespace>
+    <AssemblyName>Tanagra</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Generated\Buffer.cs" />
+    <Compile Include="Generated\BufferView.cs" />
+    <Compile Include="Generated\CommandBuffer.cs" />
+    <Compile Include="Generated\CommandPool.cs" />
+    <Compile Include="Generated\DebugReportCallbackEXT.cs" />
+    <Compile Include="Generated\DescriptorPool.cs" />
+    <Compile Include="Generated\DescriptorSet.cs" />
+    <Compile Include="Generated\DescriptorSetLayout.cs" />
+    <Compile Include="Generated\Device.cs" />
+    <Compile Include="Generated\DeviceMemory.cs" />
+    <Compile Include="Generated\DisplayKHR.cs" />
+    <Compile Include="Generated\DisplayModeKHR.cs" />
+    <Compile Include="Generated\enums\AccessFlags.cs" />
+    <Compile Include="Generated\enums\AndroidSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\AttachmentDescriptionFlags.cs" />
+    <Compile Include="Generated\enums\AttachmentLoadOp.cs" />
+    <Compile Include="Generated\enums\AttachmentStoreOp.cs" />
+    <Compile Include="Generated\enums\BlendFactor.cs" />
+    <Compile Include="Generated\enums\BlendOp.cs" />
+    <Compile Include="Generated\enums\BorderColor.cs" />
+    <Compile Include="Generated\enums\BufferCreateFlags.cs" />
+    <Compile Include="Generated\enums\BufferUsageFlags.cs" />
+    <Compile Include="Generated\enums\BufferViewCreateFlags.cs" />
+    <Compile Include="Generated\enums\ColorComponentFlags.cs" />
+    <Compile Include="Generated\enums\ColorSpaceKHR.cs" />
+    <Compile Include="Generated\enums\CommandBufferLevel.cs" />
+    <Compile Include="Generated\enums\CommandBufferResetFlags.cs" />
+    <Compile Include="Generated\enums\CommandBufferUsageFlags.cs" />
+    <Compile Include="Generated\enums\CommandPoolCreateFlags.cs" />
+    <Compile Include="Generated\enums\CommandPoolResetFlags.cs" />
+    <Compile Include="Generated\enums\CompareOp.cs" />
+    <Compile Include="Generated\enums\ComponentSwizzle.cs" />
+    <Compile Include="Generated\enums\CompositeAlphaFlagBitsKHR.cs" />
+    <Compile Include="Generated\enums\CullModeFlags.cs" />
+    <Compile Include="Generated\enums\DebugReportErrorEXT.cs" />
+    <Compile Include="Generated\enums\DebugReportFlagBitsEXT.cs" />
+    <Compile Include="Generated\enums\DebugReportObjectTypeEXT.cs" />
+    <Compile Include="Generated\enums\DependencyFlags.cs" />
+    <Compile Include="Generated\enums\DescriptorPoolCreateFlags.cs" />
+    <Compile Include="Generated\enums\DescriptorPoolResetFlags.cs" />
+    <Compile Include="Generated\enums\DescriptorSetLayoutCreateFlags.cs" />
+    <Compile Include="Generated\enums\DescriptorType.cs" />
+    <Compile Include="Generated\enums\DeviceCreateFlags.cs" />
+    <Compile Include="Generated\enums\DeviceQueueCreateFlags.cs" />
+    <Compile Include="Generated\enums\DisplayModeCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\DisplayPlaneAlphaFlagBitsKHR.cs" />
+    <Compile Include="Generated\enums\DisplaySurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\DynamicState.cs" />
+    <Compile Include="Generated\enums\EventCreateFlags.cs" />
+    <Compile Include="Generated\enums\FenceCreateFlags.cs" />
+    <Compile Include="Generated\enums\Filter.cs" />
+    <Compile Include="Generated\enums\Format.cs" />
+    <Compile Include="Generated\enums\FormatFeatureFlags.cs" />
+    <Compile Include="Generated\enums\FramebufferCreateFlags.cs" />
+    <Compile Include="Generated\enums\FrontFace.cs" />
+    <Compile Include="Generated\enums\ImageAspectFlags.cs" />
+    <Compile Include="Generated\enums\ImageCreateFlags.cs" />
+    <Compile Include="Generated\enums\ImageLayout.cs" />
+    <Compile Include="Generated\enums\ImageTiling.cs" />
+    <Compile Include="Generated\enums\ImageType.cs" />
+    <Compile Include="Generated\enums\ImageUsageFlags.cs" />
+    <Compile Include="Generated\enums\ImageViewCreateFlags.cs" />
+    <Compile Include="Generated\enums\ImageViewType.cs" />
+    <Compile Include="Generated\enums\IndexType.cs" />
+    <Compile Include="Generated\enums\InstanceCreateFlags.cs" />
+    <Compile Include="Generated\enums\InternalAllocationType.cs" />
+    <Compile Include="Generated\enums\LogicOp.cs" />
+    <Compile Include="Generated\enums\MemoryHeapFlags.cs" />
+    <Compile Include="Generated\enums\MemoryMapFlags.cs" />
+    <Compile Include="Generated\enums\MemoryPropertyFlags.cs" />
+    <Compile Include="Generated\enums\MirSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\PhysicalDeviceType.cs" />
+    <Compile Include="Generated\enums\PipelineBindPoint.cs" />
+    <Compile Include="Generated\enums\PipelineCacheCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineCacheHeaderVersion.cs" />
+    <Compile Include="Generated\enums\PipelineColorBlendStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineDepthStencilStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineDynamicStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineInputAssemblyStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineLayoutCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineMultisampleStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineRasterizationStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineShaderStageCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineStageFlags.cs" />
+    <Compile Include="Generated\enums\PipelineTessellationStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineVertexInputStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PipelineViewportStateCreateFlags.cs" />
+    <Compile Include="Generated\enums\PolygonMode.cs" />
+    <Compile Include="Generated\enums\PresentModeKHR.cs" />
+    <Compile Include="Generated\enums\PrimitiveTopology.cs" />
+    <Compile Include="Generated\enums\QueryControlFlags.cs" />
+    <Compile Include="Generated\enums\QueryPipelineStatisticFlags.cs" />
+    <Compile Include="Generated\enums\QueryPoolCreateFlags.cs" />
+    <Compile Include="Generated\enums\QueryResultFlags.cs" />
+    <Compile Include="Generated\enums\QueryType.cs" />
+    <Compile Include="Generated\enums\QueueFlags.cs" />
+    <Compile Include="Generated\enums\RenderPassCreateFlags.cs" />
+    <Compile Include="Generated\enums\Result.cs" />
+    <Compile Include="Generated\enums\SampleCountFlags.cs" />
+    <Compile Include="Generated\enums\SamplerAddressMode.cs" />
+    <Compile Include="Generated\enums\SamplerCreateFlags.cs" />
+    <Compile Include="Generated\enums\SamplerMipmapMode.cs" />
+    <Compile Include="Generated\enums\SemaphoreCreateFlags.cs" />
+    <Compile Include="Generated\enums\ShaderModuleCreateFlags.cs" />
+    <Compile Include="Generated\enums\ShaderStageFlags.cs" />
+    <Compile Include="Generated\enums\SharingMode.cs" />
+    <Compile Include="Generated\enums\SparseImageFormatFlags.cs" />
+    <Compile Include="Generated\enums\SparseMemoryBindFlags.cs" />
+    <Compile Include="Generated\enums\StencilFaceFlags.cs" />
+    <Compile Include="Generated\enums\StencilOp.cs" />
+    <Compile Include="Generated\enums\StructureType.cs" />
+    <Compile Include="Generated\enums\SubpassContents.cs" />
+    <Compile Include="Generated\enums\SubpassDescriptionFlags.cs" />
+    <Compile Include="Generated\enums\SurfaceTransformFlagBitsKHR.cs" />
+    <Compile Include="Generated\enums\SwapchainCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\SystemAllocationScope.cs" />
+    <Compile Include="Generated\enums\VertexInputRate.cs" />
+    <Compile Include="Generated\enums\WaylandSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\Win32SurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\XcbSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\enums\XlibSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\Event.cs" />
+    <Compile Include="Generated\Fence.cs" />
+    <Compile Include="Generated\Framebuffer.cs" />
+    <Compile Include="Generated\Image.cs" />
+    <Compile Include="Generated\ImageView.cs" />
+    <Compile Include="Generated\Instance.cs" />
+    <Compile Include="Generated\PhysicalDevice.cs" />
+    <Compile Include="Generated\Pipeline.cs" />
+    <Compile Include="Generated\PipelineCache.cs" />
+    <Compile Include="Generated\PipelineLayout.cs" />
+    <Compile Include="Generated\QueryPool.cs" />
+    <Compile Include="Generated\Queue.cs" />
+    <Compile Include="Generated\RenderPass.cs" />
+    <Compile Include="Generated\Sampler.cs" />
+    <Compile Include="Generated\Semaphore.cs" />
+    <Compile Include="Generated\ShaderModule.cs" />
+    <Compile Include="Generated\structs\AllocationCallbacks.cs" />
+    <Compile Include="Generated\structs\ANativeWindow.cs" />
+    <Compile Include="Generated\structs\AndroidSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\ApplicationInfo.cs" />
+    <Compile Include="Generated\structs\AttachmentDescription.cs" />
+    <Compile Include="Generated\structs\AttachmentReference.cs" />
+    <Compile Include="Generated\structs\BindSparseInfo.cs" />
+    <Compile Include="Generated\structs\BufferCopy.cs" />
+    <Compile Include="Generated\structs\BufferCreateInfo.cs" />
+    <Compile Include="Generated\structs\BufferImageCopy.cs" />
+    <Compile Include="Generated\structs\BufferMemoryBarrier.cs" />
+    <Compile Include="Generated\structs\BufferViewCreateInfo.cs" />
+    <Compile Include="Generated\structs\ClearAttachment.cs" />
+    <Compile Include="Generated\structs\ClearColorValue.cs" />
+    <Compile Include="Generated\structs\ClearDepthStencilValue.cs" />
+    <Compile Include="Generated\structs\ClearRect.cs" />
+    <Compile Include="Generated\structs\ClearValue.cs" />
+    <Compile Include="Generated\structs\CommandBufferAllocateInfo.cs" />
+    <Compile Include="Generated\structs\CommandBufferBeginInfo.cs" />
+    <Compile Include="Generated\structs\CommandBufferInheritanceInfo.cs" />
+    <Compile Include="Generated\structs\CommandPoolCreateInfo.cs" />
+    <Compile Include="Generated\structs\ComponentMapping.cs" />
+    <Compile Include="Generated\structs\ComputePipelineCreateInfo.cs" />
+    <Compile Include="Generated\structs\CopyDescriptorSet.cs" />
+    <Compile Include="Generated\structs\DebugReportCallbackCreateInfoEXT.cs" />
+    <Compile Include="Generated\structs\DescriptorBufferInfo.cs" />
+    <Compile Include="Generated\structs\DescriptorImageInfo.cs" />
+    <Compile Include="Generated\structs\DescriptorPoolCreateInfo.cs" />
+    <Compile Include="Generated\structs\DescriptorPoolSize.cs" />
+    <Compile Include="Generated\structs\DescriptorSetAllocateInfo.cs" />
+    <Compile Include="Generated\structs\DescriptorSetLayoutBinding.cs" />
+    <Compile Include="Generated\structs\DescriptorSetLayoutCreateInfo.cs" />
+    <Compile Include="Generated\structs\DeviceCreateInfo.cs" />
+    <Compile Include="Generated\structs\DeviceQueueCreateInfo.cs" />
+    <Compile Include="Generated\structs\DeviceSize.cs" />
+    <Compile Include="Generated\structs\DispatchIndirectCommand.cs" />
+    <Compile Include="Generated\structs\Display.cs" />
+    <Compile Include="Generated\structs\DisplayModeCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\DisplayModeParametersKHR.cs" />
+    <Compile Include="Generated\structs\DisplayModePropertiesKHR.cs" />
+    <Compile Include="Generated\structs\DisplayPlaneCapabilitiesKHR.cs" />
+    <Compile Include="Generated\structs\DisplayPlanePropertiesKHR.cs" />
+    <Compile Include="Generated\structs\DisplayPresentInfoKHR.cs" />
+    <Compile Include="Generated\structs\DisplayPropertiesKHR.cs" />
+    <Compile Include="Generated\structs\DisplaySurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\DrawIndexedIndirectCommand.cs" />
+    <Compile Include="Generated\structs\DrawIndirectCommand.cs" />
+    <Compile Include="Generated\structs\EventCreateInfo.cs" />
+    <Compile Include="Generated\structs\ExtensionProperties.cs" />
+    <Compile Include="Generated\structs\Extent2D.cs" />
+    <Compile Include="Generated\structs\Extent3D.cs" />
+    <Compile Include="Generated\structs\FenceCreateInfo.cs" />
+    <Compile Include="Generated\structs\FormatProperties.cs" />
+    <Compile Include="Generated\structs\FramebufferCreateInfo.cs" />
+    <Compile Include="Generated\structs\GraphicsPipelineCreateInfo.cs" />
+    <Compile Include="Generated\structs\HINSTANCE.cs" />
+    <Compile Include="Generated\structs\HWND.cs" />
+    <Compile Include="Generated\structs\ImageBlit.cs" />
+    <Compile Include="Generated\structs\ImageCopy.cs" />
+    <Compile Include="Generated\structs\ImageCreateInfo.cs" />
+    <Compile Include="Generated\structs\ImageFormatProperties.cs" />
+    <Compile Include="Generated\structs\ImageMemoryBarrier.cs" />
+    <Compile Include="Generated\structs\ImageResolve.cs" />
+    <Compile Include="Generated\structs\ImageSubresource.cs" />
+    <Compile Include="Generated\structs\ImageSubresourceLayers.cs" />
+    <Compile Include="Generated\structs\ImageSubresourceRange.cs" />
+    <Compile Include="Generated\structs\ImageViewCreateInfo.cs" />
+    <Compile Include="Generated\structs\InstanceCreateInfo.cs" />
+    <Compile Include="Generated\structs\LayerProperties.cs" />
+    <Compile Include="Generated\structs\MappedMemoryRange.cs" />
+    <Compile Include="Generated\structs\MemoryAllocateInfo.cs" />
+    <Compile Include="Generated\structs\MemoryBarrier.cs" />
+    <Compile Include="Generated\structs\MemoryHeap.cs" />
+    <Compile Include="Generated\structs\MemoryRequirements.cs" />
+    <Compile Include="Generated\structs\MemoryType.cs" />
+    <Compile Include="Generated\structs\MirConnection.cs" />
+    <Compile Include="Generated\structs\MirSurface.cs" />
+    <Compile Include="Generated\structs\MirSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\Offset2D.cs" />
+    <Compile Include="Generated\structs\Offset3D.cs" />
+    <Compile Include="Generated\structs\PhysicalDeviceFeatures.cs" />
+    <Compile Include="Generated\structs\PhysicalDeviceLimits.cs" />
+    <Compile Include="Generated\structs\PhysicalDeviceMemoryProperties.cs" />
+    <Compile Include="Generated\structs\PhysicalDeviceProperties.cs" />
+    <Compile Include="Generated\structs\PhysicalDeviceSparseProperties.cs" />
+    <Compile Include="Generated\structs\PipelineCacheCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineColorBlendAttachmentState.cs" />
+    <Compile Include="Generated\structs\PipelineColorBlendStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineDepthStencilStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineDynamicStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineInputAssemblyStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineLayoutCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineMultisampleStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineRasterizationStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineShaderStageCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineTessellationStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineVertexInputStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PipelineViewportStateCreateInfo.cs" />
+    <Compile Include="Generated\structs\PresentInfoKHR.cs" />
+    <Compile Include="Generated\structs\PushConstantRange.cs" />
+    <Compile Include="Generated\structs\QueryPoolCreateInfo.cs" />
+    <Compile Include="Generated\structs\QueueFamilyProperties.cs" />
+    <Compile Include="Generated\structs\Rect2D.cs" />
+    <Compile Include="Generated\structs\Rect3D.cs" />
+    <Compile Include="Generated\structs\RenderPassBeginInfo.cs" />
+    <Compile Include="Generated\structs\RenderPassCreateInfo.cs" />
+    <Compile Include="Generated\structs\SampleMask.cs" />
+    <Compile Include="Generated\structs\SamplerCreateInfo.cs" />
+    <Compile Include="Generated\structs\SemaphoreCreateInfo.cs" />
+    <Compile Include="Generated\structs\ShaderModuleCreateInfo.cs" />
+    <Compile Include="Generated\structs\SparseBufferMemoryBindInfo.cs" />
+    <Compile Include="Generated\structs\SparseImageFormatProperties.cs" />
+    <Compile Include="Generated\structs\SparseImageMemoryBind.cs" />
+    <Compile Include="Generated\structs\SparseImageMemoryBindInfo.cs" />
+    <Compile Include="Generated\structs\SparseImageMemoryRequirements.cs" />
+    <Compile Include="Generated\structs\SparseImageOpaqueMemoryBindInfo.cs" />
+    <Compile Include="Generated\structs\SparseMemoryBind.cs" />
+    <Compile Include="Generated\structs\SpecializationInfo.cs" />
+    <Compile Include="Generated\structs\SpecializationMapEntry.cs" />
+    <Compile Include="Generated\structs\StencilOpState.cs" />
+    <Compile Include="Generated\structs\SubmitInfo.cs" />
+    <Compile Include="Generated\structs\SubpassDependency.cs" />
+    <Compile Include="Generated\structs\SubpassDescription.cs" />
+    <Compile Include="Generated\structs\SubresourceLayout.cs" />
+    <Compile Include="Generated\structs\SurfaceCapabilitiesKHR.cs" />
+    <Compile Include="Generated\structs\SurfaceFormatKHR.cs" />
+    <Compile Include="Generated\structs\SwapchainCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\VertexInputAttributeDescription.cs" />
+    <Compile Include="Generated\structs\VertexInputBindingDescription.cs" />
+    <Compile Include="Generated\structs\Viewport.cs" />
+    <Compile Include="Generated\structs\VisualID.cs" />
+    <Compile Include="Generated\structs\WaylandSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\Win32SurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\Window.cs" />
+    <Compile Include="Generated\structs\wl_display.cs" />
+    <Compile Include="Generated\structs\wl_surface.cs" />
+    <Compile Include="Generated\structs\WriteDescriptorSet.cs" />
+    <Compile Include="Generated\structs\XcbSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\structs\xcb_connection_t.cs" />
+    <Compile Include="Generated\structs\xcb_visualid_t.cs" />
+    <Compile Include="Generated\structs\xcb_window_t.cs" />
+    <Compile Include="Generated\structs\XlibSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\SurfaceKHR.cs" />
+    <Compile Include="Generated\SwapchainKHR.cs" />
+    <Compile Include="Generated\VK.cs" />
+    <Compile Include="Patch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
