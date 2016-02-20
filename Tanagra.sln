@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra.Generator", "Tanagr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra", "Tanagra\Tanagra.csproj", "{907B0145-3C85-4517-AE82-CEBAD3773F4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{1CC8F075-C781-4B5B-B65E-8FA2E5B2EAD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CC8F075-C781-4B5B-B65E-8FA2E5B2EAD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CC8F075-C781-4B5B-B65E-8FA2E5B2EAD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CC8F075-C781-4B5B-B65E-8FA2E5B2EAD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CC8F075-C781-4B5B-B65E-8FA2E5B2EAD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

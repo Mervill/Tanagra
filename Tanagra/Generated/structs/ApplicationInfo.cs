@@ -8,9 +8,9 @@ namespace Vulkan
     {
         public StructureType sType;
         public IntPtr pNext;
-        public Char pApplicationName;
+        public String pApplicationName;
         public UInt32 applicationVersion;
-        public Char pEngineName;
+        public String pEngineName;
         public UInt32 engineVersion;
         public UInt32 apiVersion;
     }

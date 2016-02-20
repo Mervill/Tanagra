@@ -11,6 +11,6 @@ namespace Vulkan
         public DeviceQueueCreateFlags flags;
         public UInt32 queueFamilyIndex;
         public UInt32 queueCount;
-        public Single pQueuePriorities;
+        public Single[] pQueuePriorities;
     }
 }

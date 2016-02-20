@@ -10,11 +10,12 @@ namespace Vulkan
         public IntPtr pNext;
         public DeviceCreateFlags flags;
         public UInt32 queueCreateInfoCount;
-        public DeviceQueueCreateInfo pQueueCreateInfos;
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.ByValArray, SizeParamIndex = 3)]
+        public DeviceQueueCreateInfo[] pQueueCreateInfos;
         public UInt32 enabledLayerCount;
-        public Char ppEnabledLayerNames;
+        public String ppEnabledLayerNames;
         public UInt32 enabledExtensionCount;
-        public Char ppEnabledExtensionNames;
+        public String ppEnabledExtensionNames;
         public PhysicalDeviceFeatures pEnabledFeatures;
     }
 }
