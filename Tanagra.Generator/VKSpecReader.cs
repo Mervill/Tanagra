@@ -234,7 +234,7 @@ namespace Tanagra.Generator
             return vkEnum;
         }
 
-        VkEnum GenerateEmptyBitmask(string name)
+        static VkEnum GenerateEmptyBitmask(string name)
         {
             var vkEnum = new VkEnum
             {

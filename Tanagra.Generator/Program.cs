@@ -33,19 +33,8 @@ namespace Tanagra.Generator
 
             var gen = new CSharpCodeGenerator();
             gen.Generate(spec);
+            //WriteCode(gen);
 
-            const string rootPath = "../../../Tanagra";
-            try { Directory.Delete($"{rootPath}/Generated", true); } catch { }
-            Directory.CreateDirectory($"{rootPath}/Generated");
-            Directory.CreateDirectory($"{rootPath}/Generated/enums");
-            Directory.CreateDirectory($"{rootPath}/Generated/structs");
-            
-            Console.WriteLine("Saving to disk...");
-            foreach(var kv in gen.files)
-            {
-                System.IO.File.WriteAllText($"{rootPath}/Generated/{kv.Key}", kv.Value);
-            }
-            Console.WriteLine("Generated {0} files", gen.files.Count);
             //Console.WriteLine("Files generated but not saved");
 
             //var codes = spec.Commands.SelectMany(x => x.ErrorCodes).Distinct().ToList();
@@ -58,6 +47,20 @@ namespace Tanagra.Generator
             Console.ReadKey();
         }
 
-        
+        static void WriteCode(CSharpCodeGenerator gen)
+        {
+            const string rootPath = "../../../Tanagra";
+            try { Directory.Delete($"{rootPath}/Generated", true); } catch { }
+            Directory.CreateDirectory($"{rootPath}/Generated");
+            Directory.CreateDirectory($"{rootPath}/Generated/enums");
+            Directory.CreateDirectory($"{rootPath}/Generated/structs");
+
+            Console.WriteLine("Saving to disk...");
+            foreach(var kv in gen.files)
+            {
+                File.WriteAllText($"{rootPath}/Generated/{kv.Key}", kv.Value);
+            }
+            Console.WriteLine("Generated {0} files", gen.files.Count);
+        }
     }
 }

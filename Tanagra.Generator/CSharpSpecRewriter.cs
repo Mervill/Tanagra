@@ -6,10 +6,19 @@ namespace Tanagra.Generator
 {
     public class CSharpSpecRewriter
     {
+        Dictionary<string, string> basetypeOverride;
         Dictionary<string, string> structNameOverride;
 
         public CSharpSpecRewriter()
         {
+            basetypeOverride = new Dictionary<string, string>
+            {
+                { "VkSampleMask", "uint32_t" },
+                //{ "VkBool32", "uint32_t" },
+                //{ "VkFlags", "uint32_t" },
+                { "VkDeviceSize", "uint64_t" },
+            };
+
             structNameOverride = new Dictionary<string, string>
             {
                 //{ "void",     "void"    },
