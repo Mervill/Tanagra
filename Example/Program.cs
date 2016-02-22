@@ -9,46 +9,62 @@ namespace Example
     {
         const string title = "Vulkan Example";
         const string name = "vulkanExample";
-
+        
         static unsafe void Main(string[] args)
         {
+            var instance = new Instance();
+            var device = new Device();
+            var queue = new Queue();
+
+            var deviceMemoryProperties = new PhysicalDeviceMemoryProperties();
+
+            // <createInstance>
+
             var appInfo = new ApplicationInfo();
             appInfo.sType = StructureType.APPLICATION_INFO;
             appInfo.pApplicationName = name;
             appInfo.pEngineName = name;
             appInfo.apiVersion = MakeVersion(1, 0, 0);
 
+            var instanceEnabledExtensions = new[] 
+            {
+                "VK_KHR_surface",
+                "VK_KHR_WIN32_SURFACE_EXTENSION_NAME",
+            };
+
             var instanceCreateInfo = new InstanceCreateInfo();
             instanceCreateInfo.sType = StructureType.INSTANCE_CREATE_INFO;
             instanceCreateInfo.pNext = IntPtr.Zero;
             instanceCreateInfo.pApplicationInfo = appInfo;
 
-            var instance = new Instance();
-            var allocator = new AllocationCallbacks();
-            var result = VK.vkCreateInstance(ref instanceCreateInfo, IntPtr.Zero, &instance);
+            //instanceCreateInfo.enabledExtensionCount = (uint)enabledExtensions.Length;
+            //instanceCreateInfo.ppEnabledExtensionNames
+
+            var result = VK.vkCreateInstance(ref instanceCreateInfo, IntPtr.Zero, ref instance);
             Console.WriteLine(result);
             Console.WriteLine(instance);
 
-            //////
-
-            var physicalDevice = new PhysicalDevice();
-            var deviceCount = 0U;
-            result = VK.vkEnumeratePhysicalDevices(instance, &deviceCount, &physicalDevice);
+            // </createInstance>
             
+            var physicalDevice = new PhysicalDevice();
+            var gpuCount = 0U;
+            result = VK.vkEnumeratePhysicalDevices(instance, &gpuCount, IntPtr.Zero);
             Console.WriteLine(result);
-            Console.WriteLine("Devices {0}", deviceCount);
+            Console.WriteLine("Devices {0}", gpuCount);
+            
+            result = VK.vkEnumeratePhysicalDevices(instance, &gpuCount, &physicalDevice);
+            Console.WriteLine(result);
             Console.WriteLine(physicalDevice);
 
             var queueCount = 0U;
             QueueFamilyProperties[] queueProps = null;
             VK.vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueCount, queueProps);
-            
             Console.WriteLine("Assert {0}", queueCount >= 1);
 
             queueProps = new QueueFamilyProperties[queueCount];
             VK.vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueCount, queueProps);
 
-            uint graphicsQueueIndex = 0;
+            uint graphicsQueueIndex;
             for(graphicsQueueIndex = 0; graphicsQueueIndex < queueCount; graphicsQueueIndex++)
             {
                 if((queueProps[graphicsQueueIndex].queueFlags & QueueFlags.QUEUE_GRAPHICS_BIT) == 0)
@@ -63,25 +79,38 @@ namespace Example
             //queueCreateInfo.flags = DeviceQueueCreateFlags.NONE;
             queueCreateInfo.queueFamilyIndex = graphicsQueueIndex;
             queueCreateInfo.queueCount = 1;
-            queueCreateInfo.pQueuePriorities = new float[] { 0.0f };
-            
+            float pQueuePriorities = 0.0f;
+            queueCreateInfo.pQueuePriorities = &pQueuePriorities; //= new float[] { 0.0f };
+
+            // <createDevice>
+
+            var deviceEnabledExtensions = new[]
+            {
+                "VK_KHR_swapchain",
+            };
+
             var deviceCreateInfo = new DeviceCreateInfo();
             deviceCreateInfo.sType = StructureType.DEVICE_CREATE_INFO;
             deviceCreateInfo.pNext = IntPtr.Zero;
             //deviceCreateInfo.flags = DeviceCreateFlags.NONE
             deviceCreateInfo.queueCreateInfoCount = 1;
-            // NOTE: making this into an array (see the spec) turns the AccessViolationException
-            // into an ArgumentException -- is that progress?
-            deviceCreateInfo.pQueueCreateInfos = new[] { queueCreateInfo };
+            deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo; //new[] { queueCreateInfo };
             //deviceCreateInfo.enabledLayerCount = 0;
             //deviceCreateInfo.ppEnabledLayerNames;
             //deviceCreateInfo.enabledExtensionCount = 0;
             //deviceCreateInfo.ppEnabledExtensionNames;
             deviceCreateInfo.pEnabledFeatures = null;
-
-            var device = new Device();
+            
             result = VK.vkCreateDevice(physicalDevice, ref deviceCreateInfo, IntPtr.Zero, ref device);
             Console.WriteLine(result);
+
+            // </createDevice>
+
+            VK.vkGetPhysicalDeviceMemoryProperties(physicalDevice, &deviceMemoryProperties);
+
+            VK.vkGetDeviceQueue(device, graphicsQueueIndex, 0, &queue);
+
+            //SwapchainKHR
 
             Console.WriteLine("program complete");
             Console.ReadKey();
