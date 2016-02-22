@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Vulkan
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class PhysicalDeviceFeatures
+    public struct PhysicalDeviceFeatures
     {
         public Boolean robustBufferAccess;
         public Boolean fullDrawIndexUint32;

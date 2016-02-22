@@ -11,7 +11,7 @@ namespace Vulkan
         }
         
         // Result vkCreateInstance(const InstanceCreateInfo* pCreateInfo, const AllocationCallbacks* pAllocator, Instance* pInstance)
-        public static unsafe Result CreateInstance(ref InstanceCreateInfo pCreateInfo, AllocationCallbacks* pAllocator, Instance* pInstance)
+        public static unsafe Result CreateInstance(InstanceCreateInfo pCreateInfo, AllocationCallbacks* pAllocator, Instance* pInstance)
         {
             throw new NotImplementedException();
         }
@@ -59,7 +59,7 @@ namespace Vulkan
         }
         
         // void vkGetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, PhysicalDeviceFeatures* pFeatures)
-        public static unsafe void GetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, ref PhysicalDeviceFeatures pFeatures)
+        public static unsafe void GetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, PhysicalDeviceFeatures* pFeatures)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace Vulkan
         }
         
         // Result vkCreateDevice(PhysicalDevice physicalDevice, const DeviceCreateInfo* pCreateInfo, const AllocationCallbacks* pAllocator, Device* pDevice)
-        public static unsafe Result CreateDevice(PhysicalDevice physicalDevice, ref DeviceCreateInfo pCreateInfo, AllocationCallbacks* pAllocator, Device* pDevice)
+        public static unsafe Result CreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo* pCreateInfo, AllocationCallbacks* pAllocator, Device* pDevice)
         {
             throw new NotImplementedException();
         }
@@ -1025,17 +1025,20 @@ namespace Vulkan
         }
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateInstance", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo pCreateInfo, AllocationCallbacks* pAllocator, Instance* pInstance);
+        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo pCreateInfo, AllocationCallbacks* pAllocator, ref Instance pInstance);
 
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateInstance", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo pCreateInfo, IntPtr pAllocator, Instance* pInstance);
+        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo pCreateInfo, IntPtr pAllocator, ref Instance pInstance);
 
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyInstance", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyInstance(Instance instance, AllocationCallbacks* pAllocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkEnumeratePhysicalDevices(Instance instance, UInt32* pPhysicalDeviceCount, PhysicalDevice* pPhysicalDevices);
-        
+
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = CallingConvention.Winapi)]
+        public static unsafe extern Result vkEnumeratePhysicalDevices(Instance instance, UInt32* pPhysicalDeviceCount, IntPtr pPhysicalDevices);
+
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceProcAddr", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern PFN_vkVoidFunction vkGetDeviceProcAddr(Device device, Char* pName);
         
@@ -1052,7 +1055,7 @@ namespace Vulkan
         public static unsafe extern void vkGetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice, PhysicalDeviceMemoryProperties* pMemoryProperties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceFeatures", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkGetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, ref PhysicalDeviceFeatures pFeatures);
+        public static unsafe extern void vkGetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, PhysicalDeviceFeatures* pFeatures);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceFormatProperties", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkGetPhysicalDeviceFormatProperties(PhysicalDevice physicalDevice, Format format, FormatProperties* pFormatProperties);
