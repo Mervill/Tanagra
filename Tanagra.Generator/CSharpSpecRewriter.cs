@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,10 +7,19 @@ namespace Tanagra.Generator
 {
     public class CSharpSpecRewriter
     {
+        Dictionary<string, string> basetypeOverride;
         Dictionary<string, string> structNameOverride;
 
         public CSharpSpecRewriter()
         {
+            basetypeOverride = new Dictionary<string, string>
+            {
+                { "VkSampleMask", "uint32_t" },
+                //{ "VkBool32", "uint32_t" },
+                //{ "VkFlags", "uint32_t" },
+                { "VkDeviceSize", "uint64_t" },
+            };
+            
             structNameOverride = new Dictionary<string, string>
             {
                 //{ "void",     "void"    },
@@ -19,7 +29,7 @@ namespace Tanagra.Generator
                 { "uint32_t", "UInt32"  },
                 { "uint64_t", "UInt64"  },
                 { "int32_t",  "Int32"   },
-                { "size_t",   "Int64"   },
+                { "size_t",   "UIntPtr" },
                 { "VkBool32", "Boolean" }
             };
         }
@@ -63,8 +73,20 @@ namespace Tanagra.Generator
 
             if(name.StartsWith("Vk"))
                 name = name.Remove(0, 2); // trim `Vk`
-            
+
             vkStruct.Name = name;
+
+            for(var x = 0; x < vkStruct.Members.Length; x++)
+            {
+                var member = vkStruct.Members[x];
+                var memberName = member.Name;
+                if(member.PointerRank != 0)
+                    memberName = memberName.TrimStart(new[] { 'p' });
+                
+                member.Name = memberName;
+            }
+
+            
         }
         
         void RewriteEnumDefinition(VkEnum vkEnum)
@@ -108,8 +130,15 @@ namespace Tanagra.Generator
             for(var x = 0; x < vkCommand.Parameters.Length; x++)
             {
                 var param = vkCommand.Parameters[x];
-                if(param.Name == "event" || param.Name == "object")
-                    param.Name = '@' + param.Name; // alias names                    
+                var paramName = param.Name;
+
+                if(paramName == "event" || paramName == "object")
+                    paramName = '@' + paramName; // alias names
+
+                if(param.PointerRank != 0)
+                    paramName = paramName.TrimStart(new[] { 'p' });
+
+                param.Name = paramName;
             }
         }
     }
