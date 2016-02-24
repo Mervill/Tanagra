@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static SurfaceKHR Null = new SurfaceKHR();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

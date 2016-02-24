@@ -7,11 +7,11 @@ namespace Vulkan
     public struct PipelineVertexInputStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineVertexInputStateCreateFlags flags;
         public UInt32 vertexBindingDescriptionCount;
-        public VertexInputBindingDescription pVertexBindingDescriptions;
+        public VertexInputBindingDescription[] VertexBindingDescriptions; // len:vertexBindingDescriptionCount
         public UInt32 vertexAttributeDescriptionCount;
-        public VertexInputAttributeDescription pVertexAttributeDescriptions;
+        public VertexInputAttributeDescription[] VertexAttributeDescriptions; // len:vertexAttributeDescriptionCount
     }
 }

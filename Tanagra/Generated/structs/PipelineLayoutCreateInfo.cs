@@ -7,11 +7,11 @@ namespace Vulkan
     public struct PipelineLayoutCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineLayoutCreateFlags flags;
         public UInt32 setLayoutCount;
-        public DescriptorSetLayout pSetLayouts;
+        public DescriptorSetLayout[] SetLayouts; // len:setLayoutCount
         public UInt32 pushConstantRangeCount;
-        public PushConstantRange pPushConstantRanges;
+        public PushConstantRange[] PushConstantRanges; // len:pushConstantRangeCount
     }
 }

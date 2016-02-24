@@ -129,11 +129,17 @@ namespace Tanagra.Generator
                 }
                 else
                 {
-                    WriteLine($"public {member.Type} {member.Name};");
+                    if(string.IsNullOrEmpty(member.Len))
+                    {
+                        WriteLine($"public {member.Type} {member.Name};");
+                    }
+                    else
+                    {
+                        WriteLine($"public {member.Type}[] {member.Name}; // len:{member.Len}");
+                    }
                 }
             }
-                
-
+            
             _tabs--;
 
             WriteLine("}");
@@ -163,8 +169,17 @@ namespace Tanagra.Generator
             _tabs++;
 
             foreach(var vkEnumValue in vkEnum.Values)
+            {
+                var comment = vkEnumValue.Comment;
+                if(!string.IsNullOrEmpty(comment))
+                {
+                    WriteLine("/// <summary>");
+                    WriteLine($"/// {comment}");
+                    WriteLine("/// </summary>");
+                }
                 WriteLine($"{vkEnumValue.Name} = {vkEnumValue.Value},");
-
+            }
+            
             _tabs--;
 
             WriteLine("}");

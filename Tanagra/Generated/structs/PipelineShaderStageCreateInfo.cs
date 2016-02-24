@@ -7,11 +7,11 @@ namespace Vulkan
     public struct PipelineShaderStageCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineShaderStageCreateFlags flags;
         public ShaderStageFlags stage;
         public ShaderModule module;
-        public Char pName;
-        public SpecializationInfo pSpecializationInfo;
+        public Char[] Name; // len:null-terminated
+        public SpecializationInfo SpecializationInfo;
     }
 }

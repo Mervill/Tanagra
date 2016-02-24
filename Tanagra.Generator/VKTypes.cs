@@ -66,7 +66,7 @@ namespace Tanagra.Generator
         }
 
     }
-
+    
     public class VkMember
     {
         public string Name { get; set; }
@@ -77,7 +77,7 @@ namespace Tanagra.Generator
         public string Len { get; set; }
         //public bool ExternSync { get; set; }
         public bool NoAutoValidity { get; set; }
-        public string[] Optional;
+        public string Optional;
 
         public string SpecName { get; set; }
 

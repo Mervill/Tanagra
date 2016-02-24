@@ -7,7 +7,7 @@ namespace Vulkan
     public struct DisplaySurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DisplaySurfaceCreateFlagsKHR flags;
         public DisplayModeKHR displayMode;
         public UInt32 planeIndex;

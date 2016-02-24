@@ -7,10 +7,10 @@ namespace Vulkan
     public struct DescriptorPoolCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DescriptorPoolCreateFlags flags;
         public UInt32 maxSets;
         public UInt32 poolSizeCount;
-        public DescriptorPoolSize pPoolSizes;
+        public DescriptorPoolSize[] PoolSizes; // len:poolSizeCount
     }
 }

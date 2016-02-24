@@ -72,7 +72,7 @@ namespace Vulkan
         public UInt32 maxViewportDimensions;
         public Single viewportBoundsRange;
         public UInt32 viewportSubPixelBits;
-        public Int64 minMemoryMapAlignment;
+        public UIntPtr minMemoryMapAlignment;
         public DeviceSize minTexelBufferOffsetAlignment;
         public DeviceSize minUniformBufferOffsetAlignment;
         public DeviceSize minStorageBufferOffsetAlignment;

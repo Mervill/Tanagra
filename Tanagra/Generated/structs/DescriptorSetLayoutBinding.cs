@@ -10,6 +10,6 @@ namespace Vulkan
         public DescriptorType descriptorType;
         public UInt32 descriptorCount;
         public ShaderStageFlags stageFlags;
-        public Sampler pImmutableSamplers;
+        public Sampler[] ImmutableSamplers; // len:descriptorCount
     }
 }

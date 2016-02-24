@@ -7,12 +7,12 @@ namespace Vulkan
     public struct BufferCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public BufferCreateFlags flags;
         public DeviceSize size;
         public BufferUsageFlags usage;
         public SharingMode sharingMode;
         public UInt32 queueFamilyIndexCount;
-        public UInt32 pQueueFamilyIndices;
+        public UInt32[] QueueFamilyIndices; // len:queueFamilyIndexCount
     }
 }

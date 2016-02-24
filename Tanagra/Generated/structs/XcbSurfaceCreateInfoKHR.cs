@@ -7,7 +7,7 @@ namespace Vulkan
     public struct XcbSurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public XcbSurfaceCreateFlagsKHR flags;
         public xcb_connection_t connection;
         public xcb_window_t window;

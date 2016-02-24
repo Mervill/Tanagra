@@ -7,7 +7,7 @@ namespace Vulkan
     public struct ImageCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public ImageCreateFlags flags;
         public ImageType imageType;
         public Format format;
@@ -19,7 +19,7 @@ namespace Vulkan
         public ImageUsageFlags usage;
         public SharingMode sharingMode;
         public UInt32 queueFamilyIndexCount;
-        public UInt32 pQueueFamilyIndices;
+        public UInt32[] QueueFamilyIndices; // len:queueFamilyIndexCount
         public ImageLayout initialLayout;
     }
 }

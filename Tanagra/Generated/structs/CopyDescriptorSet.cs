@@ -7,7 +7,7 @@ namespace Vulkan
     public struct CopyDescriptorSet
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DescriptorSet srcSet;
         public UInt32 srcBinding;
         public UInt32 srcArrayElement;

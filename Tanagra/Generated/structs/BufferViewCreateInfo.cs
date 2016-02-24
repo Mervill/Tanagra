@@ -7,7 +7,7 @@ namespace Vulkan
     public struct BufferViewCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public BufferViewCreateFlags flags;
         public Buffer buffer;
         public Format format;

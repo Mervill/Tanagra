@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static QueryPool Null = new QueryPool();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

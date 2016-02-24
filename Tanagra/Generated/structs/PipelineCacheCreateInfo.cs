@@ -7,9 +7,9 @@ namespace Vulkan
     public struct PipelineCacheCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineCacheCreateFlags flags;
-        public Int64 initialDataSize;
-        public IntPtr pInitialData;
+        public UIntPtr initialDataSize;
+        public IntPtr InitialData;
     }
 }

@@ -7,7 +7,7 @@ namespace Vulkan
     public struct CommandBufferAllocateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public CommandPool commandPool;
         public CommandBufferLevel level;
         public UInt32 commandBufferCount;

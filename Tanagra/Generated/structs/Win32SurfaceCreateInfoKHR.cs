@@ -7,7 +7,7 @@ namespace Vulkan
     public struct Win32SurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public Win32SurfaceCreateFlagsKHR flags;
         public HINSTANCE hinstance;
         public HWND hwnd;

@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static Fence Null = new Fence();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

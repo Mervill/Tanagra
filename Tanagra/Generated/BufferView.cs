@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static BufferView Null = new BufferView();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static Image Null = new Image();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

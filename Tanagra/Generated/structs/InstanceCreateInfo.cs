@@ -7,12 +7,12 @@ namespace Vulkan
     public struct InstanceCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public InstanceCreateFlags flags;
-        public ApplicationInfo pApplicationInfo;
+        public ApplicationInfo ApplicationInfo;
         public UInt32 enabledLayerCount;
-        public Char ppEnabledLayerNames;
+        public Char[] EnabledLayerNames; // len:enabledLayerCount,null-terminated
         public UInt32 enabledExtensionCount;
-        public Char ppEnabledExtensionNames;
+        public Char[] EnabledExtensionNames; // len:enabledExtensionCount,null-terminated
     }
 }

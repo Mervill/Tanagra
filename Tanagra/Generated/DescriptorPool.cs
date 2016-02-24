@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static DescriptorPool Null = new DescriptorPool();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

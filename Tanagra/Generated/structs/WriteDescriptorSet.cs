@@ -7,14 +7,14 @@ namespace Vulkan
     public struct WriteDescriptorSet
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DescriptorSet dstSet;
         public UInt32 dstBinding;
         public UInt32 dstArrayElement;
         public UInt32 descriptorCount;
         public DescriptorType descriptorType;
-        public DescriptorImageInfo pImageInfo;
-        public DescriptorBufferInfo pBufferInfo;
-        public BufferView pTexelBufferView;
+        public DescriptorImageInfo[] ImageInfo; // len:descriptorCount
+        public DescriptorBufferInfo[] BufferInfo; // len:descriptorCount
+        public BufferView[] TexelBufferView; // len:descriptorCount
     }
 }

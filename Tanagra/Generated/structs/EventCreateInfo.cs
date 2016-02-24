@@ -7,7 +7,7 @@ namespace Vulkan
     public struct EventCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public EventCreateFlags flags;
     }
 }

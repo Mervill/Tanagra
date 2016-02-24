@@ -7,7 +7,7 @@ namespace Vulkan
     public struct CommandBufferInheritanceInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public RenderPass renderPass;
         public UInt32 subpass;
         public Framebuffer framebuffer;

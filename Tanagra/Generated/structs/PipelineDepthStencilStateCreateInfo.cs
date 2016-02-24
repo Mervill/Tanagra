@@ -7,7 +7,7 @@ namespace Vulkan
     public struct PipelineDepthStencilStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineDepthStencilStateCreateFlags flags;
         public Boolean depthTestEnable;
         public Boolean depthWriteEnable;

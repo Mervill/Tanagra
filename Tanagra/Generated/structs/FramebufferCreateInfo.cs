@@ -7,11 +7,11 @@ namespace Vulkan
     public struct FramebufferCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public FramebufferCreateFlags flags;
         public RenderPass renderPass;
         public UInt32 attachmentCount;
-        public ImageView pAttachments;
+        public ImageView[] Attachments; // len:attachmentCount
         public UInt32 width;
         public UInt32 height;
         public UInt32 layers;

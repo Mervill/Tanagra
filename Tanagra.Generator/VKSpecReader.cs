@@ -15,9 +15,9 @@ namespace Tanagra.Generator
             allTypes = new Dictionary<string, VkType>
             {                
                 // basetype
-                { "VkSampleMask", CreatePlatformStruct("VkSampleMask") },
-                { "VkBool32",     CreatePlatformStruct("VkBool32") },
-                { "VkDeviceSize", CreatePlatformStruct("VkDeviceSize") },
+                { "VkSampleMask", CreateImportStruct("VkSampleMask") },
+                { "VkBool32",     CreateImportStruct("VkBool32")     },
+                { "VkDeviceSize", CreateImportStruct("VkDeviceSize") },
                 
                 // imports
                 { "Display",          CreateImportStruct("Display")          },
@@ -28,16 +28,21 @@ namespace Tanagra.Generator
                 { "MirSurface",       CreateImportStruct("MirSurface")       },
                 { "wl_display",       CreateImportStruct("wl_display")       },
                 { "wl_surface",       CreateImportStruct("wl_surface")       },
-                { "HINSTANCE",        CreateImportStruct("HINSTANCE")        },
-                { "HWND",             CreateImportStruct("HWND")             },
-                { "xcb_connection_t", CreateImportStruct("xcb_connection_t") },
+                { "HINSTANCE",        CreateImportStruct("HINSTANCE")        }, // IntPtr - Process.GetCurrentProcess().Handle;
+                { "HWND",             CreateImportStruct("HWND")             }, // IntPtr - Process.GetCurrentProcess().MainWindowHandle;
+                { "xcb_connection_t", CreateImportStruct("xcb_connection_t") }, // IntPtr
                 { "xcb_visualid_t",   CreateImportStruct("xcb_visualid_t")   },
-                { "xcb_window_t",     CreateImportStruct("xcb_window_t")     },
+                { "xcb_window_t",     CreateImportStruct("xcb_window_t")     }, // IntPtr
 
                 // union
                 { "VkClearValue",      CreatePlatformStruct("VkClearValue") },
                 { "VkClearColorValue", CreatePlatformStruct("VkClearColorValue") },
             };
+
+            // Basetype
+            //allTypes.Add("VkSampleMask", CreateBasetypeStruct("VkSampleMask", "uint32_t"));
+            //allTypes.Add("VkBool32",     CreateBasetypeStruct("VkBool32",     "uint32_t"));
+            //allTypes.Add("VkDeviceSize", CreateBasetypeStruct("VkDeviceSize", "uint64_t"));
         }
 
         public VkSpec Read(string raw)
@@ -412,7 +417,9 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "optional":
-                            vkMember.Optional = xattrib.Value.Split(',');
+                            var value = xattrib.Value;
+                            if(value != "true") throw new NotImplementedException(value);
+                            vkMember.Optional = value;
                             break;
                         case "len":
                             vkMember.Len = xattrib.Value;
@@ -663,6 +670,20 @@ namespace Tanagra.Generator
             return newType;
         }
 
+        VkStruct CreateBasetypeStruct(string name, string type)
+        {
+            var vkStruct = new VkStruct();
+            vkStruct.Name = vkStruct.SpecName = name;
+
+            var vkMember = new VkMember();
+            vkMember.Name = vkMember.SpecName = "value";
+            vkMember.Type = GetOrAddType(type);
+
+            vkStruct.Members = new[] { vkMember };
+
+            return vkStruct;
+        }
+
         static bool TypePlatformFilter(XElement xtype)
         {
             var xreq = xtype.Attribute("requires");
@@ -692,7 +713,7 @@ namespace Tanagra.Generator
             var xcat = xtype.Attribute("category");
             return xcat != null && xcat.Value == "struct";
         }
-
+        
         static VkStruct CreatePlatformStruct(string name)
         {
             var vkStruct = new VkStruct();

@@ -14,9 +14,10 @@ namespace Tanagra.Generator
         // todo: Char* -> String
         // todo: union (how?)
         // todo: detect when a pointer is really an array pointer (yeesh...)
+        // XCB -> X protocol C-language Binding
         static void Main(string[] args)
         {
-            var raw = System.IO.File.ReadAllText("./spec/vk.xml");
+            var raw = File.ReadAllText("./spec/vk.xml");
 
             var reader = new VKSpecReader();
             var spec = reader.Read(raw);
@@ -33,9 +34,9 @@ namespace Tanagra.Generator
 
             var gen = new CSharpCodeGenerator();
             gen.Generate(spec);
-            //WriteCode(gen);
-
-            //Console.WriteLine("Files generated but not saved");
+            Console.WriteLine("Generated {0} files", gen.files.Count);
+            
+            var notHandleFn = spec.Commands.Where(x => !(x.Parameters.First().Type is VkHandle));
 
             //var codes = spec.Commands.SelectMany(x => x.ErrorCodes).Distinct().ToList();
             //codes.ForEach(Console.WriteLine);
@@ -43,12 +44,22 @@ namespace Tanagra.Generator
             //var types = spec.AllTypes.Values.Where(x => x.Category == VkTypeCategory.None).Select(x => x.Name).ToList();
             //types.ForEach(Console.WriteLine);
 
+            WriteCode(gen);
+
             Console.WriteLine("program complete");
             Console.ReadKey();
         }
 
         static void WriteCode(CSharpCodeGenerator gen)
         {
+            Console.WriteLine("!!! Overwrite Generated Tanagra Files? [Y/n] !!!");
+            string resp = Console.ReadLine();
+            if(!resp.StartsWith("Y"))
+            {
+                Console.WriteLine("ABORT");
+                return;
+            }
+            
             const string rootPath = "../../../Tanagra";
             try { Directory.Delete($"{rootPath}/Generated", true); } catch { }
             Directory.CreateDirectory($"{rootPath}/Generated");
@@ -60,7 +71,6 @@ namespace Tanagra.Generator
             {
                 File.WriteAllText($"{rootPath}/Generated/{kv.Key}", kv.Value);
             }
-            Console.WriteLine("Generated {0} files", gen.files.Count);
         }
     }
 }

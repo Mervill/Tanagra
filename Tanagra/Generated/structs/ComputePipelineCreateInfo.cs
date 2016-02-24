@@ -7,7 +7,7 @@ namespace Vulkan
     public struct ComputePipelineCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineCreateFlags flags;
         public PipelineShaderStageCreateInfo stage;
         public PipelineLayout layout;

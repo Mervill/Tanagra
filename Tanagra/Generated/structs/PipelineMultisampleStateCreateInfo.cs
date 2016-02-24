@@ -7,12 +7,12 @@ namespace Vulkan
     public struct PipelineMultisampleStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineMultisampleStateCreateFlags flags;
         public SampleCountFlags rasterizationSamples;
         public Boolean sampleShadingEnable;
         public Single minSampleShading;
-        public SampleMask pSampleMask;
+        public SampleMask[] SampleMask; // len:latexmath:[$\lceil{\mathit{rasterizationSamples} \over 32}\rceil$]
         public Boolean alphaToCoverageEnable;
         public Boolean alphaToOneEnable;
     }

@@ -7,14 +7,14 @@ namespace Vulkan
     public unsafe struct DeviceCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DeviceCreateFlags flags;
         public UInt32 queueCreateInfoCount;
-        public DeviceQueueCreateInfo* pQueueCreateInfos;
+        public DeviceQueueCreateInfo* QueueCreateInfos; // len:queueCreateInfoCount
         public UInt32 enabledLayerCount;
-        public Char ppEnabledLayerNames;
+        public Char[] EnabledLayerNames; // len:enabledLayerCount,null-terminated
         public UInt32 enabledExtensionCount;
-        public Char ppEnabledExtensionNames;
-        public PhysicalDeviceFeatures* pEnabledFeatures;
+        public Char[] EnabledExtensionNames; // len:enabledExtensionCount,null-terminated
+        public PhysicalDeviceFeatures* EnabledFeatures;
     }
 }

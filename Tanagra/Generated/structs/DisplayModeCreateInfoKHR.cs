@@ -7,7 +7,7 @@ namespace Vulkan
     public struct DisplayModeCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DisplayModeCreateFlagsKHR flags;
         public DisplayModeParametersKHR parameters;
     }

@@ -7,7 +7,7 @@ namespace Vulkan
     public struct FenceCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public FenceCreateFlags flags;
     }
 }

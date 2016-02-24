@@ -7,12 +7,12 @@ namespace Vulkan
     public struct PipelineColorBlendStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineColorBlendStateCreateFlags flags;
         public Boolean logicOpEnable;
         public LogicOp logicOp;
         public UInt32 attachmentCount;
-        public PipelineColorBlendAttachmentState pAttachments;
+        public PipelineColorBlendAttachmentState[] Attachments; // len:attachmentCount
         public Single blendConstants;
     }
 }

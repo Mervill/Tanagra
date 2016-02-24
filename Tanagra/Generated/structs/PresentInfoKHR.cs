@@ -7,12 +7,12 @@ namespace Vulkan
     public struct PresentInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public UInt32 waitSemaphoreCount;
-        public Semaphore pWaitSemaphores;
+        public Semaphore[] WaitSemaphores; // len:waitSemaphoreCount
         public UInt32 swapchainCount;
-        public SwapchainKHR pSwapchains;
-        public UInt32 pImageIndices;
-        public Result pResults;
+        public SwapchainKHR[] Swapchains; // len:swapchainCount
+        public UInt32[] ImageIndices; // len:swapchainCount
+        public Result[] Results; // len:swapchainCount
     }
 }

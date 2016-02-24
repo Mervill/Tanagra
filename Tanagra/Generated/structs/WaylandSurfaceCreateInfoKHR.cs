@@ -7,7 +7,7 @@ namespace Vulkan
     public struct WaylandSurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public WaylandSurfaceCreateFlagsKHR flags;
         public wl_display display;
         public wl_surface surface;

@@ -7,7 +7,7 @@ namespace Vulkan
     public struct MemoryBarrier
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public AccessFlags srcAccessMask;
         public AccessFlags dstAccessMask;
     }

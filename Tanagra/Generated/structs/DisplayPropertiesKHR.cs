@@ -7,7 +7,7 @@ namespace Vulkan
     public struct DisplayPropertiesKHR
     {
         public DisplayKHR display;
-        public Char displayName;
+        public Char[] displayName; // len:null-terminated
         public Extent2D physicalDimensions;
         public Extent2D physicalResolution;
         public VkSurfaceTransformFlagsKHR supportedTransforms;

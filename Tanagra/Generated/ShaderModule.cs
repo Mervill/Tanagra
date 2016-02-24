@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static ShaderModule Null = new ShaderModule();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

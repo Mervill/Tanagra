@@ -7,7 +7,7 @@ namespace Vulkan
     public struct AndroidSurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public AndroidSurfaceCreateFlagsKHR flags;
         public ANativeWindow window;
     }

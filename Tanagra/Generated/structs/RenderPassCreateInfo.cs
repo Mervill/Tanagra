@@ -7,13 +7,13 @@ namespace Vulkan
     public struct RenderPassCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public RenderPassCreateFlags flags;
         public UInt32 attachmentCount;
-        public AttachmentDescription pAttachments;
+        public AttachmentDescription[] Attachments; // len:attachmentCount
         public UInt32 subpassCount;
-        public SubpassDescription pSubpasses;
+        public SubpassDescription[] Subpasses; // len:subpassCount
         public UInt32 dependencyCount;
-        public SubpassDependency pDependencies;
+        public SubpassDependency[] Dependencies; // len:dependencyCount
     }
 }

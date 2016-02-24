@@ -7,7 +7,7 @@ namespace Vulkan
     public struct SwapchainCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public SwapchainCreateFlagsKHR flags;
         public SurfaceKHR surface;
         public UInt32 minImageCount;
@@ -18,7 +18,7 @@ namespace Vulkan
         public ImageUsageFlags imageUsage;
         public SharingMode imageSharingMode;
         public UInt32 queueFamilyIndexCount;
-        public UInt32 pQueueFamilyIndices;
+        public UInt32[] QueueFamilyIndices; // len:queueFamilyIndexCount
         public SurfaceTransformFlagBitsKHR preTransform;
         public CompositeAlphaFlagBitsKHR compositeAlpha;
         public PresentModeKHR presentMode;
