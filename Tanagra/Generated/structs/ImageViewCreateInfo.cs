@@ -7,7 +7,7 @@ namespace Vulkan
     public struct ImageViewCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public ImageViewCreateFlags flags;
         public Image image;
         public ImageViewType viewType;

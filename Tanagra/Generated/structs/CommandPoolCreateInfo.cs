@@ -7,7 +7,7 @@ namespace Vulkan
     public struct CommandPoolCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public CommandPoolCreateFlags flags;
         public UInt32 queueFamilyIndex;
     }

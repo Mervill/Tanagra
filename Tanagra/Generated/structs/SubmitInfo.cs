@@ -7,13 +7,13 @@ namespace Vulkan
     public struct SubmitInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public UInt32 waitSemaphoreCount;
-        public Semaphore pWaitSemaphores;
-        public PipelineStageFlags pWaitDstStageMask;
+        public Semaphore[] WaitSemaphores; // len:waitSemaphoreCount
+        public PipelineStageFlags[] WaitDstStageMask; // len:waitSemaphoreCount
         public UInt32 commandBufferCount;
-        public CommandBuffer pCommandBuffers;
+        public CommandBuffer[] CommandBuffers; // len:commandBufferCount
         public UInt32 signalSemaphoreCount;
-        public Semaphore pSignalSemaphores;
+        public Semaphore[] SignalSemaphores; // len:signalSemaphoreCount
     }
 }

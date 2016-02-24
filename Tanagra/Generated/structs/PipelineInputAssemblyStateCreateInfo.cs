@@ -7,7 +7,7 @@ namespace Vulkan
     public struct PipelineInputAssemblyStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineInputAssemblyStateCreateFlags flags;
         public PrimitiveTopology topology;
         public Boolean primitiveRestartEnable;

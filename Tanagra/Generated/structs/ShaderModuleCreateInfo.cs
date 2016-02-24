@@ -7,9 +7,9 @@ namespace Vulkan
     public struct ShaderModuleCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public ShaderModuleCreateFlags flags;
-        public Int64 codeSize;
-        public UInt32 pCode;
+        public UIntPtr codeSize;
+        public UInt32[] Code; // len:codeSize/4
     }
 }

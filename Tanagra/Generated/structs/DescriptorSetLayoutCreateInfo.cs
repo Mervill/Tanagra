@@ -7,9 +7,9 @@ namespace Vulkan
     public struct DescriptorSetLayoutCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DescriptorSetLayoutCreateFlags flags;
         public UInt32 bindingCount;
-        public DescriptorSetLayoutBinding pBindings;
+        public DescriptorSetLayoutBinding[] Bindings; // len:bindingCount
     }
 }

@@ -7,16 +7,16 @@ namespace Vulkan
     public struct BindSparseInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public UInt32 waitSemaphoreCount;
-        public Semaphore pWaitSemaphores;
+        public Semaphore[] WaitSemaphores; // len:waitSemaphoreCount
         public UInt32 bufferBindCount;
-        public SparseBufferMemoryBindInfo pBufferBinds;
+        public SparseBufferMemoryBindInfo[] BufferBinds; // len:bufferBindCount
         public UInt32 imageOpaqueBindCount;
-        public SparseImageOpaqueMemoryBindInfo pImageOpaqueBinds;
+        public SparseImageOpaqueMemoryBindInfo[] ImageOpaqueBinds; // len:imageOpaqueBindCount
         public UInt32 imageBindCount;
-        public SparseImageMemoryBindInfo pImageBinds;
+        public SparseImageMemoryBindInfo[] ImageBinds; // len:imageBindCount
         public UInt32 signalSemaphoreCount;
-        public Semaphore pSignalSemaphores;
+        public Semaphore[] SignalSemaphores; // len:signalSemaphoreCount
     }
 }

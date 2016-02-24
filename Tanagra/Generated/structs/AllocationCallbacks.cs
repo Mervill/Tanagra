@@ -6,7 +6,7 @@ namespace Vulkan
     [StructLayout(LayoutKind.Sequential)]
     public struct AllocationCallbacks
     {
-        public IntPtr pUserData;
+        public IntPtr UserData;
         public PFN_vkAllocationFunction pfnAllocation;
         public PFN_vkReallocationFunction pfnReallocation;
         public PFN_vkFreeFunction pfnFree;

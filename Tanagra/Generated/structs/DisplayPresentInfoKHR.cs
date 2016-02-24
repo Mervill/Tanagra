@@ -7,7 +7,7 @@ namespace Vulkan
     public struct DisplayPresentInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public Rect2D srcRect;
         public Rect2D dstRect;
         public Boolean persistent;

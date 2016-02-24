@@ -7,8 +7,8 @@ namespace Vulkan
     public struct CommandBufferBeginInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public CommandBufferUsageFlags flags;
-        public CommandBufferInheritanceInfo pInheritanceInfo;
+        public CommandBufferInheritanceInfo InheritanceInfo;
     }
 }

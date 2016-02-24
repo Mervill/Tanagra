@@ -7,7 +7,7 @@ namespace Vulkan
     public struct MemoryAllocateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DeviceSize allocationSize;
         public UInt32 memoryTypeIndex;
     }

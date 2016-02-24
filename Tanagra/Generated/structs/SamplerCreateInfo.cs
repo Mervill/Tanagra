@@ -7,7 +7,7 @@ namespace Vulkan
     public struct SamplerCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public SamplerCreateFlags flags;
         public Filter magFilter;
         public Filter minFilter;

@@ -8,6 +8,6 @@ namespace Vulkan
     {
         public UInt32 constantID;
         public UInt32 offset;
-        public Int64 size;
+        public UIntPtr size;
     }
 }

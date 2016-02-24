@@ -7,7 +7,7 @@ namespace Vulkan
     public struct PipelineTessellationStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineTessellationStateCreateFlags flags;
         public UInt32 patchControlPoints;
     }

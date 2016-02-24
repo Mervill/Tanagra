@@ -7,7 +7,7 @@ namespace Vulkan
     public struct MappedMemoryRange
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DeviceMemory memory;
         public DeviceSize offset;
         public DeviceSize size;

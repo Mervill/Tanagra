@@ -7,9 +7,9 @@ namespace Vulkan
     public struct PipelineDynamicStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineDynamicStateCreateFlags flags;
         public UInt32 dynamicStateCount;
-        public DynamicState pDynamicStates;
+        public DynamicState[] DynamicStates; // len:dynamicStateCount
     }
 }

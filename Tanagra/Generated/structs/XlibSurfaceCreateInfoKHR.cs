@@ -7,7 +7,7 @@ namespace Vulkan
     public struct XlibSurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public XlibSurfaceCreateFlagsKHR flags;
         public Display dpy;
         public Window window;

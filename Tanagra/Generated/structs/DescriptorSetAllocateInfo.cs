@@ -7,9 +7,9 @@ namespace Vulkan
     public struct DescriptorSetAllocateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DescriptorPool descriptorPool;
         public UInt32 descriptorSetCount;
-        public DescriptorSetLayout pSetLayouts;
+        public DescriptorSetLayout[] SetLayouts; // len:descriptorSetCount
     }
 }

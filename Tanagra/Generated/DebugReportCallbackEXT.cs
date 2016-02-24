@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static DebugReportCallbackEXT Null = new DebugReportCallbackEXT();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

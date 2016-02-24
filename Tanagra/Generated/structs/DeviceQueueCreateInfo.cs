@@ -7,10 +7,10 @@ namespace Vulkan
     public struct DeviceQueueCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public DeviceQueueCreateFlags flags;
         public UInt32 queueFamilyIndex;
         public UInt32 queueCount;
-        public Single pQueuePriorities;
+        public Single[] QueuePriorities; // len:queueCount
     }
 }

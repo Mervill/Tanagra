@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static Instance Null = new Instance();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

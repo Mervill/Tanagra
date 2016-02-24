@@ -7,7 +7,7 @@ namespace Vulkan
     public struct QueryPoolCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public QueryPoolCreateFlags flags;
         public QueryType queryType;
         public UInt32 queryCount;

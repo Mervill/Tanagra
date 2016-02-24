@@ -7,11 +7,11 @@ namespace Vulkan
     public struct PipelineViewportStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineViewportStateCreateFlags flags;
         public UInt32 viewportCount;
-        public Viewport pViewports;
+        public Viewport[] Viewports; // len:viewportCount
         public UInt32 scissorCount;
-        public Rect2D pScissors;
+        public Rect2D[] Scissors; // len:scissorCount
     }
 }

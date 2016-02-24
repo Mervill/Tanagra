@@ -7,9 +7,9 @@ namespace Vulkan
     public struct DebugReportCallbackCreateInfoEXT
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public VkDebugReportFlagsEXT flags;
         public PFN_vkDebugReportCallbackEXT pfnCallback;
-        public IntPtr pUserData;
+        public IntPtr UserData;
     }
 }

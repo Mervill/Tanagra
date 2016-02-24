@@ -7,7 +7,7 @@ namespace Vulkan
     public struct MirSurfaceCreateInfoKHR
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public MirSurfaceCreateFlagsKHR flags;
         public MirConnection connection;
         public MirSurface mirSurface;

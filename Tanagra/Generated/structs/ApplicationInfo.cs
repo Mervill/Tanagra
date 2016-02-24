@@ -7,10 +7,10 @@ namespace Vulkan
     public struct ApplicationInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
-        public Char pApplicationName;
+        public IntPtr Next;
+        public Char[] ApplicationName; // len:null-terminated
         public UInt32 applicationVersion;
-        public Char pEngineName;
+        public Char[] EngineName; // len:null-terminated
         public UInt32 engineVersion;
         public UInt32 apiVersion;
     }

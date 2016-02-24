@@ -7,7 +7,7 @@ namespace Vulkan
     public struct PipelineRasterizationStateCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public PipelineRasterizationStateCreateFlags flags;
         public Boolean depthClampEnable;
         public Boolean rasterizerDiscardEnable;

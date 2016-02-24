@@ -7,7 +7,7 @@ namespace Vulkan
     public struct SemaphoreCreateInfo
     {
         public StructureType sType;
-        public IntPtr pNext;
+        public IntPtr Next;
         public SemaphoreCreateFlags flags;
     }
 }

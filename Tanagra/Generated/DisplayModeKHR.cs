@@ -9,7 +9,7 @@ namespace Vulkan
         public readonly static DisplayModeKHR Null = new DisplayModeKHR();
         
         internal IntPtr NativeHandle;
-
+        
         public override string ToString() => NativeHandle.ToString();
     }
 }

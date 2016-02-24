@@ -9,12 +9,12 @@ namespace Vulkan
         public SubpassDescriptionFlags flags;
         public PipelineBindPoint pipelineBindPoint;
         public UInt32 inputAttachmentCount;
-        public AttachmentReference pInputAttachments;
+        public AttachmentReference[] InputAttachments; // len:inputAttachmentCount
         public UInt32 colorAttachmentCount;
-        public AttachmentReference pColorAttachments;
-        public AttachmentReference pResolveAttachments;
-        public AttachmentReference pDepthStencilAttachment;
+        public AttachmentReference[] ColorAttachments; // len:colorAttachmentCount
+        public AttachmentReference[] ResolveAttachments; // len:colorAttachmentCount
+        public AttachmentReference DepthStencilAttachment;
         public UInt32 preserveAttachmentCount;
-        public UInt32 pPreserveAttachments;
+        public UInt32[] PreserveAttachments; // len:preserveAttachmentCount
     }
 }

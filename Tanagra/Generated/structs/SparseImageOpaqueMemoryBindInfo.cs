@@ -8,6 +8,6 @@ namespace Vulkan
     {
         public Image image;
         public UInt32 bindCount;
-        public SparseMemoryBind pBinds;
+        public SparseMemoryBind[] Binds; // len:bindCount
     }
 }

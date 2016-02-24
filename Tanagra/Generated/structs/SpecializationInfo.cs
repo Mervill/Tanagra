@@ -7,8 +7,8 @@ namespace Vulkan
     public struct SpecializationInfo
     {
         public UInt32 mapEntryCount;
-        public SpecializationMapEntry pMapEntries;
-        public Int64 dataSize;
-        public IntPtr pData;
+        public SpecializationMapEntry[] MapEntries; // len:mapEntryCount
+        public UIntPtr dataSize;
+        public IntPtr Data;
     }
 }
