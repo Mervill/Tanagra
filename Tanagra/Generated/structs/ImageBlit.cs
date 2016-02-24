@@ -7,8 +7,8 @@ namespace Vulkan
     public struct ImageBlit
     {
         public ImageSubresourceLayers srcSubresource;
-        public Offset3D srcOffsets[2];
+        public Offset3D[] srcOffsets;
         public ImageSubresourceLayers dstSubresource;
-        public Offset3D dstOffsets[2];
+        public Offset3D[] dstOffsets;
     }
 }

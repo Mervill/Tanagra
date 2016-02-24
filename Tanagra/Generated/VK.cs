@@ -11,7 +11,7 @@ namespace Vulkan
         }
         
         // Result vkCreateInstance(const InstanceCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, Instance* Instance)
-        public static unsafe Result CreateInstance(InstanceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Instance* Instance)
+        public static unsafe Result CreateInstance(ref InstanceCreateInfo CreateInfo, AllocationCallbacks* Allocator, Instance* Instance)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace Vulkan
         }
         
         // Result vkCreateDevice(PhysicalDevice physicalDevice, const DeviceCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, Device* Device)
-        public static unsafe Result CreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Device* Device)
+        public static unsafe Result CreateDevice(PhysicalDevice physicalDevice, ref DeviceCreateInfo CreateInfo, AllocationCallbacks* Allocator, Device* Device)
         {
             throw new NotImplementedException();
         }
@@ -119,7 +119,7 @@ namespace Vulkan
         }
         
         // Result vkQueueSubmit(Queue queue, UInt32 submitCount, const SubmitInfo* Submits, Fence fence)
-        public static unsafe Result QueueSubmit(Queue queue, UInt32 submitCount, SubmitInfo* Submits, Fence fence)
+        public static unsafe Result QueueSubmit(Queue queue, UInt32 submitCount, ref SubmitInfo Submits, Fence fence)
         {
             throw new NotImplementedException();
         }
@@ -215,7 +215,7 @@ namespace Vulkan
         }
         
         // Result vkQueueBindSparse(Queue queue, UInt32 bindInfoCount, const BindSparseInfo* BindInfo, Fence fence)
-        public static unsafe Result QueueBindSparse(Queue queue, UInt32 bindInfoCount, BindSparseInfo* BindInfo, Fence fence)
+        public static unsafe Result QueueBindSparse(Queue queue, UInt32 bindInfoCount, ref BindSparseInfo BindInfo, Fence fence)
         {
             throw new NotImplementedException();
         }
@@ -311,7 +311,7 @@ namespace Vulkan
         }
         
         // Result vkCreateBuffer(Device device, const BufferCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, Buffer* Buffer)
-        public static unsafe Result CreateBuffer(Device device, BufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Buffer* Buffer)
+        public static unsafe Result CreateBuffer(Device device, ref BufferCreateInfo CreateInfo, AllocationCallbacks* Allocator, Buffer* Buffer)
         {
             throw new NotImplementedException();
         }
@@ -335,7 +335,7 @@ namespace Vulkan
         }
         
         // Result vkCreateImage(Device device, const ImageCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, Image* Image)
-        public static unsafe Result CreateImage(Device device, ImageCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Image* Image)
+        public static unsafe Result CreateImage(Device device, ref ImageCreateInfo CreateInfo, AllocationCallbacks* Allocator, Image* Image)
         {
             throw new NotImplementedException();
         }
@@ -365,7 +365,7 @@ namespace Vulkan
         }
         
         // Result vkCreateShaderModule(Device device, const ShaderModuleCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, ShaderModule* ShaderModule)
-        public static unsafe Result CreateShaderModule(Device device, ShaderModuleCreateInfo* CreateInfo, AllocationCallbacks* Allocator, ShaderModule* ShaderModule)
+        public static unsafe Result CreateShaderModule(Device device, ref ShaderModuleCreateInfo CreateInfo, AllocationCallbacks* Allocator, ShaderModule* ShaderModule)
         {
             throw new NotImplementedException();
         }
@@ -401,13 +401,13 @@ namespace Vulkan
         }
         
         // Result vkCreateGraphicsPipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, const GraphicsPipelineCreateInfo* CreateInfos, const AllocationCallbacks* Allocator, Pipeline* Pipelines)
-        public static unsafe Result CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines)
+        public static unsafe Result CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ref GraphicsPipelineCreateInfo CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines)
         {
             throw new NotImplementedException();
         }
         
         // Result vkCreateComputePipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, const ComputePipelineCreateInfo* CreateInfos, const AllocationCallbacks* Allocator, Pipeline* Pipelines)
-        public static unsafe Result CreateComputePipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines)
+        public static unsafe Result CreateComputePipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ref ComputePipelineCreateInfo CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines)
         {
             throw new NotImplementedException();
         }
@@ -419,7 +419,7 @@ namespace Vulkan
         }
         
         // Result vkCreatePipelineLayout(Device device, const PipelineLayoutCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, PipelineLayout* PipelineLayout)
-        public static unsafe Result CreatePipelineLayout(Device device, PipelineLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, PipelineLayout* PipelineLayout)
+        public static unsafe Result CreatePipelineLayout(Device device, ref PipelineLayoutCreateInfo CreateInfo, AllocationCallbacks* Allocator, PipelineLayout* PipelineLayout)
         {
             throw new NotImplementedException();
         }
@@ -443,7 +443,7 @@ namespace Vulkan
         }
         
         // Result vkCreateDescriptorSetLayout(Device device, const DescriptorSetLayoutCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, DescriptorSetLayout* SetLayout)
-        public static unsafe Result CreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, DescriptorSetLayout* SetLayout)
+        public static unsafe Result CreateDescriptorSetLayout(Device device, ref DescriptorSetLayoutCreateInfo CreateInfo, AllocationCallbacks* Allocator, DescriptorSetLayout* SetLayout)
         {
             throw new NotImplementedException();
         }
@@ -455,7 +455,7 @@ namespace Vulkan
         }
         
         // Result vkCreateDescriptorPool(Device device, const DescriptorPoolCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, DescriptorPool* DescriptorPool)
-        public static unsafe Result CreateDescriptorPool(Device device, DescriptorPoolCreateInfo* CreateInfo, AllocationCallbacks* Allocator, DescriptorPool* DescriptorPool)
+        public static unsafe Result CreateDescriptorPool(Device device, ref DescriptorPoolCreateInfo CreateInfo, AllocationCallbacks* Allocator, DescriptorPool* DescriptorPool)
         {
             throw new NotImplementedException();
         }
@@ -473,7 +473,7 @@ namespace Vulkan
         }
         
         // Result vkAllocateDescriptorSets(Device device, const DescriptorSetAllocateInfo* AllocateInfo, DescriptorSet* DescriptorSets)
-        public static unsafe Result AllocateDescriptorSets(Device device, DescriptorSetAllocateInfo* AllocateInfo, DescriptorSet* DescriptorSets)
+        public static unsafe Result AllocateDescriptorSets(Device device, ref DescriptorSetAllocateInfo AllocateInfo, DescriptorSet* DescriptorSets)
         {
             throw new NotImplementedException();
         }
@@ -485,13 +485,13 @@ namespace Vulkan
         }
         
         // void vkUpdateDescriptorSets(Device device, UInt32 descriptorWriteCount, const WriteDescriptorSet* DescriptorWrites, UInt32 descriptorCopyCount, const CopyDescriptorSet* DescriptorCopies)
-        public static unsafe void UpdateDescriptorSets(Device device, UInt32 descriptorWriteCount, WriteDescriptorSet* DescriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* DescriptorCopies)
+        public static unsafe void UpdateDescriptorSets(Device device, UInt32 descriptorWriteCount, ref WriteDescriptorSet DescriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* DescriptorCopies)
         {
             throw new NotImplementedException();
         }
         
         // Result vkCreateFramebuffer(Device device, const FramebufferCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, Framebuffer* Framebuffer)
-        public static unsafe Result CreateFramebuffer(Device device, FramebufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Framebuffer* Framebuffer)
+        public static unsafe Result CreateFramebuffer(Device device, ref FramebufferCreateInfo CreateInfo, AllocationCallbacks* Allocator, Framebuffer* Framebuffer)
         {
             throw new NotImplementedException();
         }
@@ -503,7 +503,7 @@ namespace Vulkan
         }
         
         // Result vkCreateRenderPass(Device device, const RenderPassCreateInfo* CreateInfo, const AllocationCallbacks* Allocator, RenderPass* RenderPass)
-        public static unsafe Result CreateRenderPass(Device device, RenderPassCreateInfo* CreateInfo, AllocationCallbacks* Allocator, RenderPass* RenderPass)
+        public static unsafe Result CreateRenderPass(Device device, ref RenderPassCreateInfo CreateInfo, AllocationCallbacks* Allocator, RenderPass* RenderPass)
         {
             throw new NotImplementedException();
         }
@@ -695,7 +695,7 @@ namespace Vulkan
         }
         
         // void vkCmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, const ImageBlit* Regions, Filter filter)
-        public static unsafe void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageBlit* Regions, Filter filter)
+        public static unsafe void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ref ImageBlit Regions, Filter filter)
         {
             throw new NotImplementedException();
         }
@@ -809,7 +809,7 @@ namespace Vulkan
         }
         
         // void vkCmdBeginRenderPass(CommandBuffer commandBuffer, const RenderPassBeginInfo* RenderPassBegin, SubpassContents contents)
-        public static unsafe void CmdBeginRenderPass(CommandBuffer commandBuffer, RenderPassBeginInfo* RenderPassBegin, SubpassContents contents)
+        public static unsafe void CmdBeginRenderPass(CommandBuffer commandBuffer, ref RenderPassBeginInfo RenderPassBegin, SubpassContents contents)
         {
             throw new NotImplementedException();
         }
@@ -839,7 +839,7 @@ namespace Vulkan
         }
         
         // Result vkGetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, DisplayPropertiesKHR* Properties)
-        public static unsafe Result GetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, DisplayPropertiesKHR* Properties)
+        public static unsafe Result GetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, ref DisplayPropertiesKHR Properties)
         {
             throw new NotImplementedException();
         }
@@ -881,7 +881,7 @@ namespace Vulkan
         }
         
         // Result vkCreateSharedSwapchainsKHR(Device device, UInt32 swapchainCount, const SwapchainCreateInfoKHR* CreateInfos, const AllocationCallbacks* Allocator, SwapchainKHR* Swapchains)
-        public static unsafe Result CreateSharedSwapchainsKHR(Device device, UInt32 swapchainCount, SwapchainCreateInfoKHR* CreateInfos, AllocationCallbacks* Allocator, SwapchainKHR* Swapchains)
+        public static unsafe Result CreateSharedSwapchainsKHR(Device device, UInt32 swapchainCount, ref SwapchainCreateInfoKHR CreateInfos, AllocationCallbacks* Allocator, SwapchainKHR* Swapchains)
         {
             throw new NotImplementedException();
         }
@@ -929,7 +929,7 @@ namespace Vulkan
         }
         
         // Result vkCreateSwapchainKHR(Device device, const SwapchainCreateInfoKHR* CreateInfo, const AllocationCallbacks* Allocator, SwapchainKHR* Swapchain)
-        public static unsafe Result CreateSwapchainKHR(Device device, SwapchainCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SwapchainKHR* Swapchain)
+        public static unsafe Result CreateSwapchainKHR(Device device, ref SwapchainCreateInfoKHR CreateInfo, AllocationCallbacks* Allocator, SwapchainKHR* Swapchain)
         {
             throw new NotImplementedException();
         }
@@ -953,7 +953,7 @@ namespace Vulkan
         }
         
         // Result vkQueuePresentKHR(Queue queue, const PresentInfoKHR* PresentInfo)
-        public static unsafe Result QueuePresentKHR(Queue queue, PresentInfoKHR* PresentInfo)
+        public static unsafe Result QueuePresentKHR(Queue queue, ref PresentInfoKHR PresentInfo)
         {
             throw new NotImplementedException();
         }
@@ -1025,14 +1025,20 @@ namespace Vulkan
         }
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateInstance", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateInstance(InstanceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Instance* Instance);
-        
+        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo CreateInfo, AllocationCallbacks* Allocator, ref Instance Instance);
+
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateInstance", CallingConvention = CallingConvention.Winapi)]
+        public static unsafe extern Result vkCreateInstance(ref InstanceCreateInfo CreateInfo, IntPtr Allocator, ref Instance Instance);
+
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyInstance", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyInstance(Instance instance, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkEnumeratePhysicalDevices(Instance instance, UInt32* PhysicalDeviceCount, PhysicalDevice* PhysicalDevices);
-        
+        public static unsafe extern Result vkEnumeratePhysicalDevices(Instance instance, UInt32* PhysicalDeviceCount, ref PhysicalDevice PhysicalDevices);
+
+        [DllImport("vulkan-1.dll", EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = CallingConvention.Winapi)]
+        public static unsafe extern Result vkEnumeratePhysicalDevices(Instance instance, UInt32* PhysicalDeviceCount, IntPtr PhysicalDevices);
+
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceProcAddr", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern PFN_vkVoidFunction vkGetDeviceProcAddr(Device device, Char* Name);
         
@@ -1043,10 +1049,10 @@ namespace Vulkan
         public static unsafe extern void vkGetPhysicalDeviceProperties(PhysicalDevice physicalDevice, PhysicalDeviceProperties* Properties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkGetPhysicalDeviceQueueFamilyProperties(PhysicalDevice physicalDevice, UInt32* QueueFamilyPropertyCount, QueueFamilyProperties* QueueFamilyProperties);
+        public static unsafe extern void vkGetPhysicalDeviceQueueFamilyProperties(PhysicalDevice physicalDevice, UInt32* QueueFamilyPropertyCount, QueueFamilyProperties[] QueueFamilyProperties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceMemoryProperties", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkGetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice, PhysicalDeviceMemoryProperties* MemoryProperties);
+        public static unsafe extern void vkGetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice, ref PhysicalDeviceMemoryProperties MemoryProperties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceFeatures", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkGetPhysicalDeviceFeatures(PhysicalDevice physicalDevice, PhysicalDeviceFeatures* Features);
@@ -1058,8 +1064,11 @@ namespace Vulkan
         public static unsafe extern Result vkGetPhysicalDeviceImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags, ImageFormatProperties* ImageFormatProperties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDevice", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Device* Device);
-        
+        public static unsafe extern Result vkCreateDevice(PhysicalDevice physicalDevice, ref DeviceCreateInfo CreateInfo, AllocationCallbacks* Allocator, ref Device Device);
+
+        [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDevice", CallingConvention = CallingConvention.Winapi)]
+        public static unsafe extern Result vkCreateDevice(PhysicalDevice physicalDevice, ref DeviceCreateInfo CreateInfo, IntPtr Allocator, ref Device Device);
+
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDevice", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyDevice(Device device, AllocationCallbacks* Allocator);
         
@@ -1076,10 +1085,10 @@ namespace Vulkan
         public static unsafe extern Result vkEnumerateDeviceExtensionProperties(PhysicalDevice physicalDevice, Char* LayerName, UInt32* PropertyCount, ExtensionProperties* Properties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetDeviceQueue", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkGetDeviceQueue(Device device, UInt32 queueFamilyIndex, UInt32 queueIndex, Queue* Queue);
+        public static unsafe extern void vkGetDeviceQueue(Device device, UInt32 queueFamilyIndex, UInt32 queueIndex, ref Queue Queue);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkQueueSubmit", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkQueueSubmit(Queue queue, UInt32 submitCount, SubmitInfo* Submits, Fence fence);
+        public static unsafe extern Result vkQueueSubmit(Queue queue, UInt32 submitCount, ref SubmitInfo Submits, Fence fence);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkQueueWaitIdle", CallingConvention = CallingConvention.Winapi)]
         public static extern Result vkQueueWaitIdle(Queue queue);
@@ -1127,7 +1136,7 @@ namespace Vulkan
         public static unsafe extern void vkGetPhysicalDeviceSparseImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling, UInt32* PropertyCount, SparseImageFormatProperties* Properties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkQueueBindSparse", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkQueueBindSparse(Queue queue, UInt32 bindInfoCount, BindSparseInfo* BindInfo, Fence fence);
+        public static unsafe extern Result vkQueueBindSparse(Queue queue, UInt32 bindInfoCount, ref BindSparseInfo BindInfo, Fence fence);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateFence", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkCreateFence(Device device, FenceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Fence* Fence);
@@ -1175,7 +1184,7 @@ namespace Vulkan
         public static unsafe extern Result vkGetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, UIntPtr dataSize, IntPtr* Data, DeviceSize stride, QueryResultFlags flags);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateBuffer", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateBuffer(Device device, BufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Buffer* Buffer);
+        public static unsafe extern Result vkCreateBuffer(Device device, ref BufferCreateInfo CreateInfo, AllocationCallbacks* Allocator, Buffer* Buffer);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyBuffer", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyBuffer(Device device, Buffer buffer, AllocationCallbacks* Allocator);
@@ -1187,7 +1196,7 @@ namespace Vulkan
         public static unsafe extern void vkDestroyBufferView(Device device, BufferView bufferView, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateImage", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateImage(Device device, ImageCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Image* Image);
+        public static unsafe extern Result vkCreateImage(Device device, ref ImageCreateInfo CreateInfo, AllocationCallbacks* Allocator, Image* Image);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyImage", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyImage(Device device, Image image, AllocationCallbacks* Allocator);
@@ -1202,7 +1211,7 @@ namespace Vulkan
         public static unsafe extern void vkDestroyImageView(Device device, ImageView imageView, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateShaderModule", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateShaderModule(Device device, ShaderModuleCreateInfo* CreateInfo, AllocationCallbacks* Allocator, ShaderModule* ShaderModule);
+        public static unsafe extern Result vkCreateShaderModule(Device device, ref ShaderModuleCreateInfo CreateInfo, AllocationCallbacks* Allocator, ShaderModule* ShaderModule);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyShaderModule", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyShaderModule(Device device, ShaderModule shaderModule, AllocationCallbacks* Allocator);
@@ -1220,16 +1229,16 @@ namespace Vulkan
         public static unsafe extern Result vkMergePipelineCaches(Device device, PipelineCache dstCache, UInt32 srcCacheCount, PipelineCache* SrcCaches);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateGraphicsPipelines", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateGraphicsPipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines);
+        public static unsafe extern Result vkCreateGraphicsPipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ref GraphicsPipelineCreateInfo CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateComputePipelines", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateComputePipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines);
+        public static unsafe extern Result vkCreateComputePipelines(Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ref ComputePipelineCreateInfo CreateInfos, AllocationCallbacks* Allocator, Pipeline* Pipelines);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyPipeline", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyPipeline(Device device, Pipeline pipeline, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreatePipelineLayout", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreatePipelineLayout(Device device, PipelineLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, PipelineLayout* PipelineLayout);
+        public static unsafe extern Result vkCreatePipelineLayout(Device device, ref PipelineLayoutCreateInfo CreateInfo, AllocationCallbacks* Allocator, PipelineLayout* PipelineLayout);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyPipelineLayout", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyPipelineLayout(Device device, PipelineLayout pipelineLayout, AllocationCallbacks* Allocator);
@@ -1241,13 +1250,13 @@ namespace Vulkan
         public static unsafe extern void vkDestroySampler(Device device, Sampler sampler, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDescriptorSetLayout", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, DescriptorSetLayout* SetLayout);
+        public static unsafe extern Result vkCreateDescriptorSetLayout(Device device, ref DescriptorSetLayoutCreateInfo CreateInfo, AllocationCallbacks* Allocator, DescriptorSetLayout* SetLayout);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDescriptorSetLayout", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyDescriptorSetLayout(Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateDescriptorPool", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateDescriptorPool(Device device, DescriptorPoolCreateInfo* CreateInfo, AllocationCallbacks* Allocator, DescriptorPool* DescriptorPool);
+        public static unsafe extern Result vkCreateDescriptorPool(Device device, ref DescriptorPoolCreateInfo CreateInfo, AllocationCallbacks* Allocator, DescriptorPool* DescriptorPool);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyDescriptorPool", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyDescriptorPool(Device device, DescriptorPool descriptorPool, AllocationCallbacks* Allocator);
@@ -1256,22 +1265,22 @@ namespace Vulkan
         public static extern Result vkResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkAllocateDescriptorSets", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkAllocateDescriptorSets(Device device, DescriptorSetAllocateInfo* AllocateInfo, DescriptorSet* DescriptorSets);
+        public static unsafe extern Result vkAllocateDescriptorSets(Device device, ref DescriptorSetAllocateInfo AllocateInfo, DescriptorSet* DescriptorSets);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkFreeDescriptorSets", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkFreeDescriptorSets(Device device, DescriptorPool descriptorPool, UInt32 descriptorSetCount, DescriptorSet* DescriptorSets);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkUpdateDescriptorSets", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkUpdateDescriptorSets(Device device, UInt32 descriptorWriteCount, WriteDescriptorSet* DescriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* DescriptorCopies);
+        public static unsafe extern void vkUpdateDescriptorSets(Device device, UInt32 descriptorWriteCount, ref WriteDescriptorSet DescriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* DescriptorCopies);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateFramebuffer", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateFramebuffer(Device device, FramebufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, Framebuffer* Framebuffer);
+        public static unsafe extern Result vkCreateFramebuffer(Device device, ref FramebufferCreateInfo CreateInfo, AllocationCallbacks* Allocator, Framebuffer* Framebuffer);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyFramebuffer", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyFramebuffer(Device device, Framebuffer framebuffer, AllocationCallbacks* Allocator);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateRenderPass", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateRenderPass(Device device, RenderPassCreateInfo* CreateInfo, AllocationCallbacks* Allocator, RenderPass* RenderPass);
+        public static unsafe extern Result vkCreateRenderPass(Device device, ref RenderPassCreateInfo CreateInfo, AllocationCallbacks* Allocator, RenderPass* RenderPass);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroyRenderPass", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroyRenderPass(Device device, RenderPass renderPass, AllocationCallbacks* Allocator);
@@ -1367,7 +1376,7 @@ namespace Vulkan
         public static unsafe extern void vkCmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageCopy* Regions);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBlitImage", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkCmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageBlit* Regions, Filter filter);
+        public static unsafe extern void vkCmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ref ImageBlit Regions, Filter filter);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCmdCopyBufferToImage", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkCmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, BufferImageCopy* Regions);
@@ -1424,7 +1433,7 @@ namespace Vulkan
         public static unsafe extern void vkCmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, IntPtr* Values);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCmdBeginRenderPass", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void vkCmdBeginRenderPass(CommandBuffer commandBuffer, RenderPassBeginInfo* RenderPassBegin, SubpassContents contents);
+        public static unsafe extern void vkCmdBeginRenderPass(CommandBuffer commandBuffer, ref RenderPassBeginInfo RenderPassBegin, SubpassContents contents);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCmdNextSubpass", CallingConvention = CallingConvention.Winapi)]
         public static extern void vkCmdNextSubpass(CommandBuffer commandBuffer, SubpassContents contents);
@@ -1439,7 +1448,7 @@ namespace Vulkan
         public static unsafe extern Result vkCreateAndroidSurfaceKHR(Instance instance, AndroidSurfaceCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SurfaceKHR* Surface);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceDisplayPropertiesKHR", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, DisplayPropertiesKHR* Properties);
+        public static unsafe extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, ref DisplayPropertiesKHR Properties);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkGetPhysicalDeviceDisplayPlanePropertiesKHR", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR(PhysicalDevice physicalDevice, UInt32* PropertyCount, DisplayPlanePropertiesKHR* Properties);
@@ -1460,7 +1469,7 @@ namespace Vulkan
         public static unsafe extern Result vkCreateDisplayPlaneSurfaceKHR(Instance instance, DisplaySurfaceCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SurfaceKHR* Surface);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateSharedSwapchainsKHR", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateSharedSwapchainsKHR(Device device, UInt32 swapchainCount, SwapchainCreateInfoKHR* CreateInfos, AllocationCallbacks* Allocator, SwapchainKHR* Swapchains);
+        public static unsafe extern Result vkCreateSharedSwapchainsKHR(Device device, UInt32 swapchainCount, ref SwapchainCreateInfoKHR CreateInfos, AllocationCallbacks* Allocator, SwapchainKHR* Swapchains);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkCreateMirSurfaceKHR(Instance instance, MirSurfaceCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SurfaceKHR* Surface);
@@ -1484,7 +1493,7 @@ namespace Vulkan
         public static unsafe extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface, UInt32* PresentModeCount, PresentModeKHR* PresentModes);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateSwapchainKHR", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkCreateSwapchainKHR(Device device, SwapchainCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SwapchainKHR* Swapchain);
+        public static unsafe extern Result vkCreateSwapchainKHR(Device device, ref SwapchainCreateInfoKHR CreateInfo, AllocationCallbacks* Allocator, SwapchainKHR* Swapchain);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkDestroySwapchainKHR", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern void vkDestroySwapchainKHR(Device device, SwapchainKHR swapchain, AllocationCallbacks* Allocator);
@@ -1496,7 +1505,7 @@ namespace Vulkan
         public static unsafe extern Result vkAcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence, UInt32* ImageIndex);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkQueuePresentKHR", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern Result vkQueuePresentKHR(Queue queue, PresentInfoKHR* PresentInfo);
+        public static unsafe extern Result vkQueuePresentKHR(Queue queue, ref PresentInfoKHR PresentInfo);
         
         [DllImport("vulkan-1.dll", EntryPoint = "vkCreateWaylandSurfaceKHR", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern Result vkCreateWaylandSurfaceKHR(Instance instance, WaylandSurfaceCreateInfoKHR* CreateInfo, AllocationCallbacks* Allocator, SurfaceKHR* Surface);

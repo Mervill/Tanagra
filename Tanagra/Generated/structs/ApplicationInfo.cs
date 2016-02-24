@@ -8,9 +8,9 @@ namespace Vulkan
     {
         public StructureType sType;
         public IntPtr Next;
-        public Char[] ApplicationName; // len:null-terminated
+        public String ApplicationName; // len:null-terminated
         public UInt32 applicationVersion;
-        public Char[] EngineName; // len:null-terminated
+        public String EngineName; // len:null-terminated
         public UInt32 engineVersion;
         public UInt32 apiVersion;
     }

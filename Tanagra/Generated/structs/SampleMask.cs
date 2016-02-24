@@ -6,5 +6,6 @@ namespace Vulkan
     [StructLayout(LayoutKind.Sequential)]
     public struct SampleMask
     {
+        public UInt32 value;
     }
 }
