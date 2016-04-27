@@ -443,10 +443,13 @@ namespace Tanagra.Generator
 
             var vkCommand = new VkCommand();
             vkCommand.Name = vkCommand.SpecName = xproto.Element("name").Value;
-            vkCommand.ReturnType = GetOrAddType(xproto.Element("type").Value);
             vkCommand.ErrorCodes = new string[0];
             vkCommand.SuccessCodes = new string[0];
             vkCommand.Queues = new string[0];
+
+            var returnType = xproto.Element("type").Value;
+            if(returnType != "void")
+                vkCommand.ReturnType = GetOrAddType(returnType);
 
             // todo: return is const
             // todo: return is pointer
