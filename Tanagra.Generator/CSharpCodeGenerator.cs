@@ -43,22 +43,61 @@ namespace Tanagra.Generator
             // should only transform data if doing so in the rewrite step is awkward or impossible.
             //
 
+            foreach(var vkEnum in spec.Enums.Where(vkEnum => vkEnum.Name != "API Constants"))
+                files.Add($"./Enum/{vkEnum.Name}.cs", GenerateEnum(vkEnum));
+            
             foreach(var vkSpec in spec.Handles)
-                files.Add($"{vkSpec.Name}.cs", GenerateHandle(vkSpec));
+                files.Add($"./Handle/{vkSpec.Name}.cs", GenerateHandle(vkSpec));
 
-            foreach (var vkEnum in spec.Enums.Where(vkEnum => vkEnum.Name != "API Constants"))
-                files.Add($"./enums/{vkEnum.Name}.cs", GenerateEnum(vkEnum));
-            
+            files.Add("./Interop/Structs.cs", GenerateInteropStructs(spec.Structs));
+            files.Add("./Interop/VK.cs", GenerateCommandBindings(spec.Commands));
+
             foreach (var vkStruct in spec.Structs.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name)))
-                files.Add($"./structs/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
+                files.Add($"./Wrapper/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
+
+            files.Add("./Wrapper/VK.cs", GenerateCommandWrapper(spec.Commands));
+
+            files.Add("./ObjectModel.cs", GenerateHandleExtensions(spec.Handles, spec.Commands));
             
-            files.Add("VK.cs", GenerateCommandClass(spec.Commands));
-
-            files.Add("VK.Interop.cs", GenerateInteropStructs(spec.Structs));
-
             return _sb.ToString();
         }
 
+        string GenerateEnum(VkEnum vkEnum)
+        {
+            Clear();
+
+            WriteLine("using System;");
+            WriteLine("");
+            WriteLine("namespace Vulkan");
+            WriteLine("{");
+            _tabs++;
+            if(vkEnum.IsBitmask)
+                WriteLine("[Flags]");
+            WriteLine($"public enum {vkEnum.Name}"); // : int
+            WriteLine("{");
+            _tabs++;
+
+            foreach(var vkEnumValue in vkEnum.Values)
+            {
+                var comment = vkEnumValue.Comment;
+                if(!string.IsNullOrEmpty(comment))
+                {
+                    WriteLine("/// <summary>");
+                    WriteLine($"/// {comment}");
+                    WriteLine("/// </summary>");
+                }
+                var mask = (vkEnum.IsBitmask) ? "1 << " : string.Empty;
+                WriteLine($"{vkEnumValue.Name} = {mask}{vkEnumValue.Value},");
+            }
+
+            _tabs--;
+            WriteLine("}");
+            _tabs--;
+            WriteLine("}");
+
+            return _sb.ToString();
+        }
+        
         string GenerateHandle(VkHandle vkHandle)
         {
             var name = vkHandle.Name;
@@ -134,6 +173,63 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
+        string GenerateCommandBindings(VkCommand[] commands)
+        {
+            Clear();
+
+            WriteLine("using System;");
+            WriteLine("using System.Runtime.InteropServices;");
+            WriteLine("");
+            WriteLine("namespace Vulkan.Interop");
+            WriteLine("{");
+            _tabs++;
+            WriteLine("internal unsafe static class VK");
+            WriteLine("{");
+            _tabs++;
+            WriteLine($"const string DllName = \"{DllName}\";");
+            WriteLine("");
+            WriteLine("static VK()");
+            WriteLine("{");
+            WriteLine("}");
+            WriteLine("");
+
+            foreach(var cmd in commands)
+            {
+                WriteLine($"[DllImport(DllName, EntryPoint = \"{cmd.SpecName}\", CallingConvention = CallingConvention.Winapi)]");
+
+                WriteTabs();
+                Write("internal static ");
+                var returnType = (cmd.ReturnType != null) ? cmd.ReturnType.Name : "void";
+                Write($"extern {returnType} {cmd.SpecName}");
+                Write("(");
+
+                for(var x = 0; x < cmd.Parameters.Length; x++)
+                {
+                    var param = cmd.Parameters[x];
+                    var paramType = param.Type.Name;
+                    if(param.Type is VkHandle)
+                        paramType = "IntPtr";
+
+                    var pointer = new string('*', param.PointerRank);
+                    Write($"{paramType}{pointer} {param.Name}");
+                    if(x + 1 < cmd.Parameters.Length)
+                        Write(", ");
+                }
+
+                Write(");");
+                Write(Environment.NewLine);
+
+                WriteLine("");
+            }
+
+            _tabs--;
+            WriteLine("}");
+            _tabs--;
+            WriteLine("}");
+
+            return _sb.ToString();
+        }
+
         string GenerateWrapperClass(VkStruct vkStruct)
         {
             Clear();
@@ -166,11 +262,11 @@ namespace Tanagra.Generator
                 {
                     if (member.Len.Length > 1)
                     {
-                        WriteMemberStringArray(member.Name);
+                        WriteMemberStringArray(member);
                     }
                     else
                     {
-                        WriteMemberString(member.Name);
+                        WriteMemberString(member);
                     }
                     WriteLine("");
                     continue;
@@ -178,12 +274,12 @@ namespace Tanagra.Generator
 
                 if (member.Type is VkEnum || platformStructTypes.Contains(member.Type.Name))
                 {
-                    WriteMember(member.Name, member.Type.Name);
+                    WriteMember(member);
                     WriteLine("");
                     continue;
                 }
                 
-                WriteMemberStruct(member.Name, member.Type.Name);
+                WriteMemberStruct(member);
                 WriteLine("");
             }
 
@@ -203,43 +299,43 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
-        void WriteMember(string memberName, string memberType)
+        void WriteMember(VkMember member)
         {
-            WriteLine($"public {memberType} {memberName}");
+            WriteLine($"public {member.Type.Name} {member.Name}");
             WriteLine("{");
             _tabs++;
-            WriteLine($"get {{ return {NativeHandle}->{memberName}; }}");
-            WriteLine($"set {{ {NativeHandle}->{memberName} = value; }}");
+            WriteLine($"get {{ return {NativeHandle}->{member.Name}; }}");
+            WriteLine($"set {{ {NativeHandle}->{member.Name} = value; }}");
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteMemberStruct(string memberName, string memberType)
+        void WriteMemberStruct(VkMember member)
         {
-            WriteLine($"{memberType} _{memberName};");
-            WriteLine($"public {memberType} {memberName}");
+            WriteLine($"{member.Type.Name} _{member.Name};");
+            WriteLine($"public {member.Type.Name} {member.Name}");
             WriteLine("{");
             _tabs++;
-            WriteLine($"get {{ return _{memberName}; }}");
-            WriteLine($"set {{ _{memberName} = value; {NativeHandle}->{memberName} = (IntPtr)value.{NativeHandle}; }}");
+            WriteLine($"get {{ return _{member.Name}; }}");
+            WriteLine($"set {{ _{member.Name} = value; {NativeHandle}->{member.Name} = (IntPtr)value.{NativeHandle}; }}");
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteMemberString(string memberName)
+        void WriteMemberString(VkMember member)
         {
-            WriteLine($"public string {memberName}");
+            WriteLine($"public string {member.Name}");
             WriteLine("{");
             _tabs++;
-            WriteLine($"get {{ return Marshal.PtrToStringAnsi({NativeHandle}->{memberName}); }}");
-            WriteLine($"set {{ {NativeHandle}->{memberName} = Marshal.StringToHGlobalAnsi(value); }}");
+            WriteLine($"get {{ return Marshal.PtrToStringAnsi({NativeHandle}->{member.Name}); }}");
+            WriteLine($"set {{ {NativeHandle}->{member.Name} = Marshal.StringToHGlobalAnsi(value); }}");
             _tabs--;
             WriteLine("}");
         }
         
-        void WriteMemberStringArray(string memberName)
+        void WriteMemberStringArray(VkMember member)
         {
-            WriteLine($"public string[] {memberName}");
+            WriteLine($"public string[] {member.Name}");
             WriteLine("{");
             _tabs++;
 
@@ -248,12 +344,12 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
 
-            if (!memberName.EndsWith("Names"))
-                throw new Exception($"unable to handle member {memberName}");
-            var countName = memberName.Substring(0, memberName.Length - 5) + "Count";
+            if (!member.Name.EndsWith("Names"))
+                throw new Exception($"unable to handle member {member.Name}");
+            var countName = member.Name.Substring(0, member.Name.Length - 5) + "Count";
 
             WriteLine($"var strings = new String[{NativeHandle}->{countName}];");
-            WriteLine($"void** ptr = (void**){NativeHandle}->{memberName};");
+            WriteLine($"void** ptr = (void**){NativeHandle}->{member.Name};");
             WriteLine($"for(int x = 0; x < {NativeHandle}->{countName}; x++)");
             _tabs++;
             WriteLine("strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);");
@@ -268,8 +364,8 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
             WriteLine($"{NativeHandle}->{countName} = (uint)value.Length;");
-            WriteLine($"{NativeHandle}->{memberName} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativeHandle}->{countName}));");
-            WriteLine($"void** ptr = (void**){NativeHandle}->{memberName};");
+            WriteLine($"{NativeHandle}->{member.Name} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativeHandle}->{countName}));");
+            WriteLine($"void** ptr = (void**){NativeHandle}->{member.Name};");
             WriteLine($"for(int x = 0; x < {NativeHandle}->{countName}; x++)");
             _tabs++;
             WriteLine("ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);");
@@ -281,86 +377,45 @@ namespace Tanagra.Generator
             WriteLine("}");
         }
 
-        string GenerateEnum(VkEnum vkEnum)
-        {
-            Clear();
-
-            WriteLine("using System;");
-            WriteLine("");
-            WriteLine("namespace Vulkan");
-            WriteLine("{");
-            _tabs++;
-            if(vkEnum.IsBitmask)
-                WriteLine("[Flags]");
-            WriteLine($"public enum {vkEnum.Name}"); // : int
-            WriteLine("{");
-            _tabs++;
-
-            foreach(var vkEnumValue in vkEnum.Values)
-            {
-                var comment = vkEnumValue.Comment;
-                if(!string.IsNullOrEmpty(comment))
-                {
-                    WriteLine("/// <summary>");
-                    WriteLine($"/// {comment}");
-                    WriteLine("/// </summary>");
-                }
-                var mask = (vkEnum.IsBitmask) ? "1 << " : string.Empty;
-                WriteLine($"{vkEnumValue.Name} = {mask}{vkEnumValue.Value},");
-            }
-            
-            _tabs--;
-            WriteLine("}");
-            _tabs--;
-            WriteLine("}");
-
-            return _sb.ToString();
-        }
-
-        string GenerateCommandClass(VkCommand[] commands)
+        string GenerateCommandWrapper(IEnumerable<VkCommand> commands)
         {
             Clear();
 
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("");
-            WriteLine("namespace Vulkan.Interop");
+            WriteLine("namespace Vulkan");
             WriteLine("{");
             _tabs++;
-            WriteLine("internal unsafe static class VK");
+            WriteLine("public unsafe static class VK");
             WriteLine("{");
             _tabs++;
-            WriteLine($"const string DllName = \"{DllName}\";");
-            WriteLine("");
-            WriteLine("static VK()");
-            WriteLine("{");
-            WriteLine("}");
-            WriteLine("");
 
-            foreach (var cmd in commands)
+            foreach(var cmd in commands)
             {
-                WriteLine($"[DllImport(DllName, EntryPoint = \"{cmd.SpecName}\", CallingConvention = CallingConvention.Winapi)]");
-                
                 WriteTabs();
                 Write("public static ");
-                Write($"extern {cmd.ReturnType} {cmd.SpecName}");
+                var returnType = (cmd.ReturnType != null) ? cmd.ReturnType.Name : "void";
+                Write($"{returnType} {cmd.Name}");
                 Write("(");
 
-                for (var x = 0; x < cmd.Parameters.Length; x++)
+                for(var x = 0; x < cmd.Parameters.Length; x++)
                 {
                     var param = cmd.Parameters[x];
                     var paramType = param.Type.Name;
-                    if (param.Type is VkHandle)
-                        paramType = "IntPtr";
-
-                    var pointer = new string('*', param.PointerRank);
-                    Write($"{paramType}{pointer} {param.Name}");
-                    if (x + 1 < cmd.Parameters.Length)
+                    Write($"{paramType} {param.Name}");
+                    if(x + 1 < cmd.Parameters.Length)
                         Write(", ");
                 }
 
-                Write(");");
+                Write(")");
                 Write(Environment.NewLine);
+                
+                WriteLine("{");
+                _tabs++;
+                WriteLine("throw new NotImplementedException();");
+                _tabs--;
+                WriteLine("}");
 
                 WriteLine("");
             }
@@ -372,7 +427,87 @@ namespace Tanagra.Generator
 
             return _sb.ToString();
         }
-        
+
+        string GenerateHandleExtensions(IEnumerable<VkHandle> vkHandles, IEnumerable<VkCommand> commands)
+        {
+            Clear();
+
+            WriteLine("using System;");
+            WriteLine("");
+            WriteLine("namespace Vulkan.ObjectModel");
+            WriteLine("{");
+            _tabs++;
+            WriteLine("public static class HandleExtensions");
+            WriteLine("{");
+            _tabs++;
+
+            foreach(var vkHandle in vkHandles)
+            {
+                var handleCommands = commands.Where(x => x.Parameters.FirstOrDefault()?.Type.Name == vkHandle.Name);
+                if(!handleCommands.Any())
+                    continue;
+
+                WriteLine($"#region {vkHandle.Name}");
+                WriteLine("");
+                foreach(var vkCommand in handleCommands)
+                {
+                    WriteTabs();
+                    Write("public static ");
+                    var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
+                    Write($"{returnType} {vkCommand.Name}");
+                    Write("(");
+
+                    for(var x = 0; x < vkCommand.Parameters.Length; x++)
+                    {
+                        var param = vkCommand.Parameters[x];
+                        var paramType = param.Type.Name;
+                        var thisKeyword = (x == 0) ? "this " : string.Empty;
+                        Write($"{thisKeyword}{paramType} {param.Name}");
+                        if(x + 1 < vkCommand.Parameters.Length)
+                            Write(", ");
+                    }
+
+                    Write(")");
+                    Write(Environment.NewLine);
+
+                    WriteLine("{");
+                    _tabs++;
+                    WriteTabs();
+                    if(vkCommand.ReturnType != null)
+                        Write("return ");
+                    Write($"VK.{vkCommand.Name}");
+                    Write("(");
+
+                    for(var x = 0; x < vkCommand.Parameters.Length; x++)
+                    {
+                        var param = vkCommand.Parameters[x];
+                        Write($"{param.Name}");
+                        if(x + 1 < vkCommand.Parameters.Length)
+                            Write(", ");
+                    }
+
+                    Write(");");
+                    Write(Environment.NewLine);
+
+                    //WriteLine("throw new NotImplementedException();");
+
+                    _tabs--;
+                    WriteLine("}");
+
+                    WriteLine("");
+                }
+                WriteLine("#endregion");
+                WriteLine("");
+            }
+
+            _tabs--;
+            WriteLine("}");
+            _tabs--;
+            WriteLine("}");
+
+            return _sb.ToString();
+        }
+
         void Clear()
         {
             _sb.Clear();
