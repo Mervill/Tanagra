@@ -3,8 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct HINSTANCE
+    unsafe public class HINSTANCE
     {
+        internal Interop.HINSTANCE* NativeHandle;
+        
+        public HINSTANCE()
+        {
+            NativeHandle = (Interop.HINSTANCE*)Interop.Structure.Allocate(typeof(Interop.HINSTANCE));
+        }
     }
 }

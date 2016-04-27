@@ -3,10 +3,25 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct AttachmentReference
+    unsafe public class AttachmentReference
     {
-        public UInt32 attachment;
-        public ImageLayout layout;
+        internal Interop.AttachmentReference* NativeHandle;
+        
+        public UInt32 Attachment
+        {
+            get { return NativeHandle->Attachment; }
+            set { NativeHandle->Attachment = value; }
+        }
+        
+        public ImageLayout Layout
+        {
+            get { return NativeHandle->Layout; }
+            set { NativeHandle->Layout = value; }
+        }
+        
+        public AttachmentReference()
+        {
+            NativeHandle = (Interop.AttachmentReference*)Interop.Structure.Allocate(typeof(Interop.AttachmentReference));
+        }
     }
 }

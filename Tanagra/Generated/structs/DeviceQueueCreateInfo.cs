@@ -3,14 +3,38 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct DeviceQueueCreateInfo
+    unsafe public class DeviceQueueCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public DeviceQueueCreateFlags flags;
-        public UInt32 queueFamilyIndex;
-        public UInt32 queueCount;
-        public Single* QueuePriorities; // len:queueCount
+        internal Interop.DeviceQueueCreateInfo* NativeHandle;
+        
+        public DeviceQueueCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public UInt32 QueueFamilyIndex
+        {
+            get { return NativeHandle->QueueFamilyIndex; }
+            set { NativeHandle->QueueFamilyIndex = value; }
+        }
+        
+        public UInt32 QueueCount
+        {
+            get { return NativeHandle->QueueCount; }
+            set { NativeHandle->QueueCount = value; }
+        }
+        
+        public Single QueuePriorities
+        {
+            get { return NativeHandle->QueuePriorities; }
+            set { NativeHandle->QueuePriorities = value; }
+        }
+        
+        public DeviceQueueCreateInfo()
+        {
+            NativeHandle = (Interop.DeviceQueueCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceQueueCreateInfo));
+            //NativeHandle->SType = StructureType.DeviceQueueCreateInfo;
+        }
     }
 }

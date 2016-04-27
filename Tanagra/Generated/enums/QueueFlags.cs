@@ -8,18 +8,18 @@ namespace Vulkan
         /// <summary>
         /// Queue supports graphics operations
         /// </summary>
-        QUEUE_GRAPHICS_BIT = 0,
+        QUEUE_GRAPHICS_BIT = 1 << 0,
         /// <summary>
         /// Queue supports compute operations
         /// </summary>
-        QUEUE_COMPUTE_BIT = 1,
+        QUEUE_COMPUTE_BIT = 1 << 1,
         /// <summary>
         /// Queue supports transfer operations
         /// </summary>
-        QUEUE_TRANSFER_BIT = 2,
+        QUEUE_TRANSFER_BIT = 1 << 2,
         /// <summary>
         /// Queue supports sparse resource memory management operations
         /// </summary>
-        QUEUE_SPARSE_BINDING_BIT = 3,
+        QUEUE_SPARSE_BINDING_BIT = 1 << 3,
     }
 }

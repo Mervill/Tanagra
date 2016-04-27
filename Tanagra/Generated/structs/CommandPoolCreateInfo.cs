@@ -3,12 +3,26 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CommandPoolCreateInfo
+    unsafe public class CommandPoolCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public CommandPoolCreateFlags flags;
-        public UInt32 queueFamilyIndex;
+        internal Interop.CommandPoolCreateInfo* NativeHandle;
+        
+        public CommandPoolCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public UInt32 QueueFamilyIndex
+        {
+            get { return NativeHandle->QueueFamilyIndex; }
+            set { NativeHandle->QueueFamilyIndex = value; }
+        }
+        
+        public CommandPoolCreateInfo()
+        {
+            NativeHandle = (Interop.CommandPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandPoolCreateInfo));
+            //NativeHandle->SType = StructureType.CommandPoolCreateInfo;
+        }
     }
 }

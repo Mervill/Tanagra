@@ -3,15 +3,59 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DisplayPropertiesKHR
+    unsafe public class DisplayPropertiesKHR
     {
-        public DisplayKHR display;
-        public Char[] displayName; // len:null-terminated
-        public Extent2D physicalDimensions;
-        public Extent2D physicalResolution;
-        public VkSurfaceTransformFlagsKHR supportedTransforms;
-        public Boolean planeReorderPossible;
-        public Boolean persistentContent;
+        internal Interop.DisplayPropertiesKHR* NativeHandle;
+        
+        DisplayKHR _Display;
+        public DisplayKHR Display
+        {
+            get { return _Display; }
+            set { _Display = value; NativeHandle->Display = (IntPtr)value.NativeHandle; }
+        }
+        
+        public string DisplayName
+        {
+            get { return Marshal.PtrToStringAnsi(NativeHandle->DisplayName); }
+            set { NativeHandle->DisplayName = Marshal.StringToHGlobalAnsi(value); }
+        }
+        
+        Extent2D _PhysicalDimensions;
+        public Extent2D PhysicalDimensions
+        {
+            get { return _PhysicalDimensions; }
+            set { _PhysicalDimensions = value; NativeHandle->PhysicalDimensions = (IntPtr)value.NativeHandle; }
+        }
+        
+        Extent2D _PhysicalResolution;
+        public Extent2D PhysicalResolution
+        {
+            get { return _PhysicalResolution; }
+            set { _PhysicalResolution = value; NativeHandle->PhysicalResolution = (IntPtr)value.NativeHandle; }
+        }
+        
+        VkSurfaceTransformFlagsKHR _SupportedTransforms;
+        public VkSurfaceTransformFlagsKHR SupportedTransforms
+        {
+            get { return _SupportedTransforms; }
+            set { _SupportedTransforms = value; NativeHandle->SupportedTransforms = (IntPtr)value.NativeHandle; }
+        }
+        
+        public Boolean PlaneReorderPossible
+        {
+            get { return NativeHandle->PlaneReorderPossible; }
+            set { NativeHandle->PlaneReorderPossible = value; }
+        }
+        
+        public Boolean PersistentContent
+        {
+            get { return NativeHandle->PersistentContent; }
+            set { NativeHandle->PersistentContent = value; }
+        }
+        
+        public DisplayPropertiesKHR()
+        {
+            NativeHandle = (Interop.DisplayPropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPropertiesKHR));
+        }
     }
 }

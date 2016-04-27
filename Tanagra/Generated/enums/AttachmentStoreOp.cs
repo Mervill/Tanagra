@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum AttachmentStoreOp
     {
-        STORE = 0,
-        DONT_CARE = 1,
+        ATTACHMENT_STORE_OP_STORE = 0,
+        ATTACHMENT_STORE_OP_DONT_CARE = 1,
     }
 }

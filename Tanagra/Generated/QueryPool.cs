@@ -3,11 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct QueryPool
+    public class QueryPool
     {
-        public readonly static QueryPool Null = new QueryPool();
-        
         internal IntPtr NativeHandle;
         
         public override string ToString() => NativeHandle.ToString();

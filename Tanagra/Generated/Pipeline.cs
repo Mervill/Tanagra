@@ -3,11 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Pipeline
+    public class Pipeline
     {
-        public readonly static Pipeline Null = new Pipeline();
-        
         internal IntPtr NativeHandle;
         
         public override string ToString() => NativeHandle.ToString();

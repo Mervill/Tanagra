@@ -4,8 +4,8 @@ namespace Vulkan
 {
     public enum PolygonMode
     {
-        FILL = 0,
-        LINE = 1,
-        POINT = 2,
+        POLYGON_MODE_FILL = 0,
+        POLYGON_MODE_LINE = 1,
+        POLYGON_MODE_POINT = 2,
     }
 }

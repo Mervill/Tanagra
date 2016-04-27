@@ -4,10 +4,10 @@ namespace Vulkan
 {
     public enum SystemAllocationScope
     {
-        COMMAND = 0,
-        OBJECT = 1,
-        CACHE = 2,
-        DEVICE = 3,
-        INSTANCE = 4,
+        SYSTEM_ALLOCATION_SCOPE_COMMAND = 0,
+        SYSTEM_ALLOCATION_SCOPE_OBJECT = 1,
+        SYSTEM_ALLOCATION_SCOPE_CACHE = 2,
+        SYSTEM_ALLOCATION_SCOPE_DEVICE = 3,
+        SYSTEM_ALLOCATION_SCOPE_INSTANCE = 4,
     }
 }

@@ -3,12 +3,27 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MemoryAllocateInfo
+    unsafe public class MemoryAllocateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public DeviceSize allocationSize;
-        public UInt32 memoryTypeIndex;
+        internal Interop.MemoryAllocateInfo* NativeHandle;
+        
+        DeviceSize _AllocationSize;
+        public DeviceSize AllocationSize
+        {
+            get { return _AllocationSize; }
+            set { _AllocationSize = value; NativeHandle->AllocationSize = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UInt32 MemoryTypeIndex
+        {
+            get { return NativeHandle->MemoryTypeIndex; }
+            set { NativeHandle->MemoryTypeIndex = value; }
+        }
+        
+        public MemoryAllocateInfo()
+        {
+            NativeHandle = (Interop.MemoryAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.MemoryAllocateInfo));
+            //NativeHandle->SType = StructureType.MemoryAllocateInfo;
+        }
     }
 }

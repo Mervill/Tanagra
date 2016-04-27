@@ -3,15 +3,44 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ApplicationInfo
+    unsafe public class ApplicationInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public String ApplicationName; // len:null-terminated
-        public UInt32 applicationVersion;
-        public String EngineName; // len:null-terminated
-        public UInt32 engineVersion;
-        public UInt32 apiVersion;
+        internal Interop.ApplicationInfo* NativeHandle;
+        
+        public string ApplicationName
+        {
+            get { return Marshal.PtrToStringAnsi(NativeHandle->ApplicationName); }
+            set { NativeHandle->ApplicationName = Marshal.StringToHGlobalAnsi(value); }
+        }
+        
+        public UInt32 ApplicationVersion
+        {
+            get { return NativeHandle->ApplicationVersion; }
+            set { NativeHandle->ApplicationVersion = value; }
+        }
+        
+        public string EngineName
+        {
+            get { return Marshal.PtrToStringAnsi(NativeHandle->EngineName); }
+            set { NativeHandle->EngineName = Marshal.StringToHGlobalAnsi(value); }
+        }
+        
+        public UInt32 EngineVersion
+        {
+            get { return NativeHandle->EngineVersion; }
+            set { NativeHandle->EngineVersion = value; }
+        }
+        
+        public UInt32 ApiVersion
+        {
+            get { return NativeHandle->ApiVersion; }
+            set { NativeHandle->ApiVersion = value; }
+        }
+        
+        public ApplicationInfo()
+        {
+            NativeHandle = (Interop.ApplicationInfo*)Interop.Structure.Allocate(typeof(Interop.ApplicationInfo));
+            //NativeHandle->SType = StructureType.ApplicationInfo;
+        }
     }
 }

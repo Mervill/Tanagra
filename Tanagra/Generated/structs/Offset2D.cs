@@ -3,10 +3,25 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Offset2D
+    unsafe public class Offset2D
     {
-        public Int32 x;
-        public Int32 y;
+        internal Interop.Offset2D* NativeHandle;
+        
+        public Int32 X
+        {
+            get { return NativeHandle->X; }
+            set { NativeHandle->X = value; }
+        }
+        
+        public Int32 Y
+        {
+            get { return NativeHandle->Y; }
+            set { NativeHandle->Y = value; }
+        }
+        
+        public Offset2D()
+        {
+            NativeHandle = (Interop.Offset2D*)Interop.Structure.Allocate(typeof(Interop.Offset2D));
+        }
     }
 }

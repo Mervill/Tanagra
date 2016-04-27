@@ -3,13 +3,33 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CommandBufferAllocateInfo
+    unsafe public class CommandBufferAllocateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public CommandPool commandPool;
-        public CommandBufferLevel level;
-        public UInt32 commandBufferCount;
+        internal Interop.CommandBufferAllocateInfo* NativeHandle;
+        
+        CommandPool _CommandPool;
+        public CommandPool CommandPool
+        {
+            get { return _CommandPool; }
+            set { _CommandPool = value; NativeHandle->CommandPool = (IntPtr)value.NativeHandle; }
+        }
+        
+        public CommandBufferLevel Level
+        {
+            get { return NativeHandle->Level; }
+            set { NativeHandle->Level = value; }
+        }
+        
+        public UInt32 CommandBufferCount
+        {
+            get { return NativeHandle->CommandBufferCount; }
+            set { NativeHandle->CommandBufferCount = value; }
+        }
+        
+        public CommandBufferAllocateInfo()
+        {
+            NativeHandle = (Interop.CommandBufferAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferAllocateInfo));
+            //NativeHandle->SType = StructureType.CommandBufferAllocateInfo;
+        }
     }
 }

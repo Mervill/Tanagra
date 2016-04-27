@@ -3,17 +3,59 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RenderPassCreateInfo
+    unsafe public class RenderPassCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public RenderPassCreateFlags flags;
-        public UInt32 attachmentCount;
-        public AttachmentDescription[] Attachments; // len:attachmentCount
-        public UInt32 subpassCount;
-        public SubpassDescription[] Subpasses; // len:subpassCount
-        public UInt32 dependencyCount;
-        public SubpassDependency[] Dependencies; // len:dependencyCount
+        internal Interop.RenderPassCreateInfo* NativeHandle;
+        
+        public RenderPassCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public UInt32 AttachmentCount
+        {
+            get { return NativeHandle->AttachmentCount; }
+            set { NativeHandle->AttachmentCount = value; }
+        }
+        
+        AttachmentDescription _Attachments;
+        public AttachmentDescription Attachments
+        {
+            get { return _Attachments; }
+            set { _Attachments = value; NativeHandle->Attachments = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UInt32 SubpassCount
+        {
+            get { return NativeHandle->SubpassCount; }
+            set { NativeHandle->SubpassCount = value; }
+        }
+        
+        SubpassDescription _Subpasses;
+        public SubpassDescription Subpasses
+        {
+            get { return _Subpasses; }
+            set { _Subpasses = value; NativeHandle->Subpasses = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UInt32 DependencyCount
+        {
+            get { return NativeHandle->DependencyCount; }
+            set { NativeHandle->DependencyCount = value; }
+        }
+        
+        SubpassDependency _Dependencies;
+        public SubpassDependency Dependencies
+        {
+            get { return _Dependencies; }
+            set { _Dependencies = value; NativeHandle->Dependencies = (IntPtr)value.NativeHandle; }
+        }
+        
+        public RenderPassCreateInfo()
+        {
+            NativeHandle = (Interop.RenderPassCreateInfo*)Interop.Structure.Allocate(typeof(Interop.RenderPassCreateInfo));
+            //NativeHandle->SType = StructureType.RenderPassCreateInfo;
+        }
     }
 }

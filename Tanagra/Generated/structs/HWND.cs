@@ -3,8 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct HWND
+    unsafe public class HWND
     {
+        internal Interop.HWND* NativeHandle;
+        
+        public HWND()
+        {
+            NativeHandle = (Interop.HWND*)Interop.Structure.Allocate(typeof(Interop.HWND));
+        }
     }
 }

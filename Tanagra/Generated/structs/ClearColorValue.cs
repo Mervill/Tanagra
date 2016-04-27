@@ -3,8 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ClearColorValue
+    unsafe public class ClearColorValue
     {
+        internal Interop.ClearColorValue* NativeHandle;
+        
+        public ClearColorValue()
+        {
+            NativeHandle = (Interop.ClearColorValue*)Interop.Structure.Allocate(typeof(Interop.ClearColorValue));
+        }
     }
 }

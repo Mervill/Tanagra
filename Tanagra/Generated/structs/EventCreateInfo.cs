@@ -3,11 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct EventCreateInfo
+    unsafe public class EventCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public EventCreateFlags flags;
+        internal Interop.EventCreateInfo* NativeHandle;
+        
+        public EventCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public EventCreateInfo()
+        {
+            NativeHandle = (Interop.EventCreateInfo*)Interop.Structure.Allocate(typeof(Interop.EventCreateInfo));
+            //NativeHandle->SType = StructureType.EventCreateInfo;
+        }
     }
 }

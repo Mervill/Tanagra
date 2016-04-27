@@ -3,11 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SemaphoreCreateInfo
+    unsafe public class SemaphoreCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public SemaphoreCreateFlags flags;
+        internal Interop.SemaphoreCreateInfo* NativeHandle;
+        
+        public SemaphoreCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public SemaphoreCreateInfo()
+        {
+            NativeHandle = (Interop.SemaphoreCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SemaphoreCreateInfo));
+            //NativeHandle->SType = StructureType.SemaphoreCreateInfo;
+        }
     }
 }

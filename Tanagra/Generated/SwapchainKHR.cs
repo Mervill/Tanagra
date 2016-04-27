@@ -3,11 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SwapchainKHR
+    public class SwapchainKHR
     {
-        public readonly static SwapchainKHR Null = new SwapchainKHR();
-        
         internal IntPtr NativeHandle;
         
         public override string ToString() => NativeHandle.ToString();

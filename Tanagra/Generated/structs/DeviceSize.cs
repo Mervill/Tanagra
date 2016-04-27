@@ -3,9 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DeviceSize
+    unsafe public class DeviceSize
     {
-        public UInt64 value;
+        internal Interop.DeviceSize* NativeHandle;
+        
+        public DeviceSize()
+        {
+            NativeHandle = (Interop.DeviceSize*)Interop.Structure.Allocate(typeof(Interop.DeviceSize));
+        }
     }
 }

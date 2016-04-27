@@ -4,10 +4,9 @@ namespace Vulkan
 {
     public enum SamplerAddressMode
     {
-        REPEAT = 0,
-        MIRRORED_REPEAT = 1,
-        CLAMP_TO_EDGE = 2,
-        CLAMP_TO_BORDER = 3,
-        MIRROR_CLAMP_TO_EDGE = 4,
+        SAMPLER_ADDRESS_MODE_REPEAT = 0,
+        SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT = 1,
+        SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE = 2,
+        SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER = 3,
     }
 }

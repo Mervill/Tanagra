@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum ImageTiling
     {
-        OPTIMAL = 0,
-        LINEAR = 1,
+        IMAGE_TILING_OPTIMAL = 0,
+        IMAGE_TILING_LINEAR = 1,
     }
 }

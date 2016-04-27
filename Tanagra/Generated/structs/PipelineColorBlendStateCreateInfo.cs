@@ -3,16 +3,51 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PipelineColorBlendStateCreateInfo
+    unsafe public class PipelineColorBlendStateCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public PipelineColorBlendStateCreateFlags flags;
-        public Boolean logicOpEnable;
-        public LogicOp logicOp;
-        public UInt32 attachmentCount;
-        public PipelineColorBlendAttachmentState[] Attachments; // len:attachmentCount
-        public Single blendConstants;
+        internal Interop.PipelineColorBlendStateCreateInfo* NativeHandle;
+        
+        public PipelineColorBlendStateCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public Boolean LogicOpEnable
+        {
+            get { return NativeHandle->LogicOpEnable; }
+            set { NativeHandle->LogicOpEnable = value; }
+        }
+        
+        public LogicOp LogicOp
+        {
+            get { return NativeHandle->LogicOp; }
+            set { NativeHandle->LogicOp = value; }
+        }
+        
+        public UInt32 AttachmentCount
+        {
+            get { return NativeHandle->AttachmentCount; }
+            set { NativeHandle->AttachmentCount = value; }
+        }
+        
+        PipelineColorBlendAttachmentState _Attachments;
+        public PipelineColorBlendAttachmentState Attachments
+        {
+            get { return _Attachments; }
+            set { _Attachments = value; NativeHandle->Attachments = (IntPtr)value.NativeHandle; }
+        }
+        
+        public Single BlendConstants
+        {
+            get { return NativeHandle->BlendConstants; }
+            set { NativeHandle->BlendConstants = value; }
+        }
+        
+        public PipelineColorBlendStateCreateInfo()
+        {
+            NativeHandle = (Interop.PipelineColorBlendStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineColorBlendStateCreateInfo));
+            //NativeHandle->SType = StructureType.PipelineColorBlendStateCreateInfo;
+        }
     }
 }

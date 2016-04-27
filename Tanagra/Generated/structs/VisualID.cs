@@ -3,8 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct VisualID
+    unsafe public class VisualID
     {
+        internal Interop.VisualID* NativeHandle;
+        
+        public VisualID()
+        {
+            NativeHandle = (Interop.VisualID*)Interop.Structure.Allocate(typeof(Interop.VisualID));
+        }
     }
 }

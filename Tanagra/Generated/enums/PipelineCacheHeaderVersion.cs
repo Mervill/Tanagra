@@ -4,6 +4,6 @@ namespace Vulkan
 {
     public enum PipelineCacheHeaderVersion
     {
-        ONE = 1,
+        PIPELINE_CACHE_HEADER_VERSION_ONE = 1,
     }
 }

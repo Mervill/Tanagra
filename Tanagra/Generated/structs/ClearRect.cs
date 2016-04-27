@@ -3,11 +3,32 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ClearRect
+    unsafe public class ClearRect
     {
-        public Rect2D rect;
-        public UInt32 baseArrayLayer;
-        public UInt32 layerCount;
+        internal Interop.ClearRect* NativeHandle;
+        
+        Rect2D _Rect;
+        public Rect2D Rect
+        {
+            get { return _Rect; }
+            set { _Rect = value; NativeHandle->Rect = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UInt32 BaseArrayLayer
+        {
+            get { return NativeHandle->BaseArrayLayer; }
+            set { NativeHandle->BaseArrayLayer = value; }
+        }
+        
+        public UInt32 LayerCount
+        {
+            get { return NativeHandle->LayerCount; }
+            set { NativeHandle->LayerCount = value; }
+        }
+        
+        public ClearRect()
+        {
+            NativeHandle = (Interop.ClearRect*)Interop.Structure.Allocate(typeof(Interop.ClearRect));
+        }
     }
 }

@@ -3,12 +3,37 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct VertexInputAttributeDescription
+    unsafe public class VertexInputAttributeDescription
     {
-        public UInt32 location;
-        public UInt32 binding;
-        public Format format;
-        public UInt32 offset;
+        internal Interop.VertexInputAttributeDescription* NativeHandle;
+        
+        public UInt32 Location
+        {
+            get { return NativeHandle->Location; }
+            set { NativeHandle->Location = value; }
+        }
+        
+        public UInt32 Binding
+        {
+            get { return NativeHandle->Binding; }
+            set { NativeHandle->Binding = value; }
+        }
+        
+        public Format Format
+        {
+            get { return NativeHandle->Format; }
+            set { NativeHandle->Format = value; }
+        }
+        
+        public UInt32 Offset
+        {
+            get { return NativeHandle->Offset; }
+            set { NativeHandle->Offset = value; }
+        }
+        
+        public VertexInputAttributeDescription()
+        {
+            NativeHandle = (Interop.VertexInputAttributeDescription*)Interop.Structure.Allocate(typeof(Interop.VertexInputAttributeDescription));
+        }
     }
 }

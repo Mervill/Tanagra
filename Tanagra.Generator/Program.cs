@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Linq;
 using System.IO;
 
@@ -11,7 +12,8 @@ namespace Tanagra.Generator
     // https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.marshalasattribute(v=vs.110).aspx
     class Program
     {
-        // todo: Char* -> String
+        // todo: improve the generator so that WriteMember and simmilar take a vkType
+        // todo: figure out what to do with imported types
         // todo: union (how?)
         // todo: detect when a pointer is really an array pointer (yeesh...)
         // XCB -> X protocol C-language Binding
@@ -63,9 +65,11 @@ namespace Tanagra.Generator
             const string rootPath = "../../../Tanagra";
             try { Directory.Delete($"{rootPath}/Generated", true); } catch { }
             Directory.CreateDirectory($"{rootPath}/Generated");
+            Thread.Sleep(1);
             Directory.CreateDirectory($"{rootPath}/Generated/enums");
+            Thread.Sleep(1);
             Directory.CreateDirectory($"{rootPath}/Generated/structs");
-
+            Thread.Sleep(1);
             Console.WriteLine("Saving to disk...");
             foreach(var kv in gen.files)
             {

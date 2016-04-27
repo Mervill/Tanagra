@@ -3,12 +3,26 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PipelineTessellationStateCreateInfo
+    unsafe public class PipelineTessellationStateCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public PipelineTessellationStateCreateFlags flags;
-        public UInt32 patchControlPoints;
+        internal Interop.PipelineTessellationStateCreateInfo* NativeHandle;
+        
+        public PipelineTessellationStateCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public UInt32 PatchControlPoints
+        {
+            get { return NativeHandle->PatchControlPoints; }
+            set { NativeHandle->PatchControlPoints = value; }
+        }
+        
+        public PipelineTessellationStateCreateInfo()
+        {
+            NativeHandle = (Interop.PipelineTessellationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineTessellationStateCreateInfo));
+            //NativeHandle->SType = StructureType.PipelineTessellationStateCreateInfo;
+        }
     }
 }

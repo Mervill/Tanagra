@@ -3,9 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SampleMask
+    unsafe public class SampleMask
     {
-        public UInt32 value;
+        internal Interop.SampleMask* NativeHandle;
+        
+        public SampleMask()
+        {
+            NativeHandle = (Interop.SampleMask*)Interop.Structure.Allocate(typeof(Interop.SampleMask));
+        }
     }
 }

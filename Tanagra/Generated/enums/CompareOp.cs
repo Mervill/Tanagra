@@ -4,13 +4,13 @@ namespace Vulkan
 {
     public enum CompareOp
     {
-        NEVER = 0,
-        LESS = 1,
-        EQUAL = 2,
-        LESS_OR_EQUAL = 3,
-        GREATER = 4,
-        NOT_EQUAL = 5,
-        GREATER_OR_EQUAL = 6,
-        ALWAYS = 7,
+        COMPARE_OP_NEVER = 0,
+        COMPARE_OP_LESS = 1,
+        COMPARE_OP_EQUAL = 2,
+        COMPARE_OP_LESS_OR_EQUAL = 3,
+        COMPARE_OP_GREATER = 4,
+        COMPARE_OP_NOT_EQUAL = 5,
+        COMPARE_OP_GREATER_OR_EQUAL = 6,
+        COMPARE_OP_ALWAYS = 7,
     }
 }

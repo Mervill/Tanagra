@@ -4,11 +4,11 @@ namespace Vulkan
 {
     public enum QueryType
     {
-        OCCLUSION = 0,
+        QUERY_TYPE_OCCLUSION = 0,
         /// <summary>
         /// Optional
         /// </summary>
-        PIPELINE_STATISTICS = 1,
-        TIMESTAMP = 2,
+        QUERY_TYPE_PIPELINE_STATISTICS = 1,
+        QUERY_TYPE_TIMESTAMP = 2,
     }
 }

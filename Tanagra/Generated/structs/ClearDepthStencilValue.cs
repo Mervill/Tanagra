@@ -3,10 +3,25 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ClearDepthStencilValue
+    unsafe public class ClearDepthStencilValue
     {
-        public Single depth;
-        public UInt32 stencil;
+        internal Interop.ClearDepthStencilValue* NativeHandle;
+        
+        public Single Depth
+        {
+            get { return NativeHandle->Depth; }
+            set { NativeHandle->Depth = value; }
+        }
+        
+        public UInt32 Stencil
+        {
+            get { return NativeHandle->Stencil; }
+            set { NativeHandle->Stencil = value; }
+        }
+        
+        public ClearDepthStencilValue()
+        {
+            NativeHandle = (Interop.ClearDepthStencilValue*)Interop.Structure.Allocate(typeof(Interop.ClearDepthStencilValue));
+        }
     }
 }

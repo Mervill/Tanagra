@@ -3,10 +3,25 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DescriptorPoolSize
+    unsafe public class DescriptorPoolSize
     {
-        public DescriptorType type;
-        public UInt32 descriptorCount;
+        internal Interop.DescriptorPoolSize* NativeHandle;
+        
+        public DescriptorType Type
+        {
+            get { return NativeHandle->Type; }
+            set { NativeHandle->Type = value; }
+        }
+        
+        public UInt32 DescriptorCount
+        {
+            get { return NativeHandle->DescriptorCount; }
+            set { NativeHandle->DescriptorCount = value; }
+        }
+        
+        public DescriptorPoolSize()
+        {
+            NativeHandle = (Interop.DescriptorPoolSize*)Interop.Structure.Allocate(typeof(Interop.DescriptorPoolSize));
+        }
     }
 }

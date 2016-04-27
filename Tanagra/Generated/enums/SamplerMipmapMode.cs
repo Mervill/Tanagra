@@ -7,10 +7,10 @@ namespace Vulkan
         /// <summary>
         /// Choose nearest mip level
         /// </summary>
-        NEAREST = 0,
+        SAMPLER_MIPMAP_MODE_NEAREST = 0,
         /// <summary>
         /// Linear filter between mip levels
         /// </summary>
-        LINEAR = 1,
+        SAMPLER_MIPMAP_MODE_LINEAR = 1,
     }
 }

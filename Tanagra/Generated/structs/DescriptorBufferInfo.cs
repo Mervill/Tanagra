@@ -3,11 +3,34 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DescriptorBufferInfo
+    unsafe public class DescriptorBufferInfo
     {
-        public Buffer buffer;
-        public DeviceSize offset;
-        public DeviceSize range;
+        internal Interop.DescriptorBufferInfo* NativeHandle;
+        
+        Buffer _Buffer;
+        public Buffer Buffer
+        {
+            get { return _Buffer; }
+            set { _Buffer = value; NativeHandle->Buffer = (IntPtr)value.NativeHandle; }
+        }
+        
+        DeviceSize _Offset;
+        public DeviceSize Offset
+        {
+            get { return _Offset; }
+            set { _Offset = value; NativeHandle->Offset = (IntPtr)value.NativeHandle; }
+        }
+        
+        DeviceSize _Range;
+        public DeviceSize Range
+        {
+            get { return _Range; }
+            set { _Range = value; NativeHandle->Range = (IntPtr)value.NativeHandle; }
+        }
+        
+        public DescriptorBufferInfo()
+        {
+            NativeHandle = (Interop.DescriptorBufferInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorBufferInfo));
+        }
     }
 }

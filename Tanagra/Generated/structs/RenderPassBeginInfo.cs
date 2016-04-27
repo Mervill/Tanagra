@@ -3,15 +3,48 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RenderPassBeginInfo
+    unsafe public class RenderPassBeginInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public RenderPass renderPass;
-        public Framebuffer framebuffer;
-        public Rect2D renderArea;
-        public UInt32 clearValueCount;
-        public ClearValue[] ClearValues; // len:clearValueCount
+        internal Interop.RenderPassBeginInfo* NativeHandle;
+        
+        RenderPass _RenderPass;
+        public RenderPass RenderPass
+        {
+            get { return _RenderPass; }
+            set { _RenderPass = value; NativeHandle->RenderPass = (IntPtr)value.NativeHandle; }
+        }
+        
+        Framebuffer _Framebuffer;
+        public Framebuffer Framebuffer
+        {
+            get { return _Framebuffer; }
+            set { _Framebuffer = value; NativeHandle->Framebuffer = (IntPtr)value.NativeHandle; }
+        }
+        
+        Rect2D _RenderArea;
+        public Rect2D RenderArea
+        {
+            get { return _RenderArea; }
+            set { _RenderArea = value; NativeHandle->RenderArea = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UInt32 ClearValueCount
+        {
+            get { return NativeHandle->ClearValueCount; }
+            set { NativeHandle->ClearValueCount = value; }
+        }
+        
+        ClearValue _ClearValues;
+        public ClearValue ClearValues
+        {
+            get { return _ClearValues; }
+            set { _ClearValues = value; NativeHandle->ClearValues = (IntPtr)value.NativeHandle; }
+        }
+        
+        public RenderPassBeginInfo()
+        {
+            NativeHandle = (Interop.RenderPassBeginInfo*)Interop.Structure.Allocate(typeof(Interop.RenderPassBeginInfo));
+            //NativeHandle->SType = StructureType.RenderPassBeginInfo;
+        }
     }
 }

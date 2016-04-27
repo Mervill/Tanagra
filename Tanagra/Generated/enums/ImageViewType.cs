@@ -4,12 +4,12 @@ namespace Vulkan
 {
     public enum ImageViewType
     {
-        ImageViewType1D = 0,
-        ImageViewType2D = 1,
-        ImageViewType3D = 2,
-        ImageViewTypeCUBE = 3,
-        ImageViewType1D_ARRAY = 4,
-        ImageViewType2D_ARRAY = 5,
-        ImageViewTypeCUBE_ARRAY = 6,
+        IMAGE_VIEW_TYPE_1D = 0,
+        IMAGE_VIEW_TYPE_2D = 1,
+        IMAGE_VIEW_TYPE_3D = 2,
+        IMAGE_VIEW_TYPE_CUBE = 3,
+        IMAGE_VIEW_TYPE_1D_ARRAY = 4,
+        IMAGE_VIEW_TYPE_2D_ARRAY = 5,
+        IMAGE_VIEW_TYPE_CUBE_ARRAY = 6,
     }
 }

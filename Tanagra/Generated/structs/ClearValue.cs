@@ -3,8 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ClearValue
+    unsafe public class ClearValue
     {
+        internal Interop.ClearValue* NativeHandle;
+        
+        public ClearValue()
+        {
+            NativeHandle = (Interop.ClearValue*)Interop.Structure.Allocate(typeof(Interop.ClearValue));
+        }
     }
 }

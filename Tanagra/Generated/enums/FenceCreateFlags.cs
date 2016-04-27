@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum FenceCreateFlags
     {
-        FENCE_CREATE_SIGNALED_BIT = 0,
+        FENCE_CREATE_SIGNALED_BIT = 1 << 0,
     }
 }

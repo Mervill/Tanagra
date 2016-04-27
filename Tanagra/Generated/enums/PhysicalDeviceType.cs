@@ -4,10 +4,10 @@ namespace Vulkan
 {
     public enum PhysicalDeviceType
     {
-        OTHER = 0,
-        INTEGRATED_GPU = 1,
-        DISCRETE_GPU = 2,
-        VIRTUAL_GPU = 3,
-        CPU = 4,
+        PHYSICAL_DEVICE_TYPE_OTHER = 0,
+        PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU = 1,
+        PHYSICAL_DEVICE_TYPE_DISCRETE_GPU = 2,
+        PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU = 3,
+        PHYSICAL_DEVICE_TYPE_CPU = 4,
     }
 }

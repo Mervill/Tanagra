@@ -3,11 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Fence
+    public class Fence
     {
-        public readonly static Fence Null = new Fence();
-        
         internal IntPtr NativeHandle;
         
         public override string ToString() => NativeHandle.ToString();

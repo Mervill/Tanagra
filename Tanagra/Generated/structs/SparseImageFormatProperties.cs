@@ -3,11 +3,32 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SparseImageFormatProperties
+    unsafe public class SparseImageFormatProperties
     {
-        public ImageAspectFlags aspectMask;
-        public Extent3D imageGranularity;
-        public SparseImageFormatFlags flags;
+        internal Interop.SparseImageFormatProperties* NativeHandle;
+        
+        public ImageAspectFlags AspectMask
+        {
+            get { return NativeHandle->AspectMask; }
+            set { NativeHandle->AspectMask = value; }
+        }
+        
+        Extent3D _ImageGranularity;
+        public Extent3D ImageGranularity
+        {
+            get { return _ImageGranularity; }
+            set { _ImageGranularity = value; NativeHandle->ImageGranularity = (IntPtr)value.NativeHandle; }
+        }
+        
+        public SparseImageFormatFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public SparseImageFormatProperties()
+        {
+            NativeHandle = (Interop.SparseImageFormatProperties*)Interop.Structure.Allocate(typeof(Interop.SparseImageFormatProperties));
+        }
     }
 }

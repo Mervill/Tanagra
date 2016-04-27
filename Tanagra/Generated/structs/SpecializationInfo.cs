@@ -3,12 +3,38 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SpecializationInfo
+    unsafe public class SpecializationInfo
     {
-        public UInt32 mapEntryCount;
-        public SpecializationMapEntry[] MapEntries; // len:mapEntryCount
-        public UIntPtr dataSize;
-        public IntPtr Data;
+        internal Interop.SpecializationInfo* NativeHandle;
+        
+        public UInt32 MapEntryCount
+        {
+            get { return NativeHandle->MapEntryCount; }
+            set { NativeHandle->MapEntryCount = value; }
+        }
+        
+        SpecializationMapEntry _MapEntries;
+        public SpecializationMapEntry MapEntries
+        {
+            get { return _MapEntries; }
+            set { _MapEntries = value; NativeHandle->MapEntries = (IntPtr)value.NativeHandle; }
+        }
+        
+        public UIntPtr DataSize
+        {
+            get { return NativeHandle->DataSize; }
+            set { NativeHandle->DataSize = value; }
+        }
+        
+        public IntPtr Data
+        {
+            get { return NativeHandle->Data; }
+            set { NativeHandle->Data = value; }
+        }
+        
+        public SpecializationInfo()
+        {
+            NativeHandle = (Interop.SpecializationInfo*)Interop.Structure.Allocate(typeof(Interop.SpecializationInfo));
+        }
     }
 }

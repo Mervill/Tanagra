@@ -3,12 +3,27 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct AndroidSurfaceCreateInfoKHR
+    unsafe public class AndroidSurfaceCreateInfoKHR
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public AndroidSurfaceCreateFlagsKHR flags;
-        public ANativeWindow window;
+        internal Interop.AndroidSurfaceCreateInfoKHR* NativeHandle;
+        
+        public AndroidSurfaceCreateFlagsKHR Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        ANativeWindow _Window;
+        public ANativeWindow Window
+        {
+            get { return _Window; }
+            set { _Window = value; NativeHandle->Window = (IntPtr)value.NativeHandle; }
+        }
+        
+        public AndroidSurfaceCreateInfoKHR()
+        {
+            NativeHandle = (Interop.AndroidSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.AndroidSurfaceCreateInfoKHR));
+            //NativeHandle->SType = StructureType.AndroidSurfaceCreateInfoKHR;
+        }
     }
 }

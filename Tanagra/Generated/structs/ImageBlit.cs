@@ -3,12 +3,41 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ImageBlit
+    unsafe public class ImageBlit
     {
-        public ImageSubresourceLayers srcSubresource;
-        public Offset3D[] srcOffsets;
-        public ImageSubresourceLayers dstSubresource;
-        public Offset3D[] dstOffsets;
+        internal Interop.ImageBlit* NativeHandle;
+        
+        ImageSubresourceLayers _SrcSubresource;
+        public ImageSubresourceLayers SrcSubresource
+        {
+            get { return _SrcSubresource; }
+            set { _SrcSubresource = value; NativeHandle->SrcSubresource = (IntPtr)value.NativeHandle; }
+        }
+        
+        Offset3D _SrcOffsets;
+        public Offset3D SrcOffsets
+        {
+            get { return _SrcOffsets; }
+            set { _SrcOffsets = value; NativeHandle->SrcOffsets = (IntPtr)value.NativeHandle; }
+        }
+        
+        ImageSubresourceLayers _DstSubresource;
+        public ImageSubresourceLayers DstSubresource
+        {
+            get { return _DstSubresource; }
+            set { _DstSubresource = value; NativeHandle->DstSubresource = (IntPtr)value.NativeHandle; }
+        }
+        
+        Offset3D _DstOffsets;
+        public Offset3D DstOffsets
+        {
+            get { return _DstOffsets; }
+            set { _DstOffsets = value; NativeHandle->DstOffsets = (IntPtr)value.NativeHandle; }
+        }
+        
+        public ImageBlit()
+        {
+            NativeHandle = (Interop.ImageBlit*)Interop.Structure.Allocate(typeof(Interop.ImageBlit));
+        }
     }
 }

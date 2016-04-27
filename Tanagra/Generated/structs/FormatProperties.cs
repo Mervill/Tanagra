@@ -3,11 +3,31 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct FormatProperties
+    unsafe public class FormatProperties
     {
-        public FormatFeatureFlags linearTilingFeatures;
-        public FormatFeatureFlags optimalTilingFeatures;
-        public FormatFeatureFlags bufferFeatures;
+        internal Interop.FormatProperties* NativeHandle;
+        
+        public FormatFeatureFlags LinearTilingFeatures
+        {
+            get { return NativeHandle->LinearTilingFeatures; }
+            set { NativeHandle->LinearTilingFeatures = value; }
+        }
+        
+        public FormatFeatureFlags OptimalTilingFeatures
+        {
+            get { return NativeHandle->OptimalTilingFeatures; }
+            set { NativeHandle->OptimalTilingFeatures = value; }
+        }
+        
+        public FormatFeatureFlags BufferFeatures
+        {
+            get { return NativeHandle->BufferFeatures; }
+            set { NativeHandle->BufferFeatures = value; }
+        }
+        
+        public FormatProperties()
+        {
+            NativeHandle = (Interop.FormatProperties*)Interop.Structure.Allocate(typeof(Interop.FormatProperties));
+        }
     }
 }

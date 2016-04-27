@@ -3,12 +3,26 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MemoryBarrier
+    unsafe public class MemoryBarrier
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public AccessFlags srcAccessMask;
-        public AccessFlags dstAccessMask;
+        internal Interop.MemoryBarrier* NativeHandle;
+        
+        public AccessFlags SrcAccessMask
+        {
+            get { return NativeHandle->SrcAccessMask; }
+            set { NativeHandle->SrcAccessMask = value; }
+        }
+        
+        public AccessFlags DstAccessMask
+        {
+            get { return NativeHandle->DstAccessMask; }
+            set { NativeHandle->DstAccessMask = value; }
+        }
+        
+        public MemoryBarrier()
+        {
+            NativeHandle = (Interop.MemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.MemoryBarrier));
+            //NativeHandle->SType = StructureType.MemoryBarrier;
+        }
     }
 }

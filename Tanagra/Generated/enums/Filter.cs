@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum Filter
     {
-        NEAREST = 0,
-        LINEAR = 1,
+        FILTER_NEAREST = 0,
+        FILTER_LINEAR = 1,
     }
 }

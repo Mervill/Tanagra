@@ -3,11 +3,31 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DispatchIndirectCommand
+    unsafe public class DispatchIndirectCommand
     {
-        public UInt32 x;
-        public UInt32 y;
-        public UInt32 z;
+        internal Interop.DispatchIndirectCommand* NativeHandle;
+        
+        public UInt32 X
+        {
+            get { return NativeHandle->X; }
+            set { NativeHandle->X = value; }
+        }
+        
+        public UInt32 Y
+        {
+            get { return NativeHandle->Y; }
+            set { NativeHandle->Y = value; }
+        }
+        
+        public UInt32 Z
+        {
+            get { return NativeHandle->Z; }
+            set { NativeHandle->Z = value; }
+        }
+        
+        public DispatchIndirectCommand()
+        {
+            NativeHandle = (Interop.DispatchIndirectCommand*)Interop.Structure.Allocate(typeof(Interop.DispatchIndirectCommand));
+        }
     }
 }

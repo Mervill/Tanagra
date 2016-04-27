@@ -3,12 +3,37 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ImageSubresourceLayers
+    unsafe public class ImageSubresourceLayers
     {
-        public ImageAspectFlags aspectMask;
-        public UInt32 mipLevel;
-        public UInt32 baseArrayLayer;
-        public UInt32 layerCount;
+        internal Interop.ImageSubresourceLayers* NativeHandle;
+        
+        public ImageAspectFlags AspectMask
+        {
+            get { return NativeHandle->AspectMask; }
+            set { NativeHandle->AspectMask = value; }
+        }
+        
+        public UInt32 MipLevel
+        {
+            get { return NativeHandle->MipLevel; }
+            set { NativeHandle->MipLevel = value; }
+        }
+        
+        public UInt32 BaseArrayLayer
+        {
+            get { return NativeHandle->BaseArrayLayer; }
+            set { NativeHandle->BaseArrayLayer = value; }
+        }
+        
+        public UInt32 LayerCount
+        {
+            get { return NativeHandle->LayerCount; }
+            set { NativeHandle->LayerCount = value; }
+        }
+        
+        public ImageSubresourceLayers()
+        {
+            NativeHandle = (Interop.ImageSubresourceLayers*)Interop.Structure.Allocate(typeof(Interop.ImageSubresourceLayers));
+        }
     }
 }

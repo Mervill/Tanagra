@@ -4,14 +4,14 @@ namespace Vulkan
 {
     public enum DynamicState
     {
-        VIEWPORT = 0,
-        SCISSOR = 1,
-        LINE_WIDTH = 2,
-        DEPTH_BIAS = 3,
-        BLEND_CONSTANTS = 4,
-        DEPTH_BOUNDS = 5,
-        STENCIL_COMPARE_MASK = 6,
-        STENCIL_WRITE_MASK = 7,
-        STENCIL_REFERENCE = 8,
+        DYNAMIC_STATE_VIEWPORT = 0,
+        DYNAMIC_STATE_SCISSOR = 1,
+        DYNAMIC_STATE_LINE_WIDTH = 2,
+        DYNAMIC_STATE_DEPTH_BIAS = 3,
+        DYNAMIC_STATE_BLEND_CONSTANTS = 4,
+        DYNAMIC_STATE_DEPTH_BOUNDS = 5,
+        DYNAMIC_STATE_STENCIL_COMPARE_MASK = 6,
+        DYNAMIC_STATE_STENCIL_WRITE_MASK = 7,
+        DYNAMIC_STATE_STENCIL_REFERENCE = 8,
     }
 }

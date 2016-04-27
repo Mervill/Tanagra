@@ -4,6 +4,6 @@ namespace Vulkan
 {
     public enum InternalAllocationType
     {
-        EXECUTABLE = 0,
+        INTERNAL_ALLOCATION_TYPE_EXECUTABLE = 0,
     }
 }

@@ -3,11 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct FenceCreateInfo
+    unsafe public class FenceCreateInfo
     {
-        public StructureType sType;
-        public IntPtr Next;
-        public FenceCreateFlags flags;
+        internal Interop.FenceCreateInfo* NativeHandle;
+        
+        public FenceCreateFlags Flags
+        {
+            get { return NativeHandle->Flags; }
+            set { NativeHandle->Flags = value; }
+        }
+        
+        public FenceCreateInfo()
+        {
+            NativeHandle = (Interop.FenceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FenceCreateInfo));
+            //NativeHandle->SType = StructureType.FenceCreateInfo;
+        }
     }
 }
