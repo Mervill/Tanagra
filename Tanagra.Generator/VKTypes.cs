@@ -176,6 +176,10 @@ namespace Tanagra.Generator
         public bool NoAutoValidity { get; set; }
         public string[] Optional;
 
+        public bool IsPointer => PointerRank > 0;
+        public bool IsOut => IsPointer && !IsConst;
+        public bool IsFixed => Type is VkHandle && !IsConst;
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

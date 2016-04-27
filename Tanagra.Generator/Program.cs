@@ -12,7 +12,6 @@ namespace Tanagra.Generator
     // https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.marshalasattribute(v=vs.110).aspx
     class Program
     {
-        // todo: fix void ReturnType
         // todo: figure out what to do with imported types
         // todo: union (how?)
         // XCB -> X protocol C-language Binding

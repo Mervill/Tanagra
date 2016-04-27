@@ -136,7 +136,7 @@ namespace Tanagra.Generator
                 var param = vkCommand.Parameters[x];
                 var paramName = param.Name;
                 
-                if(param.PointerRank != 0)
+                if(param.IsPointer)
                     paramName = paramName.TrimStart(new[] { 'p' });
 
                 paramName = char.ToLower(paramName[0]) + paramName.Substring(1);
@@ -145,6 +145,14 @@ namespace Tanagra.Generator
                     paramName = '@' + paramName; // alias names
 
                 param.Name = paramName;
+
+                if(!string.IsNullOrEmpty(param.Len))
+                {
+                    var lenName = param.Len;
+                    lenName = lenName.TrimStart(new[] { 'p' });
+                    lenName = char.ToLower(lenName[0]) + lenName.Substring(1);
+                    param.Len = lenName;
+                }
             }
         }
     }
