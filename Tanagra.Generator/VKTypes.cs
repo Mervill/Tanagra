@@ -51,6 +51,8 @@ namespace Tanagra.Generator
 
     public class VkStruct : VkType
     {
+        public bool IsImportedType { get; set; }
+
         public VkMember[] Members { get; set; }
 
         public bool ReturnedOnly { get; set; }
@@ -74,12 +76,17 @@ namespace Tanagra.Generator
         public bool IsConst { get; set; }
         public int PointerRank { get; set; }
 
-        public string Len { get; set; }
+        public string[] Len { get; set; }
         //public bool ExternSync { get; set; }
         public bool NoAutoValidity { get; set; }
         public string Optional;
 
         public string SpecName { get; set; }
+
+        public VkMember()
+        {
+            Len = new string[0];
+        }
 
         public override string ToString() => $"{Type} {Name}";
     }
@@ -89,9 +96,9 @@ namespace Tanagra.Generator
         //public string Name { get; set; }
         //public string EnumType { get; set; }
         public bool IsBitmask { get; set; }
-        public string Expand { get; set; }
+        //public string Expand { get; set; }
         public string Comment { get; set; }
-        public string Namespace { get; set; }
+        //public string Namespace { get; set; }
 
         public VkEnumValue[] Values;
 

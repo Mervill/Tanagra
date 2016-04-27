@@ -22,7 +22,7 @@ namespace Tanagra.Generator
             
             structNameOverride = new Dictionary<string, string>
             {
-                //{ "void",     "void"    },
+                { "void",     "IntPtr"  },
                 { "char",     "Char"    },
                 { "float",    "Single"  },
                 { "uint8_t",  "Byte"    },
@@ -82,7 +82,11 @@ namespace Tanagra.Generator
                 var memberName = member.Name;
                 if(member.PointerRank != 0)
                     memberName = memberName.TrimStart(new[] { 'p' });
+
+                if (memberName.Contains('['))
+                    memberName = memberName.Substring(0, memberName.IndexOf('['));
                 
+                memberName = char.ToUpper(memberName[0]) + memberName.Substring(1);
                 member.Name = memberName;
             }
 
@@ -94,7 +98,7 @@ namespace Tanagra.Generator
             if(vkEnum.Name.StartsWith("Vk"))
                 vkEnum.Name = vkEnum.Name.Remove(0, 2); // trim `Vk`
 
-            var expand = vkEnum.Expand;
+            var expand = string.Empty; //vkEnum.Expand; TODO
             // Add one to the length to deal with the trailing underscore. ie: {VK_EXPAND_NAME_}VALUE_NAME
             var expandLen = (!string.IsNullOrEmpty(expand)) ? expand.Length + 1 : 0;
             foreach(var vkEnumValue in vkEnum.Values)
@@ -131,12 +135,14 @@ namespace Tanagra.Generator
             {
                 var param = vkCommand.Parameters[x];
                 var paramName = param.Name;
-
-                if(paramName == "event" || paramName == "object")
-                    paramName = '@' + paramName; // alias names
-
+                
                 if(param.PointerRank != 0)
                     paramName = paramName.TrimStart(new[] { 'p' });
+
+                paramName = char.ToLower(paramName[0]) + paramName.Substring(1);
+
+                if (paramName == "event" || paramName == "object")
+                    paramName = '@' + paramName; // alias names
 
                 param.Name = paramName;
             }
