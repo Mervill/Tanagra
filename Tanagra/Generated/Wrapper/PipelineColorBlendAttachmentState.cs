@@ -5,59 +5,59 @@ namespace Vulkan
 {
     unsafe public class PipelineColorBlendAttachmentState
     {
-        internal Interop.PipelineColorBlendAttachmentState* NativeHandle;
+        internal Interop.PipelineColorBlendAttachmentState* NativePointer;
         
         public Boolean BlendEnable
         {
-            get { return NativeHandle->BlendEnable; }
-            set { NativeHandle->BlendEnable = value; }
+            get { return NativePointer->BlendEnable; }
+            set { NativePointer->BlendEnable = value; }
         }
         
         public BlendFactor SrcColorBlendFactor
         {
-            get { return NativeHandle->SrcColorBlendFactor; }
-            set { NativeHandle->SrcColorBlendFactor = value; }
+            get { return NativePointer->SrcColorBlendFactor; }
+            set { NativePointer->SrcColorBlendFactor = value; }
         }
         
         public BlendFactor DstColorBlendFactor
         {
-            get { return NativeHandle->DstColorBlendFactor; }
-            set { NativeHandle->DstColorBlendFactor = value; }
+            get { return NativePointer->DstColorBlendFactor; }
+            set { NativePointer->DstColorBlendFactor = value; }
         }
         
         public BlendOp ColorBlendOp
         {
-            get { return NativeHandle->ColorBlendOp; }
-            set { NativeHandle->ColorBlendOp = value; }
+            get { return NativePointer->ColorBlendOp; }
+            set { NativePointer->ColorBlendOp = value; }
         }
         
         public BlendFactor SrcAlphaBlendFactor
         {
-            get { return NativeHandle->SrcAlphaBlendFactor; }
-            set { NativeHandle->SrcAlphaBlendFactor = value; }
+            get { return NativePointer->SrcAlphaBlendFactor; }
+            set { NativePointer->SrcAlphaBlendFactor = value; }
         }
         
         public BlendFactor DstAlphaBlendFactor
         {
-            get { return NativeHandle->DstAlphaBlendFactor; }
-            set { NativeHandle->DstAlphaBlendFactor = value; }
+            get { return NativePointer->DstAlphaBlendFactor; }
+            set { NativePointer->DstAlphaBlendFactor = value; }
         }
         
         public BlendOp AlphaBlendOp
         {
-            get { return NativeHandle->AlphaBlendOp; }
-            set { NativeHandle->AlphaBlendOp = value; }
+            get { return NativePointer->AlphaBlendOp; }
+            set { NativePointer->AlphaBlendOp = value; }
         }
         
         public ColorComponentFlags ColorWriteMask
         {
-            get { return NativeHandle->ColorWriteMask; }
-            set { NativeHandle->ColorWriteMask = value; }
+            get { return NativePointer->ColorWriteMask; }
+            set { NativePointer->ColorWriteMask = value; }
         }
         
         public PipelineColorBlendAttachmentState()
         {
-            NativeHandle = (Interop.PipelineColorBlendAttachmentState*)Interop.Structure.Allocate(typeof(Interop.PipelineColorBlendAttachmentState));
+            NativePointer = (Interop.PipelineColorBlendAttachmentState*)Interop.Structure.Allocate(typeof(Interop.PipelineColorBlendAttachmentState));
         }
     }
 }

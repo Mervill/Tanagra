@@ -5,33 +5,31 @@ namespace Vulkan
 {
     unsafe public class MappedMemoryRange
     {
-        internal Interop.MappedMemoryRange* NativeHandle;
+        internal Interop.MappedMemoryRange* NativePointer;
         
         DeviceMemory _Memory;
         public DeviceMemory Memory
         {
             get { return _Memory; }
-            set { _Memory = value; NativeHandle->Memory = (IntPtr)value.NativeHandle; }
+            set { _Memory = value; NativePointer->Memory = (IntPtr)value.NativePointer; }
         }
         
-        DeviceSize _Offset;
         public DeviceSize Offset
         {
-            get { return _Offset; }
-            set { _Offset = value; NativeHandle->Offset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public MappedMemoryRange()
         {
-            NativeHandle = (Interop.MappedMemoryRange*)Interop.Structure.Allocate(typeof(Interop.MappedMemoryRange));
-            //NativeHandle->SType = StructureType.MappedMemoryRange;
+            NativePointer = (Interop.MappedMemoryRange*)Interop.Structure.Allocate(typeof(Interop.MappedMemoryRange));
+            //NativePointer->SType = StructureType.MappedMemoryRange;
         }
     }
 }

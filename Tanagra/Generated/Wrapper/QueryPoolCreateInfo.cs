@@ -5,36 +5,36 @@ namespace Vulkan
 {
     unsafe public class QueryPoolCreateInfo
     {
-        internal Interop.QueryPoolCreateInfo* NativeHandle;
+        internal Interop.QueryPoolCreateInfo* NativePointer;
         
         public QueryPoolCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public QueryType QueryType
         {
-            get { return NativeHandle->QueryType; }
-            set { NativeHandle->QueryType = value; }
+            get { return NativePointer->QueryType; }
+            set { NativePointer->QueryType = value; }
         }
         
         public UInt32 QueryCount
         {
-            get { return NativeHandle->QueryCount; }
-            set { NativeHandle->QueryCount = value; }
+            get { return NativePointer->QueryCount; }
+            set { NativePointer->QueryCount = value; }
         }
         
         public QueryPipelineStatisticFlags PipelineStatistics
         {
-            get { return NativeHandle->PipelineStatistics; }
-            set { NativeHandle->PipelineStatistics = value; }
+            get { return NativePointer->PipelineStatistics; }
+            set { NativePointer->PipelineStatistics = value; }
         }
         
         public QueryPoolCreateInfo()
         {
-            NativeHandle = (Interop.QueryPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.QueryPoolCreateInfo));
-            //NativeHandle->SType = StructureType.QueryPoolCreateInfo;
+            NativePointer = (Interop.QueryPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.QueryPoolCreateInfo));
+            //NativePointer->SType = StructureType.QueryPoolCreateInfo;
         }
     }
 }

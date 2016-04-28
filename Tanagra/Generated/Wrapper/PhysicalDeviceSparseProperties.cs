@@ -5,41 +5,41 @@ namespace Vulkan
 {
     unsafe public class PhysicalDeviceSparseProperties
     {
-        internal Interop.PhysicalDeviceSparseProperties* NativeHandle;
+        internal Interop.PhysicalDeviceSparseProperties* NativePointer;
         
         public Boolean ResidencyStandard2DBlockShape
         {
-            get { return NativeHandle->ResidencyStandard2DBlockShape; }
-            set { NativeHandle->ResidencyStandard2DBlockShape = value; }
+            get { return NativePointer->ResidencyStandard2DBlockShape; }
+            set { NativePointer->ResidencyStandard2DBlockShape = value; }
         }
         
         public Boolean ResidencyStandard2DMultisampleBlockShape
         {
-            get { return NativeHandle->ResidencyStandard2DMultisampleBlockShape; }
-            set { NativeHandle->ResidencyStandard2DMultisampleBlockShape = value; }
+            get { return NativePointer->ResidencyStandard2DMultisampleBlockShape; }
+            set { NativePointer->ResidencyStandard2DMultisampleBlockShape = value; }
         }
         
         public Boolean ResidencyStandard3DBlockShape
         {
-            get { return NativeHandle->ResidencyStandard3DBlockShape; }
-            set { NativeHandle->ResidencyStandard3DBlockShape = value; }
+            get { return NativePointer->ResidencyStandard3DBlockShape; }
+            set { NativePointer->ResidencyStandard3DBlockShape = value; }
         }
         
         public Boolean ResidencyAlignedMipSize
         {
-            get { return NativeHandle->ResidencyAlignedMipSize; }
-            set { NativeHandle->ResidencyAlignedMipSize = value; }
+            get { return NativePointer->ResidencyAlignedMipSize; }
+            set { NativePointer->ResidencyAlignedMipSize = value; }
         }
         
         public Boolean ResidencyNonResidentStrict
         {
-            get { return NativeHandle->ResidencyNonResidentStrict; }
-            set { NativeHandle->ResidencyNonResidentStrict = value; }
+            get { return NativePointer->ResidencyNonResidentStrict; }
+            set { NativePointer->ResidencyNonResidentStrict = value; }
         }
         
         public PhysicalDeviceSparseProperties()
         {
-            NativeHandle = (Interop.PhysicalDeviceSparseProperties*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceSparseProperties));
+            NativePointer = (Interop.PhysicalDeviceSparseProperties*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceSparseProperties));
         }
     }
 }

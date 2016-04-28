@@ -5,108 +5,108 @@ namespace Vulkan
 {
     unsafe public class SamplerCreateInfo
     {
-        internal Interop.SamplerCreateInfo* NativeHandle;
+        internal Interop.SamplerCreateInfo* NativePointer;
         
         public SamplerCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public Filter MagFilter
         {
-            get { return NativeHandle->MagFilter; }
-            set { NativeHandle->MagFilter = value; }
+            get { return NativePointer->MagFilter; }
+            set { NativePointer->MagFilter = value; }
         }
         
         public Filter MinFilter
         {
-            get { return NativeHandle->MinFilter; }
-            set { NativeHandle->MinFilter = value; }
+            get { return NativePointer->MinFilter; }
+            set { NativePointer->MinFilter = value; }
         }
         
         public SamplerMipmapMode MipmapMode
         {
-            get { return NativeHandle->MipmapMode; }
-            set { NativeHandle->MipmapMode = value; }
+            get { return NativePointer->MipmapMode; }
+            set { NativePointer->MipmapMode = value; }
         }
         
         public SamplerAddressMode AddressModeU
         {
-            get { return NativeHandle->AddressModeU; }
-            set { NativeHandle->AddressModeU = value; }
+            get { return NativePointer->AddressModeU; }
+            set { NativePointer->AddressModeU = value; }
         }
         
         public SamplerAddressMode AddressModeV
         {
-            get { return NativeHandle->AddressModeV; }
-            set { NativeHandle->AddressModeV = value; }
+            get { return NativePointer->AddressModeV; }
+            set { NativePointer->AddressModeV = value; }
         }
         
         public SamplerAddressMode AddressModeW
         {
-            get { return NativeHandle->AddressModeW; }
-            set { NativeHandle->AddressModeW = value; }
+            get { return NativePointer->AddressModeW; }
+            set { NativePointer->AddressModeW = value; }
         }
         
         public Single MipLodBias
         {
-            get { return NativeHandle->MipLodBias; }
-            set { NativeHandle->MipLodBias = value; }
+            get { return NativePointer->MipLodBias; }
+            set { NativePointer->MipLodBias = value; }
         }
         
         public Boolean AnisotropyEnable
         {
-            get { return NativeHandle->AnisotropyEnable; }
-            set { NativeHandle->AnisotropyEnable = value; }
+            get { return NativePointer->AnisotropyEnable; }
+            set { NativePointer->AnisotropyEnable = value; }
         }
         
         public Single MaxAnisotropy
         {
-            get { return NativeHandle->MaxAnisotropy; }
-            set { NativeHandle->MaxAnisotropy = value; }
+            get { return NativePointer->MaxAnisotropy; }
+            set { NativePointer->MaxAnisotropy = value; }
         }
         
         public Boolean CompareEnable
         {
-            get { return NativeHandle->CompareEnable; }
-            set { NativeHandle->CompareEnable = value; }
+            get { return NativePointer->CompareEnable; }
+            set { NativePointer->CompareEnable = value; }
         }
         
         public CompareOp CompareOp
         {
-            get { return NativeHandle->CompareOp; }
-            set { NativeHandle->CompareOp = value; }
+            get { return NativePointer->CompareOp; }
+            set { NativePointer->CompareOp = value; }
         }
         
         public Single MinLod
         {
-            get { return NativeHandle->MinLod; }
-            set { NativeHandle->MinLod = value; }
+            get { return NativePointer->MinLod; }
+            set { NativePointer->MinLod = value; }
         }
         
         public Single MaxLod
         {
-            get { return NativeHandle->MaxLod; }
-            set { NativeHandle->MaxLod = value; }
+            get { return NativePointer->MaxLod; }
+            set { NativePointer->MaxLod = value; }
         }
         
         public BorderColor BorderColor
         {
-            get { return NativeHandle->BorderColor; }
-            set { NativeHandle->BorderColor = value; }
+            get { return NativePointer->BorderColor; }
+            set { NativePointer->BorderColor = value; }
         }
         
         public Boolean UnnormalizedCoordinates
         {
-            get { return NativeHandle->UnnormalizedCoordinates; }
-            set { NativeHandle->UnnormalizedCoordinates = value; }
+            get { return NativePointer->UnnormalizedCoordinates; }
+            set { NativePointer->UnnormalizedCoordinates = value; }
         }
         
         public SamplerCreateInfo()
         {
-            NativeHandle = (Interop.SamplerCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SamplerCreateInfo));
-            //NativeHandle->SType = StructureType.SamplerCreateInfo;
+            NativePointer = (Interop.SamplerCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SamplerCreateInfo));
+            //NativePointer->SType = StructureType.SamplerCreateInfo;
         }
     }
 }

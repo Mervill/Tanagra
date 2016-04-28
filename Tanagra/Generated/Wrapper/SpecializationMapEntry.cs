@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class SpecializationMapEntry
     {
-        internal Interop.SpecializationMapEntry* NativeHandle;
+        internal Interop.SpecializationMapEntry* NativePointer;
         
         public UInt32 ConstantID
         {
-            get { return NativeHandle->ConstantID; }
-            set { NativeHandle->ConstantID = value; }
+            get { return NativePointer->ConstantID; }
+            set { NativePointer->ConstantID = value; }
         }
         
         public UInt32 Offset
         {
-            get { return NativeHandle->Offset; }
-            set { NativeHandle->Offset = value; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
         public UIntPtr Size
         {
-            get { return NativeHandle->Size; }
-            set { NativeHandle->Size = value; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public SpecializationMapEntry()
         {
-            NativeHandle = (Interop.SpecializationMapEntry*)Interop.Structure.Allocate(typeof(Interop.SpecializationMapEntry));
+            NativePointer = (Interop.SpecializationMapEntry*)Interop.Structure.Allocate(typeof(Interop.SpecializationMapEntry));
         }
     }
 }

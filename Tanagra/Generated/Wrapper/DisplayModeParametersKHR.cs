@@ -5,24 +5,24 @@ namespace Vulkan
 {
     unsafe public class DisplayModeParametersKHR
     {
-        internal Interop.DisplayModeParametersKHR* NativeHandle;
+        internal Interop.DisplayModeParametersKHR* NativePointer;
         
         Extent2D _VisibleRegion;
         public Extent2D VisibleRegion
         {
             get { return _VisibleRegion; }
-            set { _VisibleRegion = value; NativeHandle->VisibleRegion = (IntPtr)value.NativeHandle; }
+            set { _VisibleRegion = value; NativePointer->VisibleRegion = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 RefreshRate
         {
-            get { return NativeHandle->RefreshRate; }
-            set { NativeHandle->RefreshRate = value; }
+            get { return NativePointer->RefreshRate; }
+            set { NativePointer->RefreshRate = value; }
         }
         
         public DisplayModeParametersKHR()
         {
-            NativeHandle = (Interop.DisplayModeParametersKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModeParametersKHR));
+            NativePointer = (Interop.DisplayModeParametersKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModeParametersKHR));
         }
     }
 }

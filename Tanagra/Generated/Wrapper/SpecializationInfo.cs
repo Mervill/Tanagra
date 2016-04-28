@@ -5,36 +5,36 @@ namespace Vulkan
 {
     unsafe public class SpecializationInfo
     {
-        internal Interop.SpecializationInfo* NativeHandle;
+        internal Interop.SpecializationInfo* NativePointer;
         
         public UInt32 MapEntryCount
         {
-            get { return NativeHandle->MapEntryCount; }
-            set { NativeHandle->MapEntryCount = value; }
+            get { return NativePointer->MapEntryCount; }
+            set { NativePointer->MapEntryCount = value; }
         }
         
         SpecializationMapEntry _MapEntries;
         public SpecializationMapEntry MapEntries
         {
             get { return _MapEntries; }
-            set { _MapEntries = value; NativeHandle->MapEntries = (IntPtr)value.NativeHandle; }
+            set { _MapEntries = value; NativePointer->MapEntries = (IntPtr)value.NativePointer; }
         }
         
         public UIntPtr DataSize
         {
-            get { return NativeHandle->DataSize; }
-            set { NativeHandle->DataSize = value; }
+            get { return NativePointer->DataSize; }
+            set { NativePointer->DataSize = value; }
         }
         
         public IntPtr Data
         {
-            get { return NativeHandle->Data; }
-            set { NativeHandle->Data = value; }
+            get { return NativePointer->Data; }
+            set { NativePointer->Data = value; }
         }
         
         public SpecializationInfo()
         {
-            NativeHandle = (Interop.SpecializationInfo*)Interop.Structure.Allocate(typeof(Interop.SpecializationInfo));
+            NativePointer = (Interop.SpecializationInfo*)Interop.Structure.Allocate(typeof(Interop.SpecializationInfo));
         }
     }
 }

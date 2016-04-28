@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class ClearAttachment
     {
-        internal Interop.ClearAttachment* NativeHandle;
+        internal Interop.ClearAttachment* NativePointer;
         
         public ImageAspectFlags AspectMask
         {
-            get { return NativeHandle->AspectMask; }
-            set { NativeHandle->AspectMask = value; }
+            get { return NativePointer->AspectMask; }
+            set { NativePointer->AspectMask = value; }
         }
         
         public UInt32 ColorAttachment
         {
-            get { return NativeHandle->ColorAttachment; }
-            set { NativeHandle->ColorAttachment = value; }
+            get { return NativePointer->ColorAttachment; }
+            set { NativePointer->ColorAttachment = value; }
         }
         
         ClearValue _ClearValue;
         public ClearValue ClearValue
         {
             get { return _ClearValue; }
-            set { _ClearValue = value; NativeHandle->ClearValue = (IntPtr)value.NativeHandle; }
+            set { _ClearValue = value; NativePointer->ClearValue = (IntPtr)value.NativePointer; }
         }
         
         public ClearAttachment()
         {
-            NativeHandle = (Interop.ClearAttachment*)Interop.Structure.Allocate(typeof(Interop.ClearAttachment));
+            NativePointer = (Interop.ClearAttachment*)Interop.Structure.Allocate(typeof(Interop.ClearAttachment));
         }
     }
 }

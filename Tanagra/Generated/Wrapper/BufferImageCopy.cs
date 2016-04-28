@@ -5,51 +5,50 @@ namespace Vulkan
 {
     unsafe public class BufferImageCopy
     {
-        internal Interop.BufferImageCopy* NativeHandle;
+        internal Interop.BufferImageCopy* NativePointer;
         
-        DeviceSize _BufferOffset;
         public DeviceSize BufferOffset
         {
-            get { return _BufferOffset; }
-            set { _BufferOffset = value; NativeHandle->BufferOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->BufferOffset; }
+            set { NativePointer->BufferOffset = value; }
         }
         
         public UInt32 BufferRowLength
         {
-            get { return NativeHandle->BufferRowLength; }
-            set { NativeHandle->BufferRowLength = value; }
+            get { return NativePointer->BufferRowLength; }
+            set { NativePointer->BufferRowLength = value; }
         }
         
         public UInt32 BufferImageHeight
         {
-            get { return NativeHandle->BufferImageHeight; }
-            set { NativeHandle->BufferImageHeight = value; }
+            get { return NativePointer->BufferImageHeight; }
+            set { NativePointer->BufferImageHeight = value; }
         }
         
         ImageSubresourceLayers _ImageSubresource;
         public ImageSubresourceLayers ImageSubresource
         {
             get { return _ImageSubresource; }
-            set { _ImageSubresource = value; NativeHandle->ImageSubresource = (IntPtr)value.NativeHandle; }
+            set { _ImageSubresource = value; NativePointer->ImageSubresource = (IntPtr)value.NativePointer; }
         }
         
         Offset3D _ImageOffset;
         public Offset3D ImageOffset
         {
             get { return _ImageOffset; }
-            set { _ImageOffset = value; NativeHandle->ImageOffset = (IntPtr)value.NativeHandle; }
+            set { _ImageOffset = value; NativePointer->ImageOffset = (IntPtr)value.NativePointer; }
         }
         
         Extent3D _ImageExtent;
         public Extent3D ImageExtent
         {
             get { return _ImageExtent; }
-            set { _ImageExtent = value; NativeHandle->ImageExtent = (IntPtr)value.NativeHandle; }
+            set { _ImageExtent = value; NativePointer->ImageExtent = (IntPtr)value.NativePointer; }
         }
         
         public BufferImageCopy()
         {
-            NativeHandle = (Interop.BufferImageCopy*)Interop.Structure.Allocate(typeof(Interop.BufferImageCopy));
+            NativePointer = (Interop.BufferImageCopy*)Interop.Structure.Allocate(typeof(Interop.BufferImageCopy));
         }
     }
 }

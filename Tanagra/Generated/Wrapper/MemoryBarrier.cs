@@ -5,24 +5,24 @@ namespace Vulkan
 {
     unsafe public class MemoryBarrier
     {
-        internal Interop.MemoryBarrier* NativeHandle;
+        internal Interop.MemoryBarrier* NativePointer;
         
         public AccessFlags SrcAccessMask
         {
-            get { return NativeHandle->SrcAccessMask; }
-            set { NativeHandle->SrcAccessMask = value; }
+            get { return NativePointer->SrcAccessMask; }
+            set { NativePointer->SrcAccessMask = value; }
         }
         
         public AccessFlags DstAccessMask
         {
-            get { return NativeHandle->DstAccessMask; }
-            set { NativeHandle->DstAccessMask = value; }
+            get { return NativePointer->DstAccessMask; }
+            set { NativePointer->DstAccessMask = value; }
         }
         
         public MemoryBarrier()
         {
-            NativeHandle = (Interop.MemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.MemoryBarrier));
-            //NativeHandle->SType = StructureType.MemoryBarrier;
+            NativePointer = (Interop.MemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.MemoryBarrier));
+            //NativePointer->SType = StructureType.MemoryBarrier;
         }
     }
 }

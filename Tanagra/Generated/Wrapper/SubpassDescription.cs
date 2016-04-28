@@ -5,75 +5,75 @@ namespace Vulkan
 {
     unsafe public class SubpassDescription
     {
-        internal Interop.SubpassDescription* NativeHandle;
+        internal Interop.SubpassDescription* NativePointer;
         
         public SubpassDescriptionFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public PipelineBindPoint PipelineBindPoint
         {
-            get { return NativeHandle->PipelineBindPoint; }
-            set { NativeHandle->PipelineBindPoint = value; }
+            get { return NativePointer->PipelineBindPoint; }
+            set { NativePointer->PipelineBindPoint = value; }
         }
         
         public UInt32 InputAttachmentCount
         {
-            get { return NativeHandle->InputAttachmentCount; }
-            set { NativeHandle->InputAttachmentCount = value; }
+            get { return NativePointer->InputAttachmentCount; }
+            set { NativePointer->InputAttachmentCount = value; }
         }
         
         AttachmentReference _InputAttachments;
         public AttachmentReference InputAttachments
         {
             get { return _InputAttachments; }
-            set { _InputAttachments = value; NativeHandle->InputAttachments = (IntPtr)value.NativeHandle; }
+            set { _InputAttachments = value; NativePointer->InputAttachments = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 ColorAttachmentCount
         {
-            get { return NativeHandle->ColorAttachmentCount; }
-            set { NativeHandle->ColorAttachmentCount = value; }
+            get { return NativePointer->ColorAttachmentCount; }
+            set { NativePointer->ColorAttachmentCount = value; }
         }
         
         AttachmentReference _ColorAttachments;
         public AttachmentReference ColorAttachments
         {
             get { return _ColorAttachments; }
-            set { _ColorAttachments = value; NativeHandle->ColorAttachments = (IntPtr)value.NativeHandle; }
+            set { _ColorAttachments = value; NativePointer->ColorAttachments = (IntPtr)value.NativePointer; }
         }
         
         AttachmentReference _ResolveAttachments;
         public AttachmentReference ResolveAttachments
         {
             get { return _ResolveAttachments; }
-            set { _ResolveAttachments = value; NativeHandle->ResolveAttachments = (IntPtr)value.NativeHandle; }
+            set { _ResolveAttachments = value; NativePointer->ResolveAttachments = (IntPtr)value.NativePointer; }
         }
         
         AttachmentReference _DepthStencilAttachment;
         public AttachmentReference DepthStencilAttachment
         {
             get { return _DepthStencilAttachment; }
-            set { _DepthStencilAttachment = value; NativeHandle->DepthStencilAttachment = (IntPtr)value.NativeHandle; }
+            set { _DepthStencilAttachment = value; NativePointer->DepthStencilAttachment = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 PreserveAttachmentCount
         {
-            get { return NativeHandle->PreserveAttachmentCount; }
-            set { NativeHandle->PreserveAttachmentCount = value; }
+            get { return NativePointer->PreserveAttachmentCount; }
+            set { NativePointer->PreserveAttachmentCount = value; }
         }
         
         public UInt32 PreserveAttachments
         {
-            get { return NativeHandle->PreserveAttachments; }
-            set { NativeHandle->PreserveAttachments = value; }
+            get { return NativePointer->PreserveAttachments; }
+            set { NativePointer->PreserveAttachments = value; }
         }
         
         public SubpassDescription()
         {
-            NativeHandle = (Interop.SubpassDescription*)Interop.Structure.Allocate(typeof(Interop.SubpassDescription));
+            NativePointer = (Interop.SubpassDescription*)Interop.Structure.Allocate(typeof(Interop.SubpassDescription));
         }
     }
 }

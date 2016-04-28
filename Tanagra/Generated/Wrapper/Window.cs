@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class Window
     {
-        internal Interop.Window* NativeHandle;
+        internal Interop.Window* NativePointer;
         
         public Window()
         {
-            NativeHandle = (Interop.Window*)Interop.Structure.Allocate(typeof(Interop.Window));
+            NativePointer = (Interop.Window*)Interop.Structure.Allocate(typeof(Interop.Window));
         }
     }
 }

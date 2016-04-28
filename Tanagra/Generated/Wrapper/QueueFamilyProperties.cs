@@ -5,36 +5,36 @@ namespace Vulkan
 {
     unsafe public class QueueFamilyProperties
     {
-        internal Interop.QueueFamilyProperties* NativeHandle;
+        internal Interop.QueueFamilyProperties* NativePointer;
         
         public QueueFlags QueueFlags
         {
-            get { return NativeHandle->QueueFlags; }
-            set { NativeHandle->QueueFlags = value; }
+            get { return NativePointer->QueueFlags; }
+            set { NativePointer->QueueFlags = value; }
         }
         
         public UInt32 QueueCount
         {
-            get { return NativeHandle->QueueCount; }
-            set { NativeHandle->QueueCount = value; }
+            get { return NativePointer->QueueCount; }
+            set { NativePointer->QueueCount = value; }
         }
         
         public UInt32 TimestampValidBits
         {
-            get { return NativeHandle->TimestampValidBits; }
-            set { NativeHandle->TimestampValidBits = value; }
+            get { return NativePointer->TimestampValidBits; }
+            set { NativePointer->TimestampValidBits = value; }
         }
         
         Extent3D _MinImageTransferGranularity;
         public Extent3D MinImageTransferGranularity
         {
             get { return _MinImageTransferGranularity; }
-            set { _MinImageTransferGranularity = value; NativeHandle->MinImageTransferGranularity = (IntPtr)value.NativeHandle; }
+            set { _MinImageTransferGranularity = value; NativePointer->MinImageTransferGranularity = (IntPtr)value.NativePointer; }
         }
         
         public QueueFamilyProperties()
         {
-            NativeHandle = (Interop.QueueFamilyProperties*)Interop.Structure.Allocate(typeof(Interop.QueueFamilyProperties));
+            NativePointer = (Interop.QueueFamilyProperties*)Interop.Structure.Allocate(typeof(Interop.QueueFamilyProperties));
         }
     }
 }

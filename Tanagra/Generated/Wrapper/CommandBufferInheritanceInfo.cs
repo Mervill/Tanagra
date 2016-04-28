@@ -5,50 +5,50 @@ namespace Vulkan
 {
     unsafe public class CommandBufferInheritanceInfo
     {
-        internal Interop.CommandBufferInheritanceInfo* NativeHandle;
+        internal Interop.CommandBufferInheritanceInfo* NativePointer;
         
         RenderPass _RenderPass;
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativeHandle->RenderPass = (IntPtr)value.NativeHandle; }
+            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 Subpass
         {
-            get { return NativeHandle->Subpass; }
-            set { NativeHandle->Subpass = value; }
+            get { return NativePointer->Subpass; }
+            set { NativePointer->Subpass = value; }
         }
         
         Framebuffer _Framebuffer;
         public Framebuffer Framebuffer
         {
             get { return _Framebuffer; }
-            set { _Framebuffer = value; NativeHandle->Framebuffer = (IntPtr)value.NativeHandle; }
+            set { _Framebuffer = value; NativePointer->Framebuffer = (IntPtr)value.NativePointer; }
         }
         
         public Boolean OcclusionQueryEnable
         {
-            get { return NativeHandle->OcclusionQueryEnable; }
-            set { NativeHandle->OcclusionQueryEnable = value; }
+            get { return NativePointer->OcclusionQueryEnable; }
+            set { NativePointer->OcclusionQueryEnable = value; }
         }
         
         public QueryControlFlags QueryFlags
         {
-            get { return NativeHandle->QueryFlags; }
-            set { NativeHandle->QueryFlags = value; }
+            get { return NativePointer->QueryFlags; }
+            set { NativePointer->QueryFlags = value; }
         }
         
         public QueryPipelineStatisticFlags PipelineStatistics
         {
-            get { return NativeHandle->PipelineStatistics; }
-            set { NativeHandle->PipelineStatistics = value; }
+            get { return NativePointer->PipelineStatistics; }
+            set { NativePointer->PipelineStatistics = value; }
         }
         
         public CommandBufferInheritanceInfo()
         {
-            NativeHandle = (Interop.CommandBufferInheritanceInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferInheritanceInfo));
-            //NativeHandle->SType = StructureType.CommandBufferInheritanceInfo;
+            NativePointer = (Interop.CommandBufferInheritanceInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferInheritanceInfo));
+            //NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
         }
     }
 }

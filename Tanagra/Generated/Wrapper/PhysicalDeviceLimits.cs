@@ -5,655 +5,647 @@ namespace Vulkan
 {
     unsafe public class PhysicalDeviceLimits
     {
-        internal Interop.PhysicalDeviceLimits* NativeHandle;
+        internal Interop.PhysicalDeviceLimits* NativePointer;
         
         public UInt32 MaxImageDimension1D
         {
-            get { return NativeHandle->MaxImageDimension1D; }
-            set { NativeHandle->MaxImageDimension1D = value; }
+            get { return NativePointer->MaxImageDimension1D; }
+            set { NativePointer->MaxImageDimension1D = value; }
         }
         
         public UInt32 MaxImageDimension2D
         {
-            get { return NativeHandle->MaxImageDimension2D; }
-            set { NativeHandle->MaxImageDimension2D = value; }
+            get { return NativePointer->MaxImageDimension2D; }
+            set { NativePointer->MaxImageDimension2D = value; }
         }
         
         public UInt32 MaxImageDimension3D
         {
-            get { return NativeHandle->MaxImageDimension3D; }
-            set { NativeHandle->MaxImageDimension3D = value; }
+            get { return NativePointer->MaxImageDimension3D; }
+            set { NativePointer->MaxImageDimension3D = value; }
         }
         
         public UInt32 MaxImageDimensionCube
         {
-            get { return NativeHandle->MaxImageDimensionCube; }
-            set { NativeHandle->MaxImageDimensionCube = value; }
+            get { return NativePointer->MaxImageDimensionCube; }
+            set { NativePointer->MaxImageDimensionCube = value; }
         }
         
         public UInt32 MaxImageArrayLayers
         {
-            get { return NativeHandle->MaxImageArrayLayers; }
-            set { NativeHandle->MaxImageArrayLayers = value; }
+            get { return NativePointer->MaxImageArrayLayers; }
+            set { NativePointer->MaxImageArrayLayers = value; }
         }
         
         public UInt32 MaxTexelBufferElements
         {
-            get { return NativeHandle->MaxTexelBufferElements; }
-            set { NativeHandle->MaxTexelBufferElements = value; }
+            get { return NativePointer->MaxTexelBufferElements; }
+            set { NativePointer->MaxTexelBufferElements = value; }
         }
         
         public UInt32 MaxUniformBufferRange
         {
-            get { return NativeHandle->MaxUniformBufferRange; }
-            set { NativeHandle->MaxUniformBufferRange = value; }
+            get { return NativePointer->MaxUniformBufferRange; }
+            set { NativePointer->MaxUniformBufferRange = value; }
         }
         
         public UInt32 MaxStorageBufferRange
         {
-            get { return NativeHandle->MaxStorageBufferRange; }
-            set { NativeHandle->MaxStorageBufferRange = value; }
+            get { return NativePointer->MaxStorageBufferRange; }
+            set { NativePointer->MaxStorageBufferRange = value; }
         }
         
         public UInt32 MaxPushConstantsSize
         {
-            get { return NativeHandle->MaxPushConstantsSize; }
-            set { NativeHandle->MaxPushConstantsSize = value; }
+            get { return NativePointer->MaxPushConstantsSize; }
+            set { NativePointer->MaxPushConstantsSize = value; }
         }
         
         public UInt32 MaxMemoryAllocationCount
         {
-            get { return NativeHandle->MaxMemoryAllocationCount; }
-            set { NativeHandle->MaxMemoryAllocationCount = value; }
+            get { return NativePointer->MaxMemoryAllocationCount; }
+            set { NativePointer->MaxMemoryAllocationCount = value; }
         }
         
         public UInt32 MaxSamplerAllocationCount
         {
-            get { return NativeHandle->MaxSamplerAllocationCount; }
-            set { NativeHandle->MaxSamplerAllocationCount = value; }
+            get { return NativePointer->MaxSamplerAllocationCount; }
+            set { NativePointer->MaxSamplerAllocationCount = value; }
         }
         
-        DeviceSize _BufferImageGranularity;
         public DeviceSize BufferImageGranularity
         {
-            get { return _BufferImageGranularity; }
-            set { _BufferImageGranularity = value; NativeHandle->BufferImageGranularity = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->BufferImageGranularity; }
+            set { NativePointer->BufferImageGranularity = value; }
         }
         
-        DeviceSize _SparseAddressSpaceSize;
         public DeviceSize SparseAddressSpaceSize
         {
-            get { return _SparseAddressSpaceSize; }
-            set { _SparseAddressSpaceSize = value; NativeHandle->SparseAddressSpaceSize = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->SparseAddressSpaceSize; }
+            set { NativePointer->SparseAddressSpaceSize = value; }
         }
         
         public UInt32 MaxBoundDescriptorSets
         {
-            get { return NativeHandle->MaxBoundDescriptorSets; }
-            set { NativeHandle->MaxBoundDescriptorSets = value; }
+            get { return NativePointer->MaxBoundDescriptorSets; }
+            set { NativePointer->MaxBoundDescriptorSets = value; }
         }
         
         public UInt32 MaxPerStageDescriptorSamplers
         {
-            get { return NativeHandle->MaxPerStageDescriptorSamplers; }
-            set { NativeHandle->MaxPerStageDescriptorSamplers = value; }
+            get { return NativePointer->MaxPerStageDescriptorSamplers; }
+            set { NativePointer->MaxPerStageDescriptorSamplers = value; }
         }
         
         public UInt32 MaxPerStageDescriptorUniformBuffers
         {
-            get { return NativeHandle->MaxPerStageDescriptorUniformBuffers; }
-            set { NativeHandle->MaxPerStageDescriptorUniformBuffers = value; }
+            get { return NativePointer->MaxPerStageDescriptorUniformBuffers; }
+            set { NativePointer->MaxPerStageDescriptorUniformBuffers = value; }
         }
         
         public UInt32 MaxPerStageDescriptorStorageBuffers
         {
-            get { return NativeHandle->MaxPerStageDescriptorStorageBuffers; }
-            set { NativeHandle->MaxPerStageDescriptorStorageBuffers = value; }
+            get { return NativePointer->MaxPerStageDescriptorStorageBuffers; }
+            set { NativePointer->MaxPerStageDescriptorStorageBuffers = value; }
         }
         
         public UInt32 MaxPerStageDescriptorSampledImages
         {
-            get { return NativeHandle->MaxPerStageDescriptorSampledImages; }
-            set { NativeHandle->MaxPerStageDescriptorSampledImages = value; }
+            get { return NativePointer->MaxPerStageDescriptorSampledImages; }
+            set { NativePointer->MaxPerStageDescriptorSampledImages = value; }
         }
         
         public UInt32 MaxPerStageDescriptorStorageImages
         {
-            get { return NativeHandle->MaxPerStageDescriptorStorageImages; }
-            set { NativeHandle->MaxPerStageDescriptorStorageImages = value; }
+            get { return NativePointer->MaxPerStageDescriptorStorageImages; }
+            set { NativePointer->MaxPerStageDescriptorStorageImages = value; }
         }
         
         public UInt32 MaxPerStageDescriptorInputAttachments
         {
-            get { return NativeHandle->MaxPerStageDescriptorInputAttachments; }
-            set { NativeHandle->MaxPerStageDescriptorInputAttachments = value; }
+            get { return NativePointer->MaxPerStageDescriptorInputAttachments; }
+            set { NativePointer->MaxPerStageDescriptorInputAttachments = value; }
         }
         
         public UInt32 MaxPerStageResources
         {
-            get { return NativeHandle->MaxPerStageResources; }
-            set { NativeHandle->MaxPerStageResources = value; }
+            get { return NativePointer->MaxPerStageResources; }
+            set { NativePointer->MaxPerStageResources = value; }
         }
         
         public UInt32 MaxDescriptorSetSamplers
         {
-            get { return NativeHandle->MaxDescriptorSetSamplers; }
-            set { NativeHandle->MaxDescriptorSetSamplers = value; }
+            get { return NativePointer->MaxDescriptorSetSamplers; }
+            set { NativePointer->MaxDescriptorSetSamplers = value; }
         }
         
         public UInt32 MaxDescriptorSetUniformBuffers
         {
-            get { return NativeHandle->MaxDescriptorSetUniformBuffers; }
-            set { NativeHandle->MaxDescriptorSetUniformBuffers = value; }
+            get { return NativePointer->MaxDescriptorSetUniformBuffers; }
+            set { NativePointer->MaxDescriptorSetUniformBuffers = value; }
         }
         
         public UInt32 MaxDescriptorSetUniformBuffersDynamic
         {
-            get { return NativeHandle->MaxDescriptorSetUniformBuffersDynamic; }
-            set { NativeHandle->MaxDescriptorSetUniformBuffersDynamic = value; }
+            get { return NativePointer->MaxDescriptorSetUniformBuffersDynamic; }
+            set { NativePointer->MaxDescriptorSetUniformBuffersDynamic = value; }
         }
         
         public UInt32 MaxDescriptorSetStorageBuffers
         {
-            get { return NativeHandle->MaxDescriptorSetStorageBuffers; }
-            set { NativeHandle->MaxDescriptorSetStorageBuffers = value; }
+            get { return NativePointer->MaxDescriptorSetStorageBuffers; }
+            set { NativePointer->MaxDescriptorSetStorageBuffers = value; }
         }
         
         public UInt32 MaxDescriptorSetStorageBuffersDynamic
         {
-            get { return NativeHandle->MaxDescriptorSetStorageBuffersDynamic; }
-            set { NativeHandle->MaxDescriptorSetStorageBuffersDynamic = value; }
+            get { return NativePointer->MaxDescriptorSetStorageBuffersDynamic; }
+            set { NativePointer->MaxDescriptorSetStorageBuffersDynamic = value; }
         }
         
         public UInt32 MaxDescriptorSetSampledImages
         {
-            get { return NativeHandle->MaxDescriptorSetSampledImages; }
-            set { NativeHandle->MaxDescriptorSetSampledImages = value; }
+            get { return NativePointer->MaxDescriptorSetSampledImages; }
+            set { NativePointer->MaxDescriptorSetSampledImages = value; }
         }
         
         public UInt32 MaxDescriptorSetStorageImages
         {
-            get { return NativeHandle->MaxDescriptorSetStorageImages; }
-            set { NativeHandle->MaxDescriptorSetStorageImages = value; }
+            get { return NativePointer->MaxDescriptorSetStorageImages; }
+            set { NativePointer->MaxDescriptorSetStorageImages = value; }
         }
         
         public UInt32 MaxDescriptorSetInputAttachments
         {
-            get { return NativeHandle->MaxDescriptorSetInputAttachments; }
-            set { NativeHandle->MaxDescriptorSetInputAttachments = value; }
+            get { return NativePointer->MaxDescriptorSetInputAttachments; }
+            set { NativePointer->MaxDescriptorSetInputAttachments = value; }
         }
         
         public UInt32 MaxVertexInputAttributes
         {
-            get { return NativeHandle->MaxVertexInputAttributes; }
-            set { NativeHandle->MaxVertexInputAttributes = value; }
+            get { return NativePointer->MaxVertexInputAttributes; }
+            set { NativePointer->MaxVertexInputAttributes = value; }
         }
         
         public UInt32 MaxVertexInputBindings
         {
-            get { return NativeHandle->MaxVertexInputBindings; }
-            set { NativeHandle->MaxVertexInputBindings = value; }
+            get { return NativePointer->MaxVertexInputBindings; }
+            set { NativePointer->MaxVertexInputBindings = value; }
         }
         
         public UInt32 MaxVertexInputAttributeOffset
         {
-            get { return NativeHandle->MaxVertexInputAttributeOffset; }
-            set { NativeHandle->MaxVertexInputAttributeOffset = value; }
+            get { return NativePointer->MaxVertexInputAttributeOffset; }
+            set { NativePointer->MaxVertexInputAttributeOffset = value; }
         }
         
         public UInt32 MaxVertexInputBindingStride
         {
-            get { return NativeHandle->MaxVertexInputBindingStride; }
-            set { NativeHandle->MaxVertexInputBindingStride = value; }
+            get { return NativePointer->MaxVertexInputBindingStride; }
+            set { NativePointer->MaxVertexInputBindingStride = value; }
         }
         
         public UInt32 MaxVertexOutputComponents
         {
-            get { return NativeHandle->MaxVertexOutputComponents; }
-            set { NativeHandle->MaxVertexOutputComponents = value; }
+            get { return NativePointer->MaxVertexOutputComponents; }
+            set { NativePointer->MaxVertexOutputComponents = value; }
         }
         
         public UInt32 MaxTessellationGenerationLevel
         {
-            get { return NativeHandle->MaxTessellationGenerationLevel; }
-            set { NativeHandle->MaxTessellationGenerationLevel = value; }
+            get { return NativePointer->MaxTessellationGenerationLevel; }
+            set { NativePointer->MaxTessellationGenerationLevel = value; }
         }
         
         public UInt32 MaxTessellationPatchSize
         {
-            get { return NativeHandle->MaxTessellationPatchSize; }
-            set { NativeHandle->MaxTessellationPatchSize = value; }
+            get { return NativePointer->MaxTessellationPatchSize; }
+            set { NativePointer->MaxTessellationPatchSize = value; }
         }
         
         public UInt32 MaxTessellationControlPerVertexInputComponents
         {
-            get { return NativeHandle->MaxTessellationControlPerVertexInputComponents; }
-            set { NativeHandle->MaxTessellationControlPerVertexInputComponents = value; }
+            get { return NativePointer->MaxTessellationControlPerVertexInputComponents; }
+            set { NativePointer->MaxTessellationControlPerVertexInputComponents = value; }
         }
         
         public UInt32 MaxTessellationControlPerVertexOutputComponents
         {
-            get { return NativeHandle->MaxTessellationControlPerVertexOutputComponents; }
-            set { NativeHandle->MaxTessellationControlPerVertexOutputComponents = value; }
+            get { return NativePointer->MaxTessellationControlPerVertexOutputComponents; }
+            set { NativePointer->MaxTessellationControlPerVertexOutputComponents = value; }
         }
         
         public UInt32 MaxTessellationControlPerPatchOutputComponents
         {
-            get { return NativeHandle->MaxTessellationControlPerPatchOutputComponents; }
-            set { NativeHandle->MaxTessellationControlPerPatchOutputComponents = value; }
+            get { return NativePointer->MaxTessellationControlPerPatchOutputComponents; }
+            set { NativePointer->MaxTessellationControlPerPatchOutputComponents = value; }
         }
         
         public UInt32 MaxTessellationControlTotalOutputComponents
         {
-            get { return NativeHandle->MaxTessellationControlTotalOutputComponents; }
-            set { NativeHandle->MaxTessellationControlTotalOutputComponents = value; }
+            get { return NativePointer->MaxTessellationControlTotalOutputComponents; }
+            set { NativePointer->MaxTessellationControlTotalOutputComponents = value; }
         }
         
         public UInt32 MaxTessellationEvaluationInputComponents
         {
-            get { return NativeHandle->MaxTessellationEvaluationInputComponents; }
-            set { NativeHandle->MaxTessellationEvaluationInputComponents = value; }
+            get { return NativePointer->MaxTessellationEvaluationInputComponents; }
+            set { NativePointer->MaxTessellationEvaluationInputComponents = value; }
         }
         
         public UInt32 MaxTessellationEvaluationOutputComponents
         {
-            get { return NativeHandle->MaxTessellationEvaluationOutputComponents; }
-            set { NativeHandle->MaxTessellationEvaluationOutputComponents = value; }
+            get { return NativePointer->MaxTessellationEvaluationOutputComponents; }
+            set { NativePointer->MaxTessellationEvaluationOutputComponents = value; }
         }
         
         public UInt32 MaxGeometryShaderInvocations
         {
-            get { return NativeHandle->MaxGeometryShaderInvocations; }
-            set { NativeHandle->MaxGeometryShaderInvocations = value; }
+            get { return NativePointer->MaxGeometryShaderInvocations; }
+            set { NativePointer->MaxGeometryShaderInvocations = value; }
         }
         
         public UInt32 MaxGeometryInputComponents
         {
-            get { return NativeHandle->MaxGeometryInputComponents; }
-            set { NativeHandle->MaxGeometryInputComponents = value; }
+            get { return NativePointer->MaxGeometryInputComponents; }
+            set { NativePointer->MaxGeometryInputComponents = value; }
         }
         
         public UInt32 MaxGeometryOutputComponents
         {
-            get { return NativeHandle->MaxGeometryOutputComponents; }
-            set { NativeHandle->MaxGeometryOutputComponents = value; }
+            get { return NativePointer->MaxGeometryOutputComponents; }
+            set { NativePointer->MaxGeometryOutputComponents = value; }
         }
         
         public UInt32 MaxGeometryOutputVertices
         {
-            get { return NativeHandle->MaxGeometryOutputVertices; }
-            set { NativeHandle->MaxGeometryOutputVertices = value; }
+            get { return NativePointer->MaxGeometryOutputVertices; }
+            set { NativePointer->MaxGeometryOutputVertices = value; }
         }
         
         public UInt32 MaxGeometryTotalOutputComponents
         {
-            get { return NativeHandle->MaxGeometryTotalOutputComponents; }
-            set { NativeHandle->MaxGeometryTotalOutputComponents = value; }
+            get { return NativePointer->MaxGeometryTotalOutputComponents; }
+            set { NativePointer->MaxGeometryTotalOutputComponents = value; }
         }
         
         public UInt32 MaxFragmentInputComponents
         {
-            get { return NativeHandle->MaxFragmentInputComponents; }
-            set { NativeHandle->MaxFragmentInputComponents = value; }
+            get { return NativePointer->MaxFragmentInputComponents; }
+            set { NativePointer->MaxFragmentInputComponents = value; }
         }
         
         public UInt32 MaxFragmentOutputAttachments
         {
-            get { return NativeHandle->MaxFragmentOutputAttachments; }
-            set { NativeHandle->MaxFragmentOutputAttachments = value; }
+            get { return NativePointer->MaxFragmentOutputAttachments; }
+            set { NativePointer->MaxFragmentOutputAttachments = value; }
         }
         
         public UInt32 MaxFragmentDualSrcAttachments
         {
-            get { return NativeHandle->MaxFragmentDualSrcAttachments; }
-            set { NativeHandle->MaxFragmentDualSrcAttachments = value; }
+            get { return NativePointer->MaxFragmentDualSrcAttachments; }
+            set { NativePointer->MaxFragmentDualSrcAttachments = value; }
         }
         
         public UInt32 MaxFragmentCombinedOutputResources
         {
-            get { return NativeHandle->MaxFragmentCombinedOutputResources; }
-            set { NativeHandle->MaxFragmentCombinedOutputResources = value; }
+            get { return NativePointer->MaxFragmentCombinedOutputResources; }
+            set { NativePointer->MaxFragmentCombinedOutputResources = value; }
         }
         
         public UInt32 MaxComputeSharedMemorySize
         {
-            get { return NativeHandle->MaxComputeSharedMemorySize; }
-            set { NativeHandle->MaxComputeSharedMemorySize = value; }
+            get { return NativePointer->MaxComputeSharedMemorySize; }
+            set { NativePointer->MaxComputeSharedMemorySize = value; }
         }
         
         public UInt32 MaxComputeWorkGroupCount
         {
-            get { return NativeHandle->MaxComputeWorkGroupCount; }
-            set { NativeHandle->MaxComputeWorkGroupCount = value; }
+            get { return NativePointer->MaxComputeWorkGroupCount; }
+            set { NativePointer->MaxComputeWorkGroupCount = value; }
         }
         
         public UInt32 MaxComputeWorkGroupInvocations
         {
-            get { return NativeHandle->MaxComputeWorkGroupInvocations; }
-            set { NativeHandle->MaxComputeWorkGroupInvocations = value; }
+            get { return NativePointer->MaxComputeWorkGroupInvocations; }
+            set { NativePointer->MaxComputeWorkGroupInvocations = value; }
         }
         
         public UInt32 MaxComputeWorkGroupSize
         {
-            get { return NativeHandle->MaxComputeWorkGroupSize; }
-            set { NativeHandle->MaxComputeWorkGroupSize = value; }
+            get { return NativePointer->MaxComputeWorkGroupSize; }
+            set { NativePointer->MaxComputeWorkGroupSize = value; }
         }
         
         public UInt32 SubPixelPrecisionBits
         {
-            get { return NativeHandle->SubPixelPrecisionBits; }
-            set { NativeHandle->SubPixelPrecisionBits = value; }
+            get { return NativePointer->SubPixelPrecisionBits; }
+            set { NativePointer->SubPixelPrecisionBits = value; }
         }
         
         public UInt32 SubTexelPrecisionBits
         {
-            get { return NativeHandle->SubTexelPrecisionBits; }
-            set { NativeHandle->SubTexelPrecisionBits = value; }
+            get { return NativePointer->SubTexelPrecisionBits; }
+            set { NativePointer->SubTexelPrecisionBits = value; }
         }
         
         public UInt32 MipmapPrecisionBits
         {
-            get { return NativeHandle->MipmapPrecisionBits; }
-            set { NativeHandle->MipmapPrecisionBits = value; }
+            get { return NativePointer->MipmapPrecisionBits; }
+            set { NativePointer->MipmapPrecisionBits = value; }
         }
         
         public UInt32 MaxDrawIndexedIndexValue
         {
-            get { return NativeHandle->MaxDrawIndexedIndexValue; }
-            set { NativeHandle->MaxDrawIndexedIndexValue = value; }
+            get { return NativePointer->MaxDrawIndexedIndexValue; }
+            set { NativePointer->MaxDrawIndexedIndexValue = value; }
         }
         
         public UInt32 MaxDrawIndirectCount
         {
-            get { return NativeHandle->MaxDrawIndirectCount; }
-            set { NativeHandle->MaxDrawIndirectCount = value; }
+            get { return NativePointer->MaxDrawIndirectCount; }
+            set { NativePointer->MaxDrawIndirectCount = value; }
         }
         
         public Single MaxSamplerLodBias
         {
-            get { return NativeHandle->MaxSamplerLodBias; }
-            set { NativeHandle->MaxSamplerLodBias = value; }
+            get { return NativePointer->MaxSamplerLodBias; }
+            set { NativePointer->MaxSamplerLodBias = value; }
         }
         
         public Single MaxSamplerAnisotropy
         {
-            get { return NativeHandle->MaxSamplerAnisotropy; }
-            set { NativeHandle->MaxSamplerAnisotropy = value; }
+            get { return NativePointer->MaxSamplerAnisotropy; }
+            set { NativePointer->MaxSamplerAnisotropy = value; }
         }
         
         public UInt32 MaxViewports
         {
-            get { return NativeHandle->MaxViewports; }
-            set { NativeHandle->MaxViewports = value; }
+            get { return NativePointer->MaxViewports; }
+            set { NativePointer->MaxViewports = value; }
         }
         
         public UInt32 MaxViewportDimensions
         {
-            get { return NativeHandle->MaxViewportDimensions; }
-            set { NativeHandle->MaxViewportDimensions = value; }
+            get { return NativePointer->MaxViewportDimensions; }
+            set { NativePointer->MaxViewportDimensions = value; }
         }
         
         public Single ViewportBoundsRange
         {
-            get { return NativeHandle->ViewportBoundsRange; }
-            set { NativeHandle->ViewportBoundsRange = value; }
+            get { return NativePointer->ViewportBoundsRange; }
+            set { NativePointer->ViewportBoundsRange = value; }
         }
         
         public UInt32 ViewportSubPixelBits
         {
-            get { return NativeHandle->ViewportSubPixelBits; }
-            set { NativeHandle->ViewportSubPixelBits = value; }
+            get { return NativePointer->ViewportSubPixelBits; }
+            set { NativePointer->ViewportSubPixelBits = value; }
         }
         
         public UIntPtr MinMemoryMapAlignment
         {
-            get { return NativeHandle->MinMemoryMapAlignment; }
-            set { NativeHandle->MinMemoryMapAlignment = value; }
+            get { return NativePointer->MinMemoryMapAlignment; }
+            set { NativePointer->MinMemoryMapAlignment = value; }
         }
         
-        DeviceSize _MinTexelBufferOffsetAlignment;
         public DeviceSize MinTexelBufferOffsetAlignment
         {
-            get { return _MinTexelBufferOffsetAlignment; }
-            set { _MinTexelBufferOffsetAlignment = value; NativeHandle->MinTexelBufferOffsetAlignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->MinTexelBufferOffsetAlignment; }
+            set { NativePointer->MinTexelBufferOffsetAlignment = value; }
         }
         
-        DeviceSize _MinUniformBufferOffsetAlignment;
         public DeviceSize MinUniformBufferOffsetAlignment
         {
-            get { return _MinUniformBufferOffsetAlignment; }
-            set { _MinUniformBufferOffsetAlignment = value; NativeHandle->MinUniformBufferOffsetAlignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->MinUniformBufferOffsetAlignment; }
+            set { NativePointer->MinUniformBufferOffsetAlignment = value; }
         }
         
-        DeviceSize _MinStorageBufferOffsetAlignment;
         public DeviceSize MinStorageBufferOffsetAlignment
         {
-            get { return _MinStorageBufferOffsetAlignment; }
-            set { _MinStorageBufferOffsetAlignment = value; NativeHandle->MinStorageBufferOffsetAlignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->MinStorageBufferOffsetAlignment; }
+            set { NativePointer->MinStorageBufferOffsetAlignment = value; }
         }
         
         public Int32 MinTexelOffset
         {
-            get { return NativeHandle->MinTexelOffset; }
-            set { NativeHandle->MinTexelOffset = value; }
+            get { return NativePointer->MinTexelOffset; }
+            set { NativePointer->MinTexelOffset = value; }
         }
         
         public UInt32 MaxTexelOffset
         {
-            get { return NativeHandle->MaxTexelOffset; }
-            set { NativeHandle->MaxTexelOffset = value; }
+            get { return NativePointer->MaxTexelOffset; }
+            set { NativePointer->MaxTexelOffset = value; }
         }
         
         public Int32 MinTexelGatherOffset
         {
-            get { return NativeHandle->MinTexelGatherOffset; }
-            set { NativeHandle->MinTexelGatherOffset = value; }
+            get { return NativePointer->MinTexelGatherOffset; }
+            set { NativePointer->MinTexelGatherOffset = value; }
         }
         
         public UInt32 MaxTexelGatherOffset
         {
-            get { return NativeHandle->MaxTexelGatherOffset; }
-            set { NativeHandle->MaxTexelGatherOffset = value; }
+            get { return NativePointer->MaxTexelGatherOffset; }
+            set { NativePointer->MaxTexelGatherOffset = value; }
         }
         
         public Single MinInterpolationOffset
         {
-            get { return NativeHandle->MinInterpolationOffset; }
-            set { NativeHandle->MinInterpolationOffset = value; }
+            get { return NativePointer->MinInterpolationOffset; }
+            set { NativePointer->MinInterpolationOffset = value; }
         }
         
         public Single MaxInterpolationOffset
         {
-            get { return NativeHandle->MaxInterpolationOffset; }
-            set { NativeHandle->MaxInterpolationOffset = value; }
+            get { return NativePointer->MaxInterpolationOffset; }
+            set { NativePointer->MaxInterpolationOffset = value; }
         }
         
         public UInt32 SubPixelInterpolationOffsetBits
         {
-            get { return NativeHandle->SubPixelInterpolationOffsetBits; }
-            set { NativeHandle->SubPixelInterpolationOffsetBits = value; }
+            get { return NativePointer->SubPixelInterpolationOffsetBits; }
+            set { NativePointer->SubPixelInterpolationOffsetBits = value; }
         }
         
         public UInt32 MaxFramebufferWidth
         {
-            get { return NativeHandle->MaxFramebufferWidth; }
-            set { NativeHandle->MaxFramebufferWidth = value; }
+            get { return NativePointer->MaxFramebufferWidth; }
+            set { NativePointer->MaxFramebufferWidth = value; }
         }
         
         public UInt32 MaxFramebufferHeight
         {
-            get { return NativeHandle->MaxFramebufferHeight; }
-            set { NativeHandle->MaxFramebufferHeight = value; }
+            get { return NativePointer->MaxFramebufferHeight; }
+            set { NativePointer->MaxFramebufferHeight = value; }
         }
         
         public UInt32 MaxFramebufferLayers
         {
-            get { return NativeHandle->MaxFramebufferLayers; }
-            set { NativeHandle->MaxFramebufferLayers = value; }
+            get { return NativePointer->MaxFramebufferLayers; }
+            set { NativePointer->MaxFramebufferLayers = value; }
         }
         
         public SampleCountFlags FramebufferColorSampleCounts
         {
-            get { return NativeHandle->FramebufferColorSampleCounts; }
-            set { NativeHandle->FramebufferColorSampleCounts = value; }
+            get { return NativePointer->FramebufferColorSampleCounts; }
+            set { NativePointer->FramebufferColorSampleCounts = value; }
         }
         
         public SampleCountFlags FramebufferDepthSampleCounts
         {
-            get { return NativeHandle->FramebufferDepthSampleCounts; }
-            set { NativeHandle->FramebufferDepthSampleCounts = value; }
+            get { return NativePointer->FramebufferDepthSampleCounts; }
+            set { NativePointer->FramebufferDepthSampleCounts = value; }
         }
         
         public SampleCountFlags FramebufferStencilSampleCounts
         {
-            get { return NativeHandle->FramebufferStencilSampleCounts; }
-            set { NativeHandle->FramebufferStencilSampleCounts = value; }
+            get { return NativePointer->FramebufferStencilSampleCounts; }
+            set { NativePointer->FramebufferStencilSampleCounts = value; }
         }
         
         public SampleCountFlags FramebufferNoAttachmentsSampleCounts
         {
-            get { return NativeHandle->FramebufferNoAttachmentsSampleCounts; }
-            set { NativeHandle->FramebufferNoAttachmentsSampleCounts = value; }
+            get { return NativePointer->FramebufferNoAttachmentsSampleCounts; }
+            set { NativePointer->FramebufferNoAttachmentsSampleCounts = value; }
         }
         
         public UInt32 MaxColorAttachments
         {
-            get { return NativeHandle->MaxColorAttachments; }
-            set { NativeHandle->MaxColorAttachments = value; }
+            get { return NativePointer->MaxColorAttachments; }
+            set { NativePointer->MaxColorAttachments = value; }
         }
         
         public SampleCountFlags SampledImageColorSampleCounts
         {
-            get { return NativeHandle->SampledImageColorSampleCounts; }
-            set { NativeHandle->SampledImageColorSampleCounts = value; }
+            get { return NativePointer->SampledImageColorSampleCounts; }
+            set { NativePointer->SampledImageColorSampleCounts = value; }
         }
         
         public SampleCountFlags SampledImageIntegerSampleCounts
         {
-            get { return NativeHandle->SampledImageIntegerSampleCounts; }
-            set { NativeHandle->SampledImageIntegerSampleCounts = value; }
+            get { return NativePointer->SampledImageIntegerSampleCounts; }
+            set { NativePointer->SampledImageIntegerSampleCounts = value; }
         }
         
         public SampleCountFlags SampledImageDepthSampleCounts
         {
-            get { return NativeHandle->SampledImageDepthSampleCounts; }
-            set { NativeHandle->SampledImageDepthSampleCounts = value; }
+            get { return NativePointer->SampledImageDepthSampleCounts; }
+            set { NativePointer->SampledImageDepthSampleCounts = value; }
         }
         
         public SampleCountFlags SampledImageStencilSampleCounts
         {
-            get { return NativeHandle->SampledImageStencilSampleCounts; }
-            set { NativeHandle->SampledImageStencilSampleCounts = value; }
+            get { return NativePointer->SampledImageStencilSampleCounts; }
+            set { NativePointer->SampledImageStencilSampleCounts = value; }
         }
         
         public SampleCountFlags StorageImageSampleCounts
         {
-            get { return NativeHandle->StorageImageSampleCounts; }
-            set { NativeHandle->StorageImageSampleCounts = value; }
+            get { return NativePointer->StorageImageSampleCounts; }
+            set { NativePointer->StorageImageSampleCounts = value; }
         }
         
         public UInt32 MaxSampleMaskWords
         {
-            get { return NativeHandle->MaxSampleMaskWords; }
-            set { NativeHandle->MaxSampleMaskWords = value; }
+            get { return NativePointer->MaxSampleMaskWords; }
+            set { NativePointer->MaxSampleMaskWords = value; }
         }
         
         public Boolean TimestampComputeAndGraphics
         {
-            get { return NativeHandle->TimestampComputeAndGraphics; }
-            set { NativeHandle->TimestampComputeAndGraphics = value; }
+            get { return NativePointer->TimestampComputeAndGraphics; }
+            set { NativePointer->TimestampComputeAndGraphics = value; }
         }
         
         public Single TimestampPeriod
         {
-            get { return NativeHandle->TimestampPeriod; }
-            set { NativeHandle->TimestampPeriod = value; }
+            get { return NativePointer->TimestampPeriod; }
+            set { NativePointer->TimestampPeriod = value; }
         }
         
         public UInt32 MaxClipDistances
         {
-            get { return NativeHandle->MaxClipDistances; }
-            set { NativeHandle->MaxClipDistances = value; }
+            get { return NativePointer->MaxClipDistances; }
+            set { NativePointer->MaxClipDistances = value; }
         }
         
         public UInt32 MaxCullDistances
         {
-            get { return NativeHandle->MaxCullDistances; }
-            set { NativeHandle->MaxCullDistances = value; }
+            get { return NativePointer->MaxCullDistances; }
+            set { NativePointer->MaxCullDistances = value; }
         }
         
         public UInt32 MaxCombinedClipAndCullDistances
         {
-            get { return NativeHandle->MaxCombinedClipAndCullDistances; }
-            set { NativeHandle->MaxCombinedClipAndCullDistances = value; }
+            get { return NativePointer->MaxCombinedClipAndCullDistances; }
+            set { NativePointer->MaxCombinedClipAndCullDistances = value; }
         }
         
         public UInt32 DiscreteQueuePriorities
         {
-            get { return NativeHandle->DiscreteQueuePriorities; }
-            set { NativeHandle->DiscreteQueuePriorities = value; }
+            get { return NativePointer->DiscreteQueuePriorities; }
+            set { NativePointer->DiscreteQueuePriorities = value; }
         }
         
         public Single PointSizeRange
         {
-            get { return NativeHandle->PointSizeRange; }
-            set { NativeHandle->PointSizeRange = value; }
+            get { return NativePointer->PointSizeRange; }
+            set { NativePointer->PointSizeRange = value; }
         }
         
         public Single LineWidthRange
         {
-            get { return NativeHandle->LineWidthRange; }
-            set { NativeHandle->LineWidthRange = value; }
+            get { return NativePointer->LineWidthRange; }
+            set { NativePointer->LineWidthRange = value; }
         }
         
         public Single PointSizeGranularity
         {
-            get { return NativeHandle->PointSizeGranularity; }
-            set { NativeHandle->PointSizeGranularity = value; }
+            get { return NativePointer->PointSizeGranularity; }
+            set { NativePointer->PointSizeGranularity = value; }
         }
         
         public Single LineWidthGranularity
         {
-            get { return NativeHandle->LineWidthGranularity; }
-            set { NativeHandle->LineWidthGranularity = value; }
+            get { return NativePointer->LineWidthGranularity; }
+            set { NativePointer->LineWidthGranularity = value; }
         }
         
         public Boolean StrictLines
         {
-            get { return NativeHandle->StrictLines; }
-            set { NativeHandle->StrictLines = value; }
+            get { return NativePointer->StrictLines; }
+            set { NativePointer->StrictLines = value; }
         }
         
         public Boolean StandardSampleLocations
         {
-            get { return NativeHandle->StandardSampleLocations; }
-            set { NativeHandle->StandardSampleLocations = value; }
+            get { return NativePointer->StandardSampleLocations; }
+            set { NativePointer->StandardSampleLocations = value; }
         }
         
-        DeviceSize _OptimalBufferCopyOffsetAlignment;
         public DeviceSize OptimalBufferCopyOffsetAlignment
         {
-            get { return _OptimalBufferCopyOffsetAlignment; }
-            set { _OptimalBufferCopyOffsetAlignment = value; NativeHandle->OptimalBufferCopyOffsetAlignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->OptimalBufferCopyOffsetAlignment; }
+            set { NativePointer->OptimalBufferCopyOffsetAlignment = value; }
         }
         
-        DeviceSize _OptimalBufferCopyRowPitchAlignment;
         public DeviceSize OptimalBufferCopyRowPitchAlignment
         {
-            get { return _OptimalBufferCopyRowPitchAlignment; }
-            set { _OptimalBufferCopyRowPitchAlignment = value; NativeHandle->OptimalBufferCopyRowPitchAlignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->OptimalBufferCopyRowPitchAlignment; }
+            set { NativePointer->OptimalBufferCopyRowPitchAlignment = value; }
         }
         
-        DeviceSize _NonCoherentAtomSize;
         public DeviceSize NonCoherentAtomSize
         {
-            get { return _NonCoherentAtomSize; }
-            set { _NonCoherentAtomSize = value; NativeHandle->NonCoherentAtomSize = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->NonCoherentAtomSize; }
+            set { NativePointer->NonCoherentAtomSize = value; }
         }
         
         public PhysicalDeviceLimits()
         {
-            NativeHandle = (Interop.PhysicalDeviceLimits*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceLimits));
+            NativePointer = (Interop.PhysicalDeviceLimits*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceLimits));
         }
     }
 }

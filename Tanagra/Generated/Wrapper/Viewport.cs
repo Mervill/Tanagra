@@ -5,47 +5,47 @@ namespace Vulkan
 {
     unsafe public class Viewport
     {
-        internal Interop.Viewport* NativeHandle;
+        internal Interop.Viewport* NativePointer;
         
         public Single X
         {
-            get { return NativeHandle->X; }
-            set { NativeHandle->X = value; }
+            get { return NativePointer->X; }
+            set { NativePointer->X = value; }
         }
         
         public Single Y
         {
-            get { return NativeHandle->Y; }
-            set { NativeHandle->Y = value; }
+            get { return NativePointer->Y; }
+            set { NativePointer->Y = value; }
         }
         
         public Single Width
         {
-            get { return NativeHandle->Width; }
-            set { NativeHandle->Width = value; }
+            get { return NativePointer->Width; }
+            set { NativePointer->Width = value; }
         }
         
         public Single Height
         {
-            get { return NativeHandle->Height; }
-            set { NativeHandle->Height = value; }
+            get { return NativePointer->Height; }
+            set { NativePointer->Height = value; }
         }
         
         public Single MinDepth
         {
-            get { return NativeHandle->MinDepth; }
-            set { NativeHandle->MinDepth = value; }
+            get { return NativePointer->MinDepth; }
+            set { NativePointer->MinDepth = value; }
         }
         
         public Single MaxDepth
         {
-            get { return NativeHandle->MaxDepth; }
-            set { NativeHandle->MaxDepth = value; }
+            get { return NativePointer->MaxDepth; }
+            set { NativePointer->MaxDepth = value; }
         }
         
         public Viewport()
         {
-            NativeHandle = (Interop.Viewport*)Interop.Structure.Allocate(typeof(Interop.Viewport));
+            NativePointer = (Interop.Viewport*)Interop.Structure.Allocate(typeof(Interop.Viewport));
         }
     }
 }

@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class ExtensionProperties
     {
-        internal Interop.ExtensionProperties* NativeHandle;
+        internal Interop.ExtensionProperties* NativePointer;
         
         public string ExtensionName
         {
-            get { return Marshal.PtrToStringAnsi(NativeHandle->ExtensionName); }
-            set { NativeHandle->ExtensionName = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi(NativePointer->ExtensionName); }
+            set { NativePointer->ExtensionName = Marshal.StringToHGlobalAnsi(value); }
         }
         
         public UInt32 SpecVersion
         {
-            get { return NativeHandle->SpecVersion; }
-            set { NativeHandle->SpecVersion = value; }
+            get { return NativePointer->SpecVersion; }
+            set { NativePointer->SpecVersion = value; }
         }
         
         public ExtensionProperties()
         {
-            NativeHandle = (Interop.ExtensionProperties*)Interop.Structure.Allocate(typeof(Interop.ExtensionProperties));
+            NativePointer = (Interop.ExtensionProperties*)Interop.Structure.Allocate(typeof(Interop.ExtensionProperties));
         }
     }
 }

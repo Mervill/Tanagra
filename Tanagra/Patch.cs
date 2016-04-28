@@ -21,7 +21,7 @@ namespace Vulkan
     public enum VkCompositeAlphaFlagsKHR { }
     public enum VkDebugReportFlagsEXT { }
 
-    /*public struct DeviceSize
+    public struct DeviceSize
     {
         UInt64 value;
 
@@ -34,5 +34,5 @@ namespace Vulkan
         {
             return size.value;
         }
-    }*/
+    }
 }

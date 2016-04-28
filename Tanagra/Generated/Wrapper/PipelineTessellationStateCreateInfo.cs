@@ -5,24 +5,24 @@ namespace Vulkan
 {
     unsafe public class PipelineTessellationStateCreateInfo
     {
-        internal Interop.PipelineTessellationStateCreateInfo* NativeHandle;
+        internal Interop.PipelineTessellationStateCreateInfo* NativePointer;
         
         public PipelineTessellationStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UInt32 PatchControlPoints
         {
-            get { return NativeHandle->PatchControlPoints; }
-            set { NativeHandle->PatchControlPoints = value; }
+            get { return NativePointer->PatchControlPoints; }
+            set { NativePointer->PatchControlPoints = value; }
         }
         
         public PipelineTessellationStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineTessellationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineTessellationStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineTessellationStateCreateInfo;
+            NativePointer = (Interop.PipelineTessellationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineTessellationStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineTessellationStateCreateInfo;
         }
     }
 }

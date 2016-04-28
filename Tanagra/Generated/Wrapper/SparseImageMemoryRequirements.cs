@@ -5,45 +5,42 @@ namespace Vulkan
 {
     unsafe public class SparseImageMemoryRequirements
     {
-        internal Interop.SparseImageMemoryRequirements* NativeHandle;
+        internal Interop.SparseImageMemoryRequirements* NativePointer;
         
         SparseImageFormatProperties _FormatProperties;
         public SparseImageFormatProperties FormatProperties
         {
             get { return _FormatProperties; }
-            set { _FormatProperties = value; NativeHandle->FormatProperties = (IntPtr)value.NativeHandle; }
+            set { _FormatProperties = value; NativePointer->FormatProperties = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 ImageMipTailFirstLod
         {
-            get { return NativeHandle->ImageMipTailFirstLod; }
-            set { NativeHandle->ImageMipTailFirstLod = value; }
+            get { return NativePointer->ImageMipTailFirstLod; }
+            set { NativePointer->ImageMipTailFirstLod = value; }
         }
         
-        DeviceSize _ImageMipTailSize;
         public DeviceSize ImageMipTailSize
         {
-            get { return _ImageMipTailSize; }
-            set { _ImageMipTailSize = value; NativeHandle->ImageMipTailSize = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->ImageMipTailSize; }
+            set { NativePointer->ImageMipTailSize = value; }
         }
         
-        DeviceSize _ImageMipTailOffset;
         public DeviceSize ImageMipTailOffset
         {
-            get { return _ImageMipTailOffset; }
-            set { _ImageMipTailOffset = value; NativeHandle->ImageMipTailOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->ImageMipTailOffset; }
+            set { NativePointer->ImageMipTailOffset = value; }
         }
         
-        DeviceSize _ImageMipTailStride;
         public DeviceSize ImageMipTailStride
         {
-            get { return _ImageMipTailStride; }
-            set { _ImageMipTailStride = value; NativeHandle->ImageMipTailStride = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->ImageMipTailStride; }
+            set { NativePointer->ImageMipTailStride = value; }
         }
         
         public SparseImageMemoryRequirements()
         {
-            NativeHandle = (Interop.SparseImageMemoryRequirements*)Interop.Structure.Allocate(typeof(Interop.SparseImageMemoryRequirements));
+            NativePointer = (Interop.SparseImageMemoryRequirements*)Interop.Structure.Allocate(typeof(Interop.SparseImageMemoryRequirements));
         }
     }
 }

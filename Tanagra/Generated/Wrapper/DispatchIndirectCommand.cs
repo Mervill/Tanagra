@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class DispatchIndirectCommand
     {
-        internal Interop.DispatchIndirectCommand* NativeHandle;
+        internal Interop.DispatchIndirectCommand* NativePointer;
         
         public UInt32 X
         {
-            get { return NativeHandle->X; }
-            set { NativeHandle->X = value; }
+            get { return NativePointer->X; }
+            set { NativePointer->X = value; }
         }
         
         public UInt32 Y
         {
-            get { return NativeHandle->Y; }
-            set { NativeHandle->Y = value; }
+            get { return NativePointer->Y; }
+            set { NativePointer->Y = value; }
         }
         
         public UInt32 Z
         {
-            get { return NativeHandle->Z; }
-            set { NativeHandle->Z = value; }
+            get { return NativePointer->Z; }
+            set { NativePointer->Z = value; }
         }
         
         public DispatchIndirectCommand()
         {
-            NativeHandle = (Interop.DispatchIndirectCommand*)Interop.Structure.Allocate(typeof(Interop.DispatchIndirectCommand));
+            NativePointer = (Interop.DispatchIndirectCommand*)Interop.Structure.Allocate(typeof(Interop.DispatchIndirectCommand));
         }
     }
 }

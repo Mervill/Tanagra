@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class SparseImageFormatProperties
     {
-        internal Interop.SparseImageFormatProperties* NativeHandle;
+        internal Interop.SparseImageFormatProperties* NativePointer;
         
         public ImageAspectFlags AspectMask
         {
-            get { return NativeHandle->AspectMask; }
-            set { NativeHandle->AspectMask = value; }
+            get { return NativePointer->AspectMask; }
+            set { NativePointer->AspectMask = value; }
         }
         
         Extent3D _ImageGranularity;
         public Extent3D ImageGranularity
         {
             get { return _ImageGranularity; }
-            set { _ImageGranularity = value; NativeHandle->ImageGranularity = (IntPtr)value.NativeHandle; }
+            set { _ImageGranularity = value; NativePointer->ImageGranularity = (IntPtr)value.NativePointer; }
         }
         
         public SparseImageFormatFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public SparseImageFormatProperties()
         {
-            NativeHandle = (Interop.SparseImageFormatProperties*)Interop.Structure.Allocate(typeof(Interop.SparseImageFormatProperties));
+            NativePointer = (Interop.SparseImageFormatProperties*)Interop.Structure.Allocate(typeof(Interop.SparseImageFormatProperties));
         }
     }
 }

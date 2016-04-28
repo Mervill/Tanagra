@@ -5,65 +5,65 @@ namespace Vulkan
 {
     unsafe public class AttachmentDescription
     {
-        internal Interop.AttachmentDescription* NativeHandle;
+        internal Interop.AttachmentDescription* NativePointer;
         
         public AttachmentDescriptionFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
         public SampleCountFlags Samples
         {
-            get { return NativeHandle->Samples; }
-            set { NativeHandle->Samples = value; }
+            get { return NativePointer->Samples; }
+            set { NativePointer->Samples = value; }
         }
         
         public AttachmentLoadOp LoadOp
         {
-            get { return NativeHandle->LoadOp; }
-            set { NativeHandle->LoadOp = value; }
+            get { return NativePointer->LoadOp; }
+            set { NativePointer->LoadOp = value; }
         }
         
         public AttachmentStoreOp StoreOp
         {
-            get { return NativeHandle->StoreOp; }
-            set { NativeHandle->StoreOp = value; }
+            get { return NativePointer->StoreOp; }
+            set { NativePointer->StoreOp = value; }
         }
         
         public AttachmentLoadOp StencilLoadOp
         {
-            get { return NativeHandle->StencilLoadOp; }
-            set { NativeHandle->StencilLoadOp = value; }
+            get { return NativePointer->StencilLoadOp; }
+            set { NativePointer->StencilLoadOp = value; }
         }
         
         public AttachmentStoreOp StencilStoreOp
         {
-            get { return NativeHandle->StencilStoreOp; }
-            set { NativeHandle->StencilStoreOp = value; }
+            get { return NativePointer->StencilStoreOp; }
+            set { NativePointer->StencilStoreOp = value; }
         }
         
         public ImageLayout InitialLayout
         {
-            get { return NativeHandle->InitialLayout; }
-            set { NativeHandle->InitialLayout = value; }
+            get { return NativePointer->InitialLayout; }
+            set { NativePointer->InitialLayout = value; }
         }
         
         public ImageLayout FinalLayout
         {
-            get { return NativeHandle->FinalLayout; }
-            set { NativeHandle->FinalLayout = value; }
+            get { return NativePointer->FinalLayout; }
+            set { NativePointer->FinalLayout = value; }
         }
         
         public AttachmentDescription()
         {
-            NativeHandle = (Interop.AttachmentDescription*)Interop.Structure.Allocate(typeof(Interop.AttachmentDescription));
+            NativePointer = (Interop.AttachmentDescription*)Interop.Structure.Allocate(typeof(Interop.AttachmentDescription));
         }
     }
 }

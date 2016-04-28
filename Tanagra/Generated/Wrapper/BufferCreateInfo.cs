@@ -5,49 +5,48 @@ namespace Vulkan
 {
     unsafe public class BufferCreateInfo
     {
-        internal Interop.BufferCreateInfo* NativeHandle;
+        internal Interop.BufferCreateInfo* NativePointer;
         
         public BufferCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public BufferUsageFlags Usage
         {
-            get { return NativeHandle->Usage; }
-            set { NativeHandle->Usage = value; }
+            get { return NativePointer->Usage; }
+            set { NativePointer->Usage = value; }
         }
         
         public SharingMode SharingMode
         {
-            get { return NativeHandle->SharingMode; }
-            set { NativeHandle->SharingMode = value; }
+            get { return NativePointer->SharingMode; }
+            set { NativePointer->SharingMode = value; }
         }
         
         public UInt32 QueueFamilyIndexCount
         {
-            get { return NativeHandle->QueueFamilyIndexCount; }
-            set { NativeHandle->QueueFamilyIndexCount = value; }
+            get { return NativePointer->QueueFamilyIndexCount; }
+            set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
         public UInt32 QueueFamilyIndices
         {
-            get { return NativeHandle->QueueFamilyIndices; }
-            set { NativeHandle->QueueFamilyIndices = value; }
+            get { return NativePointer->QueueFamilyIndices; }
+            set { NativePointer->QueueFamilyIndices = value; }
         }
         
         public BufferCreateInfo()
         {
-            NativeHandle = (Interop.BufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferCreateInfo));
-            //NativeHandle->SType = StructureType.BufferCreateInfo;
+            NativePointer = (Interop.BufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferCreateInfo));
+            //NativePointer->SType = StructureType.BufferCreateInfo;
         }
     }
 }

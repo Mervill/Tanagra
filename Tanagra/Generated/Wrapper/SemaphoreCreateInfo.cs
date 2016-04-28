@@ -5,18 +5,18 @@ namespace Vulkan
 {
     unsafe public class SemaphoreCreateInfo
     {
-        internal Interop.SemaphoreCreateInfo* NativeHandle;
+        internal Interop.SemaphoreCreateInfo* NativePointer;
         
         public SemaphoreCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public SemaphoreCreateInfo()
         {
-            NativeHandle = (Interop.SemaphoreCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SemaphoreCreateInfo));
-            //NativeHandle->SType = StructureType.SemaphoreCreateInfo;
+            NativePointer = (Interop.SemaphoreCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SemaphoreCreateInfo));
+            //NativePointer->SType = StructureType.SemaphoreCreateInfo;
         }
     }
 }

@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class PipelineInputAssemblyStateCreateInfo
     {
-        internal Interop.PipelineInputAssemblyStateCreateInfo* NativeHandle;
+        internal Interop.PipelineInputAssemblyStateCreateInfo* NativePointer;
         
         public PipelineInputAssemblyStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public PrimitiveTopology Topology
         {
-            get { return NativeHandle->Topology; }
-            set { NativeHandle->Topology = value; }
+            get { return NativePointer->Topology; }
+            set { NativePointer->Topology = value; }
         }
         
         public Boolean PrimitiveRestartEnable
         {
-            get { return NativeHandle->PrimitiveRestartEnable; }
-            set { NativeHandle->PrimitiveRestartEnable = value; }
+            get { return NativePointer->PrimitiveRestartEnable; }
+            set { NativePointer->PrimitiveRestartEnable = value; }
         }
         
         public PipelineInputAssemblyStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineInputAssemblyStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineInputAssemblyStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
+            NativePointer = (Interop.PipelineInputAssemblyStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineInputAssemblyStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
         }
     }
 }

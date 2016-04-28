@@ -5,78 +5,78 @@ namespace Vulkan
 {
     unsafe public class PipelineRasterizationStateCreateInfo
     {
-        internal Interop.PipelineRasterizationStateCreateInfo* NativeHandle;
+        internal Interop.PipelineRasterizationStateCreateInfo* NativePointer;
         
         public PipelineRasterizationStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public Boolean DepthClampEnable
         {
-            get { return NativeHandle->DepthClampEnable; }
-            set { NativeHandle->DepthClampEnable = value; }
+            get { return NativePointer->DepthClampEnable; }
+            set { NativePointer->DepthClampEnable = value; }
         }
         
         public Boolean RasterizerDiscardEnable
         {
-            get { return NativeHandle->RasterizerDiscardEnable; }
-            set { NativeHandle->RasterizerDiscardEnable = value; }
+            get { return NativePointer->RasterizerDiscardEnable; }
+            set { NativePointer->RasterizerDiscardEnable = value; }
         }
         
         public PolygonMode PolygonMode
         {
-            get { return NativeHandle->PolygonMode; }
-            set { NativeHandle->PolygonMode = value; }
+            get { return NativePointer->PolygonMode; }
+            set { NativePointer->PolygonMode = value; }
         }
         
         public CullModeFlags CullMode
         {
-            get { return NativeHandle->CullMode; }
-            set { NativeHandle->CullMode = value; }
+            get { return NativePointer->CullMode; }
+            set { NativePointer->CullMode = value; }
         }
         
         public FrontFace FrontFace
         {
-            get { return NativeHandle->FrontFace; }
-            set { NativeHandle->FrontFace = value; }
+            get { return NativePointer->FrontFace; }
+            set { NativePointer->FrontFace = value; }
         }
         
         public Boolean DepthBiasEnable
         {
-            get { return NativeHandle->DepthBiasEnable; }
-            set { NativeHandle->DepthBiasEnable = value; }
+            get { return NativePointer->DepthBiasEnable; }
+            set { NativePointer->DepthBiasEnable = value; }
         }
         
         public Single DepthBiasConstantFactor
         {
-            get { return NativeHandle->DepthBiasConstantFactor; }
-            set { NativeHandle->DepthBiasConstantFactor = value; }
+            get { return NativePointer->DepthBiasConstantFactor; }
+            set { NativePointer->DepthBiasConstantFactor = value; }
         }
         
         public Single DepthBiasClamp
         {
-            get { return NativeHandle->DepthBiasClamp; }
-            set { NativeHandle->DepthBiasClamp = value; }
+            get { return NativePointer->DepthBiasClamp; }
+            set { NativePointer->DepthBiasClamp = value; }
         }
         
         public Single DepthBiasSlopeFactor
         {
-            get { return NativeHandle->DepthBiasSlopeFactor; }
-            set { NativeHandle->DepthBiasSlopeFactor = value; }
+            get { return NativePointer->DepthBiasSlopeFactor; }
+            set { NativePointer->DepthBiasSlopeFactor = value; }
         }
         
         public Single LineWidth
         {
-            get { return NativeHandle->LineWidth; }
-            set { NativeHandle->LineWidth = value; }
+            get { return NativePointer->LineWidth; }
+            set { NativePointer->LineWidth = value; }
         }
         
         public PipelineRasterizationStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineRasterizationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineRasterizationStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineRasterizationStateCreateInfo;
+            NativePointer = (Interop.PipelineRasterizationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineRasterizationStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
     }
 }

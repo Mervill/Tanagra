@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class PipelineDynamicStateCreateInfo
     {
-        internal Interop.PipelineDynamicStateCreateInfo* NativeHandle;
+        internal Interop.PipelineDynamicStateCreateInfo* NativePointer;
         
         public PipelineDynamicStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UInt32 DynamicStateCount
         {
-            get { return NativeHandle->DynamicStateCount; }
-            set { NativeHandle->DynamicStateCount = value; }
+            get { return NativePointer->DynamicStateCount; }
+            set { NativePointer->DynamicStateCount = value; }
         }
         
         public DynamicState DynamicStates
         {
-            get { return NativeHandle->DynamicStates; }
-            set { NativeHandle->DynamicStates = value; }
+            get { return NativePointer->DynamicStates; }
+            set { NativePointer->DynamicStates = value; }
         }
         
         public PipelineDynamicStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineDynamicStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDynamicStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineDynamicStateCreateInfo;
+            NativePointer = (Interop.PipelineDynamicStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDynamicStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
         }
     }
 }

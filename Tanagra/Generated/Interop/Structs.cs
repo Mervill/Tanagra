@@ -8,11 +8,6 @@ namespace Vulkan.Interop
     {
     }
 
-    internal struct DeviceSize
-    {
-        // Imported type
-    }
-
     internal struct Display
     {
         // Imported type
@@ -253,14 +248,14 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal IntPtr AllocationSize;
+        internal DeviceSize AllocationSize;
         internal UInt32 MemoryTypeIndex;
     }
 
     internal struct MemoryRequirements
     {
-        internal IntPtr Size;
-        internal IntPtr Alignment;
+        internal DeviceSize Size;
+        internal DeviceSize Alignment;
         internal UInt32 MemoryTypeBits;
     }
 
@@ -275,9 +270,9 @@ namespace Vulkan.Interop
     {
         internal IntPtr FormatProperties;
         internal UInt32 ImageMipTailFirstLod;
-        internal IntPtr ImageMipTailSize;
-        internal IntPtr ImageMipTailOffset;
-        internal IntPtr ImageMipTailStride;
+        internal DeviceSize ImageMipTailSize;
+        internal DeviceSize ImageMipTailOffset;
+        internal DeviceSize ImageMipTailStride;
     }
 
     internal struct MemoryType
@@ -288,7 +283,7 @@ namespace Vulkan.Interop
 
     internal struct MemoryHeap
     {
-        internal IntPtr Size;
+        internal DeviceSize Size;
         internal MemoryHeapFlags Flags;
     }
 
@@ -297,8 +292,8 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal IntPtr Memory;
-        internal IntPtr Offset;
-        internal IntPtr Size;
+        internal DeviceSize Offset;
+        internal DeviceSize Size;
     }
 
     internal struct FormatProperties
@@ -314,14 +309,14 @@ namespace Vulkan.Interop
         internal UInt32 MaxMipLevels;
         internal UInt32 MaxArrayLayers;
         internal SampleCountFlags SampleCounts;
-        internal IntPtr MaxResourceSize;
+        internal DeviceSize MaxResourceSize;
     }
 
     internal struct DescriptorBufferInfo
     {
         internal IntPtr Buffer;
-        internal IntPtr Offset;
-        internal IntPtr Range;
+        internal DeviceSize Offset;
+        internal DeviceSize Range;
     }
 
     internal struct DescriptorImageInfo
@@ -363,7 +358,7 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal BufferCreateFlags Flags;
-        internal IntPtr Size;
+        internal DeviceSize Size;
         internal BufferUsageFlags Usage;
         internal SharingMode SharingMode;
         internal UInt32 QueueFamilyIndexCount;
@@ -377,8 +372,8 @@ namespace Vulkan.Interop
         internal BufferViewCreateFlags Flags;
         internal IntPtr Buffer;
         internal Format Format;
-        internal IntPtr Offset;
-        internal IntPtr Range;
+        internal DeviceSize Offset;
+        internal DeviceSize Range;
     }
 
     internal struct ImageSubresource
@@ -422,8 +417,8 @@ namespace Vulkan.Interop
         internal UInt32 SrcQueueFamilyIndex;
         internal UInt32 DstQueueFamilyIndex;
         internal IntPtr Buffer;
-        internal IntPtr Offset;
-        internal IntPtr Size;
+        internal DeviceSize Offset;
+        internal DeviceSize Size;
     }
 
     internal struct ImageMemoryBarrier
@@ -461,11 +456,11 @@ namespace Vulkan.Interop
 
     internal struct SubresourceLayout
     {
-        internal IntPtr Offset;
-        internal IntPtr Size;
-        internal IntPtr RowPitch;
-        internal IntPtr ArrayPitch;
-        internal IntPtr DepthPitch;
+        internal DeviceSize Offset;
+        internal DeviceSize Size;
+        internal DeviceSize RowPitch;
+        internal DeviceSize ArrayPitch;
+        internal DeviceSize DepthPitch;
     }
 
     internal struct ImageViewCreateInfo
@@ -482,17 +477,17 @@ namespace Vulkan.Interop
 
     internal struct BufferCopy
     {
-        internal IntPtr SrcOffset;
-        internal IntPtr DstOffset;
-        internal IntPtr Size;
+        internal DeviceSize SrcOffset;
+        internal DeviceSize DstOffset;
+        internal DeviceSize Size;
     }
 
     internal struct SparseMemoryBind
     {
-        internal IntPtr ResourceOffset;
-        internal IntPtr Size;
+        internal DeviceSize ResourceOffset;
+        internal DeviceSize Size;
         internal IntPtr Memory;
-        internal IntPtr MemoryOffset;
+        internal DeviceSize MemoryOffset;
         internal SparseMemoryBindFlags Flags;
     }
 
@@ -502,7 +497,7 @@ namespace Vulkan.Interop
         internal IntPtr Offset;
         internal IntPtr Extent;
         internal IntPtr Memory;
-        internal IntPtr MemoryOffset;
+        internal DeviceSize MemoryOffset;
         internal SparseMemoryBindFlags Flags;
     }
 
@@ -562,7 +557,7 @@ namespace Vulkan.Interop
 
     internal struct BufferImageCopy
     {
-        internal IntPtr BufferOffset;
+        internal DeviceSize BufferOffset;
         internal UInt32 BufferRowLength;
         internal UInt32 BufferImageHeight;
         internal IntPtr ImageSubresource;
@@ -1097,8 +1092,8 @@ namespace Vulkan.Interop
         internal UInt32 MaxPushConstantsSize;
         internal UInt32 MaxMemoryAllocationCount;
         internal UInt32 MaxSamplerAllocationCount;
-        internal IntPtr BufferImageGranularity;
-        internal IntPtr SparseAddressSpaceSize;
+        internal DeviceSize BufferImageGranularity;
+        internal DeviceSize SparseAddressSpaceSize;
         internal UInt32 MaxBoundDescriptorSets;
         internal UInt32 MaxPerStageDescriptorSamplers;
         internal UInt32 MaxPerStageDescriptorUniformBuffers;
@@ -1153,9 +1148,9 @@ namespace Vulkan.Interop
         internal Single ViewportBoundsRange;
         internal UInt32 ViewportSubPixelBits;
         internal UIntPtr MinMemoryMapAlignment;
-        internal IntPtr MinTexelBufferOffsetAlignment;
-        internal IntPtr MinUniformBufferOffsetAlignment;
-        internal IntPtr MinStorageBufferOffsetAlignment;
+        internal DeviceSize MinTexelBufferOffsetAlignment;
+        internal DeviceSize MinUniformBufferOffsetAlignment;
+        internal DeviceSize MinStorageBufferOffsetAlignment;
         internal Int32 MinTexelOffset;
         internal UInt32 MaxTexelOffset;
         internal Int32 MinTexelGatherOffset;
@@ -1189,9 +1184,9 @@ namespace Vulkan.Interop
         internal Single LineWidthGranularity;
         internal Boolean StrictLines;
         internal Boolean StandardSampleLocations;
-        internal IntPtr OptimalBufferCopyOffsetAlignment;
-        internal IntPtr OptimalBufferCopyRowPitchAlignment;
-        internal IntPtr NonCoherentAtomSize;
+        internal DeviceSize OptimalBufferCopyOffsetAlignment;
+        internal DeviceSize OptimalBufferCopyRowPitchAlignment;
+        internal DeviceSize NonCoherentAtomSize;
     }
 
     internal struct SemaphoreCreateInfo

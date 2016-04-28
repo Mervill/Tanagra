@@ -5,77 +5,77 @@ namespace Vulkan
 {
     unsafe public class DeviceCreateInfo
     {
-        internal Interop.DeviceCreateInfo* NativeHandle;
+        internal Interop.DeviceCreateInfo* NativePointer;
         
         public DeviceCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UInt32 QueueCreateInfoCount
         {
-            get { return NativeHandle->QueueCreateInfoCount; }
-            set { NativeHandle->QueueCreateInfoCount = value; }
+            get { return NativePointer->QueueCreateInfoCount; }
+            set { NativePointer->QueueCreateInfoCount = value; }
         }
         
         DeviceQueueCreateInfo _QueueCreateInfos;
         public DeviceQueueCreateInfo QueueCreateInfos
         {
             get { return _QueueCreateInfos; }
-            set { _QueueCreateInfos = value; NativeHandle->QueueCreateInfos = (IntPtr)value.NativeHandle; }
+            set { _QueueCreateInfos = value; NativePointer->QueueCreateInfos = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 EnabledLayerCount
         {
-            get { return NativeHandle->EnabledLayerCount; }
-            set { NativeHandle->EnabledLayerCount = value; }
+            get { return NativePointer->EnabledLayerCount; }
+            set { NativePointer->EnabledLayerCount = value; }
         }
         
         public string[] EnabledLayerNames
         {
             get
             {
-                var strings = new String[NativeHandle->EnabledLayerCount];
-                void** ptr = (void**)NativeHandle->EnabledLayerNames;
-                for(int x = 0; x < NativeHandle->EnabledLayerCount; x++)
+                var strings = new String[NativePointer->EnabledLayerCount];
+                void** ptr = (void**)NativePointer->EnabledLayerNames;
+                for(int x = 0; x < NativePointer->EnabledLayerCount; x++)
                     strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
                 
                 return strings;
             }
             set
             {
-                NativeHandle->EnabledLayerCount = (uint)value.Length;
-                NativeHandle->EnabledLayerNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativeHandle->EnabledLayerCount));
-                void** ptr = (void**)NativeHandle->EnabledLayerNames;
-                for(int x = 0; x < NativeHandle->EnabledLayerCount; x++)
+                NativePointer->EnabledLayerCount = (uint)value.Length;
+                NativePointer->EnabledLayerNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledLayerCount));
+                void** ptr = (void**)NativePointer->EnabledLayerNames;
+                for(int x = 0; x < NativePointer->EnabledLayerCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }
         
         public UInt32 EnabledExtensionCount
         {
-            get { return NativeHandle->EnabledExtensionCount; }
-            set { NativeHandle->EnabledExtensionCount = value; }
+            get { return NativePointer->EnabledExtensionCount; }
+            set { NativePointer->EnabledExtensionCount = value; }
         }
         
         public string[] EnabledExtensionNames
         {
             get
             {
-                var strings = new String[NativeHandle->EnabledExtensionCount];
-                void** ptr = (void**)NativeHandle->EnabledExtensionNames;
-                for(int x = 0; x < NativeHandle->EnabledExtensionCount; x++)
+                var strings = new String[NativePointer->EnabledExtensionCount];
+                void** ptr = (void**)NativePointer->EnabledExtensionNames;
+                for(int x = 0; x < NativePointer->EnabledExtensionCount; x++)
                     strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
                 
                 return strings;
             }
             set
             {
-                NativeHandle->EnabledExtensionCount = (uint)value.Length;
-                NativeHandle->EnabledExtensionNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativeHandle->EnabledExtensionCount));
-                void** ptr = (void**)NativeHandle->EnabledExtensionNames;
-                for(int x = 0; x < NativeHandle->EnabledExtensionCount; x++)
+                NativePointer->EnabledExtensionCount = (uint)value.Length;
+                NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledExtensionCount));
+                void** ptr = (void**)NativePointer->EnabledExtensionNames;
+                for(int x = 0; x < NativePointer->EnabledExtensionCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }
@@ -84,13 +84,13 @@ namespace Vulkan
         public PhysicalDeviceFeatures EnabledFeatures
         {
             get { return _EnabledFeatures; }
-            set { _EnabledFeatures = value; NativeHandle->EnabledFeatures = (IntPtr)value.NativeHandle; }
+            set { _EnabledFeatures = value; NativePointer->EnabledFeatures = (IntPtr)value.NativePointer; }
         }
         
         public DeviceCreateInfo()
         {
-            NativeHandle = (Interop.DeviceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceCreateInfo));
-            //NativeHandle->SType = StructureType.DeviceCreateInfo;
+            NativePointer = (Interop.DeviceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceCreateInfo));
+            //NativePointer->SType = StructureType.DeviceCreateInfo;
         }
     }
 }

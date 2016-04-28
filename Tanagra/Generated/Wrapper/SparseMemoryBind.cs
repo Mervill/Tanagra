@@ -5,45 +5,42 @@ namespace Vulkan
 {
     unsafe public class SparseMemoryBind
     {
-        internal Interop.SparseMemoryBind* NativeHandle;
+        internal Interop.SparseMemoryBind* NativePointer;
         
-        DeviceSize _ResourceOffset;
         public DeviceSize ResourceOffset
         {
-            get { return _ResourceOffset; }
-            set { _ResourceOffset = value; NativeHandle->ResourceOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->ResourceOffset; }
+            set { NativePointer->ResourceOffset = value; }
         }
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         DeviceMemory _Memory;
         public DeviceMemory Memory
         {
             get { return _Memory; }
-            set { _Memory = value; NativeHandle->Memory = (IntPtr)value.NativeHandle; }
+            set { _Memory = value; NativePointer->Memory = (IntPtr)value.NativePointer; }
         }
         
-        DeviceSize _MemoryOffset;
         public DeviceSize MemoryOffset
         {
-            get { return _MemoryOffset; }
-            set { _MemoryOffset = value; NativeHandle->MemoryOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->MemoryOffset; }
+            set { NativePointer->MemoryOffset = value; }
         }
         
         public SparseMemoryBindFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public SparseMemoryBind()
         {
-            NativeHandle = (Interop.SparseMemoryBind*)Interop.Structure.Allocate(typeof(Interop.SparseMemoryBind));
+            NativePointer = (Interop.SparseMemoryBind*)Interop.Structure.Allocate(typeof(Interop.SparseMemoryBind));
         }
     }
 }

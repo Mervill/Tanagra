@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class ClearValue
     {
-        internal Interop.ClearValue* NativeHandle;
+        internal Interop.ClearValue* NativePointer;
         
         public ClearValue()
         {
-            NativeHandle = (Interop.ClearValue*)Interop.Structure.Allocate(typeof(Interop.ClearValue));
+            NativePointer = (Interop.ClearValue*)Interop.Structure.Allocate(typeof(Interop.ClearValue));
         }
     }
 }

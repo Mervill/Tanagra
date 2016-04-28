@@ -5,32 +5,32 @@ namespace Vulkan
 {
     unsafe public class DisplayPresentInfoKHR
     {
-        internal Interop.DisplayPresentInfoKHR* NativeHandle;
+        internal Interop.DisplayPresentInfoKHR* NativePointer;
         
         Rect2D _SrcRect;
         public Rect2D SrcRect
         {
             get { return _SrcRect; }
-            set { _SrcRect = value; NativeHandle->SrcRect = (IntPtr)value.NativeHandle; }
+            set { _SrcRect = value; NativePointer->SrcRect = (IntPtr)value.NativePointer; }
         }
         
         Rect2D _DstRect;
         public Rect2D DstRect
         {
             get { return _DstRect; }
-            set { _DstRect = value; NativeHandle->DstRect = (IntPtr)value.NativeHandle; }
+            set { _DstRect = value; NativePointer->DstRect = (IntPtr)value.NativePointer; }
         }
         
         public Boolean Persistent
         {
-            get { return NativeHandle->Persistent; }
-            set { NativeHandle->Persistent = value; }
+            get { return NativePointer->Persistent; }
+            set { NativePointer->Persistent = value; }
         }
         
         public DisplayPresentInfoKHR()
         {
-            NativeHandle = (Interop.DisplayPresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPresentInfoKHR));
-            //NativeHandle->SType = StructureType.DisplayPresentInfoKHR;
+            NativePointer = (Interop.DisplayPresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPresentInfoKHR));
+            //NativePointer->SType = StructureType.DisplayPresentInfoKHR;
         }
     }
 }

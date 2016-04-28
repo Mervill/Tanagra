@@ -218,7 +218,6 @@
     <Compile Include="Generated\Wrapper\DescriptorSetLayoutCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DeviceCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DeviceQueueCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DeviceSize.cs" />
     <Compile Include="Generated\Wrapper\DispatchIndirectCommand.cs" />
     <Compile Include="Generated\Wrapper\Display.cs" />
     <Compile Include="Generated\Wrapper\DisplayModeCreateInfoKHR.cs" />

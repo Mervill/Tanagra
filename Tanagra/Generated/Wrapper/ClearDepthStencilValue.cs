@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class ClearDepthStencilValue
     {
-        internal Interop.ClearDepthStencilValue* NativeHandle;
+        internal Interop.ClearDepthStencilValue* NativePointer;
         
         public Single Depth
         {
-            get { return NativeHandle->Depth; }
-            set { NativeHandle->Depth = value; }
+            get { return NativePointer->Depth; }
+            set { NativePointer->Depth = value; }
         }
         
         public UInt32 Stencil
         {
-            get { return NativeHandle->Stencil; }
-            set { NativeHandle->Stencil = value; }
+            get { return NativePointer->Stencil; }
+            set { NativePointer->Stencil = value; }
         }
         
         public ClearDepthStencilValue()
         {
-            NativeHandle = (Interop.ClearDepthStencilValue*)Interop.Structure.Allocate(typeof(Interop.ClearDepthStencilValue));
+            NativePointer = (Interop.ClearDepthStencilValue*)Interop.Structure.Allocate(typeof(Interop.ClearDepthStencilValue));
         }
     }
 }

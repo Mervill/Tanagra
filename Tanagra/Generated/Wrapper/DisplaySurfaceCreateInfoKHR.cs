@@ -5,62 +5,62 @@ namespace Vulkan
 {
     unsafe public class DisplaySurfaceCreateInfoKHR
     {
-        internal Interop.DisplaySurfaceCreateInfoKHR* NativeHandle;
+        internal Interop.DisplaySurfaceCreateInfoKHR* NativePointer;
         
         public DisplaySurfaceCreateFlagsKHR Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         DisplayModeKHR _DisplayMode;
         public DisplayModeKHR DisplayMode
         {
             get { return _DisplayMode; }
-            set { _DisplayMode = value; NativeHandle->DisplayMode = (IntPtr)value.NativeHandle; }
+            set { _DisplayMode = value; NativePointer->DisplayMode = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 PlaneIndex
         {
-            get { return NativeHandle->PlaneIndex; }
-            set { NativeHandle->PlaneIndex = value; }
+            get { return NativePointer->PlaneIndex; }
+            set { NativePointer->PlaneIndex = value; }
         }
         
         public UInt32 PlaneStackIndex
         {
-            get { return NativeHandle->PlaneStackIndex; }
-            set { NativeHandle->PlaneStackIndex = value; }
+            get { return NativePointer->PlaneStackIndex; }
+            set { NativePointer->PlaneStackIndex = value; }
         }
         
         public SurfaceTransformFlagBitsKHR Transform
         {
-            get { return NativeHandle->Transform; }
-            set { NativeHandle->Transform = value; }
+            get { return NativePointer->Transform; }
+            set { NativePointer->Transform = value; }
         }
         
         public Single GlobalAlpha
         {
-            get { return NativeHandle->GlobalAlpha; }
-            set { NativeHandle->GlobalAlpha = value; }
+            get { return NativePointer->GlobalAlpha; }
+            set { NativePointer->GlobalAlpha = value; }
         }
         
         public DisplayPlaneAlphaFlagBitsKHR AlphaMode
         {
-            get { return NativeHandle->AlphaMode; }
-            set { NativeHandle->AlphaMode = value; }
+            get { return NativePointer->AlphaMode; }
+            set { NativePointer->AlphaMode = value; }
         }
         
         Extent2D _ImageExtent;
         public Extent2D ImageExtent
         {
             get { return _ImageExtent; }
-            set { _ImageExtent = value; NativeHandle->ImageExtent = (IntPtr)value.NativeHandle; }
+            set { _ImageExtent = value; NativePointer->ImageExtent = (IntPtr)value.NativePointer; }
         }
         
         public DisplaySurfaceCreateInfoKHR()
         {
-            NativeHandle = (Interop.DisplaySurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplaySurfaceCreateInfoKHR));
-            //NativeHandle->SType = StructureType.DisplaySurfaceCreateInfoKHR;
+            NativePointer = (Interop.DisplaySurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplaySurfaceCreateInfoKHR));
+            //NativePointer->SType = StructureType.DisplaySurfaceCreateInfoKHR;
         }
     }
 }

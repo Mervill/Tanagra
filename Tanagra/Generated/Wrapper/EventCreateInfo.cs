@@ -5,18 +5,18 @@ namespace Vulkan
 {
     unsafe public class EventCreateInfo
     {
-        internal Interop.EventCreateInfo* NativeHandle;
+        internal Interop.EventCreateInfo* NativePointer;
         
         public EventCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public EventCreateInfo()
         {
-            NativeHandle = (Interop.EventCreateInfo*)Interop.Structure.Allocate(typeof(Interop.EventCreateInfo));
-            //NativeHandle->SType = StructureType.EventCreateInfo;
+            NativePointer = (Interop.EventCreateInfo*)Interop.Structure.Allocate(typeof(Interop.EventCreateInfo));
+            //NativePointer->SType = StructureType.EventCreateInfo;
         }
     }
 }

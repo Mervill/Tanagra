@@ -5,62 +5,62 @@ namespace Vulkan
 {
     unsafe public class ImageMemoryBarrier
     {
-        internal Interop.ImageMemoryBarrier* NativeHandle;
+        internal Interop.ImageMemoryBarrier* NativePointer;
         
         public AccessFlags SrcAccessMask
         {
-            get { return NativeHandle->SrcAccessMask; }
-            set { NativeHandle->SrcAccessMask = value; }
+            get { return NativePointer->SrcAccessMask; }
+            set { NativePointer->SrcAccessMask = value; }
         }
         
         public AccessFlags DstAccessMask
         {
-            get { return NativeHandle->DstAccessMask; }
-            set { NativeHandle->DstAccessMask = value; }
+            get { return NativePointer->DstAccessMask; }
+            set { NativePointer->DstAccessMask = value; }
         }
         
         public ImageLayout OldLayout
         {
-            get { return NativeHandle->OldLayout; }
-            set { NativeHandle->OldLayout = value; }
+            get { return NativePointer->OldLayout; }
+            set { NativePointer->OldLayout = value; }
         }
         
         public ImageLayout NewLayout
         {
-            get { return NativeHandle->NewLayout; }
-            set { NativeHandle->NewLayout = value; }
+            get { return NativePointer->NewLayout; }
+            set { NativePointer->NewLayout = value; }
         }
         
         public UInt32 SrcQueueFamilyIndex
         {
-            get { return NativeHandle->SrcQueueFamilyIndex; }
-            set { NativeHandle->SrcQueueFamilyIndex = value; }
+            get { return NativePointer->SrcQueueFamilyIndex; }
+            set { NativePointer->SrcQueueFamilyIndex = value; }
         }
         
         public UInt32 DstQueueFamilyIndex
         {
-            get { return NativeHandle->DstQueueFamilyIndex; }
-            set { NativeHandle->DstQueueFamilyIndex = value; }
+            get { return NativePointer->DstQueueFamilyIndex; }
+            set { NativePointer->DstQueueFamilyIndex = value; }
         }
         
         Image _Image;
         public Image Image
         {
             get { return _Image; }
-            set { _Image = value; NativeHandle->Image = (IntPtr)value.NativeHandle; }
+            set { _Image = value; NativePointer->Image = (IntPtr)value.NativePointer; }
         }
         
         ImageSubresourceRange _SubresourceRange;
         public ImageSubresourceRange SubresourceRange
         {
             get { return _SubresourceRange; }
-            set { _SubresourceRange = value; NativeHandle->SubresourceRange = (IntPtr)value.NativeHandle; }
+            set { _SubresourceRange = value; NativePointer->SubresourceRange = (IntPtr)value.NativePointer; }
         }
         
         public ImageMemoryBarrier()
         {
-            NativeHandle = (Interop.ImageMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.ImageMemoryBarrier));
-            //NativeHandle->SType = StructureType.ImageMemoryBarrier;
+            NativePointer = (Interop.ImageMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.ImageMemoryBarrier));
+            //NativePointer->SType = StructureType.ImageMemoryBarrier;
         }
     }
 }

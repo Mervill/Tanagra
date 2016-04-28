@@ -5,35 +5,35 @@ namespace Vulkan
 {
     unsafe public class ComponentMapping
     {
-        internal Interop.ComponentMapping* NativeHandle;
+        internal Interop.ComponentMapping* NativePointer;
         
         public ComponentSwizzle R
         {
-            get { return NativeHandle->R; }
-            set { NativeHandle->R = value; }
+            get { return NativePointer->R; }
+            set { NativePointer->R = value; }
         }
         
         public ComponentSwizzle G
         {
-            get { return NativeHandle->G; }
-            set { NativeHandle->G = value; }
+            get { return NativePointer->G; }
+            set { NativePointer->G = value; }
         }
         
         public ComponentSwizzle B
         {
-            get { return NativeHandle->B; }
-            set { NativeHandle->B = value; }
+            get { return NativePointer->B; }
+            set { NativePointer->B = value; }
         }
         
         public ComponentSwizzle A
         {
-            get { return NativeHandle->A; }
-            set { NativeHandle->A = value; }
+            get { return NativePointer->A; }
+            set { NativePointer->A = value; }
         }
         
         public ComponentMapping()
         {
-            NativeHandle = (Interop.ComponentMapping*)Interop.Structure.Allocate(typeof(Interop.ComponentMapping));
+            NativePointer = (Interop.ComponentMapping*)Interop.Structure.Allocate(typeof(Interop.ComponentMapping));
         }
     }
 }

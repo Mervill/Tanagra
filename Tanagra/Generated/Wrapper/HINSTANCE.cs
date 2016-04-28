@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class HINSTANCE
     {
-        internal Interop.HINSTANCE* NativeHandle;
+        internal Interop.HINSTANCE* NativePointer;
         
         public HINSTANCE()
         {
-            NativeHandle = (Interop.HINSTANCE*)Interop.Structure.Allocate(typeof(Interop.HINSTANCE));
+            NativePointer = (Interop.HINSTANCE*)Interop.Structure.Allocate(typeof(Interop.HINSTANCE));
         }
     }
 }

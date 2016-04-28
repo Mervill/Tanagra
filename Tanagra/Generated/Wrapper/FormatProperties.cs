@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class FormatProperties
     {
-        internal Interop.FormatProperties* NativeHandle;
+        internal Interop.FormatProperties* NativePointer;
         
         public FormatFeatureFlags LinearTilingFeatures
         {
-            get { return NativeHandle->LinearTilingFeatures; }
-            set { NativeHandle->LinearTilingFeatures = value; }
+            get { return NativePointer->LinearTilingFeatures; }
+            set { NativePointer->LinearTilingFeatures = value; }
         }
         
         public FormatFeatureFlags OptimalTilingFeatures
         {
-            get { return NativeHandle->OptimalTilingFeatures; }
-            set { NativeHandle->OptimalTilingFeatures = value; }
+            get { return NativePointer->OptimalTilingFeatures; }
+            set { NativePointer->OptimalTilingFeatures = value; }
         }
         
         public FormatFeatureFlags BufferFeatures
         {
-            get { return NativeHandle->BufferFeatures; }
-            set { NativeHandle->BufferFeatures = value; }
+            get { return NativePointer->BufferFeatures; }
+            set { NativePointer->BufferFeatures = value; }
         }
         
         public FormatProperties()
         {
-            NativeHandle = (Interop.FormatProperties*)Interop.Structure.Allocate(typeof(Interop.FormatProperties));
+            NativePointer = (Interop.FormatProperties*)Interop.Structure.Allocate(typeof(Interop.FormatProperties));
         }
     }
 }

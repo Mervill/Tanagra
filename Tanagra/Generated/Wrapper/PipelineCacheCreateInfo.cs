@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class PipelineCacheCreateInfo
     {
-        internal Interop.PipelineCacheCreateInfo* NativeHandle;
+        internal Interop.PipelineCacheCreateInfo* NativePointer;
         
         public PipelineCacheCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UIntPtr InitialDataSize
         {
-            get { return NativeHandle->InitialDataSize; }
-            set { NativeHandle->InitialDataSize = value; }
+            get { return NativePointer->InitialDataSize; }
+            set { NativePointer->InitialDataSize = value; }
         }
         
         public IntPtr InitialData
         {
-            get { return NativeHandle->InitialData; }
-            set { NativeHandle->InitialData = value; }
+            get { return NativePointer->InitialData; }
+            set { NativePointer->InitialData = value; }
         }
         
         public PipelineCacheCreateInfo()
         {
-            NativeHandle = (Interop.PipelineCacheCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineCacheCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineCacheCreateInfo;
+            NativePointer = (Interop.PipelineCacheCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineCacheCreateInfo));
+            //NativePointer->SType = StructureType.PipelineCacheCreateInfo;
         }
     }
 }

@@ -5,25 +5,25 @@ namespace Vulkan
 {
     unsafe public class DisplayModeCreateInfoKHR
     {
-        internal Interop.DisplayModeCreateInfoKHR* NativeHandle;
+        internal Interop.DisplayModeCreateInfoKHR* NativePointer;
         
         public DisplayModeCreateFlagsKHR Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         DisplayModeParametersKHR _Parameters;
         public DisplayModeParametersKHR Parameters
         {
             get { return _Parameters; }
-            set { _Parameters = value; NativeHandle->Parameters = (IntPtr)value.NativeHandle; }
+            set { _Parameters = value; NativePointer->Parameters = (IntPtr)value.NativePointer; }
         }
         
         public DisplayModeCreateInfoKHR()
         {
-            NativeHandle = (Interop.DisplayModeCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModeCreateInfoKHR));
-            //NativeHandle->SType = StructureType.DisplayModeCreateInfoKHR;
+            NativePointer = (Interop.DisplayModeCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModeCreateInfoKHR));
+            //NativePointer->SType = StructureType.DisplayModeCreateInfoKHR;
         }
     }
 }

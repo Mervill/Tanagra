@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class Extent2D
     {
-        internal Interop.Extent2D* NativeHandle;
+        internal Interop.Extent2D* NativePointer;
         
         public UInt32 Width
         {
-            get { return NativeHandle->Width; }
-            set { NativeHandle->Width = value; }
+            get { return NativePointer->Width; }
+            set { NativePointer->Width = value; }
         }
         
         public UInt32 Height
         {
-            get { return NativeHandle->Height; }
-            set { NativeHandle->Height = value; }
+            get { return NativePointer->Height; }
+            set { NativePointer->Height = value; }
         }
         
         public Extent2D()
         {
-            NativeHandle = (Interop.Extent2D*)Interop.Structure.Allocate(typeof(Interop.Extent2D));
+            NativePointer = (Interop.Extent2D*)Interop.Structure.Allocate(typeof(Interop.Extent2D));
         }
     }
 }

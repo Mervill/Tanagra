@@ -5,31 +5,29 @@ namespace Vulkan
 {
     unsafe public class MemoryRequirements
     {
-        internal Interop.MemoryRequirements* NativeHandle;
+        internal Interop.MemoryRequirements* NativePointer;
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
-        DeviceSize _Alignment;
         public DeviceSize Alignment
         {
-            get { return _Alignment; }
-            set { _Alignment = value; NativeHandle->Alignment = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Alignment; }
+            set { NativePointer->Alignment = value; }
         }
         
         public UInt32 MemoryTypeBits
         {
-            get { return NativeHandle->MemoryTypeBits; }
-            set { NativeHandle->MemoryTypeBits = value; }
+            get { return NativePointer->MemoryTypeBits; }
+            set { NativePointer->MemoryTypeBits = value; }
         }
         
         public MemoryRequirements()
         {
-            NativeHandle = (Interop.MemoryRequirements*)Interop.Structure.Allocate(typeof(Interop.MemoryRequirements));
+            NativePointer = (Interop.MemoryRequirements*)Interop.Structure.Allocate(typeof(Interop.MemoryRequirements));
         }
     }
 }

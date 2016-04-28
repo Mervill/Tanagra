@@ -5,24 +5,24 @@ namespace Vulkan
 {
     unsafe public class DisplayPlanePropertiesKHR
     {
-        internal Interop.DisplayPlanePropertiesKHR* NativeHandle;
+        internal Interop.DisplayPlanePropertiesKHR* NativePointer;
         
         DisplayKHR _CurrentDisplay;
         public DisplayKHR CurrentDisplay
         {
             get { return _CurrentDisplay; }
-            set { _CurrentDisplay = value; NativeHandle->CurrentDisplay = (IntPtr)value.NativeHandle; }
+            set { _CurrentDisplay = value; NativePointer->CurrentDisplay = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 CurrentStackIndex
         {
-            get { return NativeHandle->CurrentStackIndex; }
-            set { NativeHandle->CurrentStackIndex = value; }
+            get { return NativePointer->CurrentStackIndex; }
+            set { NativePointer->CurrentStackIndex = value; }
         }
         
         public DisplayPlanePropertiesKHR()
         {
-            NativeHandle = (Interop.DisplayPlanePropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPlanePropertiesKHR));
+            NativePointer = (Interop.DisplayPlanePropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPlanePropertiesKHR));
         }
     }
 }

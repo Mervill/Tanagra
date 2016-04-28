@@ -5,43 +5,42 @@ namespace Vulkan
 {
     unsafe public class ImageFormatProperties
     {
-        internal Interop.ImageFormatProperties* NativeHandle;
+        internal Interop.ImageFormatProperties* NativePointer;
         
         Extent3D _MaxExtent;
         public Extent3D MaxExtent
         {
             get { return _MaxExtent; }
-            set { _MaxExtent = value; NativeHandle->MaxExtent = (IntPtr)value.NativeHandle; }
+            set { _MaxExtent = value; NativePointer->MaxExtent = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 MaxMipLevels
         {
-            get { return NativeHandle->MaxMipLevels; }
-            set { NativeHandle->MaxMipLevels = value; }
+            get { return NativePointer->MaxMipLevels; }
+            set { NativePointer->MaxMipLevels = value; }
         }
         
         public UInt32 MaxArrayLayers
         {
-            get { return NativeHandle->MaxArrayLayers; }
-            set { NativeHandle->MaxArrayLayers = value; }
+            get { return NativePointer->MaxArrayLayers; }
+            set { NativePointer->MaxArrayLayers = value; }
         }
         
         public SampleCountFlags SampleCounts
         {
-            get { return NativeHandle->SampleCounts; }
-            set { NativeHandle->SampleCounts = value; }
+            get { return NativePointer->SampleCounts; }
+            set { NativePointer->SampleCounts = value; }
         }
         
-        DeviceSize _MaxResourceSize;
         public DeviceSize MaxResourceSize
         {
-            get { return _MaxResourceSize; }
-            set { _MaxResourceSize = value; NativeHandle->MaxResourceSize = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->MaxResourceSize; }
+            set { NativePointer->MaxResourceSize = value; }
         }
         
         public ImageFormatProperties()
         {
-            NativeHandle = (Interop.ImageFormatProperties*)Interop.Structure.Allocate(typeof(Interop.ImageFormatProperties));
+            NativePointer = (Interop.ImageFormatProperties*)Interop.Structure.Allocate(typeof(Interop.ImageFormatProperties));
         }
     }
 }

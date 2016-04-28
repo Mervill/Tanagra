@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class Display
     {
-        internal Interop.Display* NativeHandle;
+        internal Interop.Display* NativePointer;
         
         public Display()
         {
-            NativeHandle = (Interop.Display*)Interop.Structure.Allocate(typeof(Interop.Display));
+            NativePointer = (Interop.Display*)Interop.Structure.Allocate(typeof(Interop.Display));
         }
     }
 }

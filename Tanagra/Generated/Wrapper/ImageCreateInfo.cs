@@ -5,91 +5,91 @@ namespace Vulkan
 {
     unsafe public class ImageCreateInfo
     {
-        internal Interop.ImageCreateInfo* NativeHandle;
+        internal Interop.ImageCreateInfo* NativePointer;
         
         public ImageCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public ImageType ImageType
         {
-            get { return NativeHandle->ImageType; }
-            set { NativeHandle->ImageType = value; }
+            get { return NativePointer->ImageType; }
+            set { NativePointer->ImageType = value; }
         }
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
         Extent3D _Extent;
         public Extent3D Extent
         {
             get { return _Extent; }
-            set { _Extent = value; NativeHandle->Extent = (IntPtr)value.NativeHandle; }
+            set { _Extent = value; NativePointer->Extent = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 MipLevels
         {
-            get { return NativeHandle->MipLevels; }
-            set { NativeHandle->MipLevels = value; }
+            get { return NativePointer->MipLevels; }
+            set { NativePointer->MipLevels = value; }
         }
         
         public UInt32 ArrayLayers
         {
-            get { return NativeHandle->ArrayLayers; }
-            set { NativeHandle->ArrayLayers = value; }
+            get { return NativePointer->ArrayLayers; }
+            set { NativePointer->ArrayLayers = value; }
         }
         
         public SampleCountFlags Samples
         {
-            get { return NativeHandle->Samples; }
-            set { NativeHandle->Samples = value; }
+            get { return NativePointer->Samples; }
+            set { NativePointer->Samples = value; }
         }
         
         public ImageTiling Tiling
         {
-            get { return NativeHandle->Tiling; }
-            set { NativeHandle->Tiling = value; }
+            get { return NativePointer->Tiling; }
+            set { NativePointer->Tiling = value; }
         }
         
         public ImageUsageFlags Usage
         {
-            get { return NativeHandle->Usage; }
-            set { NativeHandle->Usage = value; }
+            get { return NativePointer->Usage; }
+            set { NativePointer->Usage = value; }
         }
         
         public SharingMode SharingMode
         {
-            get { return NativeHandle->SharingMode; }
-            set { NativeHandle->SharingMode = value; }
+            get { return NativePointer->SharingMode; }
+            set { NativePointer->SharingMode = value; }
         }
         
         public UInt32 QueueFamilyIndexCount
         {
-            get { return NativeHandle->QueueFamilyIndexCount; }
-            set { NativeHandle->QueueFamilyIndexCount = value; }
+            get { return NativePointer->QueueFamilyIndexCount; }
+            set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
         public UInt32 QueueFamilyIndices
         {
-            get { return NativeHandle->QueueFamilyIndices; }
-            set { NativeHandle->QueueFamilyIndices = value; }
+            get { return NativePointer->QueueFamilyIndices; }
+            set { NativePointer->QueueFamilyIndices = value; }
         }
         
         public ImageLayout InitialLayout
         {
-            get { return NativeHandle->InitialLayout; }
-            set { NativeHandle->InitialLayout = value; }
+            get { return NativePointer->InitialLayout; }
+            set { NativePointer->InitialLayout = value; }
         }
         
         public ImageCreateInfo()
         {
-            NativeHandle = (Interop.ImageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageCreateInfo));
-            //NativeHandle->SType = StructureType.ImageCreateInfo;
+            NativePointer = (Interop.ImageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageCreateInfo));
+            //NativePointer->SType = StructureType.ImageCreateInfo;
         }
     }
 }

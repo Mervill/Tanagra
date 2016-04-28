@@ -5,35 +5,35 @@ namespace Vulkan
 {
     unsafe public class LayerProperties
     {
-        internal Interop.LayerProperties* NativeHandle;
+        internal Interop.LayerProperties* NativePointer;
         
         public string LayerName
         {
-            get { return Marshal.PtrToStringAnsi(NativeHandle->LayerName); }
-            set { NativeHandle->LayerName = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi(NativePointer->LayerName); }
+            set { NativePointer->LayerName = Marshal.StringToHGlobalAnsi(value); }
         }
         
         public UInt32 SpecVersion
         {
-            get { return NativeHandle->SpecVersion; }
-            set { NativeHandle->SpecVersion = value; }
+            get { return NativePointer->SpecVersion; }
+            set { NativePointer->SpecVersion = value; }
         }
         
         public UInt32 ImplementationVersion
         {
-            get { return NativeHandle->ImplementationVersion; }
-            set { NativeHandle->ImplementationVersion = value; }
+            get { return NativePointer->ImplementationVersion; }
+            set { NativePointer->ImplementationVersion = value; }
         }
         
         public string Description
         {
-            get { return Marshal.PtrToStringAnsi(NativeHandle->Description); }
-            set { NativeHandle->Description = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi(NativePointer->Description); }
+            set { NativePointer->Description = Marshal.StringToHGlobalAnsi(value); }
         }
         
         public LayerProperties()
         {
-            NativeHandle = (Interop.LayerProperties*)Interop.Structure.Allocate(typeof(Interop.LayerProperties));
+            NativePointer = (Interop.LayerProperties*)Interop.Structure.Allocate(typeof(Interop.LayerProperties));
         }
     }
 }

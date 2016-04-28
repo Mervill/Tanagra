@@ -5,36 +5,36 @@ namespace Vulkan
 {
     unsafe public class DeviceQueueCreateInfo
     {
-        internal Interop.DeviceQueueCreateInfo* NativeHandle;
+        internal Interop.DeviceQueueCreateInfo* NativePointer;
         
         public DeviceQueueCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UInt32 QueueFamilyIndex
         {
-            get { return NativeHandle->QueueFamilyIndex; }
-            set { NativeHandle->QueueFamilyIndex = value; }
+            get { return NativePointer->QueueFamilyIndex; }
+            set { NativePointer->QueueFamilyIndex = value; }
         }
         
         public UInt32 QueueCount
         {
-            get { return NativeHandle->QueueCount; }
-            set { NativeHandle->QueueCount = value; }
+            get { return NativePointer->QueueCount; }
+            set { NativePointer->QueueCount = value; }
         }
         
         public Single QueuePriorities
         {
-            get { return NativeHandle->QueuePriorities; }
-            set { NativeHandle->QueuePriorities = value; }
+            get { return NativePointer->QueuePriorities; }
+            set { NativePointer->QueuePriorities = value; }
         }
         
         public DeviceQueueCreateInfo()
         {
-            NativeHandle = (Interop.DeviceQueueCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceQueueCreateInfo));
-            //NativeHandle->SType = StructureType.DeviceQueueCreateInfo;
+            NativePointer = (Interop.DeviceQueueCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceQueueCreateInfo));
+            //NativePointer->SType = StructureType.DeviceQueueCreateInfo;
         }
     }
 }

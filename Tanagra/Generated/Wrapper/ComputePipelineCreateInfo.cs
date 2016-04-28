@@ -5,45 +5,45 @@ namespace Vulkan
 {
     unsafe public class ComputePipelineCreateInfo
     {
-        internal Interop.ComputePipelineCreateInfo* NativeHandle;
+        internal Interop.ComputePipelineCreateInfo* NativePointer;
         
         public PipelineCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         PipelineShaderStageCreateInfo _Stage;
         public PipelineShaderStageCreateInfo Stage
         {
             get { return _Stage; }
-            set { _Stage = value; NativeHandle->Stage = (IntPtr)value.NativeHandle; }
+            set { _Stage = value; NativePointer->Stage = (IntPtr)value.NativePointer; }
         }
         
         PipelineLayout _Layout;
         public PipelineLayout Layout
         {
             get { return _Layout; }
-            set { _Layout = value; NativeHandle->Layout = (IntPtr)value.NativeHandle; }
+            set { _Layout = value; NativePointer->Layout = (IntPtr)value.NativePointer; }
         }
         
         Pipeline _BasePipelineHandle;
         public Pipeline BasePipelineHandle
         {
             get { return _BasePipelineHandle; }
-            set { _BasePipelineHandle = value; NativeHandle->BasePipelineHandle = (IntPtr)value.NativeHandle; }
+            set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = (IntPtr)value.NativePointer; }
         }
         
         public Int32 BasePipelineIndex
         {
-            get { return NativeHandle->BasePipelineIndex; }
-            set { NativeHandle->BasePipelineIndex = value; }
+            get { return NativePointer->BasePipelineIndex; }
+            set { NativePointer->BasePipelineIndex = value; }
         }
         
         public ComputePipelineCreateInfo()
         {
-            NativeHandle = (Interop.ComputePipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ComputePipelineCreateInfo));
-            //NativeHandle->SType = StructureType.ComputePipelineCreateInfo;
+            NativePointer = (Interop.ComputePipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ComputePipelineCreateInfo));
+            //NativePointer->SType = StructureType.ComputePipelineCreateInfo;
         }
     }
 }

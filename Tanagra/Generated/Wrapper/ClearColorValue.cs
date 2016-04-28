@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class ClearColorValue
     {
-        internal Interop.ClearColorValue* NativeHandle;
+        internal Interop.ClearColorValue* NativePointer;
         
         public ClearColorValue()
         {
-            NativeHandle = (Interop.ClearColorValue*)Interop.Structure.Allocate(typeof(Interop.ClearColorValue));
+            NativePointer = (Interop.ClearColorValue*)Interop.Structure.Allocate(typeof(Interop.ClearColorValue));
         }
     }
 }

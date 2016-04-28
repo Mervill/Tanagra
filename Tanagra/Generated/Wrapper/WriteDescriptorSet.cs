@@ -5,64 +5,64 @@ namespace Vulkan
 {
     unsafe public class WriteDescriptorSet
     {
-        internal Interop.WriteDescriptorSet* NativeHandle;
+        internal Interop.WriteDescriptorSet* NativePointer;
         
         DescriptorSet _DstSet;
         public DescriptorSet DstSet
         {
             get { return _DstSet; }
-            set { _DstSet = value; NativeHandle->DstSet = (IntPtr)value.NativeHandle; }
+            set { _DstSet = value; NativePointer->DstSet = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 DstBinding
         {
-            get { return NativeHandle->DstBinding; }
-            set { NativeHandle->DstBinding = value; }
+            get { return NativePointer->DstBinding; }
+            set { NativePointer->DstBinding = value; }
         }
         
         public UInt32 DstArrayElement
         {
-            get { return NativeHandle->DstArrayElement; }
-            set { NativeHandle->DstArrayElement = value; }
+            get { return NativePointer->DstArrayElement; }
+            set { NativePointer->DstArrayElement = value; }
         }
         
         public UInt32 DescriptorCount
         {
-            get { return NativeHandle->DescriptorCount; }
-            set { NativeHandle->DescriptorCount = value; }
+            get { return NativePointer->DescriptorCount; }
+            set { NativePointer->DescriptorCount = value; }
         }
         
         public DescriptorType DescriptorType
         {
-            get { return NativeHandle->DescriptorType; }
-            set { NativeHandle->DescriptorType = value; }
+            get { return NativePointer->DescriptorType; }
+            set { NativePointer->DescriptorType = value; }
         }
         
         DescriptorImageInfo _ImageInfo;
         public DescriptorImageInfo ImageInfo
         {
             get { return _ImageInfo; }
-            set { _ImageInfo = value; NativeHandle->ImageInfo = (IntPtr)value.NativeHandle; }
+            set { _ImageInfo = value; NativePointer->ImageInfo = (IntPtr)value.NativePointer; }
         }
         
         DescriptorBufferInfo _BufferInfo;
         public DescriptorBufferInfo BufferInfo
         {
             get { return _BufferInfo; }
-            set { _BufferInfo = value; NativeHandle->BufferInfo = (IntPtr)value.NativeHandle; }
+            set { _BufferInfo = value; NativePointer->BufferInfo = (IntPtr)value.NativePointer; }
         }
         
         BufferView _TexelBufferView;
         public BufferView TexelBufferView
         {
             get { return _TexelBufferView; }
-            set { _TexelBufferView = value; NativeHandle->TexelBufferView = (IntPtr)value.NativeHandle; }
+            set { _TexelBufferView = value; NativePointer->TexelBufferView = (IntPtr)value.NativePointer; }
         }
         
         public WriteDescriptorSet()
         {
-            NativeHandle = (Interop.WriteDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.WriteDescriptorSet));
-            //NativeHandle->SType = StructureType.WriteDescriptorSet;
+            NativePointer = (Interop.WriteDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.WriteDescriptorSet));
+            //NativePointer->SType = StructureType.WriteDescriptorSet;
         }
     }
 }

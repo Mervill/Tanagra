@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class MirSurface
     {
-        internal Interop.MirSurface* NativeHandle;
+        internal Interop.MirSurface* NativePointer;
         
         public MirSurface()
         {
-            NativeHandle = (Interop.MirSurface*)Interop.Structure.Allocate(typeof(Interop.MirSurface));
+            NativePointer = (Interop.MirSurface*)Interop.Structure.Allocate(typeof(Interop.MirSurface));
         }
     }
 }

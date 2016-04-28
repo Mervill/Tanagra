@@ -5,44 +5,44 @@ namespace Vulkan
 {
     unsafe public class PipelineShaderStageCreateInfo
     {
-        internal Interop.PipelineShaderStageCreateInfo* NativeHandle;
+        internal Interop.PipelineShaderStageCreateInfo* NativePointer;
         
         public PipelineShaderStageCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public ShaderStageFlags Stage
         {
-            get { return NativeHandle->Stage; }
-            set { NativeHandle->Stage = value; }
+            get { return NativePointer->Stage; }
+            set { NativePointer->Stage = value; }
         }
         
         ShaderModule _Module;
         public ShaderModule Module
         {
             get { return _Module; }
-            set { _Module = value; NativeHandle->Module = (IntPtr)value.NativeHandle; }
+            set { _Module = value; NativePointer->Module = (IntPtr)value.NativePointer; }
         }
         
         public string Name
         {
-            get { return Marshal.PtrToStringAnsi(NativeHandle->Name); }
-            set { NativeHandle->Name = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi(NativePointer->Name); }
+            set { NativePointer->Name = Marshal.StringToHGlobalAnsi(value); }
         }
         
         SpecializationInfo _SpecializationInfo;
         public SpecializationInfo SpecializationInfo
         {
             get { return _SpecializationInfo; }
-            set { _SpecializationInfo = value; NativeHandle->SpecializationInfo = (IntPtr)value.NativeHandle; }
+            set { _SpecializationInfo = value; NativePointer->SpecializationInfo = (IntPtr)value.NativePointer; }
         }
         
         public PipelineShaderStageCreateInfo()
         {
-            NativeHandle = (Interop.PipelineShaderStageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineShaderStageCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineShaderStageCreateInfo;
+            NativePointer = (Interop.PipelineShaderStageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineShaderStageCreateInfo));
+            //NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
         }
     }
 }

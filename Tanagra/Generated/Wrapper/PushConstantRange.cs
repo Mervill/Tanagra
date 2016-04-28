@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class PushConstantRange
     {
-        internal Interop.PushConstantRange* NativeHandle;
+        internal Interop.PushConstantRange* NativePointer;
         
         public ShaderStageFlags StageFlags
         {
-            get { return NativeHandle->StageFlags; }
-            set { NativeHandle->StageFlags = value; }
+            get { return NativePointer->StageFlags; }
+            set { NativePointer->StageFlags = value; }
         }
         
         public UInt32 Offset
         {
-            get { return NativeHandle->Offset; }
-            set { NativeHandle->Offset = value; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
         public UInt32 Size
         {
-            get { return NativeHandle->Size; }
-            set { NativeHandle->Size = value; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public PushConstantRange()
         {
-            NativeHandle = (Interop.PushConstantRange*)Interop.Structure.Allocate(typeof(Interop.PushConstantRange));
+            NativePointer = (Interop.PushConstantRange*)Interop.Structure.Allocate(typeof(Interop.PushConstantRange));
         }
     }
 }

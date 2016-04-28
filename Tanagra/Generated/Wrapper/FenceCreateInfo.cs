@@ -5,18 +5,18 @@ namespace Vulkan
 {
     unsafe public class FenceCreateInfo
     {
-        internal Interop.FenceCreateInfo* NativeHandle;
+        internal Interop.FenceCreateInfo* NativePointer;
         
         public FenceCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public FenceCreateInfo()
         {
-            NativeHandle = (Interop.FenceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FenceCreateInfo));
-            //NativeHandle->SType = StructureType.FenceCreateInfo;
+            NativePointer = (Interop.FenceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FenceCreateInfo));
+            //NativePointer->SType = StructureType.FenceCreateInfo;
         }
     }
 }

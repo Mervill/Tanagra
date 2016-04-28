@@ -5,76 +5,76 @@ namespace Vulkan
 {
     unsafe public class SurfaceCapabilitiesKHR
     {
-        internal Interop.SurfaceCapabilitiesKHR* NativeHandle;
+        internal Interop.SurfaceCapabilitiesKHR* NativePointer;
         
         public UInt32 MinImageCount
         {
-            get { return NativeHandle->MinImageCount; }
-            set { NativeHandle->MinImageCount = value; }
+            get { return NativePointer->MinImageCount; }
+            set { NativePointer->MinImageCount = value; }
         }
         
         public UInt32 MaxImageCount
         {
-            get { return NativeHandle->MaxImageCount; }
-            set { NativeHandle->MaxImageCount = value; }
+            get { return NativePointer->MaxImageCount; }
+            set { NativePointer->MaxImageCount = value; }
         }
         
         Extent2D _CurrentExtent;
         public Extent2D CurrentExtent
         {
             get { return _CurrentExtent; }
-            set { _CurrentExtent = value; NativeHandle->CurrentExtent = (IntPtr)value.NativeHandle; }
+            set { _CurrentExtent = value; NativePointer->CurrentExtent = (IntPtr)value.NativePointer; }
         }
         
         Extent2D _MinImageExtent;
         public Extent2D MinImageExtent
         {
             get { return _MinImageExtent; }
-            set { _MinImageExtent = value; NativeHandle->MinImageExtent = (IntPtr)value.NativeHandle; }
+            set { _MinImageExtent = value; NativePointer->MinImageExtent = (IntPtr)value.NativePointer; }
         }
         
         Extent2D _MaxImageExtent;
         public Extent2D MaxImageExtent
         {
             get { return _MaxImageExtent; }
-            set { _MaxImageExtent = value; NativeHandle->MaxImageExtent = (IntPtr)value.NativeHandle; }
+            set { _MaxImageExtent = value; NativePointer->MaxImageExtent = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 MaxImageArrayLayers
         {
-            get { return NativeHandle->MaxImageArrayLayers; }
-            set { NativeHandle->MaxImageArrayLayers = value; }
+            get { return NativePointer->MaxImageArrayLayers; }
+            set { NativePointer->MaxImageArrayLayers = value; }
         }
         
         VkSurfaceTransformFlagsKHR _SupportedTransforms;
         public VkSurfaceTransformFlagsKHR SupportedTransforms
         {
             get { return _SupportedTransforms; }
-            set { _SupportedTransforms = value; NativeHandle->SupportedTransforms = (IntPtr)value.NativeHandle; }
+            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = (IntPtr)value.NativePointer; }
         }
         
         public SurfaceTransformFlagBitsKHR CurrentTransform
         {
-            get { return NativeHandle->CurrentTransform; }
-            set { NativeHandle->CurrentTransform = value; }
+            get { return NativePointer->CurrentTransform; }
+            set { NativePointer->CurrentTransform = value; }
         }
         
         VkCompositeAlphaFlagsKHR _SupportedCompositeAlpha;
         public VkCompositeAlphaFlagsKHR SupportedCompositeAlpha
         {
             get { return _SupportedCompositeAlpha; }
-            set { _SupportedCompositeAlpha = value; NativeHandle->SupportedCompositeAlpha = (IntPtr)value.NativeHandle; }
+            set { _SupportedCompositeAlpha = value; NativePointer->SupportedCompositeAlpha = (IntPtr)value.NativePointer; }
         }
         
         public ImageUsageFlags SupportedUsageFlags
         {
-            get { return NativeHandle->SupportedUsageFlags; }
-            set { NativeHandle->SupportedUsageFlags = value; }
+            get { return NativePointer->SupportedUsageFlags; }
+            set { NativePointer->SupportedUsageFlags = value; }
         }
         
         public SurfaceCapabilitiesKHR()
         {
-            NativeHandle = (Interop.SurfaceCapabilitiesKHR*)Interop.Structure.Allocate(typeof(Interop.SurfaceCapabilitiesKHR));
+            NativePointer = (Interop.SurfaceCapabilitiesKHR*)Interop.Structure.Allocate(typeof(Interop.SurfaceCapabilitiesKHR));
         }
     }
 }

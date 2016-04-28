@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class MemoryType
     {
-        internal Interop.MemoryType* NativeHandle;
+        internal Interop.MemoryType* NativePointer;
         
         public MemoryPropertyFlags PropertyFlags
         {
-            get { return NativeHandle->PropertyFlags; }
-            set { NativeHandle->PropertyFlags = value; }
+            get { return NativePointer->PropertyFlags; }
+            set { NativePointer->PropertyFlags = value; }
         }
         
         public UInt32 HeapIndex
         {
-            get { return NativeHandle->HeapIndex; }
-            set { NativeHandle->HeapIndex = value; }
+            get { return NativePointer->HeapIndex; }
+            set { NativePointer->HeapIndex = value; }
         }
         
         public MemoryType()
         {
-            NativeHandle = (Interop.MemoryType*)Interop.Structure.Allocate(typeof(Interop.MemoryType));
+            NativePointer = (Interop.MemoryType*)Interop.Structure.Allocate(typeof(Interop.MemoryType));
         }
     }
 }

@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class ClearRect
     {
-        internal Interop.ClearRect* NativeHandle;
+        internal Interop.ClearRect* NativePointer;
         
         Rect2D _Rect;
         public Rect2D Rect
         {
             get { return _Rect; }
-            set { _Rect = value; NativeHandle->Rect = (IntPtr)value.NativeHandle; }
+            set { _Rect = value; NativePointer->Rect = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 BaseArrayLayer
         {
-            get { return NativeHandle->BaseArrayLayer; }
-            set { NativeHandle->BaseArrayLayer = value; }
+            get { return NativePointer->BaseArrayLayer; }
+            set { NativePointer->BaseArrayLayer = value; }
         }
         
         public UInt32 LayerCount
         {
-            get { return NativeHandle->LayerCount; }
-            set { NativeHandle->LayerCount = value; }
+            get { return NativePointer->LayerCount; }
+            set { NativePointer->LayerCount = value; }
         }
         
         public ClearRect()
         {
-            NativeHandle = (Interop.ClearRect*)Interop.Structure.Allocate(typeof(Interop.ClearRect));
+            NativePointer = (Interop.ClearRect*)Interop.Structure.Allocate(typeof(Interop.ClearRect));
         }
     }
 }

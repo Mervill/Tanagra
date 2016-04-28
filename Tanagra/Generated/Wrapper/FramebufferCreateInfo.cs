@@ -5,56 +5,56 @@ namespace Vulkan
 {
     unsafe public class FramebufferCreateInfo
     {
-        internal Interop.FramebufferCreateInfo* NativeHandle;
+        internal Interop.FramebufferCreateInfo* NativePointer;
         
         public FramebufferCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         RenderPass _RenderPass;
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativeHandle->RenderPass = (IntPtr)value.NativeHandle; }
+            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 AttachmentCount
         {
-            get { return NativeHandle->AttachmentCount; }
-            set { NativeHandle->AttachmentCount = value; }
+            get { return NativePointer->AttachmentCount; }
+            set { NativePointer->AttachmentCount = value; }
         }
         
         ImageView _Attachments;
         public ImageView Attachments
         {
             get { return _Attachments; }
-            set { _Attachments = value; NativeHandle->Attachments = (IntPtr)value.NativeHandle; }
+            set { _Attachments = value; NativePointer->Attachments = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 Width
         {
-            get { return NativeHandle->Width; }
-            set { NativeHandle->Width = value; }
+            get { return NativePointer->Width; }
+            set { NativePointer->Width = value; }
         }
         
         public UInt32 Height
         {
-            get { return NativeHandle->Height; }
-            set { NativeHandle->Height = value; }
+            get { return NativePointer->Height; }
+            set { NativePointer->Height = value; }
         }
         
         public UInt32 Layers
         {
-            get { return NativeHandle->Layers; }
-            set { NativeHandle->Layers = value; }
+            get { return NativePointer->Layers; }
+            set { NativePointer->Layers = value; }
         }
         
         public FramebufferCreateInfo()
         {
-            NativeHandle = (Interop.FramebufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FramebufferCreateInfo));
-            //NativeHandle->SType = StructureType.FramebufferCreateInfo;
+            NativePointer = (Interop.FramebufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FramebufferCreateInfo));
+            //NativePointer->SType = StructureType.FramebufferCreateInfo;
         }
     }
 }

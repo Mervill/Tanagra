@@ -5,31 +5,31 @@ namespace Vulkan
 {
     unsafe public class CommandBufferAllocateInfo
     {
-        internal Interop.CommandBufferAllocateInfo* NativeHandle;
+        internal Interop.CommandBufferAllocateInfo* NativePointer;
         
         CommandPool _CommandPool;
         public CommandPool CommandPool
         {
             get { return _CommandPool; }
-            set { _CommandPool = value; NativeHandle->CommandPool = (IntPtr)value.NativeHandle; }
+            set { _CommandPool = value; NativePointer->CommandPool = (IntPtr)value.NativePointer; }
         }
         
         public CommandBufferLevel Level
         {
-            get { return NativeHandle->Level; }
-            set { NativeHandle->Level = value; }
+            get { return NativePointer->Level; }
+            set { NativePointer->Level = value; }
         }
         
         public UInt32 CommandBufferCount
         {
-            get { return NativeHandle->CommandBufferCount; }
-            set { NativeHandle->CommandBufferCount = value; }
+            get { return NativePointer->CommandBufferCount; }
+            set { NativePointer->CommandBufferCount = value; }
         }
         
         public CommandBufferAllocateInfo()
         {
-            NativeHandle = (Interop.CommandBufferAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferAllocateInfo));
-            //NativeHandle->SType = StructureType.CommandBufferAllocateInfo;
+            NativePointer = (Interop.CommandBufferAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferAllocateInfo));
+            //NativePointer->SType = StructureType.CommandBufferAllocateInfo;
         }
     }
 }

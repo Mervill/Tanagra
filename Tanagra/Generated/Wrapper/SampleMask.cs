@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class SampleMask
     {
-        internal Interop.SampleMask* NativeHandle;
+        internal Interop.SampleMask* NativePointer;
         
         public SampleMask()
         {
-            NativeHandle = (Interop.SampleMask*)Interop.Structure.Allocate(typeof(Interop.SampleMask));
+            NativePointer = (Interop.SampleMask*)Interop.Structure.Allocate(typeof(Interop.SampleMask));
         }
     }
 }

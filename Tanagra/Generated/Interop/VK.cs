@@ -78,7 +78,7 @@ namespace Vulkan.Interop
         internal static extern void vkFreeMemory(IntPtr device, IntPtr memory, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkMapMemory", CallingConvention = callingConvention)]
-        internal static extern Result vkMapMemory(IntPtr device, IntPtr memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags, IntPtr** data);
+        internal static extern Result vkMapMemory(IntPtr device, IntPtr memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags, IntPtr* data);
         
         [DllImport(DllName, EntryPoint = "vkUnmapMemory", CallingConvention = callingConvention)]
         internal static extern void vkUnmapMemory(IntPtr device, IntPtr memory);

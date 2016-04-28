@@ -5,74 +5,74 @@ namespace Vulkan
 {
     unsafe public class PipelineDepthStencilStateCreateInfo
     {
-        internal Interop.PipelineDepthStencilStateCreateInfo* NativeHandle;
+        internal Interop.PipelineDepthStencilStateCreateInfo* NativePointer;
         
         public PipelineDepthStencilStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public Boolean DepthTestEnable
         {
-            get { return NativeHandle->DepthTestEnable; }
-            set { NativeHandle->DepthTestEnable = value; }
+            get { return NativePointer->DepthTestEnable; }
+            set { NativePointer->DepthTestEnable = value; }
         }
         
         public Boolean DepthWriteEnable
         {
-            get { return NativeHandle->DepthWriteEnable; }
-            set { NativeHandle->DepthWriteEnable = value; }
+            get { return NativePointer->DepthWriteEnable; }
+            set { NativePointer->DepthWriteEnable = value; }
         }
         
         public CompareOp DepthCompareOp
         {
-            get { return NativeHandle->DepthCompareOp; }
-            set { NativeHandle->DepthCompareOp = value; }
+            get { return NativePointer->DepthCompareOp; }
+            set { NativePointer->DepthCompareOp = value; }
         }
         
         public Boolean DepthBoundsTestEnable
         {
-            get { return NativeHandle->DepthBoundsTestEnable; }
-            set { NativeHandle->DepthBoundsTestEnable = value; }
+            get { return NativePointer->DepthBoundsTestEnable; }
+            set { NativePointer->DepthBoundsTestEnable = value; }
         }
         
         public Boolean StencilTestEnable
         {
-            get { return NativeHandle->StencilTestEnable; }
-            set { NativeHandle->StencilTestEnable = value; }
+            get { return NativePointer->StencilTestEnable; }
+            set { NativePointer->StencilTestEnable = value; }
         }
         
         StencilOpState _Front;
         public StencilOpState Front
         {
             get { return _Front; }
-            set { _Front = value; NativeHandle->Front = (IntPtr)value.NativeHandle; }
+            set { _Front = value; NativePointer->Front = (IntPtr)value.NativePointer; }
         }
         
         StencilOpState _Back;
         public StencilOpState Back
         {
             get { return _Back; }
-            set { _Back = value; NativeHandle->Back = (IntPtr)value.NativeHandle; }
+            set { _Back = value; NativePointer->Back = (IntPtr)value.NativePointer; }
         }
         
         public Single MinDepthBounds
         {
-            get { return NativeHandle->MinDepthBounds; }
-            set { NativeHandle->MinDepthBounds = value; }
+            get { return NativePointer->MinDepthBounds; }
+            set { NativePointer->MinDepthBounds = value; }
         }
         
         public Single MaxDepthBounds
         {
-            get { return NativeHandle->MaxDepthBounds; }
-            set { NativeHandle->MaxDepthBounds = value; }
+            get { return NativePointer->MaxDepthBounds; }
+            set { NativePointer->MaxDepthBounds = value; }
         }
         
         public PipelineDepthStencilStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineDepthStencilStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDepthStencilStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineDepthStencilStateCreateInfo;
+            NativePointer = (Interop.PipelineDepthStencilStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDepthStencilStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
     }
 }

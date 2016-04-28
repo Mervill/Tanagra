@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class VisualID
     {
-        internal Interop.VisualID* NativeHandle;
+        internal Interop.VisualID* NativePointer;
         
         public VisualID()
         {
-            NativeHandle = (Interop.VisualID*)Interop.Structure.Allocate(typeof(Interop.VisualID));
+            NativePointer = (Interop.VisualID*)Interop.Structure.Allocate(typeof(Interop.VisualID));
         }
     }
 }

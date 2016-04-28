@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class SurfaceFormatKHR
     {
-        internal Interop.SurfaceFormatKHR* NativeHandle;
+        internal Interop.SurfaceFormatKHR* NativePointer;
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
         public ColorSpaceKHR ColorSpace
         {
-            get { return NativeHandle->ColorSpace; }
-            set { NativeHandle->ColorSpace = value; }
+            get { return NativePointer->ColorSpace; }
+            set { NativePointer->ColorSpace = value; }
         }
         
         public SurfaceFormatKHR()
         {
-            NativeHandle = (Interop.SurfaceFormatKHR*)Interop.Structure.Allocate(typeof(Interop.SurfaceFormatKHR));
+            NativePointer = (Interop.SurfaceFormatKHR*)Interop.Structure.Allocate(typeof(Interop.SurfaceFormatKHR));
         }
     }
 }

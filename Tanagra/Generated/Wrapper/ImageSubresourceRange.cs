@@ -5,41 +5,41 @@ namespace Vulkan
 {
     unsafe public class ImageSubresourceRange
     {
-        internal Interop.ImageSubresourceRange* NativeHandle;
+        internal Interop.ImageSubresourceRange* NativePointer;
         
         public ImageAspectFlags AspectMask
         {
-            get { return NativeHandle->AspectMask; }
-            set { NativeHandle->AspectMask = value; }
+            get { return NativePointer->AspectMask; }
+            set { NativePointer->AspectMask = value; }
         }
         
         public UInt32 BaseMipLevel
         {
-            get { return NativeHandle->BaseMipLevel; }
-            set { NativeHandle->BaseMipLevel = value; }
+            get { return NativePointer->BaseMipLevel; }
+            set { NativePointer->BaseMipLevel = value; }
         }
         
         public UInt32 LevelCount
         {
-            get { return NativeHandle->LevelCount; }
-            set { NativeHandle->LevelCount = value; }
+            get { return NativePointer->LevelCount; }
+            set { NativePointer->LevelCount = value; }
         }
         
         public UInt32 BaseArrayLayer
         {
-            get { return NativeHandle->BaseArrayLayer; }
-            set { NativeHandle->BaseArrayLayer = value; }
+            get { return NativePointer->BaseArrayLayer; }
+            set { NativePointer->BaseArrayLayer = value; }
         }
         
         public UInt32 LayerCount
         {
-            get { return NativeHandle->LayerCount; }
-            set { NativeHandle->LayerCount = value; }
+            get { return NativePointer->LayerCount; }
+            set { NativePointer->LayerCount = value; }
         }
         
         public ImageSubresourceRange()
         {
-            NativeHandle = (Interop.ImageSubresourceRange*)Interop.Structure.Allocate(typeof(Interop.ImageSubresourceRange));
+            NativePointer = (Interop.ImageSubresourceRange*)Interop.Structure.Allocate(typeof(Interop.ImageSubresourceRange));
         }
     }
 }

@@ -5,41 +5,41 @@ namespace Vulkan
 {
     unsafe public class DrawIndexedIndirectCommand
     {
-        internal Interop.DrawIndexedIndirectCommand* NativeHandle;
+        internal Interop.DrawIndexedIndirectCommand* NativePointer;
         
         public UInt32 IndexCount
         {
-            get { return NativeHandle->IndexCount; }
-            set { NativeHandle->IndexCount = value; }
+            get { return NativePointer->IndexCount; }
+            set { NativePointer->IndexCount = value; }
         }
         
         public UInt32 InstanceCount
         {
-            get { return NativeHandle->InstanceCount; }
-            set { NativeHandle->InstanceCount = value; }
+            get { return NativePointer->InstanceCount; }
+            set { NativePointer->InstanceCount = value; }
         }
         
         public UInt32 FirstIndex
         {
-            get { return NativeHandle->FirstIndex; }
-            set { NativeHandle->FirstIndex = value; }
+            get { return NativePointer->FirstIndex; }
+            set { NativePointer->FirstIndex = value; }
         }
         
         public Int32 VertexOffset
         {
-            get { return NativeHandle->VertexOffset; }
-            set { NativeHandle->VertexOffset = value; }
+            get { return NativePointer->VertexOffset; }
+            set { NativePointer->VertexOffset = value; }
         }
         
         public UInt32 FirstInstance
         {
-            get { return NativeHandle->FirstInstance; }
-            set { NativeHandle->FirstInstance = value; }
+            get { return NativePointer->FirstInstance; }
+            set { NativePointer->FirstInstance = value; }
         }
         
         public DrawIndexedIndirectCommand()
         {
-            NativeHandle = (Interop.DrawIndexedIndirectCommand*)Interop.Structure.Allocate(typeof(Interop.DrawIndexedIndirectCommand));
+            NativePointer = (Interop.DrawIndexedIndirectCommand*)Interop.Structure.Allocate(typeof(Interop.DrawIndexedIndirectCommand));
         }
     }
 }

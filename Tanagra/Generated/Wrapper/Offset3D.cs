@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class Offset3D
     {
-        internal Interop.Offset3D* NativeHandle;
+        internal Interop.Offset3D* NativePointer;
         
         public Int32 X
         {
-            get { return NativeHandle->X; }
-            set { NativeHandle->X = value; }
+            get { return NativePointer->X; }
+            set { NativePointer->X = value; }
         }
         
         public Int32 Y
         {
-            get { return NativeHandle->Y; }
-            set { NativeHandle->Y = value; }
+            get { return NativePointer->Y; }
+            set { NativePointer->Y = value; }
         }
         
         public Int32 Z
         {
-            get { return NativeHandle->Z; }
-            set { NativeHandle->Z = value; }
+            get { return NativePointer->Z; }
+            set { NativePointer->Z = value; }
         }
         
         public Offset3D()
         {
-            NativeHandle = (Interop.Offset3D*)Interop.Structure.Allocate(typeof(Interop.Offset3D));
+            NativePointer = (Interop.Offset3D*)Interop.Structure.Allocate(typeof(Interop.Offset3D));
         }
     }
 }

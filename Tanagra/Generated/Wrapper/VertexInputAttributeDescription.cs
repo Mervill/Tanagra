@@ -5,35 +5,35 @@ namespace Vulkan
 {
     unsafe public class VertexInputAttributeDescription
     {
-        internal Interop.VertexInputAttributeDescription* NativeHandle;
+        internal Interop.VertexInputAttributeDescription* NativePointer;
         
         public UInt32 Location
         {
-            get { return NativeHandle->Location; }
-            set { NativeHandle->Location = value; }
+            get { return NativePointer->Location; }
+            set { NativePointer->Location = value; }
         }
         
         public UInt32 Binding
         {
-            get { return NativeHandle->Binding; }
-            set { NativeHandle->Binding = value; }
+            get { return NativePointer->Binding; }
+            set { NativePointer->Binding = value; }
         }
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
         public UInt32 Offset
         {
-            get { return NativeHandle->Offset; }
-            set { NativeHandle->Offset = value; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
         public VertexInputAttributeDescription()
         {
-            NativeHandle = (Interop.VertexInputAttributeDescription*)Interop.Structure.Allocate(typeof(Interop.VertexInputAttributeDescription));
+            NativePointer = (Interop.VertexInputAttributeDescription*)Interop.Structure.Allocate(typeof(Interop.VertexInputAttributeDescription));
         }
     }
 }

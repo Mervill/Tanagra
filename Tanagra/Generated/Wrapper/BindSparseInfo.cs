@@ -5,77 +5,77 @@ namespace Vulkan
 {
     unsafe public class BindSparseInfo
     {
-        internal Interop.BindSparseInfo* NativeHandle;
+        internal Interop.BindSparseInfo* NativePointer;
         
         public UInt32 WaitSemaphoreCount
         {
-            get { return NativeHandle->WaitSemaphoreCount; }
-            set { NativeHandle->WaitSemaphoreCount = value; }
+            get { return NativePointer->WaitSemaphoreCount; }
+            set { NativePointer->WaitSemaphoreCount = value; }
         }
         
         Semaphore _WaitSemaphores;
         public Semaphore WaitSemaphores
         {
             get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativeHandle->WaitSemaphores = (IntPtr)value.NativeHandle; }
+            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 BufferBindCount
         {
-            get { return NativeHandle->BufferBindCount; }
-            set { NativeHandle->BufferBindCount = value; }
+            get { return NativePointer->BufferBindCount; }
+            set { NativePointer->BufferBindCount = value; }
         }
         
         SparseBufferMemoryBindInfo _BufferBinds;
         public SparseBufferMemoryBindInfo BufferBinds
         {
             get { return _BufferBinds; }
-            set { _BufferBinds = value; NativeHandle->BufferBinds = (IntPtr)value.NativeHandle; }
+            set { _BufferBinds = value; NativePointer->BufferBinds = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 ImageOpaqueBindCount
         {
-            get { return NativeHandle->ImageOpaqueBindCount; }
-            set { NativeHandle->ImageOpaqueBindCount = value; }
+            get { return NativePointer->ImageOpaqueBindCount; }
+            set { NativePointer->ImageOpaqueBindCount = value; }
         }
         
         SparseImageOpaqueMemoryBindInfo _ImageOpaqueBinds;
         public SparseImageOpaqueMemoryBindInfo ImageOpaqueBinds
         {
             get { return _ImageOpaqueBinds; }
-            set { _ImageOpaqueBinds = value; NativeHandle->ImageOpaqueBinds = (IntPtr)value.NativeHandle; }
+            set { _ImageOpaqueBinds = value; NativePointer->ImageOpaqueBinds = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 ImageBindCount
         {
-            get { return NativeHandle->ImageBindCount; }
-            set { NativeHandle->ImageBindCount = value; }
+            get { return NativePointer->ImageBindCount; }
+            set { NativePointer->ImageBindCount = value; }
         }
         
         SparseImageMemoryBindInfo _ImageBinds;
         public SparseImageMemoryBindInfo ImageBinds
         {
             get { return _ImageBinds; }
-            set { _ImageBinds = value; NativeHandle->ImageBinds = (IntPtr)value.NativeHandle; }
+            set { _ImageBinds = value; NativePointer->ImageBinds = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 SignalSemaphoreCount
         {
-            get { return NativeHandle->SignalSemaphoreCount; }
-            set { NativeHandle->SignalSemaphoreCount = value; }
+            get { return NativePointer->SignalSemaphoreCount; }
+            set { NativePointer->SignalSemaphoreCount = value; }
         }
         
         Semaphore _SignalSemaphores;
         public Semaphore SignalSemaphores
         {
             get { return _SignalSemaphores; }
-            set { _SignalSemaphores = value; NativeHandle->SignalSemaphores = (IntPtr)value.NativeHandle; }
+            set { _SignalSemaphores = value; NativePointer->SignalSemaphores = (IntPtr)value.NativePointer; }
         }
         
         public BindSparseInfo()
         {
-            NativeHandle = (Interop.BindSparseInfo*)Interop.Structure.Allocate(typeof(Interop.BindSparseInfo));
-            //NativeHandle->SType = StructureType.BindSparseInfo;
+            NativePointer = (Interop.BindSparseInfo*)Interop.Structure.Allocate(typeof(Interop.BindSparseInfo));
+            //NativePointer->SType = StructureType.BindSparseInfo;
         }
     }
 }

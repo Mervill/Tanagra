@@ -5,29 +5,29 @@ namespace Vulkan
 {
     unsafe public class ImageSubresource
     {
-        internal Interop.ImageSubresource* NativeHandle;
+        internal Interop.ImageSubresource* NativePointer;
         
         public ImageAspectFlags AspectMask
         {
-            get { return NativeHandle->AspectMask; }
-            set { NativeHandle->AspectMask = value; }
+            get { return NativePointer->AspectMask; }
+            set { NativePointer->AspectMask = value; }
         }
         
         public UInt32 MipLevel
         {
-            get { return NativeHandle->MipLevel; }
-            set { NativeHandle->MipLevel = value; }
+            get { return NativePointer->MipLevel; }
+            set { NativePointer->MipLevel = value; }
         }
         
         public UInt32 ArrayLayer
         {
-            get { return NativeHandle->ArrayLayer; }
-            set { NativeHandle->ArrayLayer = value; }
+            get { return NativePointer->ArrayLayer; }
+            set { NativePointer->ArrayLayer = value; }
         }
         
         public ImageSubresource()
         {
-            NativeHandle = (Interop.ImageSubresource*)Interop.Structure.Allocate(typeof(Interop.ImageSubresource));
+            NativePointer = (Interop.ImageSubresource*)Interop.Structure.Allocate(typeof(Interop.ImageSubresource));
         }
     }
 }

@@ -5,53 +5,53 @@ namespace Vulkan
 {
     unsafe public class SubpassDependency
     {
-        internal Interop.SubpassDependency* NativeHandle;
+        internal Interop.SubpassDependency* NativePointer;
         
         public UInt32 SrcSubpass
         {
-            get { return NativeHandle->SrcSubpass; }
-            set { NativeHandle->SrcSubpass = value; }
+            get { return NativePointer->SrcSubpass; }
+            set { NativePointer->SrcSubpass = value; }
         }
         
         public UInt32 DstSubpass
         {
-            get { return NativeHandle->DstSubpass; }
-            set { NativeHandle->DstSubpass = value; }
+            get { return NativePointer->DstSubpass; }
+            set { NativePointer->DstSubpass = value; }
         }
         
         public PipelineStageFlags SrcStageMask
         {
-            get { return NativeHandle->SrcStageMask; }
-            set { NativeHandle->SrcStageMask = value; }
+            get { return NativePointer->SrcStageMask; }
+            set { NativePointer->SrcStageMask = value; }
         }
         
         public PipelineStageFlags DstStageMask
         {
-            get { return NativeHandle->DstStageMask; }
-            set { NativeHandle->DstStageMask = value; }
+            get { return NativePointer->DstStageMask; }
+            set { NativePointer->DstStageMask = value; }
         }
         
         public AccessFlags SrcAccessMask
         {
-            get { return NativeHandle->SrcAccessMask; }
-            set { NativeHandle->SrcAccessMask = value; }
+            get { return NativePointer->SrcAccessMask; }
+            set { NativePointer->SrcAccessMask = value; }
         }
         
         public AccessFlags DstAccessMask
         {
-            get { return NativeHandle->DstAccessMask; }
-            set { NativeHandle->DstAccessMask = value; }
+            get { return NativePointer->DstAccessMask; }
+            set { NativePointer->DstAccessMask = value; }
         }
         
         public DependencyFlags DependencyFlags
         {
-            get { return NativeHandle->DependencyFlags; }
-            set { NativeHandle->DependencyFlags = value; }
+            get { return NativePointer->DependencyFlags; }
+            set { NativePointer->DependencyFlags = value; }
         }
         
         public SubpassDependency()
         {
-            NativeHandle = (Interop.SubpassDependency*)Interop.Structure.Allocate(typeof(Interop.SubpassDependency));
+            NativePointer = (Interop.SubpassDependency*)Interop.Structure.Allocate(typeof(Interop.SubpassDependency));
         }
     }
 }

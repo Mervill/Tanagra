@@ -5,30 +5,30 @@ namespace Vulkan
 {
     unsafe public class ShaderModuleCreateInfo
     {
-        internal Interop.ShaderModuleCreateInfo* NativeHandle;
+        internal Interop.ShaderModuleCreateInfo* NativePointer;
         
         public ShaderModuleCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public UIntPtr CodeSize
         {
-            get { return NativeHandle->CodeSize; }
-            set { NativeHandle->CodeSize = value; }
+            get { return NativePointer->CodeSize; }
+            set { NativePointer->CodeSize = value; }
         }
         
         public UInt32 Code
         {
-            get { return NativeHandle->Code; }
-            set { NativeHandle->Code = value; }
+            get { return NativePointer->Code; }
+            set { NativePointer->Code = value; }
         }
         
         public ShaderModuleCreateInfo()
         {
-            NativeHandle = (Interop.ShaderModuleCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ShaderModuleCreateInfo));
-            //NativeHandle->SType = StructureType.ShaderModuleCreateInfo;
+            NativePointer = (Interop.ShaderModuleCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ShaderModuleCreateInfo));
+            //NativePointer->SType = StructureType.ShaderModuleCreateInfo;
         }
     }
 }

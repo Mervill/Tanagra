@@ -5,51 +5,51 @@ namespace Vulkan
 {
     unsafe public class ImageViewCreateInfo
     {
-        internal Interop.ImageViewCreateInfo* NativeHandle;
+        internal Interop.ImageViewCreateInfo* NativePointer;
         
         public ImageViewCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         Image _Image;
         public Image Image
         {
             get { return _Image; }
-            set { _Image = value; NativeHandle->Image = (IntPtr)value.NativeHandle; }
+            set { _Image = value; NativePointer->Image = (IntPtr)value.NativePointer; }
         }
         
         public ImageViewType ViewType
         {
-            get { return NativeHandle->ViewType; }
-            set { NativeHandle->ViewType = value; }
+            get { return NativePointer->ViewType; }
+            set { NativePointer->ViewType = value; }
         }
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
         ComponentMapping _Components;
         public ComponentMapping Components
         {
             get { return _Components; }
-            set { _Components = value; NativeHandle->Components = (IntPtr)value.NativeHandle; }
+            set { _Components = value; NativePointer->Components = (IntPtr)value.NativePointer; }
         }
         
         ImageSubresourceRange _SubresourceRange;
         public ImageSubresourceRange SubresourceRange
         {
             get { return _SubresourceRange; }
-            set { _SubresourceRange = value; NativeHandle->SubresourceRange = (IntPtr)value.NativeHandle; }
+            set { _SubresourceRange = value; NativePointer->SubresourceRange = (IntPtr)value.NativePointer; }
         }
         
         public ImageViewCreateInfo()
         {
-            NativeHandle = (Interop.ImageViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageViewCreateInfo));
-            //NativeHandle->SType = StructureType.ImageViewCreateInfo;
+            NativePointer = (Interop.ImageViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageViewCreateInfo));
+            //NativePointer->SType = StructureType.ImageViewCreateInfo;
         }
     }
 }

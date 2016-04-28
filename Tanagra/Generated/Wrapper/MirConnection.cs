@@ -5,11 +5,11 @@ namespace Vulkan
 {
     unsafe public class MirConnection
     {
-        internal Interop.MirConnection* NativeHandle;
+        internal Interop.MirConnection* NativePointer;
         
         public MirConnection()
         {
-            NativeHandle = (Interop.MirConnection*)Interop.Structure.Allocate(typeof(Interop.MirConnection));
+            NativePointer = (Interop.MirConnection*)Interop.Structure.Allocate(typeof(Interop.MirConnection));
         }
     }
 }

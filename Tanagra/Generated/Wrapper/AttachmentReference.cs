@@ -5,23 +5,23 @@ namespace Vulkan
 {
     unsafe public class AttachmentReference
     {
-        internal Interop.AttachmentReference* NativeHandle;
+        internal Interop.AttachmentReference* NativePointer;
         
         public UInt32 Attachment
         {
-            get { return NativeHandle->Attachment; }
-            set { NativeHandle->Attachment = value; }
+            get { return NativePointer->Attachment; }
+            set { NativePointer->Attachment = value; }
         }
         
         public ImageLayout Layout
         {
-            get { return NativeHandle->Layout; }
-            set { NativeHandle->Layout = value; }
+            get { return NativePointer->Layout; }
+            set { NativePointer->Layout = value; }
         }
         
         public AttachmentReference()
         {
-            NativeHandle = (Interop.AttachmentReference*)Interop.Structure.Allocate(typeof(Interop.AttachmentReference));
+            NativePointer = (Interop.AttachmentReference*)Interop.Structure.Allocate(typeof(Interop.AttachmentReference));
         }
     }
 }

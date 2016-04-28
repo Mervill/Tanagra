@@ -5,25 +5,25 @@ namespace Vulkan
 {
     unsafe public class CommandBufferBeginInfo
     {
-        internal Interop.CommandBufferBeginInfo* NativeHandle;
+        internal Interop.CommandBufferBeginInfo* NativePointer;
         
         public CommandBufferUsageFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         CommandBufferInheritanceInfo _InheritanceInfo;
         public CommandBufferInheritanceInfo InheritanceInfo
         {
             get { return _InheritanceInfo; }
-            set { _InheritanceInfo = value; NativeHandle->InheritanceInfo = (IntPtr)value.NativeHandle; }
+            set { _InheritanceInfo = value; NativePointer->InheritanceInfo = (IntPtr)value.NativePointer; }
         }
         
         public CommandBufferBeginInfo()
         {
-            NativeHandle = (Interop.CommandBufferBeginInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferBeginInfo));
-            //NativeHandle->SType = StructureType.CommandBufferBeginInfo;
+            NativePointer = (Interop.CommandBufferBeginInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferBeginInfo));
+            //NativePointer->SType = StructureType.CommandBufferBeginInfo;
         }
     }
 }

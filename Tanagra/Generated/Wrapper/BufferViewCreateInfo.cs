@@ -5,45 +5,43 @@ namespace Vulkan
 {
     unsafe public class BufferViewCreateInfo
     {
-        internal Interop.BufferViewCreateInfo* NativeHandle;
+        internal Interop.BufferViewCreateInfo* NativePointer;
         
         public BufferViewCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         Buffer _Buffer;
         public Buffer Buffer
         {
             get { return _Buffer; }
-            set { _Buffer = value; NativeHandle->Buffer = (IntPtr)value.NativeHandle; }
+            set { _Buffer = value; NativePointer->Buffer = (IntPtr)value.NativePointer; }
         }
         
         public Format Format
         {
-            get { return NativeHandle->Format; }
-            set { NativeHandle->Format = value; }
+            get { return NativePointer->Format; }
+            set { NativePointer->Format = value; }
         }
         
-        DeviceSize _Offset;
         public DeviceSize Offset
         {
-            get { return _Offset; }
-            set { _Offset = value; NativeHandle->Offset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
-        DeviceSize _Range;
         public DeviceSize Range
         {
-            get { return _Range; }
-            set { _Range = value; NativeHandle->Range = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Range; }
+            set { NativePointer->Range = value; }
         }
         
         public BufferViewCreateInfo()
         {
-            NativeHandle = (Interop.BufferViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferViewCreateInfo));
-            //NativeHandle->SType = StructureType.BufferViewCreateInfo;
+            NativePointer = (Interop.BufferViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferViewCreateInfo));
+            //NativePointer->SType = StructureType.BufferViewCreateInfo;
         }
     }
 }

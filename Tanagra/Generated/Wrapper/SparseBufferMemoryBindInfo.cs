@@ -5,31 +5,31 @@ namespace Vulkan
 {
     unsafe public class SparseBufferMemoryBindInfo
     {
-        internal Interop.SparseBufferMemoryBindInfo* NativeHandle;
+        internal Interop.SparseBufferMemoryBindInfo* NativePointer;
         
         Buffer _Buffer;
         public Buffer Buffer
         {
             get { return _Buffer; }
-            set { _Buffer = value; NativeHandle->Buffer = (IntPtr)value.NativeHandle; }
+            set { _Buffer = value; NativePointer->Buffer = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 BindCount
         {
-            get { return NativeHandle->BindCount; }
-            set { NativeHandle->BindCount = value; }
+            get { return NativePointer->BindCount; }
+            set { NativePointer->BindCount = value; }
         }
         
         SparseMemoryBind _Binds;
         public SparseMemoryBind Binds
         {
             get { return _Binds; }
-            set { _Binds = value; NativeHandle->Binds = (IntPtr)value.NativeHandle; }
+            set { _Binds = value; NativePointer->Binds = (IntPtr)value.NativePointer; }
         }
         
         public SparseBufferMemoryBindInfo()
         {
-            NativeHandle = (Interop.SparseBufferMemoryBindInfo*)Interop.Structure.Allocate(typeof(Interop.SparseBufferMemoryBindInfo));
+            NativePointer = (Interop.SparseBufferMemoryBindInfo*)Interop.Structure.Allocate(typeof(Interop.SparseBufferMemoryBindInfo));
         }
     }
 }

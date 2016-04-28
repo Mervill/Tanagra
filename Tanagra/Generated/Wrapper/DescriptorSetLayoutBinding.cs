@@ -5,42 +5,42 @@ namespace Vulkan
 {
     unsafe public class DescriptorSetLayoutBinding
     {
-        internal Interop.DescriptorSetLayoutBinding* NativeHandle;
+        internal Interop.DescriptorSetLayoutBinding* NativePointer;
         
         public UInt32 Binding
         {
-            get { return NativeHandle->Binding; }
-            set { NativeHandle->Binding = value; }
+            get { return NativePointer->Binding; }
+            set { NativePointer->Binding = value; }
         }
         
         public DescriptorType DescriptorType
         {
-            get { return NativeHandle->DescriptorType; }
-            set { NativeHandle->DescriptorType = value; }
+            get { return NativePointer->DescriptorType; }
+            set { NativePointer->DescriptorType = value; }
         }
         
         public UInt32 DescriptorCount
         {
-            get { return NativeHandle->DescriptorCount; }
-            set { NativeHandle->DescriptorCount = value; }
+            get { return NativePointer->DescriptorCount; }
+            set { NativePointer->DescriptorCount = value; }
         }
         
         public ShaderStageFlags StageFlags
         {
-            get { return NativeHandle->StageFlags; }
-            set { NativeHandle->StageFlags = value; }
+            get { return NativePointer->StageFlags; }
+            set { NativePointer->StageFlags = value; }
         }
         
         Sampler _ImmutableSamplers;
         public Sampler ImmutableSamplers
         {
             get { return _ImmutableSamplers; }
-            set { _ImmutableSamplers = value; NativeHandle->ImmutableSamplers = (IntPtr)value.NativeHandle; }
+            set { _ImmutableSamplers = value; NativePointer->ImmutableSamplers = (IntPtr)value.NativePointer; }
         }
         
         public DescriptorSetLayoutBinding()
         {
-            NativeHandle = (Interop.DescriptorSetLayoutBinding*)Interop.Structure.Allocate(typeof(Interop.DescriptorSetLayoutBinding));
+            NativePointer = (Interop.DescriptorSetLayoutBinding*)Interop.Structure.Allocate(typeof(Interop.DescriptorSetLayoutBinding));
         }
     }
 }

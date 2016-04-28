@@ -5,55 +5,55 @@ namespace Vulkan
 {
     unsafe public class PipelineMultisampleStateCreateInfo
     {
-        internal Interop.PipelineMultisampleStateCreateInfo* NativeHandle;
+        internal Interop.PipelineMultisampleStateCreateInfo* NativePointer;
         
         public PipelineMultisampleStateCreateFlags Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         public SampleCountFlags RasterizationSamples
         {
-            get { return NativeHandle->RasterizationSamples; }
-            set { NativeHandle->RasterizationSamples = value; }
+            get { return NativePointer->RasterizationSamples; }
+            set { NativePointer->RasterizationSamples = value; }
         }
         
         public Boolean SampleShadingEnable
         {
-            get { return NativeHandle->SampleShadingEnable; }
-            set { NativeHandle->SampleShadingEnable = value; }
+            get { return NativePointer->SampleShadingEnable; }
+            set { NativePointer->SampleShadingEnable = value; }
         }
         
         public Single MinSampleShading
         {
-            get { return NativeHandle->MinSampleShading; }
-            set { NativeHandle->MinSampleShading = value; }
+            get { return NativePointer->MinSampleShading; }
+            set { NativePointer->MinSampleShading = value; }
         }
         
         SampleMask _SampleMask;
         public SampleMask SampleMask
         {
             get { return _SampleMask; }
-            set { _SampleMask = value; NativeHandle->SampleMask = (IntPtr)value.NativeHandle; }
+            set { _SampleMask = value; NativePointer->SampleMask = (IntPtr)value.NativePointer; }
         }
         
         public Boolean AlphaToCoverageEnable
         {
-            get { return NativeHandle->AlphaToCoverageEnable; }
-            set { NativeHandle->AlphaToCoverageEnable = value; }
+            get { return NativePointer->AlphaToCoverageEnable; }
+            set { NativePointer->AlphaToCoverageEnable = value; }
         }
         
         public Boolean AlphaToOneEnable
         {
-            get { return NativeHandle->AlphaToOneEnable; }
-            set { NativeHandle->AlphaToOneEnable = value; }
+            get { return NativePointer->AlphaToOneEnable; }
+            set { NativePointer->AlphaToOneEnable = value; }
         }
         
         public PipelineMultisampleStateCreateInfo()
         {
-            NativeHandle = (Interop.PipelineMultisampleStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineMultisampleStateCreateInfo));
-            //NativeHandle->SType = StructureType.PipelineMultisampleStateCreateInfo;
+            NativePointer = (Interop.PipelineMultisampleStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineMultisampleStateCreateInfo));
+            //NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
     }
 }

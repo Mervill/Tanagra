@@ -5,8 +5,8 @@ namespace Vulkan
 {
     public class DisplayModeKHR
     {
-        internal IntPtr NativeHandle;
+        internal IntPtr NativePointer;
         
-        public override string ToString() => NativeHandle.ToString();
+        public override string ToString() => NativePointer.ToString();
     }
 }

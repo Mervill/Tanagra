@@ -5,111 +5,111 @@ namespace Vulkan
 {
     unsafe public class SwapchainCreateInfoKHR
     {
-        internal Interop.SwapchainCreateInfoKHR* NativeHandle;
+        internal Interop.SwapchainCreateInfoKHR* NativePointer;
         
         public SwapchainCreateFlagsKHR Flags
         {
-            get { return NativeHandle->Flags; }
-            set { NativeHandle->Flags = value; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         SurfaceKHR _Surface;
         public SurfaceKHR Surface
         {
             get { return _Surface; }
-            set { _Surface = value; NativeHandle->Surface = (IntPtr)value.NativeHandle; }
+            set { _Surface = value; NativePointer->Surface = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 MinImageCount
         {
-            get { return NativeHandle->MinImageCount; }
-            set { NativeHandle->MinImageCount = value; }
+            get { return NativePointer->MinImageCount; }
+            set { NativePointer->MinImageCount = value; }
         }
         
         public Format ImageFormat
         {
-            get { return NativeHandle->ImageFormat; }
-            set { NativeHandle->ImageFormat = value; }
+            get { return NativePointer->ImageFormat; }
+            set { NativePointer->ImageFormat = value; }
         }
         
         public ColorSpaceKHR ImageColorSpace
         {
-            get { return NativeHandle->ImageColorSpace; }
-            set { NativeHandle->ImageColorSpace = value; }
+            get { return NativePointer->ImageColorSpace; }
+            set { NativePointer->ImageColorSpace = value; }
         }
         
         Extent2D _ImageExtent;
         public Extent2D ImageExtent
         {
             get { return _ImageExtent; }
-            set { _ImageExtent = value; NativeHandle->ImageExtent = (IntPtr)value.NativeHandle; }
+            set { _ImageExtent = value; NativePointer->ImageExtent = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 ImageArrayLayers
         {
-            get { return NativeHandle->ImageArrayLayers; }
-            set { NativeHandle->ImageArrayLayers = value; }
+            get { return NativePointer->ImageArrayLayers; }
+            set { NativePointer->ImageArrayLayers = value; }
         }
         
         public ImageUsageFlags ImageUsage
         {
-            get { return NativeHandle->ImageUsage; }
-            set { NativeHandle->ImageUsage = value; }
+            get { return NativePointer->ImageUsage; }
+            set { NativePointer->ImageUsage = value; }
         }
         
         public SharingMode ImageSharingMode
         {
-            get { return NativeHandle->ImageSharingMode; }
-            set { NativeHandle->ImageSharingMode = value; }
+            get { return NativePointer->ImageSharingMode; }
+            set { NativePointer->ImageSharingMode = value; }
         }
         
         public UInt32 QueueFamilyIndexCount
         {
-            get { return NativeHandle->QueueFamilyIndexCount; }
-            set { NativeHandle->QueueFamilyIndexCount = value; }
+            get { return NativePointer->QueueFamilyIndexCount; }
+            set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
         public UInt32 QueueFamilyIndices
         {
-            get { return NativeHandle->QueueFamilyIndices; }
-            set { NativeHandle->QueueFamilyIndices = value; }
+            get { return NativePointer->QueueFamilyIndices; }
+            set { NativePointer->QueueFamilyIndices = value; }
         }
         
         public SurfaceTransformFlagBitsKHR PreTransform
         {
-            get { return NativeHandle->PreTransform; }
-            set { NativeHandle->PreTransform = value; }
+            get { return NativePointer->PreTransform; }
+            set { NativePointer->PreTransform = value; }
         }
         
         public CompositeAlphaFlagBitsKHR CompositeAlpha
         {
-            get { return NativeHandle->CompositeAlpha; }
-            set { NativeHandle->CompositeAlpha = value; }
+            get { return NativePointer->CompositeAlpha; }
+            set { NativePointer->CompositeAlpha = value; }
         }
         
         public PresentModeKHR PresentMode
         {
-            get { return NativeHandle->PresentMode; }
-            set { NativeHandle->PresentMode = value; }
+            get { return NativePointer->PresentMode; }
+            set { NativePointer->PresentMode = value; }
         }
         
         public Boolean Clipped
         {
-            get { return NativeHandle->Clipped; }
-            set { NativeHandle->Clipped = value; }
+            get { return NativePointer->Clipped; }
+            set { NativePointer->Clipped = value; }
         }
         
         SwapchainKHR _OldSwapchain;
         public SwapchainKHR OldSwapchain
         {
             get { return _OldSwapchain; }
-            set { _OldSwapchain = value; NativeHandle->OldSwapchain = (IntPtr)value.NativeHandle; }
+            set { _OldSwapchain = value; NativePointer->OldSwapchain = (IntPtr)value.NativePointer; }
         }
         
         public SwapchainCreateInfoKHR()
         {
-            NativeHandle = (Interop.SwapchainCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
-            //NativeHandle->SType = StructureType.SwapchainCreateInfoKHR;
+            NativePointer = (Interop.SwapchainCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
+            //NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
     }
 }

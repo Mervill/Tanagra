@@ -5,53 +5,53 @@ namespace Vulkan
 {
     unsafe public class StencilOpState
     {
-        internal Interop.StencilOpState* NativeHandle;
+        internal Interop.StencilOpState* NativePointer;
         
         public StencilOp FailOp
         {
-            get { return NativeHandle->FailOp; }
-            set { NativeHandle->FailOp = value; }
+            get { return NativePointer->FailOp; }
+            set { NativePointer->FailOp = value; }
         }
         
         public StencilOp PassOp
         {
-            get { return NativeHandle->PassOp; }
-            set { NativeHandle->PassOp = value; }
+            get { return NativePointer->PassOp; }
+            set { NativePointer->PassOp = value; }
         }
         
         public StencilOp DepthFailOp
         {
-            get { return NativeHandle->DepthFailOp; }
-            set { NativeHandle->DepthFailOp = value; }
+            get { return NativePointer->DepthFailOp; }
+            set { NativePointer->DepthFailOp = value; }
         }
         
         public CompareOp CompareOp
         {
-            get { return NativeHandle->CompareOp; }
-            set { NativeHandle->CompareOp = value; }
+            get { return NativePointer->CompareOp; }
+            set { NativePointer->CompareOp = value; }
         }
         
         public UInt32 CompareMask
         {
-            get { return NativeHandle->CompareMask; }
-            set { NativeHandle->CompareMask = value; }
+            get { return NativePointer->CompareMask; }
+            set { NativePointer->CompareMask = value; }
         }
         
         public UInt32 WriteMask
         {
-            get { return NativeHandle->WriteMask; }
-            set { NativeHandle->WriteMask = value; }
+            get { return NativePointer->WriteMask; }
+            set { NativePointer->WriteMask = value; }
         }
         
         public UInt32 Reference
         {
-            get { return NativeHandle->Reference; }
-            set { NativeHandle->Reference = value; }
+            get { return NativePointer->Reference; }
+            set { NativePointer->Reference = value; }
         }
         
         public StencilOpState()
         {
-            NativeHandle = (Interop.StencilOpState*)Interop.Structure.Allocate(typeof(Interop.StencilOpState));
+            NativePointer = (Interop.StencilOpState*)Interop.Structure.Allocate(typeof(Interop.StencilOpState));
         }
     }
 }

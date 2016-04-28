@@ -5,57 +5,55 @@ namespace Vulkan
 {
     unsafe public class BufferMemoryBarrier
     {
-        internal Interop.BufferMemoryBarrier* NativeHandle;
+        internal Interop.BufferMemoryBarrier* NativePointer;
         
         public AccessFlags SrcAccessMask
         {
-            get { return NativeHandle->SrcAccessMask; }
-            set { NativeHandle->SrcAccessMask = value; }
+            get { return NativePointer->SrcAccessMask; }
+            set { NativePointer->SrcAccessMask = value; }
         }
         
         public AccessFlags DstAccessMask
         {
-            get { return NativeHandle->DstAccessMask; }
-            set { NativeHandle->DstAccessMask = value; }
+            get { return NativePointer->DstAccessMask; }
+            set { NativePointer->DstAccessMask = value; }
         }
         
         public UInt32 SrcQueueFamilyIndex
         {
-            get { return NativeHandle->SrcQueueFamilyIndex; }
-            set { NativeHandle->SrcQueueFamilyIndex = value; }
+            get { return NativePointer->SrcQueueFamilyIndex; }
+            set { NativePointer->SrcQueueFamilyIndex = value; }
         }
         
         public UInt32 DstQueueFamilyIndex
         {
-            get { return NativeHandle->DstQueueFamilyIndex; }
-            set { NativeHandle->DstQueueFamilyIndex = value; }
+            get { return NativePointer->DstQueueFamilyIndex; }
+            set { NativePointer->DstQueueFamilyIndex = value; }
         }
         
         Buffer _Buffer;
         public Buffer Buffer
         {
             get { return _Buffer; }
-            set { _Buffer = value; NativeHandle->Buffer = (IntPtr)value.NativeHandle; }
+            set { _Buffer = value; NativePointer->Buffer = (IntPtr)value.NativePointer; }
         }
         
-        DeviceSize _Offset;
         public DeviceSize Offset
         {
-            get { return _Offset; }
-            set { _Offset = value; NativeHandle->Offset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Offset; }
+            set { NativePointer->Offset = value; }
         }
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public BufferMemoryBarrier()
         {
-            NativeHandle = (Interop.BufferMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.BufferMemoryBarrier));
-            //NativeHandle->SType = StructureType.BufferMemoryBarrier;
+            NativePointer = (Interop.BufferMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.BufferMemoryBarrier));
+            //NativePointer->SType = StructureType.BufferMemoryBarrier;
         }
     }
 }

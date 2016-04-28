@@ -5,32 +5,29 @@ namespace Vulkan
 {
     unsafe public class BufferCopy
     {
-        internal Interop.BufferCopy* NativeHandle;
+        internal Interop.BufferCopy* NativePointer;
         
-        DeviceSize _SrcOffset;
         public DeviceSize SrcOffset
         {
-            get { return _SrcOffset; }
-            set { _SrcOffset = value; NativeHandle->SrcOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->SrcOffset; }
+            set { NativePointer->SrcOffset = value; }
         }
         
-        DeviceSize _DstOffset;
         public DeviceSize DstOffset
         {
-            get { return _DstOffset; }
-            set { _DstOffset = value; NativeHandle->DstOffset = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->DstOffset; }
+            set { NativePointer->DstOffset = value; }
         }
         
-        DeviceSize _Size;
         public DeviceSize Size
         {
-            get { return _Size; }
-            set { _Size = value; NativeHandle->Size = (IntPtr)value.NativeHandle; }
+            get { return NativePointer->Size; }
+            set { NativePointer->Size = value; }
         }
         
         public BufferCopy()
         {
-            NativeHandle = (Interop.BufferCopy*)Interop.Structure.Allocate(typeof(Interop.BufferCopy));
+            NativePointer = (Interop.BufferCopy*)Interop.Structure.Allocate(typeof(Interop.BufferCopy));
         }
     }
 }

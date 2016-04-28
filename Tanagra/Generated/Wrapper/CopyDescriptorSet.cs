@@ -5,56 +5,56 @@ namespace Vulkan
 {
     unsafe public class CopyDescriptorSet
     {
-        internal Interop.CopyDescriptorSet* NativeHandle;
+        internal Interop.CopyDescriptorSet* NativePointer;
         
         DescriptorSet _SrcSet;
         public DescriptorSet SrcSet
         {
             get { return _SrcSet; }
-            set { _SrcSet = value; NativeHandle->SrcSet = (IntPtr)value.NativeHandle; }
+            set { _SrcSet = value; NativePointer->SrcSet = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 SrcBinding
         {
-            get { return NativeHandle->SrcBinding; }
-            set { NativeHandle->SrcBinding = value; }
+            get { return NativePointer->SrcBinding; }
+            set { NativePointer->SrcBinding = value; }
         }
         
         public UInt32 SrcArrayElement
         {
-            get { return NativeHandle->SrcArrayElement; }
-            set { NativeHandle->SrcArrayElement = value; }
+            get { return NativePointer->SrcArrayElement; }
+            set { NativePointer->SrcArrayElement = value; }
         }
         
         DescriptorSet _DstSet;
         public DescriptorSet DstSet
         {
             get { return _DstSet; }
-            set { _DstSet = value; NativeHandle->DstSet = (IntPtr)value.NativeHandle; }
+            set { _DstSet = value; NativePointer->DstSet = (IntPtr)value.NativePointer; }
         }
         
         public UInt32 DstBinding
         {
-            get { return NativeHandle->DstBinding; }
-            set { NativeHandle->DstBinding = value; }
+            get { return NativePointer->DstBinding; }
+            set { NativePointer->DstBinding = value; }
         }
         
         public UInt32 DstArrayElement
         {
-            get { return NativeHandle->DstArrayElement; }
-            set { NativeHandle->DstArrayElement = value; }
+            get { return NativePointer->DstArrayElement; }
+            set { NativePointer->DstArrayElement = value; }
         }
         
         public UInt32 DescriptorCount
         {
-            get { return NativeHandle->DescriptorCount; }
-            set { NativeHandle->DescriptorCount = value; }
+            get { return NativePointer->DescriptorCount; }
+            set { NativePointer->DescriptorCount = value; }
         }
         
         public CopyDescriptorSet()
         {
-            NativeHandle = (Interop.CopyDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.CopyDescriptorSet));
-            //NativeHandle->SType = StructureType.CopyDescriptorSet;
+            NativePointer = (Interop.CopyDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.CopyDescriptorSet));
+            //NativePointer->SType = StructureType.CopyDescriptorSet;
         }
     }
 }
