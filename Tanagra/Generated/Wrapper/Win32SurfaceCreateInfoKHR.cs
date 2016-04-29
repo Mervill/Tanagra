@@ -13,18 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        HINSTANCE _Hinstance;
-        public HINSTANCE Hinstance
+        public IntPtr Hinstance
         {
-            get { return _Hinstance; }
-            set { _Hinstance = value; NativePointer->Hinstance = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Hinstance; }
+            set { NativePointer->Hinstance = value; }
         }
         
-        HWND _Hwnd;
-        public HWND Hwnd
+        public IntPtr Hwnd
         {
-            get { return _Hwnd; }
-            set { _Hwnd = value; NativePointer->Hwnd = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Hwnd; }
+            set { NativePointer->Hwnd = value; }
         }
         
         public Win32SurfaceCreateInfoKHR()

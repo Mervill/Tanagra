@@ -9,8 +9,7 @@ namespace Tanagra.Generator
     {
         // todo: spec extensions
         // todo: hasArrayArguments
-        // todo: Create commands that return arrays
-        // todo: figure out what to do with imported types
+        // todo: Create* commands that return arrays
         // todo: union
         // XCB -> X protocol C-language Binding
         static void Main(string[] args)

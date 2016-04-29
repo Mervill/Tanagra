@@ -54,7 +54,16 @@ namespace Tanagra.Generator
 
             foreach(var vkCmd in spec.Commands)
                 RewriteCommandDefinition(vkCmd);
-            
+
+            var intPtr = spec.AllTypes.FirstOrDefault(x => x.Name == "IntPtr");
+            var platfromTypes = spec.AllTypes.Where(x => x.IsImportedType);
+            foreach(var vkType in platfromTypes)
+            {
+                Replace(spec, vkType, intPtr);
+            }
+
+            spec.AllTypes = spec.AllTypes.Except(platfromTypes).ToList();
+
             return spec;
         }
         
@@ -207,6 +216,39 @@ namespace Tanagra.Generator
                     param.Len = lenName;
                 }
             }
+        }
+
+        void Replace(VkSpec spec, VkType existingType, VkType newType)
+        {
+            //if(!spec.AllTypes.Contains(newType))
+                //spec.AllTypes.Add(newType);
+
+            var vkStructs = spec.Structs.ToList();
+            for(int x = 0; x < vkStructs.Count; x++)
+            {
+                var vkStruct = vkStructs[x];
+                for(int y = 0; y < vkStruct.Members.Length; y++)
+                {
+                    var vkParam = vkStruct.Members[y];
+                    if(vkParam.Type == existingType)
+                        vkParam.Type = newType;
+                }
+            }
+
+            var vkCommands = spec.Commands;
+            for(int x = 0; x < vkCommands.Length; x++)
+            {
+                var vkCommand = vkCommands[x];
+                for(int y = 0; y < vkCommand.Parameters.Length; y++)
+                {
+                    var vkParam = vkCommand.Parameters[y];
+                    if(vkParam.Type == existingType)
+                        vkParam.Type = newType;
+                }
+            }
+
+            //if(spec.AllTypes.Contains(newType))
+                //spec.AllTypes.Remove(newType);
         }
     }
 }

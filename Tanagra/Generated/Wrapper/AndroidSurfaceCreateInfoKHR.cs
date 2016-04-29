@@ -13,11 +13,10 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        ANativeWindow _Window;
-        public ANativeWindow Window
+        public IntPtr Window
         {
-            get { return _Window; }
-            set { _Window = value; NativePointer->Window = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Window; }
+            set { NativePointer->Window = value; }
         }
         
         public AndroidSurfaceCreateInfoKHR()

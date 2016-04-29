@@ -13,18 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        MirConnection _Connection;
-        public MirConnection Connection
+        public IntPtr Connection
         {
-            get { return _Connection; }
-            set { _Connection = value; NativePointer->Connection = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Connection; }
+            set { NativePointer->Connection = value; }
         }
         
-        MirSurface _MirSurface;
-        public MirSurface MirSurface
+        public IntPtr MirSurface
         {
-            get { return _MirSurface; }
-            set { _MirSurface = value; NativePointer->MirSurface = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MirSurface; }
+            set { NativePointer->MirSurface = value; }
         }
         
         public MirSurfaceCreateInfoKHR()

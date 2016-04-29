@@ -13,18 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        Display _Dpy;
-        public Display Dpy
+        public IntPtr Dpy
         {
-            get { return _Dpy; }
-            set { _Dpy = value; NativePointer->Dpy = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Dpy; }
+            set { NativePointer->Dpy = value; }
         }
         
-        Window _Window;
-        public Window Window
+        public IntPtr Window
         {
-            get { return _Window; }
-            set { _Window = value; NativePointer->Window = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Window; }
+            set { NativePointer->Window = value; }
         }
         
         public XlibSurfaceCreateInfoKHR()

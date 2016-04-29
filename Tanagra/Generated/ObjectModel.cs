@@ -67,6 +67,11 @@ namespace Vulkan.ObjectModel
             VK.DestroyDebugReportCallbackEXT(instance, callback, allocator);
         }
         
+        public static void DebugReportMessageEXT(this Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message)
+        {
+            VK.DebugReportMessageEXT(instance, flags, objectType, @object, location, messageCode, layerPrefix, message);
+        }
+        
         #endregion
         
         #region PhysicalDevice
@@ -151,7 +156,7 @@ namespace Vulkan.ObjectModel
             return VK.GetDisplayPlaneCapabilitiesKHR(physicalDevice, mode, planeIndex);
         }
         
-        public static MirConnection GetMirPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        public static IntPtr GetMirPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             return VK.GetPhysicalDeviceMirPresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
@@ -171,7 +176,7 @@ namespace Vulkan.ObjectModel
             return VK.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface);
         }
         
-        public static wl_display GetWaylandPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        public static IntPtr GetWaylandPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             return VK.GetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
@@ -181,12 +186,12 @@ namespace Vulkan.ObjectModel
             return VK.GetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
         
-        public static Boolean GetXlibPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, Display dpy, VisualID visualID)
+        public static Boolean GetXlibPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr dpy, IntPtr visualID)
         {
             return VK.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, dpy, visualID);
         }
         
-        public static Boolean GetXcbPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t connection, xcb_visualid_t visual_id)
+        public static Boolean GetXcbPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr connection, IntPtr visual_id)
         {
             return VK.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex, connection, visual_id);
         }

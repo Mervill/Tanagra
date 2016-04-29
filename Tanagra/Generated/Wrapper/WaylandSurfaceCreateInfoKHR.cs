@@ -13,18 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        wl_display _Display;
-        public wl_display Display
+        public IntPtr Display
         {
-            get { return _Display; }
-            set { _Display = value; NativePointer->Display = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Display; }
+            set { NativePointer->Display = value; }
         }
         
-        wl_surface _Surface;
-        public wl_surface Surface
+        public IntPtr Surface
         {
-            get { return _Surface; }
-            set { _Surface = value; NativePointer->Surface = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Surface; }
+            set { NativePointer->Surface = value; }
         }
         
         public WaylandSurfaceCreateInfoKHR()

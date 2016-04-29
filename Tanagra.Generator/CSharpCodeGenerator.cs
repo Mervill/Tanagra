@@ -18,6 +18,7 @@ namespace Tanagra.Generator
         public Dictionary<string, string> files;
 
         const string NativePointer = "NativePointer";
+        const string CallingConvention = "Winapi";
 
         public CSharpCodeGenerator()
         {
@@ -48,7 +49,6 @@ namespace Tanagra.Generator
                 "GetPhysicalDeviceSurfacePresentModesKHR",
                 "GetDeviceProcAddr",
                 "GetInstanceProcAddr",
-                "DebugReportMessageEXT",
             };
         }
 
@@ -206,7 +206,7 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
             WriteLine($"const string DllName = \"{DllName}\";");
-            WriteLine($"const CallingConvention callingConvention = CallingConvention.Winapi;");
+            WriteLine($"const CallingConvention callingConvention = CallingConvention.{CallingConvention};");
             WriteLine("");
 
             foreach(var cmd in commands)
@@ -516,7 +516,7 @@ namespace Tanagra.Generator
 
                 if(returnParam != null && !returnsList)
                 {
-                    WriteLine($"{returnParam.Type} {returnParam.Name} = new {returnParam.Type}();");
+                    WriteLine($"var {returnParam.Name} = new {returnParam.Type}();");
 
                     if(returnParam.IsFixed)
                     {
@@ -862,11 +862,11 @@ namespace Tanagra.Generator
                     if(commandName.StartsWith($"Get{vkHandle.Name}"))
                         commandName = commandName.Replace($"Get{vkHandle.Name}", "Get");
 
-                    if(commandName.StartsWith($"{vkHandle.Name}"))
-                        commandName = commandName.Replace($"{vkHandle.Name}", string.Empty);
+                    if(commandName.StartsWith(vkHandle.Name))
+                        commandName = commandName.Replace(vkHandle.Name, string.Empty);
 
-                    if(commandName.EndsWith($"{vkHandle.Name}"))
-                        commandName = commandName.Replace($"{vkHandle.Name}", string.Empty);
+                    if(commandName.EndsWith(vkHandle.Name))
+                        commandName = commandName.Replace(vkHandle.Name, string.Empty);
 
                     Write($"{returnType} {commandName}");
                     Write("(");

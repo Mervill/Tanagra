@@ -13,18 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        xcb_connection_t _Connection;
-        public xcb_connection_t Connection
+        public IntPtr Connection
         {
-            get { return _Connection; }
-            set { _Connection = value; NativePointer->Connection = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Connection; }
+            set { NativePointer->Connection = value; }
         }
         
-        xcb_window_t _Window;
-        public xcb_window_t Window
+        public IntPtr Window
         {
-            get { return _Window; }
-            set { _Window = value; NativePointer->Window = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Window; }
+            set { NativePointer->Window = value; }
         }
         
         public XcbSurfaceCreateInfoKHR()

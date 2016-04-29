@@ -16,7 +16,7 @@ namespace Tanagra.Generator
                 // basetype
                 { "VkSampleMask", CreatePlatformStruct("VkSampleMask") },
                 { "VkBool32",     CreatePlatformStruct("VkBool32")     },
-                { "VkDeviceSize", CreateImportStruct("VkDeviceSize") },
+                { "VkDeviceSize", CreatePlatformStruct("VkDeviceSize") },
                 
                 // imports
                 { "Display",          CreateImportStruct("Display")          },

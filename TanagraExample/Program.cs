@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 using Vulkan;
 using Vulkan.ObjectModel;
@@ -13,7 +14,7 @@ namespace TanagraExample
     {
         static Instance instance;
         static PhysicalDevice physicalDevice;
-        //static SurfaceKhr surface;
+        static SurfaceKHR surface;
         static Device device;
         static Queue queue;
         static CommandPool commandPool;
@@ -23,7 +24,7 @@ namespace TanagraExample
         static void Main(string[] args)
         {
             CreateInstance();
-            //CreateSurface();
+            CreateSurface();
             CreateDevice();
             CreateCommandBuffer();
 
@@ -56,6 +57,19 @@ namespace TanagraExample
 
             physicalDevice = physicalDevices[0];
             Console.WriteLine("[ OK ] Physical Device");
+        }
+
+        static void CreateSurface()
+        {
+            IntPtr HINSTANCE, HWND;
+            GetProcessHandles(out HINSTANCE, out HWND);
+            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
+            {
+                Hinstance = HINSTANCE,
+                Hwnd = HWND,
+            };
+            surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
+            Console.WriteLine("[ OK ] Surface");
         }
 
         static void CreateDevice()
@@ -111,6 +125,13 @@ namespace TanagraExample
             };
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             Console.WriteLine("[ OK ] Command Buffer");
+        }
+
+        static void GetProcessHandles(out IntPtr HINSTANCE, out IntPtr HWND)
+        {
+            var process = Process.GetCurrentProcess();
+            HINSTANCE = process.Handle;
+            HWND = process.MainWindowHandle;
         }
 
         static uint MakeVersion(int major, int minor, int patch)

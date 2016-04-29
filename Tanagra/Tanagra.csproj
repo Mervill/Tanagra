@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -185,7 +186,6 @@
     <Compile Include="Generated\Interop\VK.cs" />
     <Compile Include="Generated\ObjectModel.cs" />
     <Compile Include="Generated\Wrapper\AllocationCallbacks.cs" />
-    <Compile Include="Generated\Wrapper\ANativeWindow.cs" />
     <Compile Include="Generated\Wrapper\AndroidSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\ApplicationInfo.cs" />
     <Compile Include="Generated\Wrapper\AttachmentDescription.cs" />
@@ -219,7 +219,6 @@
     <Compile Include="Generated\Wrapper\DeviceCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DeviceQueueCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DispatchIndirectCommand.cs" />
-    <Compile Include="Generated\Wrapper\Display.cs" />
     <Compile Include="Generated\Wrapper\DisplayModeCreateInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\DisplayModeParametersKHR.cs" />
     <Compile Include="Generated\Wrapper\DisplayModePropertiesKHR.cs" />
@@ -238,8 +237,6 @@
     <Compile Include="Generated\Wrapper\FormatProperties.cs" />
     <Compile Include="Generated\Wrapper\FramebufferCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\GraphicsPipelineCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\HINSTANCE.cs" />
-    <Compile Include="Generated\Wrapper\HWND.cs" />
     <Compile Include="Generated\Wrapper\ImageBlit.cs" />
     <Compile Include="Generated\Wrapper\ImageCopy.cs" />
     <Compile Include="Generated\Wrapper\ImageCreateInfo.cs" />
@@ -258,8 +255,6 @@
     <Compile Include="Generated\Wrapper\MemoryHeap.cs" />
     <Compile Include="Generated\Wrapper\MemoryRequirements.cs" />
     <Compile Include="Generated\Wrapper\MemoryType.cs" />
-    <Compile Include="Generated\Wrapper\MirConnection.cs" />
-    <Compile Include="Generated\Wrapper\MirSurface.cs" />
     <Compile Include="Generated\Wrapper\MirSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\Offset2D.cs" />
     <Compile Include="Generated\Wrapper\Offset3D.cs" />
@@ -313,18 +308,11 @@
     <Compile Include="Generated\Wrapper\VertexInputAttributeDescription.cs" />
     <Compile Include="Generated\Wrapper\VertexInputBindingDescription.cs" />
     <Compile Include="Generated\Wrapper\Viewport.cs" />
-    <Compile Include="Generated\Wrapper\VisualID.cs" />
     <Compile Include="Generated\Wrapper\VK.cs" />
     <Compile Include="Generated\Wrapper\WaylandSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\Win32SurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\Window.cs" />
-    <Compile Include="Generated\Wrapper\wl_display.cs" />
-    <Compile Include="Generated\Wrapper\wl_surface.cs" />
     <Compile Include="Generated\Wrapper\WriteDescriptorSet.cs" />
     <Compile Include="Generated\Wrapper\XcbSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\xcb_connection_t.cs" />
-    <Compile Include="Generated\Wrapper\xcb_visualid_t.cs" />
-    <Compile Include="Generated\Wrapper\xcb_window_t.cs" />
     <Compile Include="Generated\Wrapper\XlibSurfaceCreateInfoKHR.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Patch.cs" />
