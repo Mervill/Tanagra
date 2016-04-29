@@ -176,6 +176,21 @@ namespace Vulkan.ObjectModel
             return VK.GetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
         
+        public static Boolean GetWin32PresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        {
+            return VK.GetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
+        }
+        
+        public static Boolean GetXlibPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, Display dpy, VisualID visualID)
+        {
+            return VK.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, dpy, visualID);
+        }
+        
+        public static Boolean GetXcbPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t connection, xcb_visualid_t visual_id)
+        {
+            return VK.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex, connection, visual_id);
+        }
+        
         #endregion
         
         #region Device

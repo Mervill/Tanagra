@@ -479,11 +479,20 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateWin32SurfaceKHR(IntPtr instance, Win32SurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
         
+        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceWin32PresentationSupportKHR", CallingConvention = callingConvention)]
+        internal static extern Boolean vkGetPhysicalDeviceWin32PresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex);
+        
         [DllImport(DllName, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateXlibSurfaceKHR(IntPtr instance, XlibSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
         
+        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXlibPresentationSupportKHR", CallingConvention = callingConvention)]
+        internal static extern Boolean vkGetPhysicalDeviceXlibPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, Display* dpy, VisualID visualID);
+        
         [DllImport(DllName, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateXcbSurfaceKHR(IntPtr instance, XcbSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
+        
+        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXcbPresentationSupportKHR", CallingConvention = callingConvention)]
+        internal static extern Boolean vkGetPhysicalDeviceXcbPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t* connection, xcb_visualid_t visual_id);
         
         [DllImport(DllName, EntryPoint = "vkCreateDebugReportCallbackEXT", CallingConvention = callingConvention)]
         internal static extern Result vkCreateDebugReportCallbackEXT(IntPtr instance, DebugReportCallbackCreateInfoEXT* createInfo, AllocationCallbacks* allocator, IntPtr* callback);

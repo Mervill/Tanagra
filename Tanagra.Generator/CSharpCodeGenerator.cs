@@ -40,16 +40,12 @@ namespace Tanagra.Generator
 
             disabledStructs = new List<string> 
             {
-                //"DebugReportCallbackCreateInfoEXT",
             };
 
             disabledCommands = new List<string>
             {
                 "GetPipelineCacheData",
                 "GetPhysicalDeviceSurfacePresentModesKHR",
-                "GetPhysicalDeviceXlibPresentationSupportKHR",
-                "GetPhysicalDeviceWin32PresentationSupportKHR",
-                "GetPhysicalDeviceXcbPresentationSupportKHR",
                 "GetDeviceProcAddr",
                 "GetInstanceProcAddr",
                 "DebugReportMessageEXT",
@@ -466,6 +462,8 @@ namespace Tanagra.Generator
                 var paramArrays = vkCommand.Parameters.Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "Char");
                 var hasArrayArguments = paramArrays.Except(new[] { returnParam }).Any();
 
+                var hasReturnValue = (returnParam == null) && (returnType != "void");
+
                 // --- function params
                 WriteTabs();
                 Write("public static ");
@@ -539,7 +537,7 @@ namespace Tanagra.Generator
                 {
                     // --- internal callback params
                     WriteTabs();
-                    if(internalReturnsResult)
+                    if(internalReturnsResult || hasReturnValue)
                         Write("var result = ");
 
                     Write($"{vkCommand.SpecName}");
@@ -766,7 +764,14 @@ namespace Tanagra.Generator
                 }
                 else if(returnType != "void")
                 {
-                    WriteLine("throw new NotImplementedException();");
+                    if(hasReturnValue)
+                    {
+                        WriteLine("return result;");
+                    }
+                    else
+                    {
+                        WriteLine("throw new NotImplementedException(\"Appears to return a value but could not determine the type\");");
+                    }
                 }
                 
                 _tabs--;
@@ -847,6 +852,8 @@ namespace Tanagra.Generator
                     var paramArrays = vkCommand.Parameters.Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "Char");
                     var hasArrayArguments = paramArrays.Except(new[] { returnParam }).Any();
 
+                    var hasReturnValue = (returnParam == null) && (returnType != "void");
+
                     WriteTabs();
                     Write("public static ");
 
@@ -901,7 +908,7 @@ namespace Tanagra.Generator
                     WriteLine("{");
                     _tabs++;
                     WriteTabs();
-                    if(returnParam != null)
+                    if(returnParam != null || hasReturnValue)
                         Write("return ");
                     Write($"VK.{vkCommand.Name}");
                     Write("(");

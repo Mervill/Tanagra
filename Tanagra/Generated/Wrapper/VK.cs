@@ -1355,6 +1355,12 @@ namespace Vulkan
             return surface;
         }
         
+        public static Boolean GetPhysicalDeviceWin32PresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        {
+            var result = vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex);
+            return result;
+        }
+        
         public static SurfaceKHR CreateXlibSurfaceKHR(Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             SurfaceKHR surface = new SurfaceKHR();
@@ -1367,6 +1373,12 @@ namespace Vulkan
             return surface;
         }
         
+        public static Boolean GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, Display dpy, VisualID visualID)
+        {
+            var result = false;//vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, dpy.NativePointer, visualID.NativePointer);
+            return result;
+        }
+        
         public static SurfaceKHR CreateXcbSurfaceKHR(Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             SurfaceKHR surface = new SurfaceKHR();
@@ -1377,6 +1389,12 @@ namespace Vulkan
                     throw new VulkanCommandException(nameof(vkCreateXcbSurfaceKHR), result);
             }
             return surface;
+        }
+        
+        public static Boolean GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t connection, xcb_visualid_t visual_id)
+        {
+            var result = false;//vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, connection.NativePointer, visual_id.NativePointer);
+            return result;
         }
         
         public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator = null)
