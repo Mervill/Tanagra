@@ -180,6 +180,11 @@ namespace Tanagra.Generator
         public bool IsOut => IsPointer && !IsConst;
         public bool IsFixed => Type is VkHandle && !IsConst;
 
+        public VkParam()
+        {
+            Optional = new string[0];
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

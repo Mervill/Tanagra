@@ -30,7 +30,7 @@ namespace Vulkan
         public Win32SurfaceCreateInfoKHR()
         {
             NativePointer = (Interop.Win32SurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.Win32SurfaceCreateInfoKHR));
-            NativePointer->SType = StructureType.Win32SurfaceCreateInfoKHR;
+            //NativePointer->SType = StructureType.Win32SurfaceCreateInfoKHR;
         }
     }
 }

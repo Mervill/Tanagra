@@ -484,7 +484,15 @@ namespace Tanagra.Generator
                     }
                     else
                     {
-                        Write($"{paramType} {vkParam.Name}");
+                        // if the last argument is a struct and is marked as optional, we can add `= null` to generate an overload without that argument
+                        if((vkParam.Type is VkStruct) && !platformStructTypes.Contains(paramType) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true" && x + 1 == cmdParams.Count)
+                        {
+                            Write($"{paramType} {vkParam.Name} = null");
+                        }
+                        else
+                        {
+                            Write($"{paramType} {vkParam.Name}");
+                        }
                     }
                     
                     if(x + 1 < cmdParams.Count)
@@ -588,7 +596,14 @@ namespace Tanagra.Generator
                             else
                             {
                                 // struct or handle, pass the native pointer
-                                Write($"{vkParam.Name}.{NativePointer}");
+                                if(!(vkParam.Type is VkHandle) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true")
+                                {
+                                    Write($"({vkParam.Name} != null) ? {vkParam.Name}.{NativePointer} : null");
+                                }
+                                else
+                                {
+                                    Write($"{vkParam.Name}.{NativePointer}");
+                                }
                             }
                         }
                         
@@ -841,13 +856,30 @@ namespace Tanagra.Generator
                     var cmdParams = vkCommand.Parameters.Except(excludeFromArguments).ToList();
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
-                        var param = cmdParams[x];
-                        var paramType = param.Type.Name;
-                        if(paramType == "Char")
-                            paramType = "String";
+                        var vkParam = cmdParams[x];
+                        var paramType = vkParam.Type.Name;
 
-                        var thisKeyword = (x == 0) ? "this " : string.Empty;
-                        Write($"{thisKeyword}{paramType} {param.Name}");
+                        if(x == 0)
+                        {
+                            Write($"this {paramType} {vkParam.Name}");
+                        }
+                        else if(paramType == "Char")
+                        {
+                            Write($"String {vkParam.Name}");
+                        }
+                        else
+                        {
+                            // if the last argument is a struct and is marked as optional, we can add `= null` to generate an overload without that argument
+                            if((vkParam.Type is VkStruct) && !platformStructTypes.Contains(paramType) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true" && x + 1 == cmdParams.Count)
+                            {
+                                Write($"{paramType} {vkParam.Name} = null");
+                            }
+                            else
+                            {
+                                Write($"{paramType} {vkParam.Name}");
+                            }
+                        }
+                        
                         if(x + 1 < cmdParams.Count)
                             Write(", ");
                     }

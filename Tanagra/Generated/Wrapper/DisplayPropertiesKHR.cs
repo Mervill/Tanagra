@@ -38,7 +38,7 @@ namespace Vulkan
         public VkSurfaceTransformFlagsKHR SupportedTransforms
         {
             get { return _SupportedTransforms; }
-            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = (IntPtr)value.NativePointer; }
+            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = IntPtr.Zero; }
         }
         
         public Boolean PlaneReorderPossible

@@ -25,6 +25,7 @@ namespace TanagraExample
             CreateInstance();
             //CreateSurface();
             CreateDevice();
+            CreateCommandBuffer();
 
             Console.WriteLine("program complete");
             Console.ReadKey();
@@ -46,13 +47,12 @@ namespace TanagraExample
             var instanceCreateInfo = new InstanceCreateInfo();
             instanceCreateInfo.ApplicationInfo = appInfo;
             instanceCreateInfo.EnabledExtensionNames = instanceEnabledExtensions;
-
-            //instance = new Instance(instanceCreateInfo);
-            instance = VK.CreateInstance(instanceCreateInfo, null);
+            
+            instance = VK.CreateInstance(instanceCreateInfo);
             Console.WriteLine("[ OK ] Instance");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
-            Console.WriteLine($"Physical Devices: {physicalDevices.Count}");
+            Console.WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
 
             physicalDevice = physicalDevices[0];
             Console.WriteLine("[ OK ] Physical Device");
@@ -79,16 +79,38 @@ namespace TanagraExample
                 EnabledExtensionNames = deviceEnabledExtensions,
             };
 
-            device = physicalDevice.CreateDevice(deviceCreateInfo, null);
+            device = physicalDevice.CreateDevice(deviceCreateInfo);
             Console.WriteLine("[ OK ] Device");
             
             var queueNodeIndex = physicalDevice.GetPhysicalDeviceQueueFamilyProperties()
-                .Where((properties, index) => (properties.QueueFlags & QueueFlags.QUEUE_GRAPHICS_BIT) != 0) //&& physicalDevice.GetSurfaceSupport((uint)index, surface)
+                .Where((properties, index) => (properties.QueueFlags & QueueFlags.Graphics) != 0) //&& physicalDevice.GetSurfaceSupport((uint)index, surface)
                 .Select((properties, index) => index)
                 .First();
             
             queue = device.GetDeviceQueue(0, (uint)queueNodeIndex);
             Console.WriteLine("[ OK ] Queue");
+        }
+
+        static void CreateCommandBuffer()
+        {
+            // Command pool
+            var commandPoolCreateInfo = new CommandPoolCreateInfo
+            {
+                QueueFamilyIndex = 0,
+                Flags = CommandPoolCreateFlags.ResetCommandBuffer,
+            };
+            commandPool = device.CreateCommandPool(commandPoolCreateInfo);
+            Console.WriteLine("[ OK ] Command Pool");
+
+            // Command Buffer
+            var commandBufferAllocationInfo = new CommandBufferAllocateInfo
+            {
+                Level = CommandBufferLevel.Primary,
+                CommandPool = commandPool,
+                CommandBufferCount = 1,
+            };
+            commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
+            Console.WriteLine("[ OK ] Command Buffer");
         }
 
         static uint MakeVersion(int major, int minor, int patch)

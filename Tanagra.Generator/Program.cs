@@ -5,15 +5,14 @@ using System.IO;
 
 namespace Tanagra.Generator
 {
-    // http://stackoverflow.com/questions/31702766/how-to-properly-pass-struct-pointer-from-c-sharp-to-c-dll
-    // http://stackoverflow.com/questions/779444/p-invoke-c-function-that-returns-pointer-to-a-struct
-    // http://stackoverflow.com/questions/16065110/porting-c-struct-to-c-sharp
-    // http://stackoverflow.com/questions/15217406/passing-null-reference-for-a-ref-struct-parameter-in-interop-method
-    // https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.marshalasattribute(v=vs.110).aspx
     class Program
     {
+        // todo: spec extensions
+        // todo: hasArrayArguments
+        // todo: Create commands that return arrays
+        // todo: Command optional arguments
         // todo: figure out what to do with imported types
-        // todo: union (how?)
+        // todo: union
         // XCB -> X protocol C-language Binding
         static void Main(string[] args)
         {

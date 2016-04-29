@@ -50,7 +50,7 @@ namespace Vulkan
         public VkSurfaceTransformFlagsKHR SupportedTransforms
         {
             get { return _SupportedTransforms; }
-            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = (IntPtr)value.NativePointer; }
+            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = IntPtr.Zero; }
         }
         
         public SurfaceTransformFlagBitsKHR CurrentTransform
@@ -63,7 +63,7 @@ namespace Vulkan
         public VkCompositeAlphaFlagsKHR SupportedCompositeAlpha
         {
             get { return _SupportedCompositeAlpha; }
-            set { _SupportedCompositeAlpha = value; NativePointer->SupportedCompositeAlpha = (IntPtr)value.NativePointer; }
+            set { _SupportedCompositeAlpha = value; NativePointer->SupportedCompositeAlpha = IntPtr.Zero; }
         }
         
         public ImageUsageFlags SupportedUsageFlags

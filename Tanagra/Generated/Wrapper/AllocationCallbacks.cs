@@ -17,35 +17,35 @@ namespace Vulkan
         public PFN_vkAllocationFunction PfnAllocation
         {
             get { return _PfnAllocation; }
-            set { _PfnAllocation = value; NativePointer->PfnAllocation = (IntPtr)value.NativePointer; }
+            set { _PfnAllocation = value; NativePointer->PfnAllocation = IntPtr.Zero; }
         }
         
         PFN_vkReallocationFunction _PfnReallocation;
         public PFN_vkReallocationFunction PfnReallocation
         {
             get { return _PfnReallocation; }
-            set { _PfnReallocation = value; NativePointer->PfnReallocation = (IntPtr)value.NativePointer; }
+            set { _PfnReallocation = value; NativePointer->PfnReallocation = IntPtr.Zero; }
         }
         
         PFN_vkFreeFunction _PfnFree;
         public PFN_vkFreeFunction PfnFree
         {
             get { return _PfnFree; }
-            set { _PfnFree = value; NativePointer->PfnFree = (IntPtr)value.NativePointer; }
+            set { _PfnFree = value; NativePointer->PfnFree = IntPtr.Zero; }
         }
         
         PFN_vkInternalAllocationNotification _PfnInternalAllocation;
         public PFN_vkInternalAllocationNotification PfnInternalAllocation
         {
             get { return _PfnInternalAllocation; }
-            set { _PfnInternalAllocation = value; NativePointer->PfnInternalAllocation = (IntPtr)value.NativePointer; }
+            set { _PfnInternalAllocation = value; NativePointer->PfnInternalAllocation = IntPtr.Zero; }
         }
         
         PFN_vkInternalFreeNotification _PfnInternalFree;
         public PFN_vkInternalFreeNotification PfnInternalFree
         {
             get { return _PfnInternalFree; }
-            set { _PfnInternalFree = value; NativePointer->PfnInternalFree = (IntPtr)value.NativePointer; }
+            set { _PfnInternalFree = value; NativePointer->PfnInternalFree = IntPtr.Zero; }
         }
         
         public AllocationCallbacks()

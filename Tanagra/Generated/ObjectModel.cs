@@ -7,7 +7,7 @@ namespace Vulkan.ObjectModel
     {
         #region Instance
         
-        public static void DestroyInstance(this Instance instance, AllocationCallbacks allocator)
+        public static void DestroyInstance(this Instance instance, AllocationCallbacks allocator = null)
         {
             VK.DestroyInstance(instance, allocator);
         }
@@ -17,52 +17,52 @@ namespace Vulkan.ObjectModel
             return VK.EnumeratePhysicalDevices(instance);
         }
         
-        public static SurfaceKHR CreateAndroidSurfaceKHR(this Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateAndroidSurfaceKHR(this Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateAndroidSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static SurfaceKHR CreateDisplayPlaneSurfaceKHR(this Instance instance, DisplaySurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateDisplayPlaneSurfaceKHR(this Instance instance, DisplaySurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDisplayPlaneSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static SurfaceKHR CreateMirSurfaceKHR(this Instance instance, MirSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateMirSurfaceKHR(this Instance instance, MirSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateMirSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static void DestroySurfaceKHR(this Instance instance, SurfaceKHR surface, AllocationCallbacks allocator)
+        public static void DestroySurfaceKHR(this Instance instance, SurfaceKHR surface, AllocationCallbacks allocator = null)
         {
             VK.DestroySurfaceKHR(instance, surface, allocator);
         }
         
-        public static SurfaceKHR CreateWaylandSurfaceKHR(this Instance instance, WaylandSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateWaylandSurfaceKHR(this Instance instance, WaylandSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateWaylandSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static SurfaceKHR CreateWin32SurfaceKHR(this Instance instance, Win32SurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateWin32SurfaceKHR(this Instance instance, Win32SurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateWin32SurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static SurfaceKHR CreateXlibSurfaceKHR(this Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateXlibSurfaceKHR(this Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateXlibSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static SurfaceKHR CreateXcbSurfaceKHR(this Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SurfaceKHR CreateXcbSurfaceKHR(this Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateXcbSurfaceKHR(instance, createInfo, allocator);
         }
         
-        public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(this Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator)
+        public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(this Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDebugReportCallbackEXT(instance, createInfo, allocator);
         }
         
-        public static void DestroyDebugReportCallbackEXT(this Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator)
+        public static void DestroyDebugReportCallbackEXT(this Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator = null)
         {
             VK.DestroyDebugReportCallbackEXT(instance, callback, allocator);
         }
@@ -101,7 +101,7 @@ namespace Vulkan.ObjectModel
             return VK.GetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling, usage, flags);
         }
         
-        public static Device CreateDevice(this PhysicalDevice physicalDevice, DeviceCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Device CreateDevice(this PhysicalDevice physicalDevice, DeviceCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDevice(physicalDevice, createInfo, allocator);
         }
@@ -141,7 +141,7 @@ namespace Vulkan.ObjectModel
             return VK.GetDisplayModePropertiesKHR(physicalDevice, display);
         }
         
-        public static DisplayModeKHR CreateDisplayModeKHR(this PhysicalDevice physicalDevice, DisplayKHR display, DisplayModeCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static DisplayModeKHR CreateDisplayModeKHR(this PhysicalDevice physicalDevice, DisplayKHR display, DisplayModeCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDisplayModeKHR(physicalDevice, display, createInfo, allocator);
         }
@@ -180,7 +180,7 @@ namespace Vulkan.ObjectModel
         
         #region Device
         
-        public static void DestroyDevice(this Device device, AllocationCallbacks allocator)
+        public static void DestroyDevice(this Device device, AllocationCallbacks allocator = null)
         {
             VK.DestroyDevice(device, allocator);
         }
@@ -195,12 +195,12 @@ namespace Vulkan.ObjectModel
             VK.DeviceWaitIdle(device);
         }
         
-        public static DeviceMemory AllocateMemory(this Device device, MemoryAllocateInfo allocateInfo, AllocationCallbacks allocator)
+        public static DeviceMemory AllocateMemory(this Device device, MemoryAllocateInfo allocateInfo, AllocationCallbacks allocator = null)
         {
             return VK.AllocateMemory(device, allocateInfo, allocator);
         }
         
-        public static void FreeMemory(this Device device, DeviceMemory memory, AllocationCallbacks allocator)
+        public static void FreeMemory(this Device device, DeviceMemory memory, AllocationCallbacks allocator = null)
         {
             VK.FreeMemory(device, memory, allocator);
         }
@@ -255,12 +255,12 @@ namespace Vulkan.ObjectModel
             return VK.GetImageSparseMemoryRequirements(device, image);
         }
         
-        public static Fence CreateFence(this Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Fence CreateFence(this Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateFence(device, createInfo, allocator);
         }
         
-        public static void DestroyFence(this Device device, Fence fence, AllocationCallbacks allocator)
+        public static void DestroyFence(this Device device, Fence fence, AllocationCallbacks allocator = null)
         {
             VK.DestroyFence(device, fence, allocator);
         }
@@ -280,22 +280,22 @@ namespace Vulkan.ObjectModel
             VK.WaitForFences(device, fenceCount, fences, waitAll, timeout);
         }
         
-        public static Semaphore CreateSemaphore(this Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Semaphore CreateSemaphore(this Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateSemaphore(device, createInfo, allocator);
         }
         
-        public static void DestroySemaphore(this Device device, Semaphore semaphore, AllocationCallbacks allocator)
+        public static void DestroySemaphore(this Device device, Semaphore semaphore, AllocationCallbacks allocator = null)
         {
             VK.DestroySemaphore(device, semaphore, allocator);
         }
         
-        public static Event CreateEvent(this Device device, EventCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Event CreateEvent(this Device device, EventCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateEvent(device, createInfo, allocator);
         }
         
-        public static void DestroyEvent(this Device device, Event @event, AllocationCallbacks allocator)
+        public static void DestroyEvent(this Device device, Event @event, AllocationCallbacks allocator = null)
         {
             VK.DestroyEvent(device, @event, allocator);
         }
@@ -315,12 +315,12 @@ namespace Vulkan.ObjectModel
             VK.ResetEvent(device, @event);
         }
         
-        public static QueryPool CreateQueryPool(this Device device, QueryPoolCreateInfo createInfo, AllocationCallbacks allocator)
+        public static QueryPool CreateQueryPool(this Device device, QueryPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateQueryPool(device, createInfo, allocator);
         }
         
-        public static void DestroyQueryPool(this Device device, QueryPool queryPool, AllocationCallbacks allocator)
+        public static void DestroyQueryPool(this Device device, QueryPool queryPool, AllocationCallbacks allocator = null)
         {
             VK.DestroyQueryPool(device, queryPool, allocator);
         }
@@ -330,32 +330,32 @@ namespace Vulkan.ObjectModel
             VK.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, data, stride, flags);
         }
         
-        public static Buffer CreateBuffer(this Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Buffer CreateBuffer(this Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateBuffer(device, createInfo, allocator);
         }
         
-        public static void DestroyBuffer(this Device device, Buffer buffer, AllocationCallbacks allocator)
+        public static void DestroyBuffer(this Device device, Buffer buffer, AllocationCallbacks allocator = null)
         {
             VK.DestroyBuffer(device, buffer, allocator);
         }
         
-        public static BufferView CreateBufferView(this Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator)
+        public static BufferView CreateBufferView(this Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateBufferView(device, createInfo, allocator);
         }
         
-        public static void DestroyBufferView(this Device device, BufferView bufferView, AllocationCallbacks allocator)
+        public static void DestroyBufferView(this Device device, BufferView bufferView, AllocationCallbacks allocator = null)
         {
             VK.DestroyBufferView(device, bufferView, allocator);
         }
         
-        public static Image CreateImage(this Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Image CreateImage(this Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateImage(device, createInfo, allocator);
         }
         
-        public static void DestroyImage(this Device device, Image image, AllocationCallbacks allocator)
+        public static void DestroyImage(this Device device, Image image, AllocationCallbacks allocator = null)
         {
             VK.DestroyImage(device, image, allocator);
         }
@@ -365,32 +365,32 @@ namespace Vulkan.ObjectModel
             return VK.GetImageSubresourceLayout(device, image, subresource);
         }
         
-        public static ImageView CreateImageView(this Device device, ImageViewCreateInfo createInfo, AllocationCallbacks allocator)
+        public static ImageView CreateImageView(this Device device, ImageViewCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateImageView(device, createInfo, allocator);
         }
         
-        public static void DestroyImageView(this Device device, ImageView imageView, AllocationCallbacks allocator)
+        public static void DestroyImageView(this Device device, ImageView imageView, AllocationCallbacks allocator = null)
         {
             VK.DestroyImageView(device, imageView, allocator);
         }
         
-        public static ShaderModule CreateShaderModule(this Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator)
+        public static ShaderModule CreateShaderModule(this Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateShaderModule(device, createInfo, allocator);
         }
         
-        public static void DestroyShaderModule(this Device device, ShaderModule shaderModule, AllocationCallbacks allocator)
+        public static void DestroyShaderModule(this Device device, ShaderModule shaderModule, AllocationCallbacks allocator = null)
         {
             VK.DestroyShaderModule(device, shaderModule, allocator);
         }
         
-        public static PipelineCache CreatePipelineCache(this Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator)
+        public static PipelineCache CreatePipelineCache(this Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreatePipelineCache(device, createInfo, allocator);
         }
         
-        public static void DestroyPipelineCache(this Device device, PipelineCache pipelineCache, AllocationCallbacks allocator)
+        public static void DestroyPipelineCache(this Device device, PipelineCache pipelineCache, AllocationCallbacks allocator = null)
         {
             VK.DestroyPipelineCache(device, pipelineCache, allocator);
         }
@@ -410,47 +410,47 @@ namespace Vulkan.ObjectModel
             VK.CreateComputePipelines(device, pipelineCache, createInfoCount, createInfos, allocator, pipelines);
         }
         
-        public static void DestroyPipeline(this Device device, Pipeline pipeline, AllocationCallbacks allocator)
+        public static void DestroyPipeline(this Device device, Pipeline pipeline, AllocationCallbacks allocator = null)
         {
             VK.DestroyPipeline(device, pipeline, allocator);
         }
         
-        public static PipelineLayout CreatePipelineLayout(this Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator)
+        public static PipelineLayout CreatePipelineLayout(this Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreatePipelineLayout(device, createInfo, allocator);
         }
         
-        public static void DestroyPipelineLayout(this Device device, PipelineLayout pipelineLayout, AllocationCallbacks allocator)
+        public static void DestroyPipelineLayout(this Device device, PipelineLayout pipelineLayout, AllocationCallbacks allocator = null)
         {
             VK.DestroyPipelineLayout(device, pipelineLayout, allocator);
         }
         
-        public static Sampler CreateSampler(this Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Sampler CreateSampler(this Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateSampler(device, createInfo, allocator);
         }
         
-        public static void DestroySampler(this Device device, Sampler sampler, AllocationCallbacks allocator)
+        public static void DestroySampler(this Device device, Sampler sampler, AllocationCallbacks allocator = null)
         {
             VK.DestroySampler(device, sampler, allocator);
         }
         
-        public static DescriptorSetLayout CreateDescriptorSetLayout(this Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator)
+        public static DescriptorSetLayout CreateDescriptorSetLayout(this Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDescriptorSetLayout(device, createInfo, allocator);
         }
         
-        public static void DestroyDescriptorSetLayout(this Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks allocator)
+        public static void DestroyDescriptorSetLayout(this Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks allocator = null)
         {
             VK.DestroyDescriptorSetLayout(device, descriptorSetLayout, allocator);
         }
         
-        public static DescriptorPool CreateDescriptorPool(this Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator)
+        public static DescriptorPool CreateDescriptorPool(this Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateDescriptorPool(device, createInfo, allocator);
         }
         
-        public static void DestroyDescriptorPool(this Device device, DescriptorPool descriptorPool, AllocationCallbacks allocator)
+        public static void DestroyDescriptorPool(this Device device, DescriptorPool descriptorPool, AllocationCallbacks allocator = null)
         {
             VK.DestroyDescriptorPool(device, descriptorPool, allocator);
         }
@@ -475,22 +475,22 @@ namespace Vulkan.ObjectModel
             VK.UpdateDescriptorSets(device, descriptorWriteCount, descriptorWrites, descriptorCopyCount, descriptorCopies);
         }
         
-        public static Framebuffer CreateFramebuffer(this Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator)
+        public static Framebuffer CreateFramebuffer(this Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateFramebuffer(device, createInfo, allocator);
         }
         
-        public static void DestroyFramebuffer(this Device device, Framebuffer framebuffer, AllocationCallbacks allocator)
+        public static void DestroyFramebuffer(this Device device, Framebuffer framebuffer, AllocationCallbacks allocator = null)
         {
             VK.DestroyFramebuffer(device, framebuffer, allocator);
         }
         
-        public static RenderPass CreateRenderPass(this Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator)
+        public static RenderPass CreateRenderPass(this Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateRenderPass(device, createInfo, allocator);
         }
         
-        public static void DestroyRenderPass(this Device device, RenderPass renderPass, AllocationCallbacks allocator)
+        public static void DestroyRenderPass(this Device device, RenderPass renderPass, AllocationCallbacks allocator = null)
         {
             VK.DestroyRenderPass(device, renderPass, allocator);
         }
@@ -500,12 +500,12 @@ namespace Vulkan.ObjectModel
             return VK.GetRenderAreaGranularity(device, renderPass);
         }
         
-        public static CommandPool CreateCommandPool(this Device device, CommandPoolCreateInfo createInfo, AllocationCallbacks allocator)
+        public static CommandPool CreateCommandPool(this Device device, CommandPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateCommandPool(device, createInfo, allocator);
         }
         
-        public static void DestroyCommandPool(this Device device, CommandPool commandPool, AllocationCallbacks allocator)
+        public static void DestroyCommandPool(this Device device, CommandPool commandPool, AllocationCallbacks allocator = null)
         {
             VK.DestroyCommandPool(device, commandPool, allocator);
         }
@@ -515,9 +515,9 @@ namespace Vulkan.ObjectModel
             VK.ResetCommandPool(device, commandPool, flags);
         }
         
-        public static void AllocateCommandBuffers(this Device device, CommandBufferAllocateInfo allocateInfo, CommandBuffer commandBuffers)
+        public static CommandBuffer AllocateCommandBuffers(this Device device, CommandBufferAllocateInfo allocateInfo)
         {
-            VK.AllocateCommandBuffers(device, allocateInfo, commandBuffers);
+            return VK.AllocateCommandBuffers(device, allocateInfo);
         }
         
         public static void FreeCommandBuffers(this Device device, CommandPool commandPool, UInt32 commandBufferCount, CommandBuffer commandBuffers)
@@ -530,12 +530,12 @@ namespace Vulkan.ObjectModel
             VK.CreateSharedSwapchainsKHR(device, swapchainCount, createInfos, allocator, swapchains);
         }
         
-        public static SwapchainKHR CreateSwapchainKHR(this Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator)
+        public static SwapchainKHR CreateSwapchainKHR(this Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             return VK.CreateSwapchainKHR(device, createInfo, allocator);
         }
         
-        public static void DestroySwapchainKHR(this Device device, SwapchainKHR swapchain, AllocationCallbacks allocator)
+        public static void DestroySwapchainKHR(this Device device, SwapchainKHR swapchain, AllocationCallbacks allocator = null)
         {
             VK.DestroySwapchainKHR(device, swapchain, allocator);
         }
