@@ -30,7 +30,7 @@ namespace Vulkan
         public DisplayPresentInfoKHR()
         {
             NativePointer = (Interop.DisplayPresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPresentInfoKHR));
-            //NativePointer->SType = StructureType.DisplayPresentInfoKHR;
+            NativePointer->SType = StructureType.DisplayPresentInfoKHR;
         }
     }
 }

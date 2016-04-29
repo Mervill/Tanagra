@@ -72,7 +72,7 @@ namespace Vulkan
         public PipelineDepthStencilStateCreateInfo()
         {
             NativePointer = (Interop.PipelineDepthStencilStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDepthStencilStateCreateInfo));
-            //NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
+            NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
     }
 }

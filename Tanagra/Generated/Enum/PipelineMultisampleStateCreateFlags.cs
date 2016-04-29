@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum PipelineMultisampleStateCreateFlags
     {
-        NONE = 1 << 0,
+        None = 1 << 0,
     }
 }

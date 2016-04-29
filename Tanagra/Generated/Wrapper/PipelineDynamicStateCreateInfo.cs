@@ -28,7 +28,7 @@ namespace Vulkan
         public PipelineDynamicStateCreateInfo()
         {
             NativePointer = (Interop.PipelineDynamicStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDynamicStateCreateInfo));
-            //NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
+            NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
         }
     }
 }

@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum DisplaySurfaceCreateFlagsKHR
     {
-        NONE = 1 << 0,
+        None = 1 << 0,
     }
 }

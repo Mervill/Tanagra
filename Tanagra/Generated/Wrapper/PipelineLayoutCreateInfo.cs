@@ -42,7 +42,7 @@ namespace Vulkan
         public PipelineLayoutCreateInfo()
         {
             NativePointer = (Interop.PipelineLayoutCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineLayoutCreateInfo));
-            //NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
+            NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
     }
 }

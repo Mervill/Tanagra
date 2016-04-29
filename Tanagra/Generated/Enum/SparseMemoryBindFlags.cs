@@ -8,6 +8,6 @@ namespace Vulkan
         /// <summary>
         /// Operation binds resource metadata to memory
         /// </summary>
-        SPARSE_MEMORY_BIND_METADATA_BIT = 1 << 0,
+        Metadata = 1 << 0,
     }
 }

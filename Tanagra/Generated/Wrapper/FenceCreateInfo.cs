@@ -16,7 +16,7 @@ namespace Vulkan
         public FenceCreateInfo()
         {
             NativePointer = (Interop.FenceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FenceCreateInfo));
-            //NativePointer->SType = StructureType.FenceCreateInfo;
+            NativePointer->SType = StructureType.FenceCreateInfo;
         }
     }
 }

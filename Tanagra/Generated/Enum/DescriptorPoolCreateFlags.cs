@@ -8,6 +8,6 @@ namespace Vulkan
         /// <summary>
         /// Descriptor sets may be freed individually
         /// </summary>
-        DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT = 1 << 0,
+        FreeDescriptorSet = 1 << 0,
     }
 }

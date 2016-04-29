@@ -49,7 +49,7 @@ namespace Vulkan
         public ImageViewCreateInfo()
         {
             NativePointer = (Interop.ImageViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageViewCreateInfo));
-            //NativePointer->SType = StructureType.ImageViewCreateInfo;
+            NativePointer->SType = StructureType.ImageViewCreateInfo;
         }
     }
 }

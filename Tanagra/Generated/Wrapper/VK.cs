@@ -14,7 +14,7 @@ namespace Vulkan
             fixed(IntPtr* ptrInstance = &instance.NativePointer)
             {
                 var result = vkCreateInstance(createInfo.NativePointer, allocator.NativePointer, ptrInstance);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateInstance), result);
             }
             return instance;
@@ -29,13 +29,13 @@ namespace Vulkan
         {
             UInt32 physicalDeviceCount;
             var result = vkEnumeratePhysicalDevices(instance.NativePointer, &physicalDeviceCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumeratePhysicalDevices), result);
             
             int size = Marshal.SizeOf(typeof(IntPtr));
             var ptrPhysicalDevice = Marshal.AllocHGlobal((int)(size * physicalDeviceCount));
             result = vkEnumeratePhysicalDevices(instance.NativePointer, &physicalDeviceCount, (IntPtr*)ptrPhysicalDevice);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumeratePhysicalDevices), result);
             
             var list = new List<PhysicalDevice>();
@@ -47,18 +47,6 @@ namespace Vulkan
             }
             
             return list;
-        }
-        
-        public static PFN_vkVoidFunction GetDeviceProcAddr(Device device, String name)
-        {
-            vkGetDeviceProcAddr(device.NativePointer, name);
-            throw new NotImplementedException();
-        }
-        
-        public static PFN_vkVoidFunction GetInstanceProcAddr(Instance instance, String name)
-        {
-            vkGetInstanceProcAddr(instance.NativePointer, name);
-            throw new NotImplementedException();
         }
         
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)
@@ -113,7 +101,7 @@ namespace Vulkan
         {
             ImageFormatProperties imageFormatProperties = new ImageFormatProperties();
             var result = vkGetPhysicalDeviceImageFormatProperties(physicalDevice.NativePointer, format, type, tiling, usage, flags, imageFormatProperties.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceImageFormatProperties), result);
             return imageFormatProperties;
         }
@@ -124,7 +112,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDevice = &device.NativePointer)
             {
                 var result = vkCreateDevice(physicalDevice.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrDevice);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDevice), result);
             }
             return device;
@@ -139,13 +127,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkEnumerateInstanceLayerProperties(&propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateInstanceLayerProperties), result);
             
             int size = Marshal.SizeOf(typeof(Interop.LayerProperties));
             var ptrLayerProperties = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkEnumerateInstanceLayerProperties(&propertyCount, (Interop.LayerProperties*)ptrLayerProperties);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateInstanceLayerProperties), result);
             
             var list = new List<LayerProperties>();
@@ -163,13 +151,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkEnumerateInstanceExtensionProperties(layerName, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
             int size = Marshal.SizeOf(typeof(Interop.ExtensionProperties));
             var ptrExtensionProperties = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkEnumerateInstanceExtensionProperties(layerName, &propertyCount, (Interop.ExtensionProperties*)ptrExtensionProperties);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
             var list = new List<ExtensionProperties>();
@@ -187,13 +175,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateDeviceLayerProperties), result);
             
             int size = Marshal.SizeOf(typeof(Interop.LayerProperties));
             var ptrLayerProperties = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &propertyCount, (Interop.LayerProperties*)ptrLayerProperties);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateDeviceLayerProperties), result);
             
             var list = new List<LayerProperties>();
@@ -211,13 +199,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
             int size = Marshal.SizeOf(typeof(Interop.ExtensionProperties));
             var ptrExtensionProperties = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &propertyCount, (Interop.ExtensionProperties*)ptrExtensionProperties);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
             var list = new List<ExtensionProperties>();
@@ -250,14 +238,14 @@ namespace Vulkan
         public static void QueueWaitIdle(Queue queue)
         {
             var result = vkQueueWaitIdle(queue.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueWaitIdle), result);
         }
         
         public static void DeviceWaitIdle(Device device)
         {
             var result = vkDeviceWaitIdle(device.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkDeviceWaitIdle), result);
         }
         
@@ -267,7 +255,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDeviceMemory = &memory.NativePointer)
             {
                 var result = vkAllocateMemory(device.NativePointer, allocateInfo.NativePointer, allocator.NativePointer, ptrDeviceMemory);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkAllocateMemory), result);
             }
             return memory;
@@ -282,7 +270,7 @@ namespace Vulkan
         {
             IntPtr data = new IntPtr();
             var result = vkMapMemory(device.NativePointer, memory.NativePointer, offset, size, flags, &data);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkMapMemory), result);
             return data;
         }
@@ -321,7 +309,7 @@ namespace Vulkan
         public static void BindBufferMemory(Device device, Buffer buffer, DeviceMemory memory, DeviceSize memoryOffset)
         {
             var result = vkBindBufferMemory(device.NativePointer, buffer.NativePointer, memory.NativePointer, memoryOffset);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkBindBufferMemory), result);
         }
         
@@ -335,7 +323,7 @@ namespace Vulkan
         public static void BindImageMemory(Device device, Image image, DeviceMemory memory, DeviceSize memoryOffset)
         {
             var result = vkBindImageMemory(device.NativePointer, image.NativePointer, memory.NativePointer, memoryOffset);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkBindImageMemory), result);
         }
         
@@ -391,7 +379,7 @@ namespace Vulkan
             fixed(IntPtr* ptrFence = &fence.NativePointer)
             {
                 var result = vkCreateFence(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrFence);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateFence), result);
             }
             return fence;
@@ -411,7 +399,7 @@ namespace Vulkan
         public static void GetFenceStatus(Device device, Fence fence)
         {
             var result = vkGetFenceStatus(device.NativePointer, fence.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetFenceStatus), result);
         }
         
@@ -427,7 +415,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSemaphore = &semaphore.NativePointer)
             {
                 var result = vkCreateSemaphore(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSemaphore);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateSemaphore), result);
             }
             return semaphore;
@@ -444,7 +432,7 @@ namespace Vulkan
             fixed(IntPtr* ptrEvent = &@event.NativePointer)
             {
                 var result = vkCreateEvent(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrEvent);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateEvent), result);
             }
             return @event;
@@ -458,21 +446,21 @@ namespace Vulkan
         public static void GetEventStatus(Device device, Event @event)
         {
             var result = vkGetEventStatus(device.NativePointer, @event.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetEventStatus), result);
         }
         
         public static void SetEvent(Device device, Event @event)
         {
             var result = vkSetEvent(device.NativePointer, @event.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkSetEvent), result);
         }
         
         public static void ResetEvent(Device device, Event @event)
         {
             var result = vkResetEvent(device.NativePointer, @event.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetEvent), result);
         }
         
@@ -482,7 +470,7 @@ namespace Vulkan
             fixed(IntPtr* ptrQueryPool = &queryPool.NativePointer)
             {
                 var result = vkCreateQueryPool(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrQueryPool);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateQueryPool), result);
             }
             return queryPool;
@@ -505,7 +493,7 @@ namespace Vulkan
             fixed(IntPtr* ptrBuffer = &buffer.NativePointer)
             {
                 var result = vkCreateBuffer(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrBuffer);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateBuffer), result);
             }
             return buffer;
@@ -522,7 +510,7 @@ namespace Vulkan
             fixed(IntPtr* ptrBufferView = &view.NativePointer)
             {
                 var result = vkCreateBufferView(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrBufferView);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateBufferView), result);
             }
             return view;
@@ -539,7 +527,7 @@ namespace Vulkan
             fixed(IntPtr* ptrImage = &image.NativePointer)
             {
                 var result = vkCreateImage(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrImage);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateImage), result);
             }
             return image;
@@ -563,7 +551,7 @@ namespace Vulkan
             fixed(IntPtr* ptrImageView = &view.NativePointer)
             {
                 var result = vkCreateImageView(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrImageView);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateImageView), result);
             }
             return view;
@@ -580,7 +568,7 @@ namespace Vulkan
             fixed(IntPtr* ptrShaderModule = &shaderModule.NativePointer)
             {
                 var result = vkCreateShaderModule(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrShaderModule);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateShaderModule), result);
             }
             return shaderModule;
@@ -597,7 +585,7 @@ namespace Vulkan
             fixed(IntPtr* ptrPipelineCache = &pipelineCache.NativePointer)
             {
                 var result = vkCreatePipelineCache(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrPipelineCache);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreatePipelineCache), result);
             }
             return pipelineCache;
@@ -606,30 +594,6 @@ namespace Vulkan
         public static void DestroyPipelineCache(Device device, PipelineCache pipelineCache, AllocationCallbacks allocator)
         {
             vkDestroyPipelineCache(device.NativePointer, pipelineCache.NativePointer, allocator.NativePointer);
-        }
-        
-        public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
-        {
-            UIntPtr dataSize;
-            var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &dataSize, null);
-            if(result != Result.SUCCESS)
-                throw new VulkanCommandException(nameof(vkGetPipelineCacheData), result);
-            
-            int size = Marshal.SizeOf(typeof(Interop.IntPtr));
-            var ptrIntPtr = Marshal.AllocHGlobal((int)(size * dataSize));
-            result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &dataSize, (Interop.IntPtr*)ptrIntPtr);
-            if(result != Result.SUCCESS)
-                throw new VulkanCommandException(nameof(vkGetPipelineCacheData), result);
-            
-            var list = new List<IntPtr>();
-            for(var x = 0; x < dataSize; x++)
-            {
-                var item = new IntPtr();
-                item.NativePointer = &((Interop.IntPtr*)ptrIntPtr)[x];
-                list.Add(item);
-            }
-            
-            return list;
         }
         
         public static void MergePipelineCaches(Device device, PipelineCache dstCache, UInt32 srcCacheCount, PipelineCache srcCaches)
@@ -661,7 +625,7 @@ namespace Vulkan
             fixed(IntPtr* ptrPipelineLayout = &pipelineLayout.NativePointer)
             {
                 var result = vkCreatePipelineLayout(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrPipelineLayout);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreatePipelineLayout), result);
             }
             return pipelineLayout;
@@ -678,7 +642,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSampler = &sampler.NativePointer)
             {
                 var result = vkCreateSampler(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSampler);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateSampler), result);
             }
             return sampler;
@@ -695,7 +659,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDescriptorSetLayout = &setLayout.NativePointer)
             {
                 var result = vkCreateDescriptorSetLayout(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrDescriptorSetLayout);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDescriptorSetLayout), result);
             }
             return setLayout;
@@ -712,7 +676,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDescriptorPool = &descriptorPool.NativePointer)
             {
                 var result = vkCreateDescriptorPool(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrDescriptorPool);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDescriptorPool), result);
             }
             return descriptorPool;
@@ -726,7 +690,7 @@ namespace Vulkan
         public static void ResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags)
         {
             var result = vkResetDescriptorPool(device.NativePointer, descriptorPool.NativePointer, flags);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetDescriptorPool), result);
         }
         
@@ -754,7 +718,7 @@ namespace Vulkan
             fixed(IntPtr* ptrFramebuffer = &framebuffer.NativePointer)
             {
                 var result = vkCreateFramebuffer(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrFramebuffer);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateFramebuffer), result);
             }
             return framebuffer;
@@ -771,7 +735,7 @@ namespace Vulkan
             fixed(IntPtr* ptrRenderPass = &renderPass.NativePointer)
             {
                 var result = vkCreateRenderPass(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrRenderPass);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateRenderPass), result);
             }
             return renderPass;
@@ -795,7 +759,7 @@ namespace Vulkan
             fixed(IntPtr* ptrCommandPool = &commandPool.NativePointer)
             {
                 var result = vkCreateCommandPool(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrCommandPool);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateCommandPool), result);
             }
             return commandPool;
@@ -809,7 +773,7 @@ namespace Vulkan
         public static void ResetCommandPool(Device device, CommandPool commandPool, CommandPoolResetFlags flags)
         {
             var result = vkResetCommandPool(device.NativePointer, commandPool.NativePointer, flags);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetCommandPool), result);
         }
         
@@ -828,21 +792,21 @@ namespace Vulkan
         public static void BeginCommandBuffer(CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
         {
             var result = vkBeginCommandBuffer(commandBuffer.NativePointer, beginInfo.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkBeginCommandBuffer), result);
         }
         
         public static void EndCommandBuffer(CommandBuffer commandBuffer)
         {
             var result = vkEndCommandBuffer(commandBuffer.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkEndCommandBuffer), result);
         }
         
         public static void ResetCommandBuffer(CommandBuffer commandBuffer, CommandBufferResetFlags flags)
         {
             var result = vkResetCommandBuffer(commandBuffer.NativePointer, flags);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetCommandBuffer), result);
         }
         
@@ -1090,7 +1054,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateAndroidSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateAndroidSurfaceKHR), result);
             }
             return surface;
@@ -1100,13 +1064,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
             int size = Marshal.SizeOf(typeof(Interop.DisplayPropertiesKHR));
             var ptrDisplayPropertiesKHR = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &propertyCount, (Interop.DisplayPropertiesKHR*)ptrDisplayPropertiesKHR);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
             var list = new List<DisplayPropertiesKHR>();
@@ -1124,13 +1088,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
             int size = Marshal.SizeOf(typeof(Interop.DisplayPlanePropertiesKHR));
             var ptrDisplayPlanePropertiesKHR = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &propertyCount, (Interop.DisplayPlanePropertiesKHR*)ptrDisplayPlanePropertiesKHR);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
             var list = new List<DisplayPlanePropertiesKHR>();
@@ -1148,13 +1112,13 @@ namespace Vulkan
         {
             UInt32 displayCount;
             var result = vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &displayCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetDisplayPlaneSupportedDisplaysKHR), result);
             
             int size = Marshal.SizeOf(typeof(IntPtr));
             var ptrDisplayKHR = Marshal.AllocHGlobal((int)(size * displayCount));
             result = vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &displayCount, (IntPtr*)ptrDisplayKHR);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetDisplayPlaneSupportedDisplaysKHR), result);
             
             var list = new List<DisplayKHR>();
@@ -1172,13 +1136,13 @@ namespace Vulkan
         {
             UInt32 propertyCount;
             var result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &propertyCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetDisplayModePropertiesKHR), result);
             
             int size = Marshal.SizeOf(typeof(Interop.DisplayModePropertiesKHR));
             var ptrDisplayModePropertiesKHR = Marshal.AllocHGlobal((int)(size * propertyCount));
             result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &propertyCount, (Interop.DisplayModePropertiesKHR*)ptrDisplayModePropertiesKHR);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetDisplayModePropertiesKHR), result);
             
             var list = new List<DisplayModePropertiesKHR>();
@@ -1198,7 +1162,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDisplayModeKHR = &mode.NativePointer)
             {
                 var result = vkCreateDisplayModeKHR(physicalDevice.NativePointer, display.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrDisplayModeKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDisplayModeKHR), result);
             }
             return mode;
@@ -1208,7 +1172,7 @@ namespace Vulkan
         {
             DisplayPlaneCapabilitiesKHR capabilities = new DisplayPlaneCapabilitiesKHR();
             var result = vkGetDisplayPlaneCapabilitiesKHR(physicalDevice.NativePointer, mode.NativePointer, planeIndex, capabilities.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetDisplayPlaneCapabilitiesKHR), result);
             return capabilities;
         }
@@ -1219,7 +1183,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateDisplayPlaneSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDisplayPlaneSurfaceKHR), result);
             }
             return surface;
@@ -1237,7 +1201,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateMirSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateMirSurfaceKHR), result);
             }
             return surface;
@@ -1259,7 +1223,7 @@ namespace Vulkan
         {
             Boolean supported = new Boolean();
             var result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, surface.NativePointer, &supported);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfaceSupportKHR), result);
             return supported;
         }
@@ -1268,7 +1232,7 @@ namespace Vulkan
         {
             SurfaceCapabilitiesKHR surfaceCapabilities = new SurfaceCapabilitiesKHR();
             var result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice.NativePointer, surface.NativePointer, surfaceCapabilities.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfaceCapabilitiesKHR), result);
             return surfaceCapabilities;
         }
@@ -1277,13 +1241,13 @@ namespace Vulkan
         {
             UInt32 surfaceFormatCount;
             var result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &surfaceFormatCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfaceFormatsKHR), result);
             
             int size = Marshal.SizeOf(typeof(Interop.SurfaceFormatKHR));
             var ptrSurfaceFormatKHR = Marshal.AllocHGlobal((int)(size * surfaceFormatCount));
             result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &surfaceFormatCount, (Interop.SurfaceFormatKHR*)ptrSurfaceFormatKHR);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfaceFormatsKHR), result);
             
             var list = new List<SurfaceFormatKHR>();
@@ -1297,37 +1261,13 @@ namespace Vulkan
             return list;
         }
         
-        public static List<PresentModeKHR> GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
-        {
-            UInt32 presentModeCount;
-            var result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &presentModeCount, null);
-            if(result != Result.SUCCESS)
-                throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
-            
-            int size = Marshal.SizeOf(typeof(Interop.PresentModeKHR));
-            var ptrPresentModeKHR = Marshal.AllocHGlobal((int)(size * presentModeCount));
-            result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &presentModeCount, (Interop.PresentModeKHR*)ptrPresentModeKHR);
-            if(result != Result.SUCCESS)
-                throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
-            
-            var list = new List<PresentModeKHR>();
-            for(var x = 0; x < presentModeCount; x++)
-            {
-                var item = new PresentModeKHR();
-                item.NativePointer = &((Interop.PresentModeKHR*)ptrPresentModeKHR)[x];
-                list.Add(item);
-            }
-            
-            return list;
-        }
-        
         public static SwapchainKHR CreateSwapchainKHR(Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator)
         {
             SwapchainKHR swapchain = new SwapchainKHR();
             fixed(IntPtr* ptrSwapchainKHR = &swapchain.NativePointer)
             {
                 var result = vkCreateSwapchainKHR(device.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSwapchainKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateSwapchainKHR), result);
             }
             return swapchain;
@@ -1342,13 +1282,13 @@ namespace Vulkan
         {
             UInt32 swapchainImageCount;
             var result = vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &swapchainImageCount, null);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetSwapchainImagesKHR), result);
             
             int size = Marshal.SizeOf(typeof(IntPtr));
             var ptrImage = Marshal.AllocHGlobal((int)(size * swapchainImageCount));
             result = vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &swapchainImageCount, (IntPtr*)ptrImage);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetSwapchainImagesKHR), result);
             
             var list = new List<Image>();
@@ -1366,7 +1306,7 @@ namespace Vulkan
         {
             UInt32 imageIndex = new UInt32();
             var result = vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, semaphore.NativePointer, fence.NativePointer, &imageIndex);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkAcquireNextImageKHR), result);
             return imageIndex;
         }
@@ -1374,7 +1314,7 @@ namespace Vulkan
         public static void QueuePresentKHR(Queue queue, PresentInfoKHR presentInfo)
         {
             var result = vkQueuePresentKHR(queue.NativePointer, presentInfo.NativePointer);
-            if(result != Result.SUCCESS)
+            if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueuePresentKHR), result);
         }
         
@@ -1384,7 +1324,7 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateWaylandSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateWaylandSurfaceKHR), result);
             }
             return surface;
@@ -1403,16 +1343,10 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateWin32SurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateWin32SurfaceKHR), result);
             }
             return surface;
-        }
-        
-        public static Boolean GetPhysicalDeviceWin32PresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
-        {
-            vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex);
-            throw new NotImplementedException();
         }
         
         public static SurfaceKHR CreateXlibSurfaceKHR(Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
@@ -1421,16 +1355,10 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateXlibSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateXlibSurfaceKHR), result);
             }
             return surface;
-        }
-        
-        public static Boolean GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, Display dpy, VisualID visualID)
-        {
-            vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, dpy.NativePointer, visualID.NativePointer);
-            throw new NotImplementedException();
         }
         
         public static SurfaceKHR CreateXcbSurfaceKHR(Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator)
@@ -1439,16 +1367,10 @@ namespace Vulkan
             fixed(IntPtr* ptrSurfaceKHR = &surface.NativePointer)
             {
                 var result = vkCreateXcbSurfaceKHR(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrSurfaceKHR);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateXcbSurfaceKHR), result);
             }
             return surface;
-        }
-        
-        public static Boolean GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t connection, xcb_visualid_t visual_id)
-        {
-            vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, connection.NativePointer, visual_id.NativePointer);
-            throw new NotImplementedException();
         }
         
         public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator)
@@ -1457,7 +1379,7 @@ namespace Vulkan
             fixed(IntPtr* ptrDebugReportCallbackEXT = &callback.NativePointer)
             {
                 var result = vkCreateDebugReportCallbackEXT(instance.NativePointer, createInfo.NativePointer, allocator.NativePointer, ptrDebugReportCallbackEXT);
-                if(result != Result.SUCCESS)
+                if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateDebugReportCallbackEXT), result);
             }
             return callback;
@@ -1466,11 +1388,6 @@ namespace Vulkan
         public static void DestroyDebugReportCallbackEXT(Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator)
         {
             vkDestroyDebugReportCallbackEXT(instance.NativePointer, callback.NativePointer, allocator.NativePointer);
-        }
-        
-        public static void DebugReportMessageEXT(Instance instance, VkDebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message)
-        {
-            vkDebugReportMessageEXT(instance.NativePointer, flags.NativePointer, objectType, @object, location, messageCode, layerPrefix, message);
         }
         
     }

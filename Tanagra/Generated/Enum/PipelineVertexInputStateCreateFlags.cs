@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum PipelineVertexInputStateCreateFlags
     {
-        NONE = 1 << 0,
+        None = 1 << 0,
     }
 }

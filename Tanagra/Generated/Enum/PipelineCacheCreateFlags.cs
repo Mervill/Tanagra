@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum PipelineCacheCreateFlags
     {
-        NONE = 1 << 0,
+        None = 1 << 0,
     }
 }

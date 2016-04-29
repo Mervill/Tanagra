@@ -8,6 +8,6 @@ namespace Vulkan
         /// <summary>
         /// Dependency is per pixel region 
         /// </summary>
-        DEPENDENCY_BY_REGION_BIT = 1 << 0,
+        ByRegion = 1 << 0,
     }
 }

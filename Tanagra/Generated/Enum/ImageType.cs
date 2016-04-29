@@ -4,8 +4,8 @@ namespace Vulkan
 {
     public enum ImageType
     {
-        IMAGE_TYPE_1D = 0,
-        IMAGE_TYPE_2D = 1,
-        IMAGE_TYPE_3D = 2,
+        ImageType1d = 0,
+        ImageType2d = 1,
+        ImageType3d = 2,
     }
 }

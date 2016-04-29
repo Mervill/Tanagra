@@ -17,12 +17,6 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = callingConvention)]
         internal static extern Result vkEnumeratePhysicalDevices(IntPtr instance, UInt32* physicalDeviceCount, IntPtr* physicalDevices);
         
-        [DllImport(DllName, EntryPoint = "vkGetDeviceProcAddr", CallingConvention = callingConvention)]
-        internal static extern PFN_vkVoidFunction vkGetDeviceProcAddr(IntPtr device, String name);
-        
-        [DllImport(DllName, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = callingConvention)]
-        internal static extern PFN_vkVoidFunction vkGetInstanceProcAddr(IntPtr instance, String name);
-        
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = callingConvention)]
         internal static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, PhysicalDeviceProperties* properties);
         
@@ -196,9 +190,6 @@ namespace Vulkan.Interop
         
         [DllImport(DllName, EntryPoint = "vkDestroyPipelineCache", CallingConvention = callingConvention)]
         internal static extern void vkDestroyPipelineCache(IntPtr device, IntPtr pipelineCache, AllocationCallbacks* allocator);
-        
-        [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
-        internal static extern Result vkGetPipelineCacheData(IntPtr device, IntPtr pipelineCache, UIntPtr* dataSize, IntPtr* data);
         
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
         internal static extern Result vkMergePipelineCaches(IntPtr device, IntPtr dstCache, UInt32 srcCacheCount, IntPtr* srcCaches);
@@ -464,9 +455,6 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceFormatsKHR", CallingConvention = callingConvention)]
         internal static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, IntPtr surface, UInt32* surfaceFormatCount, SurfaceFormatKHR* surfaceFormats);
         
-        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = callingConvention)]
-        internal static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, IntPtr surface, UInt32* presentModeCount, PresentModeKHR* presentModes);
-        
         [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* swapchain);
         
@@ -491,29 +479,17 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateWin32SurfaceKHR(IntPtr instance, Win32SurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
         
-        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceWin32PresentationSupportKHR", CallingConvention = callingConvention)]
-        internal static extern Boolean vkGetPhysicalDeviceWin32PresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex);
-        
         [DllImport(DllName, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateXlibSurfaceKHR(IntPtr instance, XlibSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
         
-        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXlibPresentationSupportKHR", CallingConvention = callingConvention)]
-        internal static extern Boolean vkGetPhysicalDeviceXlibPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, Display* dpy, VisualID visualID);
-        
         [DllImport(DllName, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateXcbSurfaceKHR(IntPtr instance, XcbSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, IntPtr* surface);
-        
-        [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXcbPresentationSupportKHR", CallingConvention = callingConvention)]
-        internal static extern Boolean vkGetPhysicalDeviceXcbPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, xcb_connection_t* connection, xcb_visualid_t visual_id);
         
         [DllImport(DllName, EntryPoint = "vkCreateDebugReportCallbackEXT", CallingConvention = callingConvention)]
         internal static extern Result vkCreateDebugReportCallbackEXT(IntPtr instance, DebugReportCallbackCreateInfoEXT* createInfo, AllocationCallbacks* allocator, IntPtr* callback);
         
         [DllImport(DllName, EntryPoint = "vkDestroyDebugReportCallbackEXT", CallingConvention = callingConvention)]
         internal static extern void vkDestroyDebugReportCallbackEXT(IntPtr instance, IntPtr callback, AllocationCallbacks* allocator);
-        
-        [DllImport(DllName, EntryPoint = "vkDebugReportMessageEXT", CallingConvention = callingConvention)]
-        internal static extern void vkDebugReportMessageEXT(IntPtr instance, VkDebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message);
         
     }
 }

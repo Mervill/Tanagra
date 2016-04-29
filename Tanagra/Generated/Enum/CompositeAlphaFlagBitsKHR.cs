@@ -5,9 +5,9 @@ namespace Vulkan
     [Flags]
     public enum CompositeAlphaFlagBitsKHR
     {
-        COMPOSITE_ALPHA_OPAQUE_BIT_KHR = 1 << 0,
-        COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR = 1 << 1,
-        COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR = 1 << 2,
-        COMPOSITE_ALPHA_INHERIT_BIT_KHR = 1 << 3,
+        CompositeAlphaOpaqueBitKhr = 1 << 0,
+        CompositeAlphaPreMultipliedBitKhr = 1 << 1,
+        CompositeAlphaPostMultipliedBitKhr = 1 << 2,
+        CompositeAlphaInheritBitKhr = 1 << 3,
     }
 }

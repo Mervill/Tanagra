@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum InstanceCreateFlags
     {
-        NONE = 1 << 0,
+        None = 1 << 0,
     }
 }

@@ -42,7 +42,7 @@ namespace Vulkan
         public PipelineVertexInputStateCreateInfo()
         {
             NativePointer = (Interop.PipelineVertexInputStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineVertexInputStateCreateInfo));
-            //NativePointer->SType = StructureType.PipelineVertexInputStateCreateInfo;
+            NativePointer->SType = StructureType.PipelineVertexInputStateCreateInfo;
         }
     }
 }

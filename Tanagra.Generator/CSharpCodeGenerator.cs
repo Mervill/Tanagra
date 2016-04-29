@@ -12,6 +12,8 @@ namespace Tanagra.Generator
 
         public string DllName = "vulkan-1.dll";
         readonly List<string> platformStructTypes;
+        readonly List<string> disabledStructs;
+        readonly List<string> disabledCommands;
 
         public Dictionary<string, string> files;
 
@@ -35,6 +37,23 @@ namespace Tanagra.Generator
                 "Boolean",
                 "DeviceSize",
             };
+
+            disabledStructs = new List<string> 
+            {
+                //"DebugReportCallbackCreateInfoEXT",
+            };
+
+            disabledCommands = new List<string>
+            {
+                "GetPipelineCacheData",
+                "GetPhysicalDeviceSurfacePresentModesKHR",
+                "GetPhysicalDeviceXlibPresentationSupportKHR",
+                "GetPhysicalDeviceWin32PresentationSupportKHR",
+                "GetPhysicalDeviceXcbPresentationSupportKHR",
+                "GetDeviceProcAddr",
+                "GetInstanceProcAddr",
+                "DebugReportMessageEXT",
+            };
         }
 
         public string Generate(VkSpec spec)
@@ -44,6 +63,8 @@ namespace Tanagra.Generator
             // should only transform data if doing so in the rewrite step is awkward or impossible.
             //
 
+            var commands = spec.Commands.Where(x => !disabledCommands.Contains(x.Name));
+
             foreach(var vkEnum in spec.Enums.Where(vkEnum => vkEnum.Name != "API Constants"))
                 files.Add($"./Enum/{vkEnum.Name}.cs", GenerateEnum(vkEnum));
             
@@ -51,14 +72,15 @@ namespace Tanagra.Generator
                 files.Add($"./Handle/{vkSpec.Name}.cs", GenerateHandle(vkSpec));
 
             files.Add("./Interop/Structs.cs", GenerateInteropStructs(spec.Structs));
-            files.Add("./Interop/VK.cs", GenerateCommandBindings(spec.Commands));
+            files.Add("./Interop/VK.cs", GenerateCommandBindings(commands));
 
-            foreach (var vkStruct in spec.Structs.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name)))
+            var generateStructs = spec.Structs.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
+            foreach (var vkStruct in generateStructs)
                 files.Add($"./Wrapper/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
 
-            files.Add("./Wrapper/VK.cs", GenerateCommandWrapper(spec.Commands));
+            files.Add("./Wrapper/VK.cs", GenerateCommandWrapper(commands));
 
-            files.Add("./ObjectModel.cs", GenerateHandleExtensions(spec.Handles, spec.Commands));
+            files.Add("./ObjectModel.cs", GenerateHandleExtensions(spec.Handles, commands));
             
             return _sb.ToString();
         }
@@ -174,7 +196,7 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
-        string GenerateCommandBindings(VkCommand[] commands)
+        string GenerateCommandBindings(IEnumerable<VkCommand> commands)
         {
             Clear();
 
@@ -295,7 +317,7 @@ namespace Tanagra.Generator
             _tabs++;
             WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)Interop.Structure.Allocate(typeof(Interop.{vkStruct.Name}));");
             if (generateStructureType)
-                WriteLine($"//{NativePointer}->SType = StructureType.{vkStruct.Name};");
+                WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             _tabs--;
             WriteLine("}");
             _tabs--;
@@ -580,7 +602,7 @@ namespace Tanagra.Generator
 
                     if(internalReturnsResult)
                     {
-                        WriteLine("if(result != Result.SUCCESS)");
+                        WriteLine("if(result != Result.Success)");
                         _tabs++;
                         WriteLine($"throw new VulkanCommandException(nameof({vkCommand.SpecName}), result);");
                         _tabs--;
@@ -688,7 +710,7 @@ namespace Tanagra.Generator
 
                     if(internalReturnsResult)
                     {
-                        WriteLine("if(result != Result.SUCCESS)");
+                        WriteLine("if(result != Result.Success)");
                         _tabs++;
                         WriteLine($"throw new VulkanCommandException(nameof({vkCommand.SpecName}), result);");
                         _tabs--;
@@ -750,6 +772,7 @@ namespace Tanagra.Generator
             Clear();
 
             WriteLine("using System;");
+            WriteLine("using System.Collections.Generic;");
             WriteLine("");
             WriteLine("namespace Vulkan.ObjectModel");
             WriteLine("{");
@@ -768,24 +791,64 @@ namespace Tanagra.Generator
                 WriteLine("");
                 foreach(var vkCommand in handleCommands)
                 {
-                    WriteTabs();
-                    Write("public static ");
-
                     var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
-                    var returnsResult = returnType == "Result";
-                    if(returnsResult)
+                    var internalReturnsResult = returnType == "Result";
+                    if(internalReturnsResult)
                         returnType = "void";
 
+                    List<VkParam> excludeFromArguments = new List<VkParam>();
+
+                    bool returnsList = false;
+                    VkParam returnParam = null;
+                    VkParam listLengthParam = null;
+
+                    var lastParam = vkCommand.Parameters.Last();
+                    if(lastParam != null)
+                    {
+                        if(lastParam.IsOut && string.IsNullOrEmpty(lastParam.Len))
+                        {
+                            returnParam = lastParam;
+                            returnType = returnParam.Type.Name;
+                            excludeFromArguments.Add(returnParam);
+                        }
+
+                        if(!string.IsNullOrEmpty(lastParam.Len))
+                        {
+                            var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == lastParam.Len);
+                            if(countParam != null && countParam.IsPointer)
+                            {
+                                returnsList = true;
+
+                                returnParam = lastParam;
+                                returnType = $"List<{returnParam.Type.Name}>";
+                                listLengthParam = countParam;
+
+                                excludeFromArguments.Add(returnParam);
+                                excludeFromArguments.Add(countParam);
+                            }
+                        }
+                    }
+
+                    var paramArrays = vkCommand.Parameters.Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "Char");
+                    var hasArrayArguments = paramArrays.Except(new[] { returnParam }).Any();
+
+                    WriteTabs();
+                    Write("public static ");
+                    
                     Write($"{returnType} {vkCommand.Name}");
                     Write("(");
 
-                    for(var x = 0; x < vkCommand.Parameters.Length; x++)
+                    var cmdParams = vkCommand.Parameters.Except(excludeFromArguments).ToList();
+                    for(var x = 0; x < cmdParams.Count; x++)
                     {
-                        var param = vkCommand.Parameters[x];
+                        var param = cmdParams[x];
                         var paramType = param.Type.Name;
+                        if(paramType == "Char")
+                            paramType = "String";
+
                         var thisKeyword = (x == 0) ? "this " : string.Empty;
                         Write($"{thisKeyword}{paramType} {param.Name}");
-                        if(x + 1 < vkCommand.Parameters.Length)
+                        if(x + 1 < cmdParams.Count)
                             Write(", ");
                     }
 
@@ -795,16 +858,16 @@ namespace Tanagra.Generator
                     WriteLine("{");
                     _tabs++;
                     WriteTabs();
-                    if(vkCommand.ReturnType != null && !returnsResult)
+                    if(returnParam != null)
                         Write("return ");
                     Write($"VK.{vkCommand.Name}");
                     Write("(");
-
-                    for(var x = 0; x < vkCommand.Parameters.Length; x++)
+                    
+                    for(var x = 0; x < cmdParams.Count; x++)
                     {
-                        var param = vkCommand.Parameters[x];
+                        var param = cmdParams[x];
                         Write($"{param.Name}");
-                        if(x + 1 < vkCommand.Parameters.Length)
+                        if(x + 1 < cmdParams.Count)
                             Write(", ");
                     }
 

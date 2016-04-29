@@ -4,13 +4,13 @@ namespace Vulkan
 {
     public enum StencilOp
     {
-        STENCIL_OP_KEEP = 0,
-        STENCIL_OP_ZERO = 1,
-        STENCIL_OP_REPLACE = 2,
-        STENCIL_OP_INCREMENT_AND_CLAMP = 3,
-        STENCIL_OP_DECREMENT_AND_CLAMP = 4,
-        STENCIL_OP_INVERT = 5,
-        STENCIL_OP_INCREMENT_AND_WRAP = 6,
-        STENCIL_OP_DECREMENT_AND_WRAP = 7,
+        Keep = 0,
+        Zero = 1,
+        Replace = 2,
+        IncrementAndClamp = 3,
+        DecrementAndClamp = 4,
+        Invert = 5,
+        IncrementAndWrap = 6,
+        DecrementAndWrap = 7,
     }
 }

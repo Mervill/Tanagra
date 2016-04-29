@@ -53,7 +53,7 @@ namespace Vulkan
         public BufferMemoryBarrier()
         {
             NativePointer = (Interop.BufferMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.BufferMemoryBarrier));
-            //NativePointer->SType = StructureType.BufferMemoryBarrier;
+            NativePointer->SType = StructureType.BufferMemoryBarrier;
         }
     }
 }

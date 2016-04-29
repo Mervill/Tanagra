@@ -22,7 +22,7 @@ namespace Vulkan
         public CommandPoolCreateInfo()
         {
             NativePointer = (Interop.CommandPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandPoolCreateInfo));
-            //NativePointer->SType = StructureType.CommandPoolCreateInfo;
+            NativePointer->SType = StructureType.CommandPoolCreateInfo;
         }
     }
 }

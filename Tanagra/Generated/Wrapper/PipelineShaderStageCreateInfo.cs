@@ -42,7 +42,7 @@ namespace Vulkan
         public PipelineShaderStageCreateInfo()
         {
             NativePointer = (Interop.PipelineShaderStageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineShaderStageCreateInfo));
-            //NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
+            NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
         }
     }
 }

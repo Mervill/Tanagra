@@ -48,7 +48,7 @@ namespace Vulkan
         public CommandBufferInheritanceInfo()
         {
             NativePointer = (Interop.CommandBufferInheritanceInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferInheritanceInfo));
-            //NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
+            NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
         }
     }
 }

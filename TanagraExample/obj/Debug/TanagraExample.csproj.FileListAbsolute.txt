@@ -1,0 +1,8 @@
+C:\Projects\Tanagra\TanagraExample\bin\Debug\TanagraExample.exe.config
+C:\Projects\Tanagra\TanagraExample\bin\Debug\TanagraExample.exe
+C:\Projects\Tanagra\TanagraExample\bin\Debug\TanagraExample.pdb
+C:\Projects\Tanagra\TanagraExample\bin\Debug\Tanagra.dll
+C:\Projects\Tanagra\TanagraExample\bin\Debug\Tanagra.pdb
+C:\Projects\Tanagra\TanagraExample\obj\Debug\TanagraExample.csprojResolveAssemblyReference.cache
+C:\Projects\Tanagra\TanagraExample\obj\Debug\TanagraExample.exe
+C:\Projects\Tanagra\TanagraExample\obj\Debug\TanagraExample.pdb

@@ -77,7 +77,7 @@ namespace Vulkan
         public InstanceCreateInfo()
         {
             NativePointer = (Interop.InstanceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.InstanceCreateInfo));
-            //NativePointer->SType = StructureType.InstanceCreateInfo;
+            NativePointer->SType = StructureType.InstanceCreateInfo;
         }
     }
 }

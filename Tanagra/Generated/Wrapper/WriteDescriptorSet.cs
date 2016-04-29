@@ -62,7 +62,7 @@ namespace Vulkan
         public WriteDescriptorSet()
         {
             NativePointer = (Interop.WriteDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.WriteDescriptorSet));
-            //NativePointer->SType = StructureType.WriteDescriptorSet;
+            NativePointer->SType = StructureType.WriteDescriptorSet;
         }
     }
 }

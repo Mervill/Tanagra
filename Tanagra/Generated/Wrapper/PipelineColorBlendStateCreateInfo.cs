@@ -47,7 +47,7 @@ namespace Vulkan
         public PipelineColorBlendStateCreateInfo()
         {
             NativePointer = (Interop.PipelineColorBlendStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineColorBlendStateCreateInfo));
-            //NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
+            NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
     }
 }

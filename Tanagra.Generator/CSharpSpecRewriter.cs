@@ -97,20 +97,28 @@ namespace Tanagra.Generator
         {
             if(vkEnum.Name.StartsWith("Vk"))
                 vkEnum.Name = vkEnum.Name.Remove(0, 2); // trim `Vk`
+            
+            var isFlags = vkEnum.Name.EndsWith("Flags");
+            var enumPrefix = vkEnum.Name;
+            if(isFlags)
+                enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
+            enumPrefix = ToUppercaseEnumName(enumPrefix) + "_";
 
-            var expand = string.Empty; //vkEnum.Expand; TODO
-            // Add one to the length to deal with the trailing underscore. ie: {VK_EXPAND_NAME_}VALUE_NAME
-            var expandLen = (!string.IsNullOrEmpty(expand)) ? expand.Length + 1 : 0;
+            var firstValue = vkEnum.Values.First();
+            
             foreach(var vkEnumValue in vkEnum.Values)
             {
                 var name = vkEnumValue.Name;
-                if(!string.IsNullOrEmpty(expand) && name.StartsWith(expand))
-                    name = name.Substring(expandLen, name.Length - expandLen);
-
                 if(name.StartsWith("VK_"))
                     name = name.Substring(3, name.Length - 3);
 
-                vkEnumValue.Name = name;
+                if(!string.IsNullOrEmpty(enumPrefix) && name.StartsWith(enumPrefix))
+                    name = name.Substring(enumPrefix.Length, name.Length - enumPrefix.Length);
+
+                if(isFlags && name.EndsWith("_BIT"))
+                    name = name.Substring(0, name.Length - 4);
+                
+                vkEnumValue.Name = ToCamelCaseEnumName(name);
             }
 
             // After the we've renamed all the enum values, check if there are any that
@@ -126,6 +134,48 @@ namespace Tanagra.Generator
             }
         }
 
+        string ToUppercaseEnumName(string name)
+        {
+            var newName = string.Empty;
+            for(var x = 0; x < name.Length; x++)
+            {
+                if(char.IsUpper(name[x]) && x != 0)
+                {
+                    newName += "_" + name[x];
+                }
+                else
+                {
+                    newName += char.ToUpper(name[x]);
+                }
+            }
+            return newName;
+        }
+
+        string ToCamelCaseEnumName(string name)
+        {
+            var newName = string.Empty;
+            for(var x = 0; x < name.Length; x++)
+            {
+                if(name[x] == '_')
+                {
+                    newName += name[x + 1];
+                    x++;
+                }
+                else
+                {
+                    if(x == 0)
+                    {
+                        newName += name[x];
+                    }
+                    else
+                    {
+                        newName += char.ToLower(name[x]);
+                    }
+                }
+            }
+            return newName;
+        }
+        
         void RewriteCommandDefinition(VkCommand vkCommand)
         {
             if(vkCommand.Name.StartsWith("vk"))

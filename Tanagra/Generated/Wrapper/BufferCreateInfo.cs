@@ -46,7 +46,7 @@ namespace Vulkan
         public BufferCreateInfo()
         {
             NativePointer = (Interop.BufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferCreateInfo));
-            //NativePointer->SType = StructureType.BufferCreateInfo;
+            NativePointer->SType = StructureType.BufferCreateInfo;
         }
     }
 }

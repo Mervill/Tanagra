@@ -4,10 +4,10 @@ namespace Vulkan
 {
     public enum BlendOp
     {
-        BLEND_OP_ADD = 0,
-        BLEND_OP_SUBTRACT = 1,
-        BLEND_OP_REVERSE_SUBTRACT = 2,
-        BLEND_OP_MIN = 3,
-        BLEND_OP_MAX = 4,
+        Add = 0,
+        Subtract = 1,
+        ReverseSubtract = 2,
+        Min = 3,
+        Max = 4,
     }
 }

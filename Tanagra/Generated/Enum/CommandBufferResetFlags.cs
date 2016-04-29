@@ -8,6 +8,6 @@ namespace Vulkan
         /// <summary>
         /// Release resources owned by the buffer
         /// </summary>
-        COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT = 1 << 0,
+        ReleaseResources = 1 << 0,
     }
 }

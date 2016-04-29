@@ -34,7 +34,7 @@ namespace Vulkan
         public DeviceQueueCreateInfo()
         {
             NativePointer = (Interop.DeviceQueueCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceQueueCreateInfo));
-            //NativePointer->SType = StructureType.DeviceQueueCreateInfo;
+            NativePointer->SType = StructureType.DeviceQueueCreateInfo;
         }
     }
 }

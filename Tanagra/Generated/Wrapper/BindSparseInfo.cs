@@ -75,7 +75,7 @@ namespace Vulkan
         public BindSparseInfo()
         {
             NativePointer = (Interop.BindSparseInfo*)Interop.Structure.Allocate(typeof(Interop.BindSparseInfo));
-            //NativePointer->SType = StructureType.BindSparseInfo;
+            NativePointer->SType = StructureType.BindSparseInfo;
         }
     }
 }

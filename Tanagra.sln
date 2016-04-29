@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra.Generator", "Tanagra.Generator\Tanagra.Generator.csproj", "{17CC873B-C1D3-404B-A3F7-C6D70064AE28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra", "Tanagra\Tanagra.csproj", "{907B0145-3C85-4517-AE82-CEBAD3773F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TanagraExample", "TanagraExample\TanagraExample.csproj", "{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{907B0145-3C85-4517-AE82-CEBAD3773F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

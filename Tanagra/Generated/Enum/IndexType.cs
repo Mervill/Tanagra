@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum IndexType
     {
-        INDEX_TYPE_UINT16 = 0,
-        INDEX_TYPE_UINT32 = 1,
+        Uint16 = 0,
+        Uint32 = 1,
     }
 }

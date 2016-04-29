@@ -23,7 +23,7 @@ namespace Vulkan
         public AndroidSurfaceCreateInfoKHR()
         {
             NativePointer = (Interop.AndroidSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.AndroidSurfaceCreateInfoKHR));
-            //NativePointer->SType = StructureType.AndroidSurfaceCreateInfoKHR;
+            NativePointer->SType = StructureType.AndroidSurfaceCreateInfoKHR;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Vulkan
         public PipelineMultisampleStateCreateInfo()
         {
             NativePointer = (Interop.PipelineMultisampleStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineMultisampleStateCreateInfo));
-            //NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
+            NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
     }
 }

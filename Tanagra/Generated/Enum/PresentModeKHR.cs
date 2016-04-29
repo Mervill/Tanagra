@@ -4,9 +4,9 @@ namespace Vulkan
 {
     public enum PresentModeKHR
     {
-        PRESENT_MODE_IMMEDIATE_KHR = 0,
-        PRESENT_MODE_MAILBOX_KHR = 1,
-        PRESENT_MODE_FIFO_KHR = 2,
-        PRESENT_MODE_FIFO_RELAXED_KHR = 3,
+        PresentModeImmediateKhr = 0,
+        PresentModeMailboxKhr = 1,
+        PresentModeFifoKhr = 2,
+        PresentModeFifoRelaxedKhr = 3,
     }
 }
