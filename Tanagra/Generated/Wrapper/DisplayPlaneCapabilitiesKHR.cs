@@ -7,11 +7,10 @@ namespace Vulkan
     {
         internal Interop.DisplayPlaneCapabilitiesKHR* NativePointer;
         
-        VkDisplayPlaneAlphaFlagsKHR _SupportedAlpha;
-        public VkDisplayPlaneAlphaFlagsKHR SupportedAlpha
+        public DisplayPlaneAlphaFlags SupportedAlpha
         {
-            get { return _SupportedAlpha; }
-            set { _SupportedAlpha = value; NativePointer->SupportedAlpha = IntPtr.Zero; }
+            get { return NativePointer->SupportedAlpha; }
+            set { NativePointer->SupportedAlpha = value; }
         }
         
         Offset2D _MinSrcPosition;

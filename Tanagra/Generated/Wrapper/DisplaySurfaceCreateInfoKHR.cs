@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.DisplaySurfaceCreateInfoKHR* NativePointer;
         
-        public DisplaySurfaceCreateFlagsKHR Flags
+        public DisplaySurfaceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
@@ -32,7 +32,7 @@ namespace Vulkan
             set { NativePointer->PlaneStackIndex = value; }
         }
         
-        public SurfaceTransformFlagBitsKHR Transform
+        public SurfaceTransformFlags Transform
         {
             get { return NativePointer->Transform; }
             set { NativePointer->Transform = value; }
@@ -44,7 +44,7 @@ namespace Vulkan
             set { NativePointer->GlobalAlpha = value; }
         }
         
-        public DisplayPlaneAlphaFlagBitsKHR AlphaMode
+        public DisplayPlaneAlphaFlags AlphaMode
         {
             get { return NativePointer->AlphaMode; }
             set { NativePointer->AlphaMode = value; }

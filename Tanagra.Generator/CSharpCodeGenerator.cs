@@ -849,8 +849,19 @@ namespace Tanagra.Generator
 
                     WriteTabs();
                     Write("public static ");
-                    
-                    Write($"{returnType} {vkCommand.Name}");
+
+                    var commandName = vkCommand.Name;
+
+                    if(commandName.StartsWith($"Get{vkHandle.Name}"))
+                        commandName = commandName.Replace($"Get{vkHandle.Name}", "Get");
+
+                    if(commandName.StartsWith($"{vkHandle.Name}"))
+                        commandName = commandName.Replace($"{vkHandle.Name}", string.Empty);
+
+                    if(commandName.EndsWith($"{vkHandle.Name}"))
+                        commandName = commandName.Replace($"{vkHandle.Name}", string.Empty);
+
+                    Write($"{returnType} {commandName}");
                     Write("(");
 
                     var cmdParams = vkCommand.Parameters.Except(excludeFromArguments).ToList();

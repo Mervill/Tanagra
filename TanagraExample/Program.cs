@@ -82,12 +82,12 @@ namespace TanagraExample
             device = physicalDevice.CreateDevice(deviceCreateInfo);
             Console.WriteLine("[ OK ] Device");
             
-            var queueNodeIndex = physicalDevice.GetPhysicalDeviceQueueFamilyProperties()
+            var queueNodeIndex = physicalDevice.GetQueueFamilyProperties()
                 .Where((properties, index) => (properties.QueueFlags & QueueFlags.Graphics) != 0) //&& physicalDevice.GetSurfaceSupport((uint)index, surface)
                 .Select((properties, index) => index)
                 .First();
             
-            queue = device.GetDeviceQueue(0, (uint)queueNodeIndex);
+            queue = device.GetQueue(0, (uint)queueNodeIndex);
             Console.WriteLine("[ OK ] Queue");
         }
 

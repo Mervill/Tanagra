@@ -97,7 +97,10 @@ namespace Tanagra.Generator
         {
             if(vkEnum.Name.StartsWith("Vk"))
                 vkEnum.Name = vkEnum.Name.Remove(0, 2); // trim `Vk`
-            
+
+            if(vkEnum.Name.EndsWith("KHR"))
+                vkEnum.Name = vkEnum.Name.Remove(vkEnum.Name.Length - 3, 3); // trim `KHR`
+
             var isFlags = vkEnum.Name.EndsWith("Flags");
             var enumPrefix = vkEnum.Name;
             if(isFlags)

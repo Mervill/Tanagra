@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum DebugReportFlagBitsEXT
+    public enum DebugReportFlagsEXT
     {
         DebugReportInformationBitExt = 1 << 0,
         DebugReportWarningBitExt = 1 << 1,

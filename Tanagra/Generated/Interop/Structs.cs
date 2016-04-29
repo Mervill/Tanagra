@@ -1262,7 +1262,7 @@ namespace Vulkan.Interop
         internal IntPtr DisplayName;
         internal IntPtr PhysicalDimensions;
         internal IntPtr PhysicalResolution;
-        internal IntPtr SupportedTransforms;
+        internal SurfaceTransformFlags SupportedTransforms;
         internal Boolean PlaneReorderPossible;
         internal Boolean PersistentContent;
     }
@@ -1289,13 +1289,13 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal DisplayModeCreateFlagsKHR Flags;
+        internal DisplayModeCreateFlags Flags;
         internal IntPtr Parameters;
     }
 
     internal struct DisplayPlaneCapabilitiesKHR
     {
-        internal IntPtr SupportedAlpha;
+        internal DisplayPlaneAlphaFlags SupportedAlpha;
         internal IntPtr MinSrcPosition;
         internal IntPtr MaxSrcPosition;
         internal IntPtr MinSrcExtent;
@@ -1310,13 +1310,13 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal DisplaySurfaceCreateFlagsKHR Flags;
+        internal DisplaySurfaceCreateFlags Flags;
         internal IntPtr DisplayMode;
         internal UInt32 PlaneIndex;
         internal UInt32 PlaneStackIndex;
-        internal SurfaceTransformFlagBitsKHR Transform;
+        internal SurfaceTransformFlags Transform;
         internal Single GlobalAlpha;
-        internal DisplayPlaneAlphaFlagBitsKHR AlphaMode;
+        internal DisplayPlaneAlphaFlags AlphaMode;
         internal IntPtr ImageExtent;
     }
 
@@ -1337,9 +1337,9 @@ namespace Vulkan.Interop
         internal IntPtr MinImageExtent;
         internal IntPtr MaxImageExtent;
         internal UInt32 MaxImageArrayLayers;
-        internal IntPtr SupportedTransforms;
-        internal SurfaceTransformFlagBitsKHR CurrentTransform;
-        internal IntPtr SupportedCompositeAlpha;
+        internal SurfaceTransformFlags SupportedTransforms;
+        internal SurfaceTransformFlags CurrentTransform;
+        internal CompositeAlphaFlags SupportedCompositeAlpha;
         internal ImageUsageFlags SupportedUsageFlags;
     }
 
@@ -1347,7 +1347,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal AndroidSurfaceCreateFlagsKHR Flags;
+        internal AndroidSurfaceCreateFlags Flags;
         internal IntPtr Window;
     }
 
@@ -1355,7 +1355,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal MirSurfaceCreateFlagsKHR Flags;
+        internal MirSurfaceCreateFlags Flags;
         internal IntPtr Connection;
         internal IntPtr MirSurface;
     }
@@ -1364,7 +1364,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal WaylandSurfaceCreateFlagsKHR Flags;
+        internal WaylandSurfaceCreateFlags Flags;
         internal IntPtr Display;
         internal IntPtr Surface;
     }
@@ -1373,7 +1373,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal Win32SurfaceCreateFlagsKHR Flags;
+        internal Win32SurfaceCreateFlags Flags;
         internal IntPtr Hinstance;
         internal IntPtr Hwnd;
     }
@@ -1382,7 +1382,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal XlibSurfaceCreateFlagsKHR Flags;
+        internal XlibSurfaceCreateFlags Flags;
         internal IntPtr Dpy;
         internal IntPtr Window;
     }
@@ -1391,7 +1391,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal XcbSurfaceCreateFlagsKHR Flags;
+        internal XcbSurfaceCreateFlags Flags;
         internal IntPtr Connection;
         internal IntPtr Window;
     }
@@ -1399,27 +1399,27 @@ namespace Vulkan.Interop
     internal struct SurfaceFormatKHR
     {
         internal Format Format;
-        internal ColorSpaceKHR ColorSpace;
+        internal ColorSpace ColorSpace;
     }
 
     internal struct SwapchainCreateInfoKHR
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal SwapchainCreateFlagsKHR Flags;
+        internal SwapchainCreateFlags Flags;
         internal IntPtr Surface;
         internal UInt32 MinImageCount;
         internal Format ImageFormat;
-        internal ColorSpaceKHR ImageColorSpace;
+        internal ColorSpace ImageColorSpace;
         internal IntPtr ImageExtent;
         internal UInt32 ImageArrayLayers;
         internal ImageUsageFlags ImageUsage;
         internal SharingMode ImageSharingMode;
         internal UInt32 QueueFamilyIndexCount;
         internal UInt32 QueueFamilyIndices;
-        internal SurfaceTransformFlagBitsKHR PreTransform;
-        internal CompositeAlphaFlagBitsKHR CompositeAlpha;
-        internal PresentModeKHR PresentMode;
+        internal SurfaceTransformFlags PreTransform;
+        internal CompositeAlphaFlags CompositeAlpha;
+        internal PresentMode PresentMode;
         internal Boolean Clipped;
         internal IntPtr OldSwapchain;
     }
@@ -1440,7 +1440,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal IntPtr Flags;
+        internal DebugReportFlagsEXT Flags;
         internal IntPtr PfnCallback;
         internal IntPtr UserData;
     }

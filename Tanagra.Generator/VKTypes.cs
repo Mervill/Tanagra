@@ -18,7 +18,7 @@ namespace Tanagra.Generator
         public VkFeature[] Features;
     }
 
-    public enum VkTypeCategory
+    /*public enum VkTypeCategory
     {
         None,
         Handle,
@@ -27,12 +27,27 @@ namespace Tanagra.Generator
         Struct,
         FnPointer,
         Platform,
+    }*/
+
+    public class VkVendorId
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Comment { get; set; }
+    }
+
+    public class VkTag
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Comment { get; set; }
     }
 
     public class VkType
     {
         public string Name { get; set; }
-        public VkTypeCategory Category { get; set; }
+
+        public bool IsImportedType { get; set; }
 
         public override string ToString() => Name;
     }
@@ -41,18 +56,10 @@ namespace Tanagra.Generator
     {
         public string HandleType { get; set; }
         public string Parent { get; set; }
-
-        public VkHandle()
-        {
-            Category = VkTypeCategory.Handle;
-        }
-
     }
 
     public class VkStruct : VkType
     {
-        public bool IsImportedType { get; set; }
-
         public VkMember[] Members { get; set; }
 
         public bool ReturnedOnly { get; set; }
@@ -62,7 +69,6 @@ namespace Tanagra.Generator
 
         public VkStruct()
         {
-            Category = VkTypeCategory.Struct;
             Members = new VkMember[0];
             Validity = new string[0];
         }
@@ -101,11 +107,6 @@ namespace Tanagra.Generator
         //public string Namespace { get; set; }
 
         public VkEnumValue[] Values;
-
-        public VkEnum()
-        {
-            Category = VkTypeCategory.Enum;
-        }
     }
 
     public class VkEnumValue

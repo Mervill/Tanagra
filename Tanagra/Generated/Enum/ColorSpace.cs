@@ -2,7 +2,7 @@ using System;
 
 namespace Vulkan
 {
-    public enum ColorSpaceKHR
+    public enum ColorSpace
     {
         ColorspaceSrgbNonlinearKhr = 0,
     }

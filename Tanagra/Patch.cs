@@ -14,13 +14,7 @@ namespace Vulkan
     public struct PFN_vkInternalFreeNotification { }
     public struct PFN_vkDebugReportCallbackEXT { }
     public struct PFN_vkVoidFunction { }
-
-    // this problem is caused by the vendor suffix
-    public enum VkSurfaceTransformFlagsKHR { }
-    public enum VkDisplayPlaneAlphaFlagsKHR { }
-    public enum VkCompositeAlphaFlagsKHR { }
-    public enum VkDebugReportFlagsEXT { }
-
+    
     public struct DeviceSize
     {
         UInt64 value;

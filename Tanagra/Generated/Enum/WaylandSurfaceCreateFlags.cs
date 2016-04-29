@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum WaylandSurfaceCreateFlagsKHR
+    public enum WaylandSurfaceCreateFlags
     {
         None = 1 << 0,
     }

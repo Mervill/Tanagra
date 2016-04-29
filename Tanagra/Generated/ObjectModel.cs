@@ -7,7 +7,7 @@ namespace Vulkan.ObjectModel
     {
         #region Instance
         
-        public static void DestroyInstance(this Instance instance, AllocationCallbacks allocator = null)
+        public static void Destroy(this Instance instance, AllocationCallbacks allocator = null)
         {
             VK.DestroyInstance(instance, allocator);
         }
@@ -71,32 +71,32 @@ namespace Vulkan.ObjectModel
         
         #region PhysicalDevice
         
-        public static PhysicalDeviceProperties GetPhysicalDeviceProperties(this PhysicalDevice physicalDevice)
+        public static PhysicalDeviceProperties GetProperties(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceProperties(physicalDevice);
         }
         
-        public static List<QueueFamilyProperties> GetPhysicalDeviceQueueFamilyProperties(this PhysicalDevice physicalDevice)
+        public static List<QueueFamilyProperties> GetQueueFamilyProperties(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceQueueFamilyProperties(physicalDevice);
         }
         
-        public static PhysicalDeviceMemoryProperties GetPhysicalDeviceMemoryProperties(this PhysicalDevice physicalDevice)
+        public static PhysicalDeviceMemoryProperties GetMemoryProperties(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceMemoryProperties(physicalDevice);
         }
         
-        public static PhysicalDeviceFeatures GetPhysicalDeviceFeatures(this PhysicalDevice physicalDevice)
+        public static PhysicalDeviceFeatures GetFeatures(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceFeatures(physicalDevice);
         }
         
-        public static FormatProperties GetPhysicalDeviceFormatProperties(this PhysicalDevice physicalDevice, Format format)
+        public static FormatProperties GetFormatProperties(this PhysicalDevice physicalDevice, Format format)
         {
             return VK.GetPhysicalDeviceFormatProperties(physicalDevice, format);
         }
         
-        public static ImageFormatProperties GetPhysicalDeviceImageFormatProperties(this PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags)
+        public static ImageFormatProperties GetImageFormatProperties(this PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags)
         {
             return VK.GetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling, usage, flags);
         }
@@ -116,17 +116,17 @@ namespace Vulkan.ObjectModel
             return VK.EnumerateDeviceExtensionProperties(physicalDevice, layerName);
         }
         
-        public static List<SparseImageFormatProperties> GetPhysicalDeviceSparseImageFormatProperties(this PhysicalDevice physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling)
+        public static List<SparseImageFormatProperties> GetSparseImageFormatProperties(this PhysicalDevice physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling)
         {
             return VK.GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, format, type, samples, usage, tiling);
         }
         
-        public static List<DisplayPropertiesKHR> GetPhysicalDeviceDisplayPropertiesKHR(this PhysicalDevice physicalDevice)
+        public static List<DisplayPropertiesKHR> GetDisplayPropertiesKHR(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceDisplayPropertiesKHR(physicalDevice);
         }
         
-        public static List<DisplayPlanePropertiesKHR> GetPhysicalDeviceDisplayPlanePropertiesKHR(this PhysicalDevice physicalDevice)
+        public static List<DisplayPlanePropertiesKHR> GetDisplayPlanePropertiesKHR(this PhysicalDevice physicalDevice)
         {
             return VK.GetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice);
         }
@@ -151,27 +151,27 @@ namespace Vulkan.ObjectModel
             return VK.GetDisplayPlaneCapabilitiesKHR(physicalDevice, mode, planeIndex);
         }
         
-        public static MirConnection GetPhysicalDeviceMirPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        public static MirConnection GetMirPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             return VK.GetPhysicalDeviceMirPresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
         
-        public static Boolean GetPhysicalDeviceSurfaceSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, SurfaceKHR surface)
+        public static Boolean GetSurfaceSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, SurfaceKHR surface)
         {
             return VK.GetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface);
         }
         
-        public static SurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilitiesKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
+        public static SurfaceCapabilitiesKHR GetSurfaceCapabilitiesKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             return VK.GetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface);
         }
         
-        public static List<SurfaceFormatKHR> GetPhysicalDeviceSurfaceFormatsKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
+        public static List<SurfaceFormatKHR> GetSurfaceFormatsKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             return VK.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface);
         }
         
-        public static wl_display GetPhysicalDeviceWaylandPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
+        public static wl_display GetWaylandPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             return VK.GetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
@@ -180,17 +180,17 @@ namespace Vulkan.ObjectModel
         
         #region Device
         
-        public static void DestroyDevice(this Device device, AllocationCallbacks allocator = null)
+        public static void Destroy(this Device device, AllocationCallbacks allocator = null)
         {
             VK.DestroyDevice(device, allocator);
         }
         
-        public static Queue GetDeviceQueue(this Device device, UInt32 queueFamilyIndex, UInt32 queueIndex)
+        public static Queue GetQueue(this Device device, UInt32 queueFamilyIndex, UInt32 queueIndex)
         {
             return VK.GetDeviceQueue(device, queueFamilyIndex, queueIndex);
         }
         
-        public static void DeviceWaitIdle(this Device device)
+        public static void WaitIdle(this Device device)
         {
             VK.DeviceWaitIdle(device);
         }
@@ -225,7 +225,7 @@ namespace Vulkan.ObjectModel
             VK.InvalidateMappedMemoryRanges(device, memoryRangeCount, memoryRanges);
         }
         
-        public static DeviceSize GetDeviceMemoryCommitment(this Device device, DeviceMemory memory)
+        public static DeviceSize GetMemoryCommitment(this Device device, DeviceMemory memory)
         {
             return VK.GetDeviceMemoryCommitment(device, memory);
         }
@@ -554,22 +554,22 @@ namespace Vulkan.ObjectModel
         
         #region Queue
         
-        public static void QueueSubmit(this Queue queue, UInt32 submitCount, SubmitInfo submits, Fence fence)
+        public static void Submit(this Queue queue, UInt32 submitCount, SubmitInfo submits, Fence fence)
         {
             VK.QueueSubmit(queue, submitCount, submits, fence);
         }
         
-        public static void QueueWaitIdle(this Queue queue)
+        public static void WaitIdle(this Queue queue)
         {
             VK.QueueWaitIdle(queue);
         }
         
-        public static void QueueBindSparse(this Queue queue, UInt32 bindInfoCount, BindSparseInfo bindInfo, Fence fence)
+        public static void BindSparse(this Queue queue, UInt32 bindInfoCount, BindSparseInfo bindInfo, Fence fence)
         {
             VK.QueueBindSparse(queue, bindInfoCount, bindInfo, fence);
         }
         
-        public static void QueuePresentKHR(this Queue queue, PresentInfoKHR presentInfo)
+        public static void PresentKHR(this Queue queue, PresentInfoKHR presentInfo)
         {
             VK.QueuePresentKHR(queue, presentInfo);
         }
@@ -578,17 +578,17 @@ namespace Vulkan.ObjectModel
         
         #region CommandBuffer
         
-        public static void BeginCommandBuffer(this CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
+        public static void Begin(this CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
         {
             VK.BeginCommandBuffer(commandBuffer, beginInfo);
         }
         
-        public static void EndCommandBuffer(this CommandBuffer commandBuffer)
+        public static void End(this CommandBuffer commandBuffer)
         {
             VK.EndCommandBuffer(commandBuffer);
         }
         
-        public static void ResetCommandBuffer(this CommandBuffer commandBuffer, CommandBufferResetFlags flags)
+        public static void Reset(this CommandBuffer commandBuffer, CommandBufferResetFlags flags)
         {
             VK.ResetCommandBuffer(commandBuffer, flags);
         }

@@ -34,11 +34,10 @@ namespace Vulkan
             set { _PhysicalResolution = value; NativePointer->PhysicalResolution = (IntPtr)value.NativePointer; }
         }
         
-        VkSurfaceTransformFlagsKHR _SupportedTransforms;
-        public VkSurfaceTransformFlagsKHR SupportedTransforms
+        public SurfaceTransformFlags SupportedTransforms
         {
-            get { return _SupportedTransforms; }
-            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = IntPtr.Zero; }
+            get { return NativePointer->SupportedTransforms; }
+            set { NativePointer->SupportedTransforms = value; }
         }
         
         public Boolean PlaneReorderPossible

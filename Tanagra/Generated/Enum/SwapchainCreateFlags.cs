@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum XcbSurfaceCreateFlagsKHR
+    public enum SwapchainCreateFlags
     {
         None = 1 << 0,
     }

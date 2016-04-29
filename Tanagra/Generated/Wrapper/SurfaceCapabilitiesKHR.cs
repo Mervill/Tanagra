@@ -46,24 +46,22 @@ namespace Vulkan
             set { NativePointer->MaxImageArrayLayers = value; }
         }
         
-        VkSurfaceTransformFlagsKHR _SupportedTransforms;
-        public VkSurfaceTransformFlagsKHR SupportedTransforms
+        public SurfaceTransformFlags SupportedTransforms
         {
-            get { return _SupportedTransforms; }
-            set { _SupportedTransforms = value; NativePointer->SupportedTransforms = IntPtr.Zero; }
+            get { return NativePointer->SupportedTransforms; }
+            set { NativePointer->SupportedTransforms = value; }
         }
         
-        public SurfaceTransformFlagBitsKHR CurrentTransform
+        public SurfaceTransformFlags CurrentTransform
         {
             get { return NativePointer->CurrentTransform; }
             set { NativePointer->CurrentTransform = value; }
         }
         
-        VkCompositeAlphaFlagsKHR _SupportedCompositeAlpha;
-        public VkCompositeAlphaFlagsKHR SupportedCompositeAlpha
+        public CompositeAlphaFlags SupportedCompositeAlpha
         {
-            get { return _SupportedCompositeAlpha; }
-            set { _SupportedCompositeAlpha = value; NativePointer->SupportedCompositeAlpha = IntPtr.Zero; }
+            get { return NativePointer->SupportedCompositeAlpha; }
+            set { NativePointer->SupportedCompositeAlpha = value; }
         }
         
         public ImageUsageFlags SupportedUsageFlags

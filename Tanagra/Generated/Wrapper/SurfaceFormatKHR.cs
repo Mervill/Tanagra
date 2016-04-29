@@ -13,7 +13,7 @@ namespace Vulkan
             set { NativePointer->Format = value; }
         }
         
-        public ColorSpaceKHR ColorSpace
+        public ColorSpace ColorSpace
         {
             get { return NativePointer->ColorSpace; }
             set { NativePointer->ColorSpace = value; }

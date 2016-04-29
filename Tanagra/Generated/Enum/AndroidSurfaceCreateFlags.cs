@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum XlibSurfaceCreateFlagsKHR
+    public enum AndroidSurfaceCreateFlags
     {
         None = 1 << 0,
     }

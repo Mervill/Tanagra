@@ -5,7 +5,6 @@ using System.Xml.Linq;
 
 namespace Tanagra.Generator
 {
-    // todo: bitpos?
     public class VKSpecReader
     {
         public Dictionary<string, VkType> allTypes;
@@ -190,10 +189,11 @@ namespace Tanagra.Generator
             // in the spec is weird. A bitmask named `VkNameFlagBits` is
             // actually refrenced as `VkNameFlags` (Except for when it isn't). 
             // I think this has something to do with `typedef` works in c
-            if(name.EndsWith("FlagBits"))
+            if(name.Contains("FlagBits"))
             {
-                name = name.Substring(0, name.Length - 4);
-                name += "s";
+                name = name.Replace("FlagBits", "Flags");
+                //name = name.Substring(0, name.Length - 4);
+                //name += "s";
             }
             return name;
         }

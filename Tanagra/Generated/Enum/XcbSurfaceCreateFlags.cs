@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum Win32SurfaceCreateFlagsKHR
+    public enum XcbSurfaceCreateFlags
     {
         None = 1 << 0,
     }

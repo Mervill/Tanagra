@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.XlibSurfaceCreateInfoKHR* NativePointer;
         
-        public XlibSurfaceCreateFlagsKHR Flags
+        public XlibSurfaceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }

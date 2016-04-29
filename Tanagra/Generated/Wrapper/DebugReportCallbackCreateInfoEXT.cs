@@ -7,11 +7,10 @@ namespace Vulkan
     {
         internal Interop.DebugReportCallbackCreateInfoEXT* NativePointer;
         
-        VkDebugReportFlagsEXT _Flags;
-        public VkDebugReportFlagsEXT Flags
+        public DebugReportFlagsEXT Flags
         {
-            get { return _Flags; }
-            set { _Flags = value; NativePointer->Flags = IntPtr.Zero; }
+            get { return NativePointer->Flags; }
+            set { NativePointer->Flags = value; }
         }
         
         PFN_vkDebugReportCallbackEXT _PfnCallback;

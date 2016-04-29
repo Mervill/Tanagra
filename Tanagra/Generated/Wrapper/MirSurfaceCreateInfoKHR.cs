@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.MirSurfaceCreateInfoKHR* NativePointer;
         
-        public MirSurfaceCreateFlagsKHR Flags
+        public MirSurfaceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }

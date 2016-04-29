@@ -10,7 +10,6 @@ namespace Tanagra.Generator
         // todo: spec extensions
         // todo: hasArrayArguments
         // todo: Create commands that return arrays
-        // todo: Command optional arguments
         // todo: figure out what to do with imported types
         // todo: union
         // XCB -> X protocol C-language Binding
