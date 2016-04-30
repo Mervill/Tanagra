@@ -28,13 +28,7 @@ namespace Vulkan.Interop
         internal Int32 Y;
         internal Int32 Z;
     }
-
-    internal struct Extent2D
-    {
-        internal UInt32 Width;
-        internal UInt32 Height;
-    }
-
+    
     internal struct Extent3D
     {
         internal UInt32 Width;
@@ -55,7 +49,7 @@ namespace Vulkan.Interop
     internal struct Rect2D
     {
         internal IntPtr Offset;
-        internal IntPtr Extent;
+        internal Extent2D Extent;
     }
 
     internal struct Rect3D
@@ -1195,8 +1189,8 @@ namespace Vulkan.Interop
     {
         internal IntPtr Display;
         internal IntPtr DisplayName;
-        internal IntPtr PhysicalDimensions;
-        internal IntPtr PhysicalResolution;
+        internal Extent2D PhysicalDimensions;
+        internal Extent2D PhysicalResolution;
         internal SurfaceTransformFlags SupportedTransforms;
         internal Boolean PlaneReorderPossible;
         internal Boolean PersistentContent;
@@ -1210,7 +1204,7 @@ namespace Vulkan.Interop
 
     internal struct DisplayModeParametersKHR
     {
-        internal IntPtr VisibleRegion;
+        internal Extent2D VisibleRegion;
         internal UInt32 RefreshRate;
     }
 
@@ -1233,12 +1227,12 @@ namespace Vulkan.Interop
         internal DisplayPlaneAlphaFlags SupportedAlpha;
         internal IntPtr MinSrcPosition;
         internal IntPtr MaxSrcPosition;
-        internal IntPtr MinSrcExtent;
-        internal IntPtr MaxSrcExtent;
+        internal Extent2D MinSrcExtent;
+        internal Extent2D MaxSrcExtent;
         internal IntPtr MinDstPosition;
         internal IntPtr MaxDstPosition;
-        internal IntPtr MinDstExtent;
-        internal IntPtr MaxDstExtent;
+        internal Extent2D MinDstExtent;
+        internal Extent2D MaxDstExtent;
     }
 
     internal struct DisplaySurfaceCreateInfoKHR
@@ -1252,7 +1246,7 @@ namespace Vulkan.Interop
         internal SurfaceTransformFlags Transform;
         internal Single GlobalAlpha;
         internal DisplayPlaneAlphaFlags AlphaMode;
-        internal IntPtr ImageExtent;
+        internal Extent2D ImageExtent;
     }
 
     internal struct DisplayPresentInfoKHR
@@ -1268,9 +1262,9 @@ namespace Vulkan.Interop
     {
         internal UInt32 MinImageCount;
         internal UInt32 MaxImageCount;
-        internal IntPtr CurrentExtent;
-        internal IntPtr MinImageExtent;
-        internal IntPtr MaxImageExtent;
+        internal Extent2D CurrentExtent;
+        internal Extent2D MinImageExtent;
+        internal Extent2D MaxImageExtent;
         internal UInt32 MaxImageArrayLayers;
         internal SurfaceTransformFlags SupportedTransforms;
         internal SurfaceTransformFlags CurrentTransform;
@@ -1341,22 +1335,22 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal SwapchainCreateFlags Flags;
-        internal IntPtr Surface;
+        internal UInt32 Flags;
+        internal UInt64 Surface;
         internal UInt32 MinImageCount;
         internal Format ImageFormat;
         internal ColorSpace ImageColorSpace;
-        internal IntPtr ImageExtent;
+        internal Extent2D ImageExtent;
         internal UInt32 ImageArrayLayers;
-        internal ImageUsageFlags ImageUsage;
+        internal UInt32 ImageUsage;
         internal SharingMode ImageSharingMode;
         internal UInt32 QueueFamilyIndexCount;
         internal UInt32 QueueFamilyIndices;
         internal SurfaceTransformFlags PreTransform;
         internal CompositeAlphaFlags CompositeAlpha;
         internal PresentMode PresentMode;
-        internal Boolean Clipped;
-        internal IntPtr OldSwapchain;
+        internal UInt32 Clipped;
+        internal UInt64 OldSwapchain;
     }
 
     internal struct PresentInfoKHR

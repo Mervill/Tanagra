@@ -50,11 +50,10 @@ namespace Vulkan
             set { NativePointer->AlphaMode = value; }
         }
         
-        Extent2D _ImageExtent;
         public Extent2D ImageExtent
         {
-            get { return _ImageExtent; }
-            set { _ImageExtent = value; NativePointer->ImageExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ImageExtent; }
+            set { NativePointer->ImageExtent = value; }
         }
         
         public DisplaySurfaceCreateInfoKHR()

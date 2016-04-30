@@ -14,11 +14,10 @@ namespace Vulkan
             set { _Offset = value; NativePointer->Offset = (IntPtr)value.NativePointer; }
         }
         
-        Extent2D _Extent;
         public Extent2D Extent
         {
-            get { return _Extent; }
-            set { _Extent = value; NativePointer->Extent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Extent; }
+            set { NativePointer->Extent = value; }
         }
         
         public Rect2D()

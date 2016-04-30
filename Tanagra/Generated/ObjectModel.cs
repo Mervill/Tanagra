@@ -138,7 +138,8 @@ namespace Vulkan.ObjectModel
         
         public static List<DisplayKHR> GetDisplayPlaneSupportedDisplaysKHR(this PhysicalDevice physicalDevice, UInt32 planeIndex)
         {
-            return VK.GetDisplayPlaneSupportedDisplaysKHR(physicalDevice, planeIndex);
+            //return VK.GetDisplayPlaneSupportedDisplaysKHR(physicalDevice, planeIndex);
+            throw new NotImplementedException();
         }
         
         public static List<DisplayModePropertiesKHR> GetDisplayModePropertiesKHR(this PhysicalDevice physicalDevice, DisplayKHR display)
@@ -174,6 +175,11 @@ namespace Vulkan.ObjectModel
         public static List<SurfaceFormatKHR> GetSurfaceFormatsKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             return VK.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface);
+        }
+        
+        public static List<PresentMode> GetSurfacePresentModesKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
+        {
+            return VK.GetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface);
         }
         
         public static IntPtr GetWaylandPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
@@ -235,14 +241,14 @@ namespace Vulkan.ObjectModel
             VK.UnmapMemory(device, memory);
         }
         
-        public static void FlushMappedMemoryRanges(this Device device, UInt32 memoryRangeCount, MappedMemoryRange memoryRanges)
+        public static void FlushMappedMemoryRanges(this Device device, List<MappedMemoryRange> memoryRanges)
         {
-            VK.FlushMappedMemoryRanges(device, memoryRangeCount, memoryRanges);
+            VK.FlushMappedMemoryRanges(device, memoryRanges);
         }
         
-        public static void InvalidateMappedMemoryRanges(this Device device, UInt32 memoryRangeCount, MappedMemoryRange memoryRanges)
+        public static void InvalidateMappedMemoryRanges(this Device device, List<MappedMemoryRange> memoryRanges)
         {
-            VK.InvalidateMappedMemoryRanges(device, memoryRangeCount, memoryRanges);
+            VK.InvalidateMappedMemoryRanges(device, memoryRanges);
         }
         
         public static DeviceSize GetMemoryCommitment(this Device device, DeviceMemory memory)
@@ -285,9 +291,9 @@ namespace Vulkan.ObjectModel
             VK.DestroyFence(device, fence, allocator);
         }
         
-        public static void ResetFences(this Device device, UInt32 fenceCount, Fence fences)
+        public static void ResetFences(this Device device, List<Fence> fences)
         {
-            VK.ResetFences(device, fenceCount, fences);
+            VK.ResetFences(device, fences);
         }
         
         public static void GetFenceStatus(this Device device, Fence fence)
@@ -295,9 +301,9 @@ namespace Vulkan.ObjectModel
             VK.GetFenceStatus(device, fence);
         }
         
-        public static void WaitForFences(this Device device, UInt32 fenceCount, Fence fences, Boolean waitAll, UInt64 timeout)
+        public static void WaitForFences(this Device device, List<Fence> fences, Boolean waitAll, UInt64 timeout)
         {
-            VK.WaitForFences(device, fenceCount, fences, waitAll, timeout);
+            VK.WaitForFences(device, fences, waitAll, timeout);
         }
         
         public static Semaphore CreateSemaphore(this Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -345,9 +351,10 @@ namespace Vulkan.ObjectModel
             VK.DestroyQueryPool(device, queryPool, allocator);
         }
         
-        public static void GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, UIntPtr dataSize, IntPtr data, DeviceSize stride, QueryResultFlags flags)
+        public static void GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
         {
-            VK.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, data, stride, flags);
+            //VK.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
+            throw new NotImplementedException();
         }
         
         public static Buffer CreateBuffer(this Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -415,19 +422,19 @@ namespace Vulkan.ObjectModel
             VK.DestroyPipelineCache(device, pipelineCache, allocator);
         }
         
-        public static void MergePipelineCaches(this Device device, PipelineCache dstCache, UInt32 srcCacheCount, PipelineCache srcCaches)
+        public static void MergePipelineCaches(this Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
-            VK.MergePipelineCaches(device, dstCache, srcCacheCount, srcCaches);
+            VK.MergePipelineCaches(device, dstCache, srcCaches);
         }
         
-        public static void CreateGraphicsPipelines(this Device device, PipelineCache pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo createInfos, AllocationCallbacks allocator, Pipeline pipelines)
+        public static List<Pipeline> CreateGraphicsPipelines(this Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
         {
-            VK.CreateGraphicsPipelines(device, pipelineCache, createInfoCount, createInfos, allocator, pipelines);
+            return VK.CreateGraphicsPipelines(device, pipelineCache, createInfos, allocator);
         }
         
-        public static void CreateComputePipelines(this Device device, PipelineCache pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo createInfos, AllocationCallbacks allocator, Pipeline pipelines)
+        public static List<Pipeline> CreateComputePipelines(this Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
         {
-            VK.CreateComputePipelines(device, pipelineCache, createInfoCount, createInfos, allocator, pipelines);
+            return VK.CreateComputePipelines(device, pipelineCache, createInfos, allocator);
         }
         
         public static void DestroyPipeline(this Device device, Pipeline pipeline, AllocationCallbacks allocator = null)
@@ -480,19 +487,20 @@ namespace Vulkan.ObjectModel
             VK.ResetDescriptorPool(device, descriptorPool, flags);
         }
         
-        public static void AllocateDescriptorSets(this Device device, DescriptorSetAllocateInfo allocateInfo, DescriptorSet descriptorSets)
+        public static void AllocateDescriptorSets(this Device device, DescriptorSetAllocateInfo allocateInfo, List<DescriptorSet> descriptorSets)
         {
-            VK.AllocateDescriptorSets(device, allocateInfo, descriptorSets);
+            //VK.AllocateDescriptorSets(device, allocateInfo, descriptorSets);
+            throw new NotImplementedException();
         }
         
-        public static void FreeDescriptorSets(this Device device, DescriptorPool descriptorPool, UInt32 descriptorSetCount, DescriptorSet descriptorSets)
+        public static void FreeDescriptorSets(this Device device, DescriptorPool descriptorPool, List<DescriptorSet> descriptorSets)
         {
-            VK.FreeDescriptorSets(device, descriptorPool, descriptorSetCount, descriptorSets);
+            VK.FreeDescriptorSets(device, descriptorPool, descriptorSets);
         }
         
-        public static void UpdateDescriptorSets(this Device device, UInt32 descriptorWriteCount, WriteDescriptorSet descriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet descriptorCopies)
+        public static void UpdateDescriptorSets(this Device device, List<WriteDescriptorSet> descriptorWrites, List<CopyDescriptorSet> descriptorCopies)
         {
-            VK.UpdateDescriptorSets(device, descriptorWriteCount, descriptorWrites, descriptorCopyCount, descriptorCopies);
+            VK.UpdateDescriptorSets(device, descriptorWrites, descriptorCopies);
         }
         
         public static Framebuffer CreateFramebuffer(this Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -535,19 +543,19 @@ namespace Vulkan.ObjectModel
             VK.ResetCommandPool(device, commandPool, flags);
         }
         
-        public static CommandBuffer AllocateCommandBuffers(this Device device, CommandBufferAllocateInfo allocateInfo)
+        public static List<CommandBuffer> AllocateCommandBuffers(this Device device, CommandBufferAllocateInfo allocateInfo)
         {
             return VK.AllocateCommandBuffers(device, allocateInfo);
         }
         
-        public static void FreeCommandBuffers(this Device device, CommandPool commandPool, UInt32 commandBufferCount, CommandBuffer commandBuffers)
+        public static void FreeCommandBuffers(this Device device, CommandPool commandPool, List<CommandBuffer> commandBuffers)
         {
-            VK.FreeCommandBuffers(device, commandPool, commandBufferCount, commandBuffers);
+            VK.FreeCommandBuffers(device, commandPool, commandBuffers);
         }
         
-        public static void CreateSharedSwapchainsKHR(this Device device, UInt32 swapchainCount, SwapchainCreateInfoKHR createInfos, AllocationCallbacks allocator, SwapchainKHR swapchains)
+        public static List<SwapchainKHR> CreateSharedSwapchainsKHR(this Device device, List<SwapchainCreateInfoKHR> createInfos, AllocationCallbacks allocator = null)
         {
-            VK.CreateSharedSwapchainsKHR(device, swapchainCount, createInfos, allocator, swapchains);
+            return VK.CreateSharedSwapchainsKHR(device, createInfos, allocator);
         }
         
         public static SwapchainKHR CreateSwapchainKHR(this Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
@@ -562,7 +570,8 @@ namespace Vulkan.ObjectModel
         
         public static List<Image> GetSwapchainImagesKHR(this Device device, SwapchainKHR swapchain)
         {
-            return VK.GetSwapchainImagesKHR(device, swapchain);
+            //return VK.GetSwapchainImagesKHR(device, swapchain);
+            throw new NotImplementedException();
         }
         
         public static UInt32 AcquireNextImageKHR(this Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence)
@@ -574,9 +583,9 @@ namespace Vulkan.ObjectModel
         
         #region Queue
         
-        public static void Submit(this Queue queue, UInt32 submitCount, SubmitInfo submits, Fence fence)
+        public static void Submit(this Queue queue, List<SubmitInfo> submits, Fence fence)
         {
-            VK.QueueSubmit(queue, submitCount, submits, fence);
+            VK.QueueSubmit(queue, submits, fence);
         }
         
         public static void WaitIdle(this Queue queue)
@@ -584,9 +593,9 @@ namespace Vulkan.ObjectModel
             VK.QueueWaitIdle(queue);
         }
         
-        public static void BindSparse(this Queue queue, UInt32 bindInfoCount, BindSparseInfo bindInfo, Fence fence)
+        public static void BindSparse(this Queue queue, List<BindSparseInfo> bindInfo, Fence fence)
         {
-            VK.QueueBindSparse(queue, bindInfoCount, bindInfo, fence);
+            VK.QueueBindSparse(queue, bindInfo, fence);
         }
         
         public static void PresentKHR(this Queue queue, PresentInfoKHR presentInfo)
@@ -618,14 +627,14 @@ namespace Vulkan.ObjectModel
             VK.CmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
         }
         
-        public static void CmdSetViewport(this CommandBuffer commandBuffer, UInt32 firstViewport, UInt32 viewportCount, Viewport viewports)
+        public static void CmdSetViewport(this CommandBuffer commandBuffer, UInt32 firstViewport, List<Viewport> viewports)
         {
-            VK.CmdSetViewport(commandBuffer, firstViewport, viewportCount, viewports);
+            VK.CmdSetViewport(commandBuffer, firstViewport, viewports);
         }
         
-        public static void CmdSetScissor(this CommandBuffer commandBuffer, UInt32 firstScissor, UInt32 scissorCount, Rect2D scissors)
+        public static void CmdSetScissor(this CommandBuffer commandBuffer, UInt32 firstScissor, List<Rect2D> scissors)
         {
-            VK.CmdSetScissor(commandBuffer, firstScissor, scissorCount, scissors);
+            VK.CmdSetScissor(commandBuffer, firstScissor, scissors);
         }
         
         public static void CmdSetLineWidth(this CommandBuffer commandBuffer, Single lineWidth)
@@ -663,9 +672,10 @@ namespace Vulkan.ObjectModel
             VK.CmdSetStencilReference(commandBuffer, faceMask, reference);
         }
         
-        public static void CmdBindDescriptorSets(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, UInt32 descriptorSetCount, DescriptorSet descriptorSets, UInt32 dynamicOffsetCount, UInt32 dynamicOffsets)
+        public static void CmdBindDescriptorSets(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, List<DescriptorSet> descriptorSets, List<UInt32> dynamicOffsets)
         {
-            VK.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount, descriptorSets, dynamicOffsetCount, dynamicOffsets);
+            //VK.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSets, dynamicOffsets);
+            throw new NotImplementedException();
         }
         
         public static void CmdBindIndexBuffer(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
@@ -673,9 +683,10 @@ namespace Vulkan.ObjectModel
             VK.CmdBindIndexBuffer(commandBuffer, buffer, offset, indexType);
         }
         
-        public static void CmdBindVertexBuffers(this CommandBuffer commandBuffer, UInt32 firstBinding, UInt32 bindingCount, Buffer buffers, DeviceSize offsets)
+        public static void CmdBindVertexBuffers(this CommandBuffer commandBuffer, UInt32 firstBinding, List<Buffer> buffers, List<DeviceSize> offsets)
         {
-            VK.CmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, buffers, offsets);
+            //VK.CmdBindVertexBuffers(commandBuffer, firstBinding, buffers, offsets);
+            throw new NotImplementedException();
         }
         
         public static void CmdDraw(this CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
@@ -708,34 +719,35 @@ namespace Vulkan.ObjectModel
             VK.CmdDispatchIndirect(commandBuffer, buffer, offset);
         }
         
-        public static void CmdCopyBuffer(this CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, UInt32 regionCount, BufferCopy regions)
+        public static void CmdCopyBuffer(this CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, List<BufferCopy> regions)
         {
-            VK.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regionCount, regions);
+            VK.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regions);
         }
         
-        public static void CmdCopyImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageCopy regions)
+        public static void CmdCopyImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageCopy> regions)
         {
-            VK.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, regions);
+            VK.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
         }
         
-        public static void CmdBlitImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageBlit regions, Filter filter)
+        public static void CmdBlitImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageBlit> regions, Filter filter)
         {
-            VK.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, regions, filter);
+            VK.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions, filter);
         }
         
-        public static void CmdCopyBufferToImage(this CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, BufferImageCopy regions)
+        public static void CmdCopyBufferToImage(this CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, List<BufferImageCopy> regions)
         {
-            VK.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, regions);
+            VK.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regions);
         }
         
-        public static void CmdCopyImageToBuffer(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, UInt32 regionCount, BufferImageCopy regions)
+        public static void CmdCopyImageToBuffer(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, List<BufferImageCopy> regions)
         {
-            VK.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, regions);
+            VK.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regions);
         }
         
-        public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, UInt32 data)
+        public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, List<UInt32> data)
         {
-            VK.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, data);
+            //VK.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, data);
+            throw new NotImplementedException();
         }
         
         public static void CmdFillBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
@@ -743,24 +755,24 @@ namespace Vulkan.ObjectModel
             VK.CmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
         }
         
-        public static void CmdClearColorImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, UInt32 rangeCount, ImageSubresourceRange ranges)
+        public static void CmdClearColorImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
         {
-            VK.CmdClearColorImage(commandBuffer, image, imageLayout, color, rangeCount, ranges);
+            VK.CmdClearColorImage(commandBuffer, image, imageLayout, color, ranges);
         }
         
-        public static void CmdClearDepthStencilImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, UInt32 rangeCount, ImageSubresourceRange ranges)
+        public static void CmdClearDepthStencilImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, List<ImageSubresourceRange> ranges)
         {
-            VK.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, depthStencil, rangeCount, ranges);
+            VK.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, depthStencil, ranges);
         }
         
-        public static void CmdClearAttachments(this CommandBuffer commandBuffer, UInt32 attachmentCount, ClearAttachment attachments, UInt32 rectCount, ClearRect rects)
+        public static void CmdClearAttachments(this CommandBuffer commandBuffer, List<ClearAttachment> attachments, List<ClearRect> rects)
         {
-            VK.CmdClearAttachments(commandBuffer, attachmentCount, attachments, rectCount, rects);
+            VK.CmdClearAttachments(commandBuffer, attachments, rects);
         }
         
-        public static void CmdResolveImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageResolve regions)
+        public static void CmdResolveImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageResolve> regions)
         {
-            VK.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, regions);
+            VK.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
         }
         
         public static void CmdSetEvent(this CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
@@ -773,14 +785,14 @@ namespace Vulkan.ObjectModel
             VK.CmdResetEvent(commandBuffer, @event, stageMask);
         }
         
-        public static void CmdWaitEvents(this CommandBuffer commandBuffer, UInt32 eventCount, Event events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, UInt32 memoryBarrierCount, MemoryBarrier memoryBarriers, UInt32 bufferMemoryBarrierCount, BufferMemoryBarrier bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, ImageMemoryBarrier imageMemoryBarriers)
+        public static void CmdWaitEvents(this CommandBuffer commandBuffer, List<Event> events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
-            VK.CmdWaitEvents(commandBuffer, eventCount, events, srcStageMask, dstStageMask, memoryBarrierCount, memoryBarriers, bufferMemoryBarrierCount, bufferMemoryBarriers, imageMemoryBarrierCount, imageMemoryBarriers);
+            VK.CmdWaitEvents(commandBuffer, events, srcStageMask, dstStageMask, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
         }
         
-        public static void CmdPipelineBarrier(this CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, UInt32 memoryBarrierCount, MemoryBarrier memoryBarriers, UInt32 bufferMemoryBarrierCount, BufferMemoryBarrier bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, ImageMemoryBarrier imageMemoryBarriers)
+        public static void CmdPipelineBarrier(this CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
-            VK.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount, memoryBarriers, bufferMemoryBarrierCount, bufferMemoryBarriers, imageMemoryBarrierCount, imageMemoryBarriers);
+            VK.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
         }
         
         public static void CmdBeginQuery(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags)
@@ -808,9 +820,10 @@ namespace Vulkan.ObjectModel
             VK.CmdCopyQueryPoolResults(commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
         }
         
-        public static void CmdPushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, IntPtr values)
+        public static void CmdPushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
         {
-            VK.CmdPushConstants(commandBuffer, layout, stageFlags, offset, size, values);
+            //VK.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
+            throw new NotImplementedException();
         }
         
         public static void CmdBeginRenderPass(this CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
@@ -828,9 +841,9 @@ namespace Vulkan.ObjectModel
             VK.CmdEndRenderPass(commandBuffer);
         }
         
-        public static void CmdExecuteCommands(this CommandBuffer commandBuffer, UInt32 commandBufferCount, CommandBuffer commandBuffers)
+        public static void CmdExecuteCommands(this CommandBuffer commandBuffer, List<CommandBuffer> commandBuffers)
         {
-            VK.CmdExecuteCommands(commandBuffer, commandBufferCount, commandBuffers);
+            VK.CmdExecuteCommands(commandBuffer, commandBuffers);
         }
         
         #endregion

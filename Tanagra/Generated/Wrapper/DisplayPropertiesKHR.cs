@@ -20,18 +20,17 @@ namespace Vulkan
             set { NativePointer->DisplayName = Marshal.StringToHGlobalAnsi(value); }
         }
         
-        Extent2D _PhysicalDimensions;
         public Extent2D PhysicalDimensions
         {
-            get { return _PhysicalDimensions; }
-            set { _PhysicalDimensions = value; NativePointer->PhysicalDimensions = (IntPtr)value.NativePointer; }
+            get { return NativePointer->PhysicalDimensions; }
+            set { NativePointer->PhysicalDimensions = value; }
         }
         
         Extent2D _PhysicalResolution;
         public Extent2D PhysicalResolution
         {
-            get { return _PhysicalResolution; }
-            set { _PhysicalResolution = value; NativePointer->PhysicalResolution = (IntPtr)value.NativePointer; }
+            get { return NativePointer->PhysicalResolution; }
+            set { NativePointer->PhysicalResolution = value; }
         }
         
         public SurfaceTransformFlags SupportedTransforms

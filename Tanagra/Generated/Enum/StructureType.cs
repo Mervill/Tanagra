@@ -53,5 +53,7 @@ namespace Vulkan
         MemoryBarrier = 46,
         LoaderInstanceCreateInfo = 47,
         LoaderDeviceCreateInfo = 48,
+        SwapchainCreateInfoKHR = 1000001000,
+        Win32SurfaceCreateInfoKHR = 1000009000,
     }
 }

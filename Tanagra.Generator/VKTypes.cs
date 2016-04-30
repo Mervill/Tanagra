@@ -56,6 +56,9 @@ namespace Tanagra.Generator
     {
         public string HandleType { get; set; }
         public string Parent { get; set; }
+
+        public bool IsDispatchable => HandleType != "VK_DEFINE_NON_DISPATCHABLE_HANDLE";
+
     }
 
     public class VkStruct : VkType

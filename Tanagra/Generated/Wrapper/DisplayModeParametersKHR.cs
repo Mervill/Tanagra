@@ -11,7 +11,7 @@ namespace Vulkan
         public Extent2D VisibleRegion
         {
             get { return _VisibleRegion; }
-            set { _VisibleRegion = value; NativePointer->VisibleRegion = (IntPtr)value.NativePointer; }
+            set { _VisibleRegion = value; NativePointer->VisibleRegion = value; }
         }
         
         public UInt32 RefreshRate

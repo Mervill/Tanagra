@@ -27,18 +27,16 @@ namespace Vulkan
             set { _MaxSrcPosition = value; NativePointer->MaxSrcPosition = (IntPtr)value.NativePointer; }
         }
         
-        Extent2D _MinSrcExtent;
         public Extent2D MinSrcExtent
         {
-            get { return _MinSrcExtent; }
-            set { _MinSrcExtent = value; NativePointer->MinSrcExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MinSrcExtent; }
+            set { NativePointer->MinSrcExtent = value; }
         }
         
-        Extent2D _MaxSrcExtent;
         public Extent2D MaxSrcExtent
         {
-            get { return _MaxSrcExtent; }
-            set { _MaxSrcExtent = value; NativePointer->MaxSrcExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MaxSrcExtent; }
+            set { NativePointer->MaxSrcExtent = value; }
         }
         
         Offset2D _MinDstPosition;
@@ -55,18 +53,16 @@ namespace Vulkan
             set { _MaxDstPosition = value; NativePointer->MaxDstPosition = (IntPtr)value.NativePointer; }
         }
         
-        Extent2D _MinDstExtent;
         public Extent2D MinDstExtent
         {
-            get { return _MinDstExtent; }
-            set { _MinDstExtent = value; NativePointer->MinDstExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MinDstExtent; }
+            set { NativePointer->MinDstExtent = value; }
         }
         
-        Extent2D _MaxDstExtent;
         public Extent2D MaxDstExtent
         {
-            get { return _MaxDstExtent; }
-            set { _MaxDstExtent = value; NativePointer->MaxDstExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MaxDstExtent; }
+            set { NativePointer->MaxDstExtent = value; }
         }
         
         public DisplayPlaneCapabilitiesKHR()

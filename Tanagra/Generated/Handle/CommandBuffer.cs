@@ -6,7 +6,9 @@ namespace Vulkan
     public class CommandBuffer
     {
         internal IntPtr NativePointer;
-        
-        public override string ToString() => NativePointer.ToString();
+
+        public bool IsValid => NativePointer != IntPtr.Zero;
+
+        public override string ToString() => NativePointer.ToString("X8");
     }
 }

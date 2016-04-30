@@ -3,10 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    public class SwapchainKHR
+    public struct SwapchainKHR
     {
-        internal IntPtr NativePointer;
+        internal UInt64 NativePointer;
         
-        public override string ToString() => NativePointer.ToString();
+        public override string ToString() => NativePointer.ToString("X8");
     }
 }

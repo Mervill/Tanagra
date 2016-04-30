@@ -38,7 +38,7 @@ namespace Vulkan
             {
                 var strings = new String[NativePointer->EnabledLayerCount];
                 void** ptr = (void**)NativePointer->EnabledLayerNames;
-                for(int x = 0; x < NativePointer->EnabledLayerCount; x++)
+                for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
                     strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
                 
                 return strings;
@@ -48,7 +48,7 @@ namespace Vulkan
                 NativePointer->EnabledLayerCount = (uint)value.Length;
                 NativePointer->EnabledLayerNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledLayerCount));
                 void** ptr = (void**)NativePointer->EnabledLayerNames;
-                for(int x = 0; x < NativePointer->EnabledLayerCount; x++)
+                for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }
@@ -65,7 +65,7 @@ namespace Vulkan
             {
                 var strings = new String[NativePointer->EnabledExtensionCount];
                 void** ptr = (void**)NativePointer->EnabledExtensionNames;
-                for(int x = 0; x < NativePointer->EnabledExtensionCount; x++)
+                for(var x = 0; x < NativePointer->EnabledExtensionCount; x++)
                     strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
                 
                 return strings;
@@ -75,7 +75,7 @@ namespace Vulkan
                 NativePointer->EnabledExtensionCount = (uint)value.Length;
                 NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledExtensionCount));
                 void** ptr = (void**)NativePointer->EnabledExtensionNames;
-                for(int x = 0; x < NativePointer->EnabledExtensionCount; x++)
+                for(var x = 0; x < NativePointer->EnabledExtensionCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }

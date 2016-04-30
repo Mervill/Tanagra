@@ -19,25 +19,22 @@ namespace Vulkan
             set { NativePointer->MaxImageCount = value; }
         }
         
-        Extent2D _CurrentExtent;
         public Extent2D CurrentExtent
         {
-            get { return _CurrentExtent; }
-            set { _CurrentExtent = value; NativePointer->CurrentExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->CurrentExtent; }
+            set { NativePointer->CurrentExtent = value; }
         }
         
-        Extent2D _MinImageExtent;
         public Extent2D MinImageExtent
         {
-            get { return _MinImageExtent; }
-            set { _MinImageExtent = value; NativePointer->MinImageExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MinImageExtent; }
+            set { NativePointer->MinImageExtent = value; }
         }
         
-        Extent2D _MaxImageExtent;
         public Extent2D MaxImageExtent
         {
-            get { return _MaxImageExtent; }
-            set { _MaxImageExtent = value; NativePointer->MaxImageExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->MaxImageExtent; }
+            set { NativePointer->MaxImageExtent = value; }
         }
         
         public UInt32 MaxImageArrayLayers

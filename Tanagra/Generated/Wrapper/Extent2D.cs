@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    unsafe public class Extent2D
+    /*unsafe public class Extent2D
     {
         internal Interop.Extent2D* NativePointer;
         
@@ -23,5 +23,5 @@ namespace Vulkan
         {
             NativePointer = (Interop.Extent2D*)Interop.Structure.Allocate(typeof(Interop.Extent2D));
         }
-    }
+    }*/
 }

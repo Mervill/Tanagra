@@ -5,8 +5,8 @@ namespace Vulkan
 {
     public class Buffer
     {
-        internal IntPtr NativePointer;
+        internal UInt64 NativePointer;
         
-        public override string ToString() => NativePointer.ToString();
+        public override string ToString() => NativePointer.ToString("X8");
     }
 }

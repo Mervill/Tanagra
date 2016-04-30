@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.SwapchainCreateInfoKHR* NativePointer;
         
-        public SwapchainCreateFlags Flags
+        public UInt32 Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
@@ -17,7 +17,7 @@ namespace Vulkan
         public SurfaceKHR Surface
         {
             get { return _Surface; }
-            set { _Surface = value; NativePointer->Surface = (IntPtr)value.NativePointer; }
+            set { _Surface = value; NativePointer->Surface = value.NativePointer; }
         }
         
         public UInt32 MinImageCount
@@ -38,11 +38,10 @@ namespace Vulkan
             set { NativePointer->ImageColorSpace = value; }
         }
         
-        Extent2D _ImageExtent;
         public Extent2D ImageExtent
         {
-            get { return _ImageExtent; }
-            set { _ImageExtent = value; NativePointer->ImageExtent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ImageExtent; }
+            set { NativePointer->ImageExtent = value; }
         }
         
         public UInt32 ImageArrayLayers
@@ -51,7 +50,7 @@ namespace Vulkan
             set { NativePointer->ImageArrayLayers = value; }
         }
         
-        public ImageUsageFlags ImageUsage
+        public UInt32 ImageUsage
         {
             get { return NativePointer->ImageUsage; }
             set { NativePointer->ImageUsage = value; }
@@ -93,7 +92,7 @@ namespace Vulkan
             set { NativePointer->PresentMode = value; }
         }
         
-        public Boolean Clipped
+        public UInt32 Clipped
         {
             get { return NativePointer->Clipped; }
             set { NativePointer->Clipped = value; }
@@ -103,13 +102,13 @@ namespace Vulkan
         public SwapchainKHR OldSwapchain
         {
             get { return _OldSwapchain; }
-            set { _OldSwapchain = value; NativePointer->OldSwapchain = (IntPtr)value.NativePointer; }
+            set { _OldSwapchain = value; NativePointer->OldSwapchain = value.NativePointer; }
         }
         
         public SwapchainCreateInfoKHR()
         {
             NativePointer = (Interop.SwapchainCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
-            //NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
+            NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
     }
 }
