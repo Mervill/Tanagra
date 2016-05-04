@@ -38,18 +38,16 @@ namespace Vulkan
             set { NativePointer->DescriptorType = value; }
         }
         
-        DescriptorImageInfo _ImageInfo;
         public DescriptorImageInfo ImageInfo
         {
-            get { return _ImageInfo; }
-            set { _ImageInfo = value; NativePointer->ImageInfo = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ImageInfo; }
+            set { NativePointer->ImageInfo = value; }
         }
         
-        DescriptorBufferInfo _BufferInfo;
         public DescriptorBufferInfo BufferInfo
         {
-            get { return _BufferInfo; }
-            set { _BufferInfo = value; NativePointer->BufferInfo = (IntPtr)value.NativePointer; }
+            get { return NativePointer->BufferInfo; }
+            set { NativePointer->BufferInfo = value; }
         }
         
         BufferView _TexelBufferView;

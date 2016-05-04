@@ -252,7 +252,7 @@ namespace Vulkan.Interop
         internal static extern void vkDestroyRenderPass(IntPtr device, UInt64 renderPass, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkGetRenderAreaGranularity", CallingConvention = callingConvention)]
-        internal static extern void vkGetRenderAreaGranularity(IntPtr device, UInt64 renderPass, Extent2D granularity);
+        internal static extern void vkGetRenderAreaGranularity(IntPtr device, UInt64 renderPass, Extent2D* granularity);
         
         [DllImport(DllName, EntryPoint = "vkCreateCommandPool", CallingConvention = callingConvention)]
         internal static extern Result vkCreateCommandPool(IntPtr device, CommandPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* commandPool);
@@ -458,8 +458,8 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = callingConvention)]
         internal static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, UInt64 surface, UInt32* presentModeCount, PresentMode* presentModes);
         
-        [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = CallingConvention.StdCall)]
-        internal static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, SwapchainKHR* swapchain);
+        [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = callingConvention)]
+        internal static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* swapchain);
         
         [DllImport(DllName, EntryPoint = "vkDestroySwapchainKHR", CallingConvention = callingConvention)]
         internal static extern void vkDestroySwapchainKHR(IntPtr device, UInt64 swapchain, AllocationCallbacks* allocator);

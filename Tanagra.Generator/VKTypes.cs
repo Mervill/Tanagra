@@ -92,6 +92,8 @@ namespace Tanagra.Generator
 
         public string SpecName { get; set; }
 
+        public bool IsPointer => PointerRank > 0;
+
         public VkMember()
         {
             Len = new string[0];

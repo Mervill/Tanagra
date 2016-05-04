@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.DeviceCreateInfo* NativePointer;
         
-        public DeviceCreateFlags Flags
+        public UInt32 Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
@@ -80,11 +80,10 @@ namespace Vulkan
             }
         }
         
-        PhysicalDeviceFeatures _EnabledFeatures;
         public PhysicalDeviceFeatures EnabledFeatures
         {
-            get { return _EnabledFeatures; }
-            set { _EnabledFeatures = value; NativePointer->EnabledFeatures = (IntPtr)value.NativePointer; }
+            get { return NativePointer->EnabledFeatures; }
+            set { NativePointer->EnabledFeatures = value; }
         }
         
         public DeviceCreateInfo()

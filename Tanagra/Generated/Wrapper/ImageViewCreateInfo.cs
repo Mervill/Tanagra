@@ -32,18 +32,16 @@ namespace Vulkan
             set { NativePointer->Format = value; }
         }
         
-        ComponentMapping _Components;
         public ComponentMapping Components
         {
-            get { return _Components; }
-            set { _Components = value; NativePointer->Components = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Components; }
+            set { NativePointer->Components = value; }
         }
         
-        ImageSubresourceRange _SubresourceRange;
         public ImageSubresourceRange SubresourceRange
         {
-            get { return _SubresourceRange; }
-            set { _SubresourceRange = value; NativePointer->SubresourceRange = (IntPtr)value.NativePointer; }
+            get { return NativePointer->SubresourceRange; }
+            set { NativePointer->SubresourceRange = value; }
         }
         
         public ImageViewCreateInfo()

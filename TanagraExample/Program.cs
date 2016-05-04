@@ -114,7 +114,7 @@ namespace TanagraExample
             var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
             {
                 Hinstance = HINSTANCE,
-                Hwnd = form.Handle//HWND,
+                Hwnd = HWND,
             };
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
             Console.WriteLine("[ OK ] Surface " + surface);

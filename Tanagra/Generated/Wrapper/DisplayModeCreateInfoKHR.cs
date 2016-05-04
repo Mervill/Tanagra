@@ -13,11 +13,10 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        DisplayModeParametersKHR _Parameters;
         public DisplayModeParametersKHR Parameters
         {
-            get { return _Parameters; }
-            set { _Parameters = value; NativePointer->Parameters = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Parameters; }
+            set { NativePointer->Parameters = value; }
         }
         
         public DisplayModeCreateInfoKHR()

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-    public struct SwapchainKHR
+    public class SwapchainKHR
     {
         internal UInt64 NativePointer;
         

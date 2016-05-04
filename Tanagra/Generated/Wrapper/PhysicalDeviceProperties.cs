@@ -49,18 +49,16 @@ namespace Vulkan
             set { NativePointer->PipelineCacheUUID = value; }
         }
         
-        PhysicalDeviceLimits _Limits;
         public PhysicalDeviceLimits Limits
         {
-            get { return _Limits; }
-            set { _Limits = value; NativePointer->Limits = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Limits; }
+            set { NativePointer->Limits = value; }
         }
         
-        PhysicalDeviceSparseProperties _SparseProperties;
         public PhysicalDeviceSparseProperties SparseProperties
         {
-            get { return _SparseProperties; }
-            set { _SparseProperties = value; NativePointer->SparseProperties = (IntPtr)value.NativePointer; }
+            get { return NativePointer->SparseProperties; }
+            set { NativePointer->SparseProperties = value; }
         }
         
         public PhysicalDeviceProperties()

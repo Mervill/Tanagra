@@ -25,11 +25,10 @@ namespace Vulkan
             set { NativePointer->Format = value; }
         }
         
-        Extent3D _Extent;
         public Extent3D Extent
         {
-            get { return _Extent; }
-            set { _Extent = value; NativePointer->Extent = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Extent; }
+            set { NativePointer->Extent = value; }
         }
         
         public UInt32 MipLevels

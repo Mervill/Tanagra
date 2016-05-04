@@ -43,18 +43,16 @@ namespace Vulkan
             set { NativePointer->StencilTestEnable = value; }
         }
         
-        StencilOpState _Front;
         public StencilOpState Front
         {
-            get { return _Front; }
-            set { _Front = value; NativePointer->Front = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Front; }
+            set { NativePointer->Front = value; }
         }
         
-        StencilOpState _Back;
         public StencilOpState Back
         {
-            get { return _Back; }
-            set { _Back = value; NativePointer->Back = (IntPtr)value.NativePointer; }
+            get { return NativePointer->Back; }
+            set { NativePointer->Back = value; }
         }
         
         public Single MinDepthBounds

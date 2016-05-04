@@ -25,11 +25,10 @@ namespace Vulkan
             set { NativePointer->InputAttachmentCount = value; }
         }
         
-        AttachmentReference _InputAttachments;
         public AttachmentReference InputAttachments
         {
-            get { return _InputAttachments; }
-            set { _InputAttachments = value; NativePointer->InputAttachments = (IntPtr)value.NativePointer; }
+            get { return NativePointer->InputAttachments; }
+            set { NativePointer->InputAttachments = value; }
         }
         
         public UInt32 ColorAttachmentCount
@@ -38,25 +37,22 @@ namespace Vulkan
             set { NativePointer->ColorAttachmentCount = value; }
         }
         
-        AttachmentReference _ColorAttachments;
         public AttachmentReference ColorAttachments
         {
-            get { return _ColorAttachments; }
-            set { _ColorAttachments = value; NativePointer->ColorAttachments = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ColorAttachments; }
+            set { NativePointer->ColorAttachments = value; }
         }
         
-        AttachmentReference _ResolveAttachments;
         public AttachmentReference ResolveAttachments
         {
-            get { return _ResolveAttachments; }
-            set { _ResolveAttachments = value; NativePointer->ResolveAttachments = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ResolveAttachments; }
+            set { NativePointer->ResolveAttachments = value; }
         }
         
-        AttachmentReference _DepthStencilAttachment;
         public AttachmentReference DepthStencilAttachment
         {
-            get { return _DepthStencilAttachment; }
-            set { _DepthStencilAttachment = value; NativePointer->DepthStencilAttachment = (IntPtr)value.NativePointer; }
+            get { return NativePointer->DepthStencilAttachment; }
+            set { NativePointer->DepthStencilAttachment = value; }
         }
         
         public UInt32 PreserveAttachmentCount

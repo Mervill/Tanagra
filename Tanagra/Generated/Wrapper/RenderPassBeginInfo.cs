@@ -21,11 +21,10 @@ namespace Vulkan
             set { _Framebuffer = value; NativePointer->Framebuffer = (IntPtr)value.NativePointer; }
         }
         
-        Rect2D _RenderArea;
         public Rect2D RenderArea
         {
-            get { return _RenderArea; }
-            set { _RenderArea = value; NativePointer->RenderArea = (IntPtr)value.NativePointer; }
+            get { return NativePointer->RenderArea; }
+            set { NativePointer->RenderArea = value; }
         }
         
         public UInt32 ClearValueCount
@@ -34,11 +33,10 @@ namespace Vulkan
             set { NativePointer->ClearValueCount = value; }
         }
         
-        ClearValue _ClearValues;
         public ClearValue ClearValues
         {
-            get { return _ClearValues; }
-            set { _ClearValues = value; NativePointer->ClearValues = (IntPtr)value.NativePointer; }
+            get { return NativePointer->ClearValues; }
+            set { NativePointer->ClearValues = value; }
         }
         
         public RenderPassBeginInfo()

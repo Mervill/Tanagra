@@ -26,7 +26,6 @@ namespace Vulkan
             set { NativePointer->PhysicalDimensions = value; }
         }
         
-        Extent2D _PhysicalResolution;
         public Extent2D PhysicalResolution
         {
             get { return NativePointer->PhysicalResolution; }

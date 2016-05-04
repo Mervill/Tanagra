@@ -68,7 +68,7 @@ namespace Vulkan
             set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
-        public UInt32 QueueFamilyIndices
+        public IntPtr QueueFamilyIndices
         {
             get { return NativePointer->QueueFamilyIndices; }
             set { NativePointer->QueueFamilyIndices = value; }

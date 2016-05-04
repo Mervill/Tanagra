@@ -67,10 +67,19 @@ namespace Tanagra.Generator
             foreach(var vkSpec in spec.Handles)
                 files.Add($"./Handle/{vkSpec.Name}.cs", GenerateHandle(vkSpec));
 
-            files.Add("./Interop/Structs.cs", GenerateInteropStructs(spec.Structs));
+            // -- struct
+
+            var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
+            files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
+
+            var regularStruct = spec.Structs.Except(needsInteropStruct);
+            files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
+
+            // -- vk
             files.Add("./Interop/VK.cs", GenerateCommandBindings(commands));
 
-            var generateStructs = spec.Structs.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
+            var generateStructs = needsInteropStruct.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
+
             foreach (var vkStruct in generateStructs)
                 files.Add($"./Wrapper/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
 
@@ -144,15 +153,17 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
-        string GenerateInteropStructs(IEnumerable<VkStruct> vkStructs)
+        string GenerateStructs(IEnumerable<VkStruct> vkStructs, bool isPublic)
         {
             Clear();
+
+            var vis = isPublic ? "public" : "internal";
 
             WriteLine("// ReSharper disable BuiltInTypeReferenceStyle");
             WriteLine("// ReSharper disable InconsistentNaming");
             WriteLine("using System;");
             WriteLine("");
-            WriteLine("namespace Vulkan.Interop");
+            WriteLine($"namespace Vulkan{((!isPublic) ? ".Interop" : string.Empty)}");
             WriteLine("{");
             _tabs++;
 
@@ -161,7 +172,7 @@ namespace Tanagra.Generator
                 if (platformStructTypes.Contains(vkStruct.Name))
                     continue;
 
-                WriteLine($"internal struct {vkStruct.Name}");
+                WriteLine($"{vis} struct {vkStruct.Name}");
                 WriteLine("{");
                 _tabs++;
 
@@ -172,12 +183,24 @@ namespace Tanagra.Generator
                 {
                     if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "Char"))
                     {
-                        WriteLine($"internal {member.Type} {member.Name};");
+                        WriteLine($"{vis} {member.Type} {member.Name};");
                         continue;
                     }
+
+                    if(member.Type is VkStruct && member.Type.Name != "Char")
+                    {
+                        var memberType = member.Type as VkStruct;
+                        var isWrapperType = memberType.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
+                        if(!isWrapperType)
+                        {
+                            WriteLine($"{vis} {member.Type} {member.Name};");
+                            continue;
+                        }
+                    }
+
                     // Eveything else is a pointer
                     // `Char` is a C-style string ... so it's a pointer
-                    WriteLine($"internal IntPtr {member.Name};");
+                    WriteLine($"{vis} IntPtr {member.Name};");
                 }
 
                 _tabs--;
@@ -338,14 +361,64 @@ namespace Tanagra.Generator
 
         void WriteMemberStruct(VkMember vkMember)
         {
-            WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
-            WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
-            WriteLine("{");
-            _tabs++;
-            WriteLine($"get {{ return _{vkMember.Name}; }}");
-            WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
-            _tabs--;
-            WriteLine("}");
+            if(vkMember.Type is VkStruct)
+            {
+                var vkStruct = vkMember.Type as VkStruct;
+                var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
+                if(isWrapperType)
+                {
+                    WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                    WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                    WriteLine("{");
+                    _tabs++;
+                    WriteLine($"get {{ return _{vkMember.Name}; }}");
+                    WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
+                    _tabs--;
+                    WriteLine("}");
+                }
+                else
+                {
+                    WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                    WriteLine("{");
+                    _tabs++;
+                    WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
+                    WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
+                    _tabs--;
+                    WriteLine("}");
+                }
+            }
+            else
+            {
+                WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"get {{ return _{vkMember.Name}; }}");
+                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
+                _tabs--;
+                WriteLine("}");
+            }
+            /*if(vkMember.IsPointer || vkMember.Type is VkHandle)
+            {
+                WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"get {{ return _{vkMember.Name}; }}");
+                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
+                _tabs--;
+                WriteLine("}");
+            }
+            else
+            {
+                WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
+                WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
+                _tabs--;
+                WriteLine("}");
+            }*/
         }
 
         void WriteMemberString(VkMember vkMember)
@@ -651,7 +724,23 @@ namespace Tanagra.Generator
                             else
                             {
                                 // Otherwise it's a struct or a handle
-                                Write($"{vkParam.Name}.{NativePointer}");
+                                if(vkParam.Type is VkStruct)
+                                {
+                                    var vkStruct = vkParam.Type as VkStruct;
+                                    var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
+                                    if(isWrapperType)
+                                    {
+                                        Write($"{vkParam.Name}.{NativePointer}");
+                                    }
+                                    else
+                                    {
+                                        Write($"&{vkParam.Name}");
+                                    }
+                                }
+                                else
+                                {
+                                    Write($"{vkParam.Name}.{NativePointer}");
+                                }
                             }
                         }
                     }
@@ -706,7 +795,23 @@ namespace Tanagra.Generator
                             }
                             else
                             {
-                                Write($"{vkParam.Name}.{NativePointer}");
+                                if(vkParam.Type is VkStruct)
+                                {
+                                    var vkStruct = vkParam.Type as VkStruct;
+                                    var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
+                                    if(isWrapperType)
+                                    {
+                                        Write($"{vkParam.Name}.{NativePointer}");
+                                    }
+                                    else
+                                    {
+                                        Write($"&{vkParam.Name}");
+                                    }
+                                }
+                                else
+                                {
+                                    Write($"{vkParam.Name}.{NativePointer}");
+                                }
                             }
                         }
                     }

@@ -14,13 +14,7 @@ namespace Vulkan
     public struct PFN_vkInternalFreeNotification { }
     public struct PFN_vkDebugReportCallbackEXT { }
     public struct PFN_vkVoidFunction { }
-
-    unsafe public struct Extent2D
-    {
-        public UInt32 Width;
-        public UInt32 Height;
-    }
-
+    
     public struct DeviceSize
     {
         UInt64 value;

@@ -50,11 +50,10 @@ namespace Vulkan
             set { _Image = value; NativePointer->Image = (IntPtr)value.NativePointer; }
         }
         
-        ImageSubresourceRange _SubresourceRange;
         public ImageSubresourceRange SubresourceRange
         {
-            get { return _SubresourceRange; }
-            set { _SubresourceRange = value; NativePointer->SubresourceRange = (IntPtr)value.NativePointer; }
+            get { return NativePointer->SubresourceRange; }
+            set { NativePointer->SubresourceRange = value; }
         }
         
         public ImageMemoryBarrier()
