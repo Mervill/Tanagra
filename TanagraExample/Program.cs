@@ -205,7 +205,7 @@ namespace TanagraExample
                 CompositeAlpha = CompositeAlphaFlags.OpaqueBitKhr,
                 MinImageCount = desiredImageCount,
                 PreTransform = preTransform,
-                Clipped = 1,
+                Clipped = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
             Console.WriteLine("[ OK ] Swapchain");

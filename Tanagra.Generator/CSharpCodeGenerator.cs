@@ -37,6 +37,7 @@ namespace Tanagra.Generator
                 "Int32",
                 "UIntPtr",
                 "Boolean",
+                "Bool32",
                 "DeviceSize",
             };
 

@@ -92,7 +92,7 @@ namespace Vulkan
             set { NativePointer->PresentMode = value; }
         }
         
-        public UInt32 Clipped
+        public Bool32 Clipped
         {
             get { return NativePointer->Clipped; }
             set { NativePointer->Clipped = value; }

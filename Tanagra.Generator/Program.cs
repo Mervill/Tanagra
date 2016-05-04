@@ -11,7 +11,6 @@ namespace Tanagra.Generator
         // todo: hasArrayArguments
         // todo: Create* commands that return arrays
         // todo: union
-        // todo: boolean -> UInt32
         // XCB -> X protocol C-language Binding
         static void Main(string[] args)
         {

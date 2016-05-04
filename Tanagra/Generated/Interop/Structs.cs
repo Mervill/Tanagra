@@ -351,7 +351,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal PipelineInputAssemblyStateCreateFlags Flags;
         internal PrimitiveTopology Topology;
-        internal Boolean PrimitiveRestartEnable;
+        internal Bool32 PrimitiveRestartEnable;
     }
 
     internal struct PipelineTessellationStateCreateInfo
@@ -378,12 +378,12 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal PipelineRasterizationStateCreateFlags Flags;
-        internal Boolean DepthClampEnable;
-        internal Boolean RasterizerDiscardEnable;
+        internal Bool32 DepthClampEnable;
+        internal Bool32 RasterizerDiscardEnable;
         internal PolygonMode PolygonMode;
         internal CullModeFlags CullMode;
         internal FrontFace FrontFace;
-        internal Boolean DepthBiasEnable;
+        internal Bool32 DepthBiasEnable;
         internal Single DepthBiasConstantFactor;
         internal Single DepthBiasClamp;
         internal Single DepthBiasSlopeFactor;
@@ -396,11 +396,11 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal PipelineMultisampleStateCreateFlags Flags;
         internal SampleCountFlags RasterizationSamples;
-        internal Boolean SampleShadingEnable;
+        internal Bool32 SampleShadingEnable;
         internal Single MinSampleShading;
         internal SampleMask SampleMask;
-        internal Boolean AlphaToCoverageEnable;
-        internal Boolean AlphaToOneEnable;
+        internal Bool32 AlphaToCoverageEnable;
+        internal Bool32 AlphaToOneEnable;
     }
 
     internal struct PipelineColorBlendStateCreateInfo
@@ -408,7 +408,7 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal PipelineColorBlendStateCreateFlags Flags;
-        internal Boolean LogicOpEnable;
+        internal Bool32 LogicOpEnable;
         internal LogicOp LogicOp;
         internal UInt32 AttachmentCount;
         internal PipelineColorBlendAttachmentState Attachments;
@@ -429,11 +429,11 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal PipelineDepthStencilStateCreateFlags Flags;
-        internal Boolean DepthTestEnable;
-        internal Boolean DepthWriteEnable;
+        internal Bool32 DepthTestEnable;
+        internal Bool32 DepthWriteEnable;
         internal CompareOp DepthCompareOp;
-        internal Boolean DepthBoundsTestEnable;
-        internal Boolean StencilTestEnable;
+        internal Bool32 DepthBoundsTestEnable;
+        internal Bool32 StencilTestEnable;
         internal StencilOpState Front;
         internal StencilOpState Back;
         internal Single MinDepthBounds;
@@ -495,14 +495,14 @@ namespace Vulkan.Interop
         internal SamplerAddressMode AddressModeV;
         internal SamplerAddressMode AddressModeW;
         internal Single MipLodBias;
-        internal Boolean AnisotropyEnable;
+        internal Bool32 AnisotropyEnable;
         internal Single MaxAnisotropy;
-        internal Boolean CompareEnable;
+        internal Bool32 CompareEnable;
         internal CompareOp CompareOp;
         internal Single MinLod;
         internal Single MaxLod;
         internal BorderColor BorderColor;
-        internal Boolean UnnormalizedCoordinates;
+        internal Bool32 UnnormalizedCoordinates;
     }
 
     internal struct CommandPoolCreateInfo
@@ -529,7 +529,7 @@ namespace Vulkan.Interop
         internal IntPtr RenderPass;
         internal UInt32 Subpass;
         internal IntPtr Framebuffer;
-        internal Boolean OcclusionQueryEnable;
+        internal Bool32 OcclusionQueryEnable;
         internal QueryControlFlags QueryFlags;
         internal QueryPipelineStatisticFlags PipelineStatistics;
     }
@@ -644,8 +644,8 @@ namespace Vulkan.Interop
         internal Extent2D PhysicalDimensions;
         internal Extent2D PhysicalResolution;
         internal SurfaceTransformFlags SupportedTransforms;
-        internal Boolean PlaneReorderPossible;
-        internal Boolean PersistentContent;
+        internal Bool32 PlaneReorderPossible;
+        internal Bool32 PersistentContent;
     }
 
     internal struct DisplayModeCreateInfoKHR
@@ -676,7 +676,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal Rect2D SrcRect;
         internal Rect2D DstRect;
-        internal Boolean Persistent;
+        internal Bool32 Persistent;
     }
 
     internal struct AndroidSurfaceCreateInfoKHR
@@ -750,8 +750,8 @@ namespace Vulkan.Interop
         internal SurfaceTransformFlags PreTransform;
         internal CompositeAlphaFlags CompositeAlpha;
         internal PresentMode PresentMode;
-        internal UInt32 Clipped;
-        internal UInt64 OldSwapchain;
+        internal Bool32 Clipped;
+        internal IntPtr OldSwapchain;
     }
 
     internal struct PresentInfoKHR

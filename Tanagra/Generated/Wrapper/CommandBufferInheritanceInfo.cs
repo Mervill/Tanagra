@@ -27,7 +27,7 @@ namespace Vulkan
             set { _Framebuffer = value; NativePointer->Framebuffer = (IntPtr)value.NativePointer; }
         }
         
-        public Boolean OcclusionQueryEnable
+        public Bool32 OcclusionQueryEnable
         {
             get { return NativePointer->OcclusionQueryEnable; }
             set { NativePointer->OcclusionQueryEnable = value; }

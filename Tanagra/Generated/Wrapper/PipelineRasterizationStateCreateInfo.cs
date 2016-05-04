@@ -13,13 +13,13 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public Boolean DepthClampEnable
+        public Bool32 DepthClampEnable
         {
             get { return NativePointer->DepthClampEnable; }
             set { NativePointer->DepthClampEnable = value; }
         }
         
-        public Boolean RasterizerDiscardEnable
+        public Bool32 RasterizerDiscardEnable
         {
             get { return NativePointer->RasterizerDiscardEnable; }
             set { NativePointer->RasterizerDiscardEnable = value; }
@@ -43,7 +43,7 @@ namespace Vulkan
             set { NativePointer->FrontFace = value; }
         }
         
-        public Boolean DepthBiasEnable
+        public Bool32 DepthBiasEnable
         {
             get { return NativePointer->DepthBiasEnable; }
             set { NativePointer->DepthBiasEnable = value; }

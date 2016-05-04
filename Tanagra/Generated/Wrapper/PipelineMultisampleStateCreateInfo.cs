@@ -19,7 +19,7 @@ namespace Vulkan
             set { NativePointer->RasterizationSamples = value; }
         }
         
-        public Boolean SampleShadingEnable
+        public Bool32 SampleShadingEnable
         {
             get { return NativePointer->SampleShadingEnable; }
             set { NativePointer->SampleShadingEnable = value; }
@@ -37,13 +37,13 @@ namespace Vulkan
             set { NativePointer->SampleMask = value; }
         }
         
-        public Boolean AlphaToCoverageEnable
+        public Bool32 AlphaToCoverageEnable
         {
             get { return NativePointer->AlphaToCoverageEnable; }
             set { NativePointer->AlphaToCoverageEnable = value; }
         }
         
-        public Boolean AlphaToOneEnable
+        public Bool32 AlphaToOneEnable
         {
             get { return NativePointer->AlphaToOneEnable; }
             set { NativePointer->AlphaToOneEnable = value; }

@@ -38,13 +38,13 @@ namespace Vulkan
             set { NativePointer->SupportedTransforms = value; }
         }
         
-        public Boolean PlaneReorderPossible
+        public Bool32 PlaneReorderPossible
         {
             get { return NativePointer->PlaneReorderPossible; }
             set { NativePointer->PlaneReorderPossible = value; }
         }
         
-        public Boolean PersistentContent
+        public Bool32 PersistentContent
         {
             get { return NativePointer->PersistentContent; }
             set { NativePointer->PersistentContent = value; }

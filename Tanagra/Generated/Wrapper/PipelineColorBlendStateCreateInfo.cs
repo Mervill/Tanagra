@@ -13,7 +13,7 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public Boolean LogicOpEnable
+        public Bool32 LogicOpEnable
         {
             get { return NativePointer->LogicOpEnable; }
             set { NativePointer->LogicOpEnable = value; }

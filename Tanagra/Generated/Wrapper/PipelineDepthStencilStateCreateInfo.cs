@@ -13,13 +13,13 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public Boolean DepthTestEnable
+        public Bool32 DepthTestEnable
         {
             get { return NativePointer->DepthTestEnable; }
             set { NativePointer->DepthTestEnable = value; }
         }
         
-        public Boolean DepthWriteEnable
+        public Bool32 DepthWriteEnable
         {
             get { return NativePointer->DepthWriteEnable; }
             set { NativePointer->DepthWriteEnable = value; }
@@ -31,13 +31,13 @@ namespace Vulkan
             set { NativePointer->DepthCompareOp = value; }
         }
         
-        public Boolean DepthBoundsTestEnable
+        public Bool32 DepthBoundsTestEnable
         {
             get { return NativePointer->DepthBoundsTestEnable; }
             set { NativePointer->DepthBoundsTestEnable = value; }
         }
         
-        public Boolean StencilTestEnable
+        public Bool32 StencilTestEnable
         {
             get { return NativePointer->StencilTestEnable; }
             set { NativePointer->StencilTestEnable = value; }

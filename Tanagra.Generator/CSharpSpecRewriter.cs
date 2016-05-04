@@ -30,7 +30,7 @@ namespace Tanagra.Generator
                 { "uint64_t", "UInt64"  },
                 { "int32_t",  "Int32"   },
                 { "size_t",   "UIntPtr" },
-                { "VkBool32", "Boolean" }
+                { "VkBool32", "Bool32" }
             };
         }
 
@@ -55,6 +55,7 @@ namespace Tanagra.Generator
             foreach(var vkCmd in spec.Commands)
                 RewriteCommandDefinition(vkCmd);
 
+            // Replace all imported type refrences with IntPtr
             var intPtr = spec.AllTypes.FirstOrDefault(x => x.Name == "IntPtr");
             var platfromTypes = spec.AllTypes.Where(x => x.IsImportedType);
             foreach(var vkType in platfromTypes)

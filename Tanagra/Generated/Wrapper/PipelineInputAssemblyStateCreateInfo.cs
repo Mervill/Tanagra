@@ -19,7 +19,7 @@ namespace Vulkan
             set { NativePointer->Topology = value; }
         }
         
-        public Boolean PrimitiveRestartEnable
+        public Bool32 PrimitiveRestartEnable
         {
             get { return NativePointer->PrimitiveRestartEnable; }
             set { NativePointer->PrimitiveRestartEnable = value; }

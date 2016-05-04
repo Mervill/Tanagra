@@ -19,7 +19,7 @@ namespace Vulkan
             set { NativePointer->DstRect = value; }
         }
         
-        public Boolean Persistent
+        public Bool32 Persistent
         {
             get { return NativePointer->Persistent; }
             set { NativePointer->Persistent = value; }

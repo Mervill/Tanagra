@@ -285,7 +285,7 @@ namespace Vulkan
 
     public struct PipelineColorBlendAttachmentState
     {
-        public Boolean BlendEnable;
+        public Bool32 BlendEnable;
         public BlendFactor SrcColorBlendFactor;
         public BlendFactor DstColorBlendFactor;
         public BlendOp ColorBlendOp;
@@ -358,70 +358,70 @@ namespace Vulkan
 
     public struct PhysicalDeviceFeatures
     {
-        public UInt32 RobustBufferAccess;
-        public UInt32 FullDrawIndexUint32;
-        public UInt32 ImageCubeArray;
-        public UInt32 IndependentBlend;
-        public UInt32 GeometryShader;
-        public UInt32 TessellationShader;
-        public UInt32 SampleRateShading;
-        public UInt32 DualSrcBlend;
-        public UInt32 LogicOp;
-        public UInt32 MultiDrawIndirect;
-        public UInt32 DrawIndirectFirstInstance;
-        public UInt32 DepthClamp;
-        public UInt32 DepthBiasClamp;
-        public UInt32 FillModeNonSolid;
-        public UInt32 DepthBounds;
-        public UInt32 WideLines;
-        public UInt32 LargePoints;
-        public UInt32 AlphaToOne;
-        public UInt32 MultiViewport;
-        public UInt32 SamplerAnisotropy;
-        public UInt32 TextureCompressionETC2;
-        public UInt32 TextureCompressionASTC_LDR;
-        public UInt32 TextureCompressionBC;
-        public UInt32 OcclusionQueryPrecise;
-        public UInt32 PipelineStatisticsQuery;
-        public UInt32 VertexPipelineStoresAndAtomics;
-        public UInt32 FragmentStoresAndAtomics;
-        public UInt32 ShaderTessellationAndGeometryPointSize;
-        public UInt32 ShaderImageGatherExtended;
-        public UInt32 ShaderStorageImageExtendedFormats;
-        public UInt32 ShaderStorageImageMultisample;
-        public UInt32 ShaderStorageImageReadWithoutFormat;
-        public UInt32 ShaderStorageImageWriteWithoutFormat;
-        public UInt32 ShaderUniformBufferArrayDynamicIndexing;
-        public UInt32 ShaderSampledImageArrayDynamicIndexing;
-        public UInt32 ShaderStorageBufferArrayDynamicIndexing;
-        public UInt32 ShaderStorageImageArrayDynamicIndexing;
-        public UInt32 ShaderClipDistance;
-        public UInt32 ShaderCullDistance;
-        public UInt32 ShaderFloat64;
-        public UInt32 ShaderInt64;
-        public UInt32 ShaderInt16;
-        public UInt32 ShaderResourceResidency;
-        public UInt32 ShaderResourceMinLod;
-        public UInt32 SparseBinding;
-        public UInt32 SparseResidencyBuffer;
-        public UInt32 SparseResidencyImage2D;
-        public UInt32 SparseResidencyImage3D;
-        public UInt32 SparseResidency2Samples;
-        public UInt32 SparseResidency4Samples;
-        public UInt32 SparseResidency8Samples;
-        public UInt32 SparseResidency16Samples;
-        public UInt32 SparseResidencyAliased;
-        public UInt32 VariableMultisampleRate;
-        public UInt32 InheritedQueries;
+        public Bool32 RobustBufferAccess;
+        public Bool32 FullDrawIndexUint32;
+        public Bool32 ImageCubeArray;
+        public Bool32 IndependentBlend;
+        public Bool32 GeometryShader;
+        public Bool32 TessellationShader;
+        public Bool32 SampleRateShading;
+        public Bool32 DualSrcBlend;
+        public Bool32 LogicOp;
+        public Bool32 MultiDrawIndirect;
+        public Bool32 DrawIndirectFirstInstance;
+        public Bool32 DepthClamp;
+        public Bool32 DepthBiasClamp;
+        public Bool32 FillModeNonSolid;
+        public Bool32 DepthBounds;
+        public Bool32 WideLines;
+        public Bool32 LargePoints;
+        public Bool32 AlphaToOne;
+        public Bool32 MultiViewport;
+        public Bool32 SamplerAnisotropy;
+        public Bool32 TextureCompressionETC2;
+        public Bool32 TextureCompressionASTC_LDR;
+        public Bool32 TextureCompressionBC;
+        public Bool32 OcclusionQueryPrecise;
+        public Bool32 PipelineStatisticsQuery;
+        public Bool32 VertexPipelineStoresAndAtomics;
+        public Bool32 FragmentStoresAndAtomics;
+        public Bool32 ShaderTessellationAndGeometryPointSize;
+        public Bool32 ShaderImageGatherExtended;
+        public Bool32 ShaderStorageImageExtendedFormats;
+        public Bool32 ShaderStorageImageMultisample;
+        public Bool32 ShaderStorageImageReadWithoutFormat;
+        public Bool32 ShaderStorageImageWriteWithoutFormat;
+        public Bool32 ShaderUniformBufferArrayDynamicIndexing;
+        public Bool32 ShaderSampledImageArrayDynamicIndexing;
+        public Bool32 ShaderStorageBufferArrayDynamicIndexing;
+        public Bool32 ShaderStorageImageArrayDynamicIndexing;
+        public Bool32 ShaderClipDistance;
+        public Bool32 ShaderCullDistance;
+        public Bool32 ShaderFloat64;
+        public Bool32 ShaderInt64;
+        public Bool32 ShaderInt16;
+        public Bool32 ShaderResourceResidency;
+        public Bool32 ShaderResourceMinLod;
+        public Bool32 SparseBinding;
+        public Bool32 SparseResidencyBuffer;
+        public Bool32 SparseResidencyImage2D;
+        public Bool32 SparseResidencyImage3D;
+        public Bool32 SparseResidency2Samples;
+        public Bool32 SparseResidency4Samples;
+        public Bool32 SparseResidency8Samples;
+        public Bool32 SparseResidency16Samples;
+        public Bool32 SparseResidencyAliased;
+        public Bool32 VariableMultisampleRate;
+        public Bool32 InheritedQueries;
     }
 
     public struct PhysicalDeviceSparseProperties
     {
-        public Boolean ResidencyStandard2DBlockShape;
-        public Boolean ResidencyStandard2DMultisampleBlockShape;
-        public Boolean ResidencyStandard3DBlockShape;
-        public Boolean ResidencyAlignedMipSize;
-        public Boolean ResidencyNonResidentStrict;
+        public Bool32 ResidencyStandard2DBlockShape;
+        public Bool32 ResidencyStandard2DMultisampleBlockShape;
+        public Bool32 ResidencyStandard3DBlockShape;
+        public Bool32 ResidencyAlignedMipSize;
+        public Bool32 ResidencyNonResidentStrict;
     }
 
     public struct PhysicalDeviceLimits
@@ -517,7 +517,7 @@ namespace Vulkan
         public SampleCountFlags SampledImageStencilSampleCounts;
         public SampleCountFlags StorageImageSampleCounts;
         public UInt32 MaxSampleMaskWords;
-        public Boolean TimestampComputeAndGraphics;
+        public Bool32 TimestampComputeAndGraphics;
         public Single TimestampPeriod;
         public UInt32 MaxClipDistances;
         public UInt32 MaxCullDistances;
@@ -527,8 +527,8 @@ namespace Vulkan
         public Single LineWidthRange;
         public Single PointSizeGranularity;
         public Single LineWidthGranularity;
-        public Boolean StrictLines;
-        public Boolean StandardSampleLocations;
+        public Bool32 StrictLines;
+        public Bool32 StandardSampleLocations;
         public DeviceSize OptimalBufferCopyOffsetAlignment;
         public DeviceSize OptimalBufferCopyRowPitchAlignment;
         public DeviceSize NonCoherentAtomSize;

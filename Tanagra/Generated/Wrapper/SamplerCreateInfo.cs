@@ -55,7 +55,7 @@ namespace Vulkan
             set { NativePointer->MipLodBias = value; }
         }
         
-        public Boolean AnisotropyEnable
+        public Bool32 AnisotropyEnable
         {
             get { return NativePointer->AnisotropyEnable; }
             set { NativePointer->AnisotropyEnable = value; }
@@ -67,7 +67,7 @@ namespace Vulkan
             set { NativePointer->MaxAnisotropy = value; }
         }
         
-        public Boolean CompareEnable
+        public Bool32 CompareEnable
         {
             get { return NativePointer->CompareEnable; }
             set { NativePointer->CompareEnable = value; }
@@ -97,7 +97,7 @@ namespace Vulkan
             set { NativePointer->BorderColor = value; }
         }
         
-        public Boolean UnnormalizedCoordinates
+        public Bool32 UnnormalizedCoordinates
         {
             get { return NativePointer->UnnormalizedCoordinates; }
             set { NativePointer->UnnormalizedCoordinates = value; }
