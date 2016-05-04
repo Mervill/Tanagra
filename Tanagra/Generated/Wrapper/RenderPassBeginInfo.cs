@@ -11,14 +11,14 @@ namespace Vulkan
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
+            set { _RenderPass = value; NativePointer->RenderPass = value.NativePointer; }
         }
         
         Framebuffer _Framebuffer;
         public Framebuffer Framebuffer
         {
             get { return _Framebuffer; }
-            set { _Framebuffer = value; NativePointer->Framebuffer = (IntPtr)value.NativePointer; }
+            set { _Framebuffer = value; NativePointer->Framebuffer = value.NativePointer; }
         }
         
         public Rect2D RenderArea

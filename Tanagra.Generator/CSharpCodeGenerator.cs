@@ -199,6 +199,16 @@ namespace Tanagra.Generator
                         }
                     }
 
+                    if(member.Type is VkHandle)
+                    {
+                        var vkHandle = member.Type as VkHandle;
+                        if(!vkHandle.IsDispatchable)
+                        {
+                            WriteLine($"{vis} UInt64 {member.Name};");
+                            continue;
+                        }
+                    }
+
                     // Eveything else is a pointer
                     // `Char` is a C-style string ... so it's a pointer
                     WriteLine($"{vis} IntPtr {member.Name};");
@@ -390,12 +400,20 @@ namespace Tanagra.Generator
             }
             else
             {
+                var castTo = "(IntPtr)";
+                if(vkMember.Type is VkHandle)
+                {
+                    var vkHandle = vkMember.Type as VkHandle;
+                    if(!vkHandle.IsDispatchable)
+                        castTo = string.Empty;
+                }
+
                 WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                 WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                 WriteLine("{");
                 _tabs++;
                 WriteLine($"get {{ return _{vkMember.Name}; }}");
-                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
+                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = {castTo}value.{NativePointer}; }}");
                 _tabs--;
                 WriteLine("}");
             }
@@ -657,12 +675,10 @@ namespace Tanagra.Generator
                 {
                     if (listLengthMember == null)
                     {
-                        //{listLengthParam.Name}
                         WriteLine($"{listLengthParam.Type} listLength;");
                     }
                     else
                     {
-                        //{listLengthMember.Type} {listLengthMember.Name}
                         WriteLine($"var listLength = {listLengthParam.Name}.{listLengthMember.Name};");
                     }
                 }
@@ -728,8 +744,7 @@ namespace Tanagra.Generator
                                 if(vkParam.Type is VkStruct)
                                 {
                                     var vkStruct = vkParam.Type as VkStruct;
-                                    var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
-                                    if(isWrapperType)
+                                    if(vkStruct.HasPointerMembers)
                                     {
                                         Write($"{vkParam.Name}.{NativePointer}");
                                     }
@@ -799,8 +814,7 @@ namespace Tanagra.Generator
                                 if(vkParam.Type is VkStruct)
                                 {
                                     var vkStruct = vkParam.Type as VkStruct;
-                                    var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
-                                    if(isWrapperType)
+                                    if(vkStruct.HasPointerMembers)
                                     {
                                         Write($"{vkParam.Name}.{NativePointer}");
                                     }
@@ -845,11 +859,28 @@ namespace Tanagra.Generator
                 {
                     WriteLine("");
 
-                    var interop = (returnParam.Type is VkHandle) ? "" : "Interop.";
-                    var sizeType = (returnParam.Type is VkHandle) ? "IntPtr" : returnParam.Type.Name;
-                    WriteLine($"var size = Marshal.SizeOf(typeof({interop}{sizeType}));");
-                    WriteLine($"var ptr{returnParam.Type} = Marshal.AllocHGlobal((int)(size * listLength));"); //{listLengthParam.Name}
+                    var isInteropType = false;
+                    if(returnParam.Type is VkStruct)
+                    {
+                        var vkStruct = returnParam.Type as VkStruct;
+                        isInteropType = !vkStruct.HasPointerMembers;
+                    }
 
+                    var interop = (isInteropType || returnParam.Type is VkHandle) ? "" : "Interop.";
+                    var sizeType = returnParam.Type.Name;
+                    if(returnParam.Type is VkHandle)
+                    {
+                        sizeType = "IntPtr";
+                        var vkHandle = returnParam.Type as VkHandle;
+                        if(!vkHandle.IsDispatchable)
+                            sizeType = "UInt64";
+                    }
+                    
+                    WriteLine($"var array{returnParam.Type} = new {interop}{sizeType}[listLength];");
+                    WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{returnParam.Type}[0])");
+                    _tabs++;
+                    
+                    #region internal callback params
                     // --- internal callback params
                     WriteTabs();
                     if(internalReturnsResult)
@@ -869,11 +900,13 @@ namespace Tanagra.Generator
                             {
                                 if(returnParam.Type is VkHandle)
                                 {
-                                    Write($"(IntPtr*)ptr{returnParam.Type}");
+                                    Write("resultPtr");
+                                    //Write($"(IntPtr*)ptr{returnParam.Type}");
                                 }
                                 else
                                 {
-                                    Write($"(Interop.{returnParam.Type}*)ptr{returnParam.Type}");
+                                    Write("resultPtr");
+                                    //Write($"(Interop.{returnParam.Type}*)ptr{returnParam.Type}");
                                 }
                             }
                             else if(vkParam.IsFixed)
@@ -931,6 +964,8 @@ namespace Tanagra.Generator
                     Write(";");
                     Write(LineEnding);
 
+                    _tabs--;
+
                     if(internalReturnsResult)
                     {
                         WriteLine("if(result != Result.Success)");
@@ -939,6 +974,7 @@ namespace Tanagra.Generator
                         _tabs--;
                     }
                     // ---
+                    #endregion
                 }
 
                 if(returnParam != null)
@@ -947,21 +983,40 @@ namespace Tanagra.Generator
                     {
                         WriteLine("");
                         WriteLine($"var list = new {returnType}();");
-                        WriteLine($"for(var x = 0; x < listLength; x++)");//{listLengthParam.Name}
+                        WriteLine($"for(var x = 0; x < listLength; x++)");
                         WriteLine("{");
                         _tabs++;
-                        WriteLine($"var item = new {returnParam.Type}();");
 
-                        if (returnParam.Type is VkHandle)
+                        var isInteropType = false;
+                        if(returnParam.Type is VkStruct)
                         {
-                            WriteLine($"item.{NativePointer} = ((IntPtr*)ptr{returnParam.Type})[x];");
+                            var vkStruct = returnParam.Type as VkStruct;
+                            isInteropType = !vkStruct.HasPointerMembers;
+                        }
+
+                        if(isInteropType)
+                        {
+                            WriteLine($"list.Add(array{returnParam.Type}[x]);");
                         }
                         else
                         {
-                            WriteLine($"item.{NativePointer} = &((Interop.{returnParam.Type}*)ptr{returnParam.Type})[x];");
-                        }
+                            WriteLine($"var item = new {returnParam.Type}();");
 
-                        WriteLine($"list.Add(item);");
+                            if(returnParam.Type is VkHandle)
+                            {
+                                WriteLine($"item.{NativePointer} = array{returnParam.Type}[x];");
+                            }
+                            else
+                            {
+                                WriteLine($"fixed(Interop.{returnParam.Type}* itemPtr = &array{returnParam.Type}[x])");
+                                _tabs++;
+                                WriteLine($"item.{NativePointer} = itemPtr;");
+                                _tabs--;
+                            }
+
+                            WriteLine($"list.Add(item);");
+                        }
+                        
                         _tabs--;
                         WriteLine("}");
                         WriteLine("");

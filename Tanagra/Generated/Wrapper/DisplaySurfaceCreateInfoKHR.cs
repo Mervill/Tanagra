@@ -17,7 +17,7 @@ namespace Vulkan
         public DisplayModeKHR DisplayMode
         {
             get { return _DisplayMode; }
-            set { _DisplayMode = value; NativePointer->DisplayMode = (IntPtr)value.NativePointer; }
+            set { _DisplayMode = value; NativePointer->DisplayMode = value.NativePointer; }
         }
         
         public UInt32 PlaneIndex

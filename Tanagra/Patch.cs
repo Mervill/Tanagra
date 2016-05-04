@@ -15,20 +15,23 @@ namespace Vulkan
     public struct PFN_vkDebugReportCallbackEXT { }
     public struct PFN_vkVoidFunction { }
 
+    /// <summary>
+    /// Boolean explicitly backed by <see cref="UInt32"/>
+    /// </summary>
     public struct Bool32
     {
         UInt32 value;
 
-        public Bool32(bool bValue)
+        public Bool32(bool boolValue)
         {
-            value = bValue ? 1u : 0;
+            value = boolValue ? 1U : 0U;
         }
 
-        public static implicit operator Bool32(bool bValue)
-            => new Bool32(bValue);
+        public static implicit operator Bool32(bool boolValue)
+            => new Bool32(boolValue);
 
-        public static implicit operator bool(Bool32 bValue)
-            => bValue.value == 0 ? false : true;
+        public static implicit operator bool(Bool32 bool32)
+            => bool32.value == 0 ? false : true;
 
         public override string ToString()
             => value == 0 ? "False" : "True";
@@ -39,13 +42,12 @@ namespace Vulkan
         UInt64 value;
 
         public static implicit operator DeviceSize(UInt64 iValue)
-        {
-            return new DeviceSize { value = iValue };
-        }
+            => new DeviceSize { value = iValue };
 
         public static implicit operator UInt64(DeviceSize size)
-        {
-            return size.value;
-        }
+            => size.value;
+
+        public override string ToString()
+            => value.ToString();
     }
 }

@@ -17,7 +17,7 @@ namespace Vulkan
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
+            set { _RenderPass = value; NativePointer->RenderPass = value.NativePointer; }
         }
         
         public UInt32 AttachmentCount
@@ -30,7 +30,7 @@ namespace Vulkan
         public ImageView Attachments
         {
             get { return _Attachments; }
-            set { _Attachments = value; NativePointer->Attachments = (IntPtr)value.NativePointer; }
+            set { _Attachments = value; NativePointer->Attachments = value.NativePointer; }
         }
         
         public UInt32 Width

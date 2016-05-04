@@ -23,7 +23,7 @@ namespace Vulkan
         public DescriptorSetLayout SetLayouts
         {
             get { return _SetLayouts; }
-            set { _SetLayouts = value; NativePointer->SetLayouts = (IntPtr)value.NativePointer; }
+            set { _SetLayouts = value; NativePointer->SetLayouts = value.NativePointer; }
         }
         
         public UInt32 PushConstantRangeCount

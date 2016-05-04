@@ -11,7 +11,7 @@ namespace Vulkan
         public DisplayKHR Display
         {
             get { return _Display; }
-            set { _Display = value; NativePointer->Display = (IntPtr)value.NativePointer; }
+            set { _Display = value; NativePointer->Display = value.NativePointer; }
         }
         
         public string DisplayName

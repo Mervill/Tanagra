@@ -148,15 +148,15 @@ namespace Vulkan
 
     public struct DescriptorBufferInfo
     {
-        public IntPtr Buffer;
+        public UInt64 Buffer;
         public DeviceSize Offset;
         public DeviceSize Range;
     }
 
     public struct DescriptorImageInfo
     {
-        public IntPtr Sampler;
-        public IntPtr ImageView;
+        public UInt64 Sampler;
+        public UInt64 ImageView;
         public ImageLayout ImageLayout;
     }
 
@@ -204,7 +204,7 @@ namespace Vulkan
     {
         public DeviceSize ResourceOffset;
         public DeviceSize Size;
-        public IntPtr Memory;
+        public UInt64 Memory;
         public DeviceSize MemoryOffset;
         public SparseMemoryBindFlags Flags;
     }
@@ -214,7 +214,7 @@ namespace Vulkan
         public ImageSubresource Subresource;
         public Offset3D Offset;
         public Extent3D Extent;
-        public IntPtr Memory;
+        public UInt64 Memory;
         public DeviceSize MemoryOffset;
         public SparseMemoryBindFlags Flags;
     }
@@ -560,7 +560,7 @@ namespace Vulkan
 
     public struct DisplayPlanePropertiesKHR
     {
-        public IntPtr CurrentDisplay;
+        public UInt64 CurrentDisplay;
         public UInt32 CurrentStackIndex;
     }
 
@@ -572,7 +572,7 @@ namespace Vulkan
 
     public struct DisplayModePropertiesKHR
     {
-        public IntPtr DisplayMode;
+        public UInt64 DisplayMode;
         public DisplayModeParametersKHR Parameters;
     }
 

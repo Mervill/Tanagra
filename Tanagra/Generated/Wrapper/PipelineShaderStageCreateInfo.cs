@@ -23,7 +23,7 @@ namespace Vulkan
         public ShaderModule Module
         {
             get { return _Module; }
-            set { _Module = value; NativePointer->Module = (IntPtr)value.NativePointer; }
+            set { _Module = value; NativePointer->Module = value.NativePointer; }
         }
         
         public string Name

@@ -13,6 +13,8 @@ using SharpDX.Windows;
 using Vulkan;
 using Vulkan.ObjectModel;
 
+using ImageLayout = Vulkan.ImageLayout;
+
 namespace TanagraExample
 {
     class Program
@@ -26,6 +28,7 @@ namespace TanagraExample
         static Queue queue;
         static CommandPool commandPool;
         static List<CommandBuffer> commandBuffer;
+        static CommandBuffer setupCommanBuffer;
         static SwapchainKHR swapchain;
 
         static Format backBufferFormat;
@@ -200,7 +203,7 @@ namespace TanagraExample
                 ImageArrayLayers = 1,
                 ImageFormat = backBufferFormat,
                 ImageColorSpace = ColorSpace.ColorspaceSrgbNonlinearKhr,
-                ImageUsage = (uint)ImageUsageFlags.ColorAttachment,
+                ImageUsage = ImageUsageFlags.ColorAttachment,
                 PresentMode = swapChainPresentMode,
                 CompositeAlpha = CompositeAlphaFlags.OpaqueBitKhr,
                 MinImageCount = desiredImageCount,
@@ -208,9 +211,103 @@ namespace TanagraExample
                 Clipped = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
-            Console.WriteLine("[ OK ] Swapchain");
+            Console.WriteLine($"[ OK ] Swapchain {swapchain}");
 
             backBuffers = device.GetSwapchainImagesKHR(swapchain);
+            Console.WriteLine($"[INFO] backBuffers {backBuffers.Count}");
+            foreach(var image in backBuffers)
+            {
+                SetImageLayout(image, ImageAspectFlags.Color, ImageLayout.Undefined, ImageLayout.PresentSrcKHR);
+            }
+            Flush();
+        }
+
+        static void SetImageLayout(Image image, ImageAspectFlags imageAspect, ImageLayout oldLayout, ImageLayout newLayout)
+        {
+            if(setupCommanBuffer == null)
+            {
+                CommandBuffer setupBuffer;
+                var allocateInfo = new CommandBufferAllocateInfo
+                {
+                    CommandPool = commandPool,
+                    Level = CommandBufferLevel.Primary,
+                    CommandBufferCount = 1,
+                };
+                setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
+                setupCommanBuffer = setupBuffer;
+                Console.WriteLine("[ OK ] Command Buffer " + setupCommanBuffer);
+
+                var inheritanceInfo = new CommandBufferInheritanceInfo();
+                var beginInfo = new CommandBufferBeginInfo
+                {
+                    InheritanceInfo = inheritanceInfo
+                };
+                setupCommanBuffer.Begin(beginInfo);
+                Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
+            }
+
+            var imageMemoryBarrier = new ImageMemoryBarrier
+            {
+                OldLayout = oldLayout,
+                NewLayout = newLayout,
+                Image = image,
+                SubresourceRange = new ImageSubresourceRange
+                {
+                    AspectMask = imageAspect,
+                    BaseArrayLayer = 0,
+                    LayerCount = 1,
+                    BaseMipLevel = 0,
+                    LevelCount = 1,
+                }
+            };
+
+            switch(newLayout)
+            {
+                case ImageLayout.TransferDstOptimal:
+                imageMemoryBarrier.DstAccessMask = AccessFlags.TransferRead;
+                break;
+                case ImageLayout.ColorAttachmentOptimal:
+                imageMemoryBarrier.DstAccessMask = AccessFlags.ColorAttachmentWrite;
+                break;
+                case ImageLayout.DepthStencilAttachmentOptimal:
+                imageMemoryBarrier.DstAccessMask = AccessFlags.DepthStencilAttachmentWrite;
+                break;
+                case ImageLayout.ShaderReadOnlyOptimal:
+                imageMemoryBarrier.DstAccessMask = AccessFlags.ShaderRead | AccessFlags.InputAttachmentRead;
+                break;
+            }
+
+            var sourceStages = PipelineStageFlags.TopOfPipe;
+            var destinationStages = PipelineStageFlags.TopOfPipe;
+
+            setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, new List<MemoryBarrier>(), new List<BufferMemoryBarrier>(), new List<ImageMemoryBarrier> { imageMemoryBarrier });
+            Console.WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
+        }
+
+        static void Flush()
+        {
+            if(setupCommanBuffer == null)
+                return;
+
+            setupCommanBuffer.End();
+            Console.WriteLine("[ OK ] setupCommanBuffer.End");
+
+            var submitInfo = new SubmitInfo
+            {
+                CommandBufferCount = 1,
+                CommandBuffers = setupCommanBuffer
+            };
+
+            queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            Console.WriteLine("[ OK ] queue.Submit");
+
+            queue.WaitIdle();
+            Console.WriteLine("[ OK ] queue.WaitIdle");
+
+            device.FreeCommandBuffers(commandPool, new List<CommandBuffer> { setupCommanBuffer });
+            Console.WriteLine("[ OK ] device.FreeCommandBuffers");
+
+            setupCommanBuffer = null;
         }
 
         static void GetProcessHandles(out IntPtr HINSTANCE, out IntPtr HWND)

@@ -17,7 +17,7 @@ namespace Vulkan
         public Semaphore WaitSemaphores
         {
             get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = (IntPtr)value.NativePointer; }
+            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = value.NativePointer; }
         }
         
         public PipelineStageFlags WaitDstStageMask
@@ -49,7 +49,7 @@ namespace Vulkan
         public Semaphore SignalSemaphores
         {
             get { return _SignalSemaphores; }
-            set { _SignalSemaphores = value; NativePointer->SignalSemaphores = (IntPtr)value.NativePointer; }
+            set { _SignalSemaphores = value; NativePointer->SignalSemaphores = value.NativePointer; }
         }
         
         public SubmitInfo()

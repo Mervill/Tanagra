@@ -70,6 +70,8 @@ namespace Tanagra.Generator
 
         public string SpecName { get; set; }
 
+        public bool HasPointerMembers => Members.Any(x => x.IsPointer || x.Type.Name == "Char");
+
         public VkStruct()
         {
             Members = new VkMember[0];

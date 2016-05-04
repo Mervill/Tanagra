@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.DeviceCreateInfo* NativePointer;
         
-        public UInt32 Flags
+        public DeviceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }

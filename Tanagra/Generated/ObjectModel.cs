@@ -572,8 +572,7 @@ namespace Vulkan.ObjectModel
         
         public static List<Image> GetSwapchainImagesKHR(this Device device, SwapchainKHR swapchain)
         {
-            //return VK.GetSwapchainImagesKHR(device, swapchain);
-            throw new NotImplementedException();
+            return VK.GetSwapchainImagesKHR(device, swapchain);
         }
         
         public static UInt32 AcquireNextImageKHR(this Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence)
@@ -821,7 +820,7 @@ namespace Vulkan.ObjectModel
         
         public static void CmdPushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
         {
-            VK.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
+            //VK.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
         }
         
         public static void CmdBeginRenderPass(this CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)

@@ -11,7 +11,7 @@ namespace Vulkan
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
+            set { _RenderPass = value; NativePointer->RenderPass = value.NativePointer; }
         }
         
         public UInt32 Subpass
@@ -24,7 +24,7 @@ namespace Vulkan
         public Framebuffer Framebuffer
         {
             get { return _Framebuffer; }
-            set { _Framebuffer = value; NativePointer->Framebuffer = (IntPtr)value.NativePointer; }
+            set { _Framebuffer = value; NativePointer->Framebuffer = value.NativePointer; }
         }
         
         public Bool32 OcclusionQueryEnable

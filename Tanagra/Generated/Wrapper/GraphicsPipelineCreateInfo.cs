@@ -93,14 +93,14 @@ namespace Vulkan
         public PipelineLayout Layout
         {
             get { return _Layout; }
-            set { _Layout = value; NativePointer->Layout = (IntPtr)value.NativePointer; }
+            set { _Layout = value; NativePointer->Layout = value.NativePointer; }
         }
         
         RenderPass _RenderPass;
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
-            set { _RenderPass = value; NativePointer->RenderPass = (IntPtr)value.NativePointer; }
+            set { _RenderPass = value; NativePointer->RenderPass = value.NativePointer; }
         }
         
         public UInt32 Subpass
@@ -113,7 +113,7 @@ namespace Vulkan
         public Pipeline BasePipelineHandle
         {
             get { return _BasePipelineHandle; }
-            set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = (IntPtr)value.NativePointer; }
+            set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = value.NativePointer; }
         }
         
         public Int32 BasePipelineIndex

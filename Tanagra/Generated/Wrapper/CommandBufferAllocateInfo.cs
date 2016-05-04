@@ -11,7 +11,7 @@ namespace Vulkan
         public CommandPool CommandPool
         {
             get { return _CommandPool; }
-            set { _CommandPool = value; NativePointer->CommandPool = (IntPtr)value.NativePointer; }
+            set { _CommandPool = value; NativePointer->CommandPool = value.NativePointer; }
         }
         
         public CommandBufferLevel Level

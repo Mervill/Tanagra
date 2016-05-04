@@ -11,7 +11,7 @@ namespace Vulkan
         public DescriptorPool DescriptorPool
         {
             get { return _DescriptorPool; }
-            set { _DescriptorPool = value; NativePointer->DescriptorPool = (IntPtr)value.NativePointer; }
+            set { _DescriptorPool = value; NativePointer->DescriptorPool = value.NativePointer; }
         }
         
         public UInt32 DescriptorSetCount
@@ -24,7 +24,7 @@ namespace Vulkan
         public DescriptorSetLayout SetLayouts
         {
             get { return _SetLayouts; }
-            set { _SetLayouts = value; NativePointer->SetLayouts = (IntPtr)value.NativePointer; }
+            set { _SetLayouts = value; NativePointer->SetLayouts = value.NativePointer; }
         }
         
         public DescriptorSetAllocateInfo()

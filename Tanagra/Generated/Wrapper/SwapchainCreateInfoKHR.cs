@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.SwapchainCreateInfoKHR* NativePointer;
         
-        public UInt32 Flags
+        public SwapchainCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
@@ -50,7 +50,7 @@ namespace Vulkan
             set { NativePointer->ImageArrayLayers = value; }
         }
         
-        public UInt32 ImageUsage
+        public ImageUsageFlags ImageUsage
         {
             get { return NativePointer->ImageUsage; }
             set { NativePointer->ImageUsage = value; }
@@ -68,7 +68,7 @@ namespace Vulkan
             set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
-        public IntPtr QueueFamilyIndices
+        public UInt32 QueueFamilyIndices
         {
             get { return NativePointer->QueueFamilyIndices; }
             set { NativePointer->QueueFamilyIndices = value; }

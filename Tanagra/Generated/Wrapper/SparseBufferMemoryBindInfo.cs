@@ -11,7 +11,7 @@ namespace Vulkan
         public Buffer Buffer
         {
             get { return _Buffer; }
-            set { _Buffer = value; NativePointer->Buffer = (IntPtr)value.NativePointer; }
+            set { _Buffer = value; NativePointer->Buffer = value.NativePointer; }
         }
         
         public UInt32 BindCount

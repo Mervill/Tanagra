@@ -11,7 +11,7 @@ namespace Vulkan
         public DeviceMemory Memory
         {
             get { return _Memory; }
-            set { _Memory = value; NativePointer->Memory = (IntPtr)value.NativePointer; }
+            set { _Memory = value; NativePointer->Memory = value.NativePointer; }
         }
         
         public DeviceSize Offset

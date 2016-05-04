@@ -17,7 +17,7 @@ namespace Vulkan
         public Semaphore WaitSemaphores
         {
             get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = (IntPtr)value.NativePointer; }
+            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = value.NativePointer; }
         }
         
         public UInt32 SwapchainCount
@@ -30,7 +30,7 @@ namespace Vulkan
         public SwapchainKHR Swapchains
         {
             get { return _Swapchains; }
-            set { _Swapchains = value; NativePointer->Swapchains = (IntPtr)value.NativePointer; }
+            set { _Swapchains = value; NativePointer->Swapchains = value.NativePointer; }
         }
         
         public UInt32 ImageIndices

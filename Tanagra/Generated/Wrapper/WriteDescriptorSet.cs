@@ -11,7 +11,7 @@ namespace Vulkan
         public DescriptorSet DstSet
         {
             get { return _DstSet; }
-            set { _DstSet = value; NativePointer->DstSet = (IntPtr)value.NativePointer; }
+            set { _DstSet = value; NativePointer->DstSet = value.NativePointer; }
         }
         
         public UInt32 DstBinding
@@ -54,7 +54,7 @@ namespace Vulkan
         public BufferView TexelBufferView
         {
             get { return _TexelBufferView; }
-            set { _TexelBufferView = value; NativePointer->TexelBufferView = (IntPtr)value.NativePointer; }
+            set { _TexelBufferView = value; NativePointer->TexelBufferView = value.NativePointer; }
         }
         
         public WriteDescriptorSet()

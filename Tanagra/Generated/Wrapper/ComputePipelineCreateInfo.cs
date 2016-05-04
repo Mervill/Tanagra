@@ -24,14 +24,14 @@ namespace Vulkan
         public PipelineLayout Layout
         {
             get { return _Layout; }
-            set { _Layout = value; NativePointer->Layout = (IntPtr)value.NativePointer; }
+            set { _Layout = value; NativePointer->Layout = value.NativePointer; }
         }
         
         Pipeline _BasePipelineHandle;
         public Pipeline BasePipelineHandle
         {
             get { return _BasePipelineHandle; }
-            set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = (IntPtr)value.NativePointer; }
+            set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = value.NativePointer; }
         }
         
         public Int32 BasePipelineIndex

@@ -35,7 +35,7 @@ namespace Vulkan
         public Sampler ImmutableSamplers
         {
             get { return _ImmutableSamplers; }
-            set { _ImmutableSamplers = value; NativePointer->ImmutableSamplers = (IntPtr)value.NativePointer; }
+            set { _ImmutableSamplers = value; NativePointer->ImmutableSamplers = value.NativePointer; }
         }
         
         public DescriptorSetLayoutBinding()

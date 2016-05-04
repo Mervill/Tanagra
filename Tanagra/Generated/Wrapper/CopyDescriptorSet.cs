@@ -11,7 +11,7 @@ namespace Vulkan
         public DescriptorSet SrcSet
         {
             get { return _SrcSet; }
-            set { _SrcSet = value; NativePointer->SrcSet = (IntPtr)value.NativePointer; }
+            set { _SrcSet = value; NativePointer->SrcSet = value.NativePointer; }
         }
         
         public UInt32 SrcBinding
@@ -30,7 +30,7 @@ namespace Vulkan
         public DescriptorSet DstSet
         {
             get { return _DstSet; }
-            set { _DstSet = value; NativePointer->DstSet = (IntPtr)value.NativePointer; }
+            set { _DstSet = value; NativePointer->DstSet = value.NativePointer; }
         }
         
         public UInt32 DstBinding

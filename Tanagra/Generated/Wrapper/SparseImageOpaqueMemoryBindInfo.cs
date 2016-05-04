@@ -11,7 +11,7 @@ namespace Vulkan
         public Image Image
         {
             get { return _Image; }
-            set { _Image = value; NativePointer->Image = (IntPtr)value.NativePointer; }
+            set { _Image = value; NativePointer->Image = value.NativePointer; }
         }
         
         public UInt32 BindCount
