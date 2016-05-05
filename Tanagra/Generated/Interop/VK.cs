@@ -17,6 +17,12 @@ namespace Vulkan.Interop
         [DllImport(DllName, EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = callingConvention)]
         internal static extern Result vkEnumeratePhysicalDevices(IntPtr instance, UInt32* physicalDeviceCount, IntPtr* physicalDevices);
         
+        [DllImport(DllName, EntryPoint = "vkGetDeviceProcAddr", CallingConvention = callingConvention)]
+        internal static extern PFN_vkVoidFunction vkGetDeviceProcAddr(IntPtr device, String name);
+        
+        [DllImport(DllName, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = callingConvention)]
+        internal static extern PFN_vkVoidFunction vkGetInstanceProcAddr(IntPtr instance, String name);
+        
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = callingConvention)]
         internal static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, PhysicalDeviceProperties* properties);
         
@@ -190,6 +196,9 @@ namespace Vulkan.Interop
         
         [DllImport(DllName, EntryPoint = "vkDestroyPipelineCache", CallingConvention = callingConvention)]
         internal static extern void vkDestroyPipelineCache(IntPtr device, UInt64 pipelineCache, AllocationCallbacks* allocator);
+        
+        [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
+        internal static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, UIntPtr* dataSize, IntPtr* data);
         
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
         internal static extern Result vkMergePipelineCaches(IntPtr device, UInt64 dstCache, UInt32 srcCacheCount, UInt64* srcCaches);

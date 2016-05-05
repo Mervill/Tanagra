@@ -49,6 +49,18 @@ namespace Vulkan
             return list;
         }
         
+        public static PFN_vkVoidFunction GetDeviceProcAddr(Device device, String name)
+        {
+            var result = vkGetDeviceProcAddr(device.NativePointer, name);
+            return result;
+        }
+        
+        public static PFN_vkVoidFunction GetInstanceProcAddr(Instance instance, String name)
+        {
+            var result = vkGetInstanceProcAddr(instance.NativePointer, name);
+            return result;
+        }
+        
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)
         {
             var properties = new PhysicalDeviceProperties();
@@ -240,7 +252,7 @@ namespace Vulkan
             for(var x = 0; x < submitCount; x++)
                 _submitsPtr[x] = submits[x].NativePointer;
             
-            var result = vkQueueSubmit(queue.NativePointer, submitCount, (Interop.SubmitInfo*)_submitsPtr, (fence != null) ? fence.NativePointer : 0);
+            var result = vkQueueSubmit(queue.NativePointer, submitCount, (Interop.SubmitInfo*)_submitsPtr, fence.NativePointer);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueSubmit), result);
         }
@@ -650,6 +662,28 @@ namespace Vulkan
             vkDestroyPipelineCache(device.NativePointer, pipelineCache.NativePointer, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /*public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
+        {
+            UIntPtr listLength;
+            var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkGetPipelineCacheData), result);
+            
+            var arrayIntPtr = new IntPtr[listLength];
+            fixed(IntPtr* resultPtr = &arrayIntPtr[0])
+                result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkGetPipelineCacheData), result);
+            
+            var list = new List<IntPtr>();
+            for(var x = 0; x < listLength; x++)
+            {
+                list.Add(arrayIntPtr[x]);
+            }
+            
+            return list;
+        }*/
+        
         public static void MergePipelineCaches(Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
             // hasArrayArguments
@@ -901,7 +935,6 @@ namespace Vulkan
             //var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
             //if(result != Result.Success)
                 //throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);
-            
             Result result;
             var arrayCommandBuffer = new IntPtr[listLength];
             fixed(IntPtr* resultPtr = &arrayCommandBuffer[0])
@@ -916,10 +949,7 @@ namespace Vulkan
                 item.NativePointer = arrayCommandBuffer[x];
                 list.Add(item);
             }
-
-            if(!list[0].IsValid)
-                throw new Exception();
-
+            
             return list;
         }
         
@@ -1156,14 +1186,14 @@ namespace Vulkan
             // hasArrayArguments
             // (no arrayLengthParams)
             vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, (Interop.UInt32*)_dataPtr);
-        }
+        }*/
         
         public static void CmdFillBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
         {
             vkCmdFillBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, size, data);
         }
         
-        public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
+        /*public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
         {
             // hasArrayArguments
             var rangeCount = (UInt32)ranges.Count;

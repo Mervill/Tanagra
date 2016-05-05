@@ -47,9 +47,6 @@ namespace Tanagra.Generator
 
             disabledCommands = new List<string>
             {
-                "GetPipelineCacheData",
-                "GetDeviceProcAddr",
-                "GetInstanceProcAddr",
             };
         }
 
@@ -866,7 +863,7 @@ namespace Tanagra.Generator
                         isInteropType = !vkStruct.HasPointerMembers;
                     }
 
-                    var interop = (isInteropType || returnParam.Type is VkHandle) ? "" : "Interop.";
+                    var interop = (isInteropType || returnParam.Type is VkHandle || returnParam.Type is VkEnum) ? "" : "Interop.";
                     var sizeType = returnParam.Type.Name;
                     if(returnParam.Type is VkHandle)
                     {
@@ -901,12 +898,10 @@ namespace Tanagra.Generator
                                 if(returnParam.Type is VkHandle)
                                 {
                                     Write("resultPtr");
-                                    //Write($"(IntPtr*)ptr{returnParam.Type}");
                                 }
                                 else
                                 {
                                     Write("resultPtr");
-                                    //Write($"(Interop.{returnParam.Type}*)ptr{returnParam.Type}");
                                 }
                             }
                             else if(vkParam.IsFixed)
@@ -994,7 +989,7 @@ namespace Tanagra.Generator
                             isInteropType = !vkStruct.HasPointerMembers;
                         }
 
-                        if(isInteropType)
+                        if(isInteropType || returnParam.Type is VkEnum)
                         {
                             WriteLine($"list.Add(array{returnParam.Type}[x]);");
                         }
