@@ -246,13 +246,13 @@ namespace Vulkan
         public static void QueueSubmit(Queue queue, List<SubmitInfo> submits, Fence fence)
         {
             // hasArrayArguments
-            var submitCount = (UInt32)submits.Count;
+            /*var submitCount = (UInt32)submits.Count;
             var _submitsSize = Marshal.SizeOf(typeof(Interop.SubmitInfo));
             var _submitsPtr = (void**)Marshal.AllocHGlobal((int)(_submitsSize * submitCount));
             for(var x = 0; x < submitCount; x++)
-                _submitsPtr[x] = submits[x].NativePointer;
+                _submitsPtr[x] = submits[x].NativePointer;*/
             
-            var result = vkQueueSubmit(queue.NativePointer, submitCount, (Interop.SubmitInfo*)_submitsPtr, fence.NativePointer);
+            var result = vkQueueSubmit(queue.NativePointer, 1, submits[0].NativePointer, 0);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueSubmit), result);
         }

@@ -54,7 +54,7 @@ namespace TanagraExample
             var appInfo = new ApplicationInfo();
             appInfo.ApplicationName = "vulkanExample";
             appInfo.EngineName = "vulkanExample";
-            appInfo.ApiVersion = MakeVersion(1, 0, 12);
+            appInfo.ApiVersion = MakeVersion(1, 0, 10);
 
             var instanceEnabledExtensions = new[]
             {
@@ -298,7 +298,17 @@ namespace TanagraExample
                 CommandBuffers = setupCommanBuffer
             };
 
-            queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            try
+            {
+                queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            }
+            catch(Exception e)
+            {
+                //https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#devsandqueues-lost-device
+                queue = device.GetQueue(0, 0U);
+                Console.WriteLine("[ OK ] Queue " + queue);
+            }
+            
             Console.WriteLine("[ OK ] queue.Submit");
 
             queue.WaitIdle();

@@ -478,9 +478,9 @@ namespace Vulkan
         public UInt32 MaxFragmentDualSrcAttachments;
         public UInt32 MaxFragmentCombinedOutputResources;
         public UInt32 MaxComputeSharedMemorySize;
-        public UInt32 MaxComputeWorkGroupCount;
+        public unsafe fixed uint MaxComputeWorkGroupCount[3];
         public UInt32 MaxComputeWorkGroupInvocations;
-        public UInt32 MaxComputeWorkGroupSize;
+        public unsafe fixed uint MaxComputeWorkGroupSize[3];
         public UInt32 SubPixelPrecisionBits;
         public UInt32 SubTexelPrecisionBits;
         public UInt32 MipmapPrecisionBits;
@@ -489,8 +489,8 @@ namespace Vulkan
         public Single MaxSamplerLodBias;
         public Single MaxSamplerAnisotropy;
         public UInt32 MaxViewports;
-        public UInt32 MaxViewportDimensions;
-        public Single ViewportBoundsRange;
+        public unsafe fixed uint MaxViewportDimensions[2];
+        public unsafe fixed float ViewportBoundsRange[2];
         public UInt32 ViewportSubPixelBits;
         public UIntPtr MinMemoryMapAlignment;
         public DeviceSize MinTexelBufferOffsetAlignment;
@@ -523,8 +523,8 @@ namespace Vulkan
         public UInt32 MaxCullDistances;
         public UInt32 MaxCombinedClipAndCullDistances;
         public UInt32 DiscreteQueuePriorities;
-        public Single PointSizeRange;
-        public Single LineWidthRange;
+        public unsafe fixed Single PointSizeRange[2];
+        public unsafe fixed Single LineWidthRange[2];
         public Single PointSizeGranularity;
         public Single LineWidthGranularity;
         public Bool32 StrictLines;

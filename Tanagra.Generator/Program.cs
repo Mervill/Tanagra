@@ -13,7 +13,10 @@ namespace Tanagra.Generator
         // todo: union
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
         // todo: null input arrays
+        // todo: arrays in structs
+        // todo: Marshal.GetFunctionPointerForDelegate
         // XCB -> X protocol C-language Binding
+        // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         static void Main(string[] args)
         {
             var raw = File.ReadAllText("./spec/vk.xml");

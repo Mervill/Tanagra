@@ -10,7 +10,7 @@ namespace Tanagra.Generator
         StringBuilder _sb;
         int _tabs;
 
-        public string DllName = "vulkan-1.dll";
+        public string DllName = "vulkan-1-1-0-8-0.dll";
         readonly List<string> platformStructTypes;
         readonly List<string> disabledStructs;
         readonly List<string> disabledCommands;
@@ -67,7 +67,8 @@ namespace Tanagra.Generator
 
             // -- struct
 
-            var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
+            //var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
+            var needsInteropStruct = spec.Structs.Where(x => x.HasPointerMembers);
             files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
 
             var regularStruct = spec.Structs.Except(needsInteropStruct);
@@ -188,8 +189,7 @@ namespace Tanagra.Generator
                     if(member.Type is VkStruct && member.Type.Name != "Char")
                     {
                         var memberType = member.Type as VkStruct;
-                        var isWrapperType = memberType.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
-                        if(!isWrapperType)
+                        if(!memberType.HasPointerMembers)
                         {
                             WriteLine($"{vis} {member.Type} {member.Name};");
                             continue;
@@ -372,8 +372,7 @@ namespace Tanagra.Generator
             if(vkMember.Type is VkStruct)
             {
                 var vkStruct = vkMember.Type as VkStruct;
-                var isWrapperType = vkStruct.Members.Any(y => y.IsPointer || y.Type.Name == "Char");
-                if(isWrapperType)
+                if(vkStruct.HasPointerMembers)
                 {
                     WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
@@ -414,27 +413,6 @@ namespace Tanagra.Generator
                 _tabs--;
                 WriteLine("}");
             }
-            /*if(vkMember.IsPointer || vkMember.Type is VkHandle)
-            {
-                WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
-                WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
-                WriteLine("{");
-                _tabs++;
-                WriteLine($"get {{ return _{vkMember.Name}; }}");
-                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
-                _tabs--;
-                WriteLine("}");
-            }
-            else
-            {
-                WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
-                WriteLine("{");
-                _tabs++;
-                WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
-                WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
-                _tabs--;
-                WriteLine("}");
-            }*/
         }
 
         void WriteMemberString(VkMember vkMember)

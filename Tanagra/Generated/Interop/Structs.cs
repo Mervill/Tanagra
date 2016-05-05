@@ -11,8 +11,8 @@ namespace Vulkan.Interop
         internal UInt32 VendorID;
         internal UInt32 DeviceID;
         internal PhysicalDeviceType DeviceType;
-        internal IntPtr DeviceName;
-        internal Byte PipelineCacheUUID;
+        internal unsafe fixed byte DeviceName[256];
+        internal unsafe fixed byte PipelineCacheUUID[16];
         internal PhysicalDeviceLimits Limits;
         internal PhysicalDeviceSparseProperties SparseProperties;
     }

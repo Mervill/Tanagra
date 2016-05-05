@@ -5,7 +5,7 @@ namespace Vulkan.Interop
 {
     internal unsafe static class VK
     {
-        const string DllName = "vulkan-1.dll";
+        const string DllName = "vulkan-1-1-0-8-0.dll";
         const CallingConvention callingConvention = CallingConvention.Winapi;
         
         [DllImport(DllName, EntryPoint = "vkCreateInstance", CallingConvention = callingConvention)]

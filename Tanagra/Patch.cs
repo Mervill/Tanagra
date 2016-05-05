@@ -49,5 +49,8 @@ namespace Vulkan
 
         public override string ToString()
             => value.ToString();
+
+        public string ToString(string format)
+            => value.ToString(format);
     }
 }

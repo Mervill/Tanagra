@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Tanagra
+{
+    public class Version
+    {
+        public uint Major => value >> 22;
+        public uint Minor => (value >> 12) & 0x3FF;
+        public uint Patch => value & 0xFFF;
+
+        private readonly uint value;
+
+        public Version(uint major, uint minor, uint patch)
+        {
+            value = major << 22 | minor << 12 | patch;
+        }
+
+        public Version(uint versionCode)
+        {
+            value = versionCode;
+        }
+
+        public static implicit operator uint(Version version)
+            => version.value;
+
+        public override string ToString()
+            => $"{Major}.{Minor}.{Patch} ({value.ToString("X8")})";
+    }
+}
