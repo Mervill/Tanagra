@@ -32,7 +32,7 @@ namespace Vulkan
             set { NativePointer->PhysicalResolution = value; }
         }
         
-        public SurfaceTransformFlags SupportedTransforms
+        public SurfaceTransformFlagsKHR SupportedTransforms
         {
             get { return NativePointer->SupportedTransforms; }
             set { NativePointer->SupportedTransforms = value; }

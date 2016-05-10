@@ -107,16 +107,19 @@ namespace Tanagra.Generator
         {
             if(vkEnum.Name.StartsWith("Vk"))
                 vkEnum.Name = vkEnum.Name.Remove(0, 2); // trim `Vk`
-
-            if(vkEnum.Name.EndsWith("KHR"))
-                vkEnum.Name = vkEnum.Name.Remove(vkEnum.Name.Length - 3, 3); // trim `KHR`
-
+            
             var isFlags = vkEnum.Name.EndsWith("Flags");
-            var enumPrefix = vkEnum.Name;
-            if(isFlags)
-                enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
-            enumPrefix = ToUppercaseEnumName(enumPrefix) + "_";
 
+            var enumPrefix = vkEnum.Name;
+            if(enumPrefix.EndsWith("KHR"))
+                enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `KHR`
+
+            //if(isFlags)
+            if(enumPrefix.EndsWith("Flags"))
+                enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
+
+            enumPrefix = ToUppercaseEnumName(enumPrefix) + "_";
+            
             var firstValue = vkEnum.Values.First();
             
             foreach(var vkEnumValue in vkEnum.Values)
@@ -128,7 +131,11 @@ namespace Tanagra.Generator
                 if(!string.IsNullOrEmpty(enumPrefix) && name.StartsWith(enumPrefix))
                     name = name.Substring(enumPrefix.Length, name.Length - enumPrefix.Length);
 
-                if(isFlags && name.EndsWith("_BIT"))
+                if(name.EndsWith("_KHR"))
+                    name = name.Remove(name.Length - 4, 4); // trim `_KHR`
+
+                //isFlags && 
+                if(name.EndsWith("_BIT"))
                     name = name.Substring(0, name.Length - 4);
                 
                 vkEnumValue.Name = ToCamelCaseEnumName(name);

@@ -465,7 +465,7 @@ namespace Vulkan.Interop
         internal static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, UInt64 surface, UInt32* surfaceFormatCount, SurfaceFormatKHR* surfaceFormats);
         
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = callingConvention)]
-        internal static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, UInt64 surface, UInt32* presentModeCount, PresentMode* presentModes);
+        internal static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, UInt64 surface, UInt32* presentModeCount, PresentModeKHR* presentModes);
         
         [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = callingConvention)]
         internal static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* swapchain);
@@ -514,6 +514,21 @@ namespace Vulkan.Interop
         
         [DllImport(DllName, EntryPoint = "vkDebugReportMessageEXT", CallingConvention = callingConvention)]
         internal static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message);
+        
+        [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectNameEXT", CallingConvention = callingConvention)]
+        internal static extern Result vkDebugMarkerSetObjectNameEXT(IntPtr device, DebugMarkerObjectNameInfoEXT* nameInfo);
+        
+        [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectTagEXT", CallingConvention = callingConvention)]
+        internal static extern Result vkDebugMarkerSetObjectTagEXT(IntPtr device, DebugMarkerObjectTagInfoEXT* tagInfo);
+        
+        [DllImport(DllName, EntryPoint = "vkCmdDebugMarkerBeginEXT", CallingConvention = callingConvention)]
+        internal static extern void vkCmdDebugMarkerBeginEXT(IntPtr commandBuffer, DebugMarkerMarkerInfoEXT* markerInfo);
+        
+        [DllImport(DllName, EntryPoint = "vkCmdDebugMarkerEndEXT", CallingConvention = callingConvention)]
+        internal static extern void vkCmdDebugMarkerEndEXT(IntPtr commandBuffer);
+        
+        [DllImport(DllName, EntryPoint = "vkCmdDebugMarkerInsertEXT", CallingConvention = callingConvention)]
+        internal static extern void vkCmdDebugMarkerInsertEXT(IntPtr commandBuffer, DebugMarkerMarkerInfoEXT* markerInfo);
         
     }
 }

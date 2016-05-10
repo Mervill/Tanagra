@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generated\Enum\AccessFlags.cs" />
-    <Compile Include="Generated\Enum\AndroidSurfaceCreateFlags.cs" />
+    <Compile Include="Generated\Enum\AndroidSurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\AttachmentDescriptionFlags.cs" />
     <Compile Include="Generated\Enum\AttachmentLoadOp.cs" />
     <Compile Include="Generated\Enum\AttachmentStoreOp.cs" />
@@ -55,7 +55,7 @@
     <Compile Include="Generated\Enum\BufferUsageFlags.cs" />
     <Compile Include="Generated\Enum\BufferViewCreateFlags.cs" />
     <Compile Include="Generated\Enum\ColorComponentFlags.cs" />
-    <Compile Include="Generated\Enum\ColorSpace.cs" />
+    <Compile Include="Generated\Enum\ColorSpaceKHR.cs" />
     <Compile Include="Generated\Enum\CommandBufferLevel.cs" />
     <Compile Include="Generated\Enum\CommandBufferResetFlags.cs" />
     <Compile Include="Generated\Enum\CommandBufferUsageFlags.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="Generated\Enum\CommandPoolResetFlags.cs" />
     <Compile Include="Generated\Enum\CompareOp.cs" />
     <Compile Include="Generated\Enum\ComponentSwizzle.cs" />
-    <Compile Include="Generated\Enum\CompositeAlphaFlags.cs" />
+    <Compile Include="Generated\Enum\CompositeAlphaFlagsKHR.cs" />
     <Compile Include="Generated\Enum\CullModeFlags.cs" />
     <Compile Include="Generated\Enum\DebugReportErrorEXT.cs" />
     <Compile Include="Generated\Enum\DebugReportFlagsEXT.cs" />
@@ -75,9 +75,9 @@
     <Compile Include="Generated\Enum\DescriptorType.cs" />
     <Compile Include="Generated\Enum\DeviceCreateFlags.cs" />
     <Compile Include="Generated\Enum\DeviceQueueCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DisplayModeCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DisplayPlaneAlphaFlags.cs" />
-    <Compile Include="Generated\Enum\DisplaySurfaceCreateFlags.cs" />
+    <Compile Include="Generated\Enum\DisplayModeCreateFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\DisplayPlaneAlphaFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\DisplaySurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\DynamicState.cs" />
     <Compile Include="Generated\Enum\EventCreateFlags.cs" />
     <Compile Include="Generated\Enum\FenceCreateFlags.cs" />
@@ -101,7 +101,7 @@
     <Compile Include="Generated\Enum\MemoryHeapFlags.cs" />
     <Compile Include="Generated\Enum\MemoryMapFlags.cs" />
     <Compile Include="Generated\Enum\MemoryPropertyFlags.cs" />
-    <Compile Include="Generated\Enum\MirSurfaceCreateFlags.cs" />
+    <Compile Include="Generated\Enum\MirSurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\PhysicalDeviceType.cs" />
     <Compile Include="Generated\Enum\PipelineBindPoint.cs" />
     <Compile Include="Generated\Enum\PipelineCacheCreateFlags.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Generated\Enum\PipelineVertexInputStateCreateFlags.cs" />
     <Compile Include="Generated\Enum\PipelineViewportStateCreateFlags.cs" />
     <Compile Include="Generated\Enum\PolygonMode.cs" />
-    <Compile Include="Generated\Enum\PresentMode.cs" />
+    <Compile Include="Generated\Enum\PresentModeKHR.cs" />
     <Compile Include="Generated\Enum\PrimitiveTopology.cs" />
     <Compile Include="Generated\Enum\QueryControlFlags.cs" />
     <Compile Include="Generated\Enum\QueryPipelineStatisticFlags.cs" />
@@ -128,6 +128,7 @@
     <Compile Include="Generated\Enum\QueryResultFlags.cs" />
     <Compile Include="Generated\Enum\QueryType.cs" />
     <Compile Include="Generated\Enum\QueueFlags.cs" />
+    <Compile Include="Generated\Enum\RasterizationOrderAMD.cs" />
     <Compile Include="Generated\Enum\RenderPassCreateFlags.cs" />
     <Compile Include="Generated\Enum\Result.cs" />
     <Compile Include="Generated\Enum\SampleCountFlags.cs" />
@@ -145,14 +146,14 @@
     <Compile Include="Generated\Enum\StructureType.cs" />
     <Compile Include="Generated\Enum\SubpassContents.cs" />
     <Compile Include="Generated\Enum\SubpassDescriptionFlags.cs" />
-    <Compile Include="Generated\Enum\SurfaceTransformFlags.cs" />
-    <Compile Include="Generated\Enum\SwapchainCreateFlags.cs" />
+    <Compile Include="Generated\Enum\SurfaceTransformFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\SwapchainCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\SystemAllocationScope.cs" />
     <Compile Include="Generated\Enum\VertexInputRate.cs" />
-    <Compile Include="Generated\Enum\WaylandSurfaceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\Win32SurfaceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\XcbSurfaceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\XlibSurfaceCreateFlags.cs" />
+    <Compile Include="Generated\Enum\WaylandSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\Win32SurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\XcbSurfaceCreateFlagsKHR.cs" />
+    <Compile Include="Generated\Enum\XlibSurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Handle\Buffer.cs" />
     <Compile Include="Generated\Handle\BufferView.cs" />
     <Compile Include="Generated\Handle\CommandBuffer.cs" />
@@ -200,6 +201,9 @@
     <Compile Include="Generated\Wrapper\CommandPoolCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\ComputePipelineCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\CopyDescriptorSet.cs" />
+    <Compile Include="Generated\Wrapper\DebugMarkerMarkerInfoEXT.cs" />
+    <Compile Include="Generated\Wrapper\DebugMarkerObjectNameInfoEXT.cs" />
+    <Compile Include="Generated\Wrapper\DebugMarkerObjectTagInfoEXT.cs" />
     <Compile Include="Generated\Wrapper\DebugReportCallbackCreateInfoEXT.cs" />
     <Compile Include="Generated\Wrapper\DescriptorPoolCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DescriptorSetAllocateInfo.cs" />
@@ -234,6 +238,7 @@
     <Compile Include="Generated\Wrapper\PipelineLayoutCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\PipelineMultisampleStateCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\PipelineRasterizationStateCreateInfo.cs" />
+    <Compile Include="Generated\Wrapper\PipelineRasterizationStateRasterizationOrderAMD.cs" />
     <Compile Include="Generated\Wrapper\PipelineShaderStageCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\PipelineTessellationStateCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\PipelineVertexInputStateCreateInfo.cs" />
@@ -261,6 +266,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="VulkanCommandException.cs" />
   </ItemGroup>

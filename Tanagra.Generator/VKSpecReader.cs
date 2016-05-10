@@ -424,6 +424,9 @@ namespace Tanagra.Generator
                         case "noautovalidity":
                             vkMember.NoAutoValidity = xattrib.Value == "true";
                             break;
+                        case "validextensionstructs":
+                            // TODO
+                            break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }

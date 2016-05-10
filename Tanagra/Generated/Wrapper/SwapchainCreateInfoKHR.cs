@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.SwapchainCreateInfoKHR* NativePointer;
         
-        public SwapchainCreateFlags Flags
+        public SwapchainCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
@@ -32,7 +32,7 @@ namespace Vulkan
             set { NativePointer->ImageFormat = value; }
         }
         
-        public ColorSpace ImageColorSpace
+        public ColorSpaceKHR ImageColorSpace
         {
             get { return NativePointer->ImageColorSpace; }
             set { NativePointer->ImageColorSpace = value; }
@@ -74,19 +74,19 @@ namespace Vulkan
             set { NativePointer->QueueFamilyIndices = value; }
         }
         
-        public SurfaceTransformFlags PreTransform
+        public SurfaceTransformFlagsKHR PreTransform
         {
             get { return NativePointer->PreTransform; }
             set { NativePointer->PreTransform = value; }
         }
         
-        public CompositeAlphaFlags CompositeAlpha
+        public CompositeAlphaFlagsKHR CompositeAlpha
         {
             get { return NativePointer->CompositeAlpha; }
             set { NativePointer->CompositeAlpha = value; }
         }
         
-        public PresentMode PresentMode
+        public PresentModeKHR PresentMode
         {
             get { return NativePointer->PresentMode; }
             set { NativePointer->PresentMode = value; }

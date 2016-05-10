@@ -10,10 +10,12 @@ using SharpDX;
 using SharpDX.Text;
 using SharpDX.Windows;
 
+using Tanagra;
 using Vulkan;
 using Vulkan.ObjectModel;
 
 using ImageLayout = Vulkan.ImageLayout;
+using Buffer = Vulkan.Buffer;
 
 namespace TanagraExample
 {
@@ -33,6 +35,14 @@ namespace TanagraExample
 
         static Format backBufferFormat;
         static List<Image> backBuffers;
+        static List<ImageView> backBufferViews;
+
+        static RenderPass renderPass;
+
+        static Buffer vertexBuffer;
+        static DeviceMemory vertexBufferMemory;
+        static VertexInputAttributeDescription[] vertexAttributes;
+        static VertexInputBindingDescription[] vertexBindings;
 
         static void Main(string[] args)
         {
@@ -44,6 +54,10 @@ namespace TanagraExample
             CreateCommandBuffer();
 
             CreateSwapchain();
+            CreateBackBufferViews();
+
+            CreateVertexBuffer();
+            CreateRenderPass();
 
             Console.WriteLine("program complete");
             Console.ReadKey();
@@ -51,10 +65,14 @@ namespace TanagraExample
 
         static void CreateInstance()
         {
+            var version = MakeVersion(1, 0, 8);
+            var ver = new Tanagra.Version(version);
+            Console.WriteLine($"version {ver}");
+
             var appInfo = new ApplicationInfo();
             appInfo.ApplicationName = "vulkanExample";
             appInfo.EngineName = "vulkanExample";
-            appInfo.ApiVersion = MakeVersion(1, 0, 10);
+            appInfo.ApiVersion = version;
 
             var instanceEnabledExtensions = new[]
             {
@@ -65,24 +83,26 @@ namespace TanagraExample
             var instanceCreateInfo = new InstanceCreateInfo();
             instanceCreateInfo.ApplicationInfo = appInfo;
             instanceCreateInfo.EnabledExtensionNames = instanceEnabledExtensions;
-            
+
             instance = VK.CreateInstance(instanceCreateInfo);
-            Console.WriteLine("[ OK ] Instance " + instance);
-            
+            Console.WriteLine($"[ OK ] Instance {instance}");
+
             var physicalDevices = instance.EnumeratePhysicalDevices();
             Console.WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
 
             physicalDevice = physicalDevices[0];
-            Console.WriteLine("[ OK ] Physical Device " + physicalDevice);
+            Console.WriteLine($"[ OK ] Physical Device {physicalDevice}");
+
+            PhysicalDeviceProperties();
         }
-        
+
         static void CreateDevice()
         {
             var queueCreateInfo = new DeviceQueueCreateInfo
             {
                 QueueFamilyIndex = 0,
-                QueueCount = 1,
-                QueuePriorities = 0,
+                QueueCount       = 1,
+                QueuePriorities  = 0,
             };
 
             var deviceEnabledExtensions = new[]
@@ -92,22 +112,22 @@ namespace TanagraExample
 
             var deviceCreateInfo = new DeviceCreateInfo
             {
-                QueueCreateInfoCount = 1,
-                QueueCreateInfos = queueCreateInfo,
+                QueueCreateInfoCount  = 1,
+                QueueCreateInfos      = queueCreateInfo,
                 EnabledExtensionNames = deviceEnabledExtensions,
             };
 
             device = physicalDevice.CreateDevice(deviceCreateInfo);
             Console.WriteLine("[ OK ] Device " + device);
-            
+
             Console.WriteLine($"[INFO] Begin GetQueueFamilyProperties");
             var queueNodeIndex = physicalDevice.GetQueueFamilyProperties()
                 .Where((properties, index) => (properties.QueueFlags & QueueFlags.Graphics) != 0 && physicalDevice.GetSurfaceSupportKHR((uint)index, surface))
                 .Select((properties, index) => index)
                 .First();
-            
+
             queue = device.GetQueue(0, (uint)queueNodeIndex);
-            Console.WriteLine("[ OK ] Queue " + queue);
+            Console.WriteLine($"[ OK ] Queue {queue}");
         }
 
         static void CreateSurface()
@@ -117,10 +137,10 @@ namespace TanagraExample
             var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
             {
                 Hinstance = HINSTANCE,
-                Hwnd = HWND,
+                Hwnd = form.Handle//HWND,
             };
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
-            Console.WriteLine("[ OK ] Surface " + surface);
+            Console.WriteLine($"[ OK ] Surface {surface}");
         }
 
         static void CreateCommandBuffer()
@@ -132,13 +152,13 @@ namespace TanagraExample
                 Flags = CommandPoolCreateFlags.ResetCommandBuffer,
             };
             commandPool = device.CreateCommandPool(commandPoolCreateInfo);
-            Console.WriteLine("[ OK ] Command Pool " + commandPool);
+            Console.WriteLine($"[ OK ] Command Pool {commandPool}");
 
             // Command Buffer
             var commandBufferAllocationInfo = new CommandBufferAllocateInfo
             {
-                Level = CommandBufferLevel.Primary,
-                CommandPool = commandPool,
+                Level              = CommandBufferLevel.Primary,
+                CommandPool        = commandPool,
                 CommandBufferCount = 1,
             };
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
@@ -151,7 +171,7 @@ namespace TanagraExample
         {
             // surface format
             var surfaceFormats = physicalDevice.GetSurfaceFormatsKHR(surface);
-            if (surfaceFormats.Count == 1 && surfaceFormats[0].Format == Format.Undefined)
+            if(surfaceFormats.Count == 1 && surfaceFormats[0].Format == Format.Undefined)
             {
                 backBufferFormat = Format.B8g8r8a8Unorm;
                 Console.WriteLine($"using default backBufferFormat {backBufferFormat}");
@@ -166,30 +186,30 @@ namespace TanagraExample
 
             // Buffer count
             var desiredImageCount = surfaceCapabilities.MinImageCount + 1;
-            if (surfaceCapabilities.MaxImageCount > 0 && desiredImageCount > surfaceCapabilities.MaxImageCount)
+            if(surfaceCapabilities.MaxImageCount > 0 && desiredImageCount > surfaceCapabilities.MaxImageCount)
             {
                 desiredImageCount = surfaceCapabilities.MaxImageCount;
             }
 
             // Transform
-            SurfaceTransformFlags preTransform;
-            if ((surfaceCapabilities.SupportedTransforms & SurfaceTransformFlags.IdentityBitKhr) != 0)
+            SurfaceTransformFlagsKHR preTransform;
+            if((surfaceCapabilities.SupportedTransforms & SurfaceTransformFlagsKHR.Identity) != 0)
             {
-                preTransform = SurfaceTransformFlags.IdentityBitKhr;
+                preTransform = SurfaceTransformFlagsKHR.Identity;
             }
             else
             {
                 preTransform = surfaceCapabilities.CurrentTransform;
             }
-            
+
             // Present mode
             var presentModes = physicalDevice.GetSurfacePresentModesKHR(surface);
-            
-            var swapChainPresentMode = PresentMode.FifoKhr;
-            if(presentModes.Contains(PresentMode.MailboxKhr))
-                swapChainPresentMode = PresentMode.MailboxKhr;
-            else if(presentModes.Contains(PresentMode.ImmediateKhr))
-                swapChainPresentMode = PresentMode.ImmediateKhr;
+
+            var swapChainPresentMode = PresentModeKHR.Fifo;
+            if(presentModes.Contains(PresentModeKHR.Mailbox))
+                swapChainPresentMode = PresentModeKHR.Mailbox;
+            else if(presentModes.Contains(PresentModeKHR.Immediate))
+                swapChainPresentMode = PresentModeKHR.Immediate;
 
             Console.WriteLine($"swapChainPresentMode {swapChainPresentMode}");
 
@@ -197,18 +217,18 @@ namespace TanagraExample
             // Create swapchain
             var swapchainCreateInfo = new SwapchainCreateInfoKHR
             {
-                Surface = surface,
+                Surface          = surface,
                 ImageSharingMode = SharingMode.Exclusive,
-                ImageExtent = imageExtent,
+                ImageExtent      = imageExtent,
                 ImageArrayLayers = 1,
-                ImageFormat = backBufferFormat,
-                ImageColorSpace = ColorSpace.ColorspaceSrgbNonlinearKhr,
-                ImageUsage = ImageUsageFlags.ColorAttachment,
-                PresentMode = swapChainPresentMode,
-                CompositeAlpha = CompositeAlphaFlags.OpaqueBitKhr,
-                MinImageCount = desiredImageCount,
-                PreTransform = preTransform,
-                Clipped = true,
+                ImageFormat      = backBufferFormat,
+                ImageColorSpace  = ColorSpaceKHR.ColorspaceSrgbNonlinear,
+                ImageUsage       = ImageUsageFlags.ColorAttachment,
+                PresentMode      = swapChainPresentMode,
+                CompositeAlpha   = CompositeAlphaFlagsKHR.Opaque,
+                MinImageCount    = 1,
+                PreTransform     = preTransform,
+                Clipped          = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
             Console.WriteLine($"[ OK ] Swapchain {swapchain}");
@@ -235,7 +255,7 @@ namespace TanagraExample
                 };
                 setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
                 setupCommanBuffer = setupBuffer;
-                Console.WriteLine("[ OK ] Command Buffer " + setupCommanBuffer);
+                Console.WriteLine($"[ OK ] Command Buffer {setupCommanBuffer}");
 
                 var inheritanceInfo = new CommandBufferInheritanceInfo();
                 var beginInfo = new CommandBufferBeginInfo
@@ -253,11 +273,11 @@ namespace TanagraExample
                 Image = image,
                 SubresourceRange = new ImageSubresourceRange
                 {
-                    AspectMask = imageAspect,
+                    AspectMask     = imageAspect,
                     BaseArrayLayer = 0,
-                    LayerCount = 1,
-                    BaseMipLevel = 0,
-                    LevelCount = 1,
+                    LayerCount     = 1,
+                    BaseMipLevel   = 0,
+                    LevelCount     = 1,
                 }
             };
 
@@ -295,7 +315,7 @@ namespace TanagraExample
             var submitInfo = new SubmitInfo
             {
                 CommandBufferCount = 1,
-                CommandBuffers = setupCommanBuffer
+                CommandBuffers     = setupCommanBuffer
             };
 
             try
@@ -304,11 +324,12 @@ namespace TanagraExample
             }
             catch(Exception e)
             {
+                Console.WriteLine($"[FAIL] {e.Message}");
                 //https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#devsandqueues-lost-device
-                queue = device.GetQueue(0, 0U);
-                Console.WriteLine("[ OK ] Queue " + queue);
+                //queue = device.GetQueue(0, 0U);
+                //Console.WriteLine("[ OK ] Queue " + queue);
             }
-            
+
             Console.WriteLine("[ OK ] queue.Submit");
 
             queue.WaitIdle();
@@ -318,6 +339,203 @@ namespace TanagraExample
             Console.WriteLine("[ OK ] device.FreeCommandBuffers");
 
             setupCommanBuffer = null;
+        }
+
+        static void CreateBackBufferViews()
+        {
+            backBufferViews = new List<ImageView>();
+            for(int x = 0; x < backBuffers.Count; x++)
+            {
+                var createInfo = new ImageViewCreateInfo
+                {
+                    ViewType = ImageViewType.ImageViewType2d,
+                    Format = backBufferFormat,
+                    Image = backBuffers[x],
+                    Components = new ComponentMapping(),
+                    SubresourceRange = new ImageSubresourceRange
+                    {
+                        AspectMask     = ImageAspectFlags.Color,
+                        BaseArrayLayer = 0,
+                        LayerCount     = 1,
+                        BaseMipLevel   = 0,
+                        LevelCount     = 1,
+                    }
+                };
+
+                backBufferViews.Add(device.CreateImageView(createInfo));
+            }
+            Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
+        }
+
+        static void CreateVertexBuffer()
+        {
+            var vertices = new[,]
+            {
+                {  0.0f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f },
+                {  0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 0.0f },
+                { -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 1.0f },
+            };
+
+            var createInfo = new BufferCreateInfo
+            {
+                Usage = BufferUsageFlags.VertexBuffer,
+                Size = (ulong)(sizeof(float) * vertices.Length),
+            };
+            vertexBuffer = device.CreateBuffer(createInfo);
+            Console.WriteLine($"[ OK ] vertexBuffer {vertexBuffer}");
+
+            var memoryRequirements = device.GetBufferMemoryRequirements(vertexBuffer);
+
+            if(memoryRequirements.Size == 0) return;
+            Console.WriteLine($"[ OK ] memoryRequirements {memoryRequirements.Size}");
+
+            var allocateInfo = new MemoryAllocateInfo
+            {
+                AllocationSize = memoryRequirements.Size,
+                MemoryTypeIndex = 2,
+            };
+            vertexBufferMemory = device.AllocateMemory(allocateInfo);
+            Console.WriteLine($"[ OK ] vertexBufferMemory {vertexBufferMemory}");
+
+            var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
+            Utils.Copy2DArray(vertices, mapped, createInfo.Size, createInfo.Size);
+            device.UnmapMemory(vertexBufferMemory);
+
+            device.BindBufferMemory(vertexBuffer, vertexBufferMemory, 0);
+            Console.WriteLine($"[ OK ] device.BindBufferMemory");
+
+            vertexAttributes = new[]
+            {
+                new VertexInputAttributeDescription { Binding = 0, Location = 0, Format = Format.R32g32b32Sfloat, Offset = 0 },
+                new VertexInputAttributeDescription { Binding = 0, Location = 1, Format = Format.R32g32b32Sfloat, Offset = sizeof(float) * 3 },
+            };
+
+            vertexBindings = new[]
+            {
+                new VertexInputBindingDescription { Binding = 0, InputRate = VertexInputRate.Vertex, Stride = (uint)(sizeof(float) * vertices.GetLength(1)) }
+            };
+        }
+
+        static void CreateRenderPass()
+        {
+            var colorAttachmentReference        = new AttachmentReference { Attachment = 0, Layout = ImageLayout.ColorAttachmentOptimal };
+            var depthStencilAttachmentReference = new AttachmentReference { Attachment = 1, Layout = ImageLayout.DepthStencilAttachmentOptimal };
+
+            var subpass = new SubpassDescription
+            {
+                PipelineBindPoint    = PipelineBindPoint.Graphics,
+                ColorAttachmentCount = 1,
+                ColorAttachments     = colorAttachmentReference,
+            };
+
+            var attachments = new[]
+            {
+                new AttachmentDescription
+                {
+                    Format         = backBufferFormat,
+                    Samples        = SampleCountFlags.SampleCountFlags1,
+                    LoadOp         = AttachmentLoadOp.Load,
+                    StoreOp        = AttachmentStoreOp.Store,
+                    StencilLoadOp  = AttachmentLoadOp.DontCare,
+                    StencilStoreOp = AttachmentStoreOp.DontCare,
+                    InitialLayout  = ImageLayout.ColorAttachmentOptimal,
+                    FinalLayout    = ImageLayout.ColorAttachmentOptimal
+                },
+            };
+
+            var createInfo = new RenderPassCreateInfo
+            {
+                AttachmentCount = (uint)attachments.Length,
+                Attachments     = attachments[0],
+                SubpassCount    = 1,
+                Subpasses       = subpass
+            };
+
+            renderPass = device.CreateRenderPass(createInfo);
+            Console.WriteLine($"[ OK ] renderPass {renderPass}");
+        }
+
+        static void PhysicalDeviceProperties()
+        {
+            var props = physicalDevice.GetProperties();
+            var ver = new Tanagra.Version(props.ApiVersion);
+
+            Console.WriteLine($"ApiVersion        {ver.ToString()}");
+            Console.WriteLine($"DriverVersion     {props.DriverVersion}");
+            Console.WriteLine($"VendorID          {props.VendorID.ToString("X4")}");
+            Console.WriteLine($"DeviceID          {props.DeviceID.ToString("X4")}");
+            Console.WriteLine($"DeviceType        {props.DeviceType}");
+            Console.WriteLine($"DeviceName        {props.DeviceName}");
+            //Console.WriteLine($"PipelineCacheUUID {props.PipelineCacheUUID}");
+
+            Console.WriteLine();
+
+            var limits = props.Limits;
+            Console.WriteLine("Limits");
+            Console.WriteLine("----------");
+            Console.WriteLine($"MaxImageDimension1D                   {limits.MaxImageDimension1D.ToString("X")}");
+            Console.WriteLine($"MaxImageDimension2D                   {limits.MaxImageDimension2D.ToString("X")}");
+            Console.WriteLine($"MaxImageDimension3D                   {limits.MaxImageDimension3D.ToString("X")}");
+            Console.WriteLine($"MaxImageDimensionCube                 {limits.MaxImageDimensionCube.ToString("X")}");
+            Console.WriteLine($"MaxImageArrayLayers                   {limits.MaxImageArrayLayers.ToString("X")}");
+            Console.WriteLine($"MaxTexelBufferElements                {limits.MaxTexelBufferElements.ToString("X")}");
+            Console.WriteLine($"MaxUniformBufferRange                 {limits.MaxUniformBufferRange.ToString("X")}");
+            Console.WriteLine($"MaxStorageBufferRange                 {limits.MaxStorageBufferRange.ToString("X")}");
+            Console.WriteLine($"MaxPushConstantsSize                  {limits.MaxPushConstantsSize.ToString("X")}");
+            Console.WriteLine($"MaxMemoryAllocationCount              {limits.MaxMemoryAllocationCount.ToString("X")}");
+            Console.WriteLine($"MaxSamplerAllocationCount             {limits.MaxSamplerAllocationCount.ToString("X")}");
+            Console.WriteLine($"BufferImageGranularity                {limits.BufferImageGranularity.ToString("X")}"); // DeviceSize
+            Console.WriteLine($"SparseAddressSpaceSize                {limits.SparseAddressSpaceSize.ToString("X")}"); // DeviceSize
+            Console.WriteLine($"MaxBoundDescriptorSets                {limits.MaxBoundDescriptorSets.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorSamplers         {limits.MaxPerStageDescriptorSamplers.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorUniformBuffers   {limits.MaxPerStageDescriptorUniformBuffers.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorStorageBuffers   {limits.MaxPerStageDescriptorStorageBuffers.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorSampledImages    {limits.MaxPerStageDescriptorSampledImages.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorStorageImages    {limits.MaxPerStageDescriptorStorageImages.ToString("X")}");
+            Console.WriteLine($"MaxPerStageDescriptorInputAttachments {limits.MaxPerStageDescriptorInputAttachments.ToString("X")}");
+            Console.WriteLine($"MaxPerStageResources                  {limits.MaxPerStageResources.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetSamplers              {limits.MaxDescriptorSetSamplers.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetUniformBuffers        {limits.MaxDescriptorSetUniformBuffers.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetUniformBuffersDynamic {limits.MaxDescriptorSetUniformBuffersDynamic.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetStorageBuffers        {limits.MaxDescriptorSetStorageBuffers.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetStorageBuffersDynamic {limits.MaxDescriptorSetStorageBuffersDynamic.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetSampledImages         {limits.MaxDescriptorSetSampledImages.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetStorageImages         {limits.MaxDescriptorSetStorageImages.ToString("X")}");
+            Console.WriteLine($"MaxDescriptorSetInputAttachments      {limits.MaxDescriptorSetInputAttachments.ToString("X")}");
+            Console.WriteLine($"MaxVertexInputAttributes              {limits.MaxVertexInputAttributes.ToString("X")}");
+            Console.WriteLine($"MaxVertexInputBindings                {limits.MaxVertexInputBindings.ToString("X")}");
+            Console.WriteLine($"MaxVertexInputAttributeOffset         {limits.MaxVertexInputAttributeOffset.ToString("X")}");
+            Console.WriteLine($"MaxVertexInputBindingStride           {limits.MaxVertexInputBindingStride.ToString("X")}");
+            Console.WriteLine($"MaxVertexOutputComponents             {limits.MaxVertexOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationGenerationLevel                  {limits.MaxTessellationGenerationLevel.ToString("X")}");
+            Console.WriteLine($"MaxTessellationPatchSize                        {limits.MaxTessellationPatchSize.ToString("X")}");
+            Console.WriteLine($"MaxTessellationControlPerVertexInputComponents  {limits.MaxTessellationControlPerVertexInputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationControlPerVertexOutputComponents {limits.MaxTessellationControlPerVertexOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationControlPerPatchOutputComponents  {limits.MaxTessellationControlPerPatchOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationControlTotalOutputComponents     {limits.MaxTessellationControlTotalOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationEvaluationInputComponents        {limits.MaxTessellationEvaluationInputComponents.ToString("X")}");
+            Console.WriteLine($"MaxTessellationEvaluationOutputComponents       {limits.MaxTessellationEvaluationOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxGeometryShaderInvocations          {limits.MaxGeometryShaderInvocations.ToString("X")}");
+            Console.WriteLine($"MaxGeometryInputComponents            {limits.MaxGeometryInputComponents.ToString("X")}");
+            Console.WriteLine($"MaxGeometryOutputComponents           {limits.MaxGeometryOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxGeometryOutputVertices             {limits.MaxGeometryOutputVertices.ToString("X")}");
+            Console.WriteLine($"MaxGeometryTotalOutputComponents      {limits.MaxGeometryTotalOutputComponents.ToString("X")}");
+            Console.WriteLine($"MaxFragmentInputComponents            {limits.MaxFragmentInputComponents.ToString("X")}");
+            Console.WriteLine($"MaxFragmentOutputAttachments          {limits.MaxFragmentOutputAttachments.ToString("X")}");
+            Console.WriteLine($"MaxFragmentDualSrcAttachments         {limits.MaxFragmentDualSrcAttachments.ToString("X")}");
+            Console.WriteLine($"MaxFragmentCombinedOutputResources    {limits.MaxFragmentCombinedOutputResources.ToString("X")}");
+            Console.WriteLine($"MaxComputeSharedMemorySize            {limits.MaxComputeSharedMemorySize.ToString("X")}");
+
+            Console.WriteLine();
+
+            var sparse = props.SparseProperties;
+            Console.WriteLine("SparseProperties");
+            Console.WriteLine("----------");
+            Console.WriteLine($"  ResidencyStandard2DBlockShape            {sparse.ResidencyStandard2DBlockShape}");
+            Console.WriteLine($"  ResidencyStandard2DMultisampleBlockShape {sparse.ResidencyStandard2DMultisampleBlockShape}");
+            Console.WriteLine($"  ResidencyStandard3DBlockShape            {sparse.ResidencyStandard3DBlockShape}");
+            Console.WriteLine($"  ResidencyAlignedMipSize                  {sparse.ResidencyAlignedMipSize}");
+            Console.WriteLine($"  ResidencyNonResidentStrict               {sparse.ResidencyNonResidentStrict}");
         }
 
         static void GetProcessHandles(out IntPtr HINSTANCE, out IntPtr HWND)

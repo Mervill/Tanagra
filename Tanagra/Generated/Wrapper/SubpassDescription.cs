@@ -24,11 +24,12 @@ namespace Vulkan
             get { return NativePointer->InputAttachmentCount; }
             set { NativePointer->InputAttachmentCount = value; }
         }
-        
+
+        AttachmentReference _InputAttachments;
         public AttachmentReference InputAttachments
         {
-            get { return NativePointer->InputAttachments; }
-            set { NativePointer->InputAttachments = value; }
+            get { return _InputAttachments; }
+            set { _InputAttachments = value; NativePointer->InputAttachments = (IntPtr)(&value); }
         }
         
         public UInt32 ColorAttachmentCount
@@ -36,23 +37,26 @@ namespace Vulkan
             get { return NativePointer->ColorAttachmentCount; }
             set { NativePointer->ColorAttachmentCount = value; }
         }
-        
+
+        AttachmentReference _ColorAttachments;
         public AttachmentReference ColorAttachments
         {
-            get { return NativePointer->ColorAttachments; }
-            set { NativePointer->ColorAttachments = value; }
+            get { return _ColorAttachments; }
+            set { _ColorAttachments = value; NativePointer->ColorAttachments = new IntPtr(&value); }
         }
-        
+
+        AttachmentReference _ResolveAttachments;
         public AttachmentReference ResolveAttachments
         {
-            get { return NativePointer->ResolveAttachments; }
-            set { NativePointer->ResolveAttachments = value; }
+            get { return _ResolveAttachments; }
+            set { _ResolveAttachments = value; NativePointer->ResolveAttachments = (IntPtr)(&value); }
         }
-        
+
+        AttachmentReference _DepthStencilAttachment;
         public AttachmentReference DepthStencilAttachment
         {
-            get { return NativePointer->DepthStencilAttachment; }
-            set { NativePointer->DepthStencilAttachment = value; }
+            get { return _DepthStencilAttachment; }
+            set { _DepthStencilAttachment = value; NativePointer->DepthStencilAttachment = (IntPtr)(&value); }
         }
         
         public UInt32 PreserveAttachmentCount

@@ -181,7 +181,7 @@ namespace Vulkan.ObjectModel
             return VK.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface);
         }
         
-        public static List<PresentMode> GetSurfacePresentModesKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
+        public static List<PresentModeKHR> GetSurfacePresentModesKHR(this PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             return VK.GetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface);
         }

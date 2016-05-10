@@ -1592,20 +1592,20 @@ namespace Vulkan
             return list;
         }
         
-        public static List<PresentMode> GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
+        public static List<PresentModeKHR> GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
             var result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
             
-            var arrayPresentMode = new PresentMode[listLength];
-            fixed(PresentMode* resultPtr = &arrayPresentMode[0])
+            var arrayPresentMode = new PresentModeKHR[listLength];
+            fixed(PresentModeKHR* resultPtr = &arrayPresentMode[0])
                 result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, resultPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
             
-            var list = new List<PresentMode>();
+            var list = new List<PresentModeKHR>();
             for(var x = 0; x < listLength; x++)
             {
                 list.Add(arrayPresentMode[x]);

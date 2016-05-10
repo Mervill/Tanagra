@@ -18,11 +18,12 @@ namespace Vulkan
             get { return NativePointer->AttachmentCount; }
             set { NativePointer->AttachmentCount = value; }
         }
-        
+
+        AttachmentDescription _Attachments;
         public AttachmentDescription Attachments
         {
-            get { return NativePointer->Attachments; }
-            set { NativePointer->Attachments = value; }
+            get { return _Attachments; }
+            set { _Attachments = value; NativePointer->Attachments = (IntPtr)(&value); }
         }
         
         public UInt32 SubpassCount
@@ -43,11 +44,12 @@ namespace Vulkan
             get { return NativePointer->DependencyCount; }
             set { NativePointer->DependencyCount = value; }
         }
-        
+
+        SubpassDependency _Dependencies;
         public SubpassDependency Dependencies
         {
-            get { return NativePointer->Dependencies; }
-            set { NativePointer->Dependencies = value; }
+            get { return _Dependencies; }
+            set { _Dependencies = value; NativePointer->Dependencies = (IntPtr)(&value); }
         }
         
         public RenderPassCreateInfo()

@@ -3,7 +3,7 @@ using System;
 namespace Vulkan
 {
     [Flags]
-    public enum MirSurfaceCreateFlags
+    public enum DisplaySurfaceCreateFlagsKHR
     {
         None = 1 << 0,
     }

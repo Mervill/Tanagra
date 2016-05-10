@@ -7,7 +7,7 @@ namespace Vulkan
     {
         internal Interop.DisplayModeCreateInfoKHR* NativePointer;
         
-        public DisplayModeCreateFlags Flags
+        public DisplayModeCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }

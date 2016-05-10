@@ -578,7 +578,7 @@ namespace Vulkan
 
     public struct DisplayPlaneCapabilitiesKHR
     {
-        public DisplayPlaneAlphaFlags SupportedAlpha;
+        public DisplayPlaneAlphaFlagsKHR SupportedAlpha;
         public Offset2D MinSrcPosition;
         public Offset2D MaxSrcPosition;
         public Extent2D MinSrcExtent;
@@ -597,16 +597,16 @@ namespace Vulkan
         public Extent2D MinImageExtent;
         public Extent2D MaxImageExtent;
         public UInt32 MaxImageArrayLayers;
-        public SurfaceTransformFlags SupportedTransforms;
-        public SurfaceTransformFlags CurrentTransform;
-        public CompositeAlphaFlags SupportedCompositeAlpha;
+        public SurfaceTransformFlagsKHR SupportedTransforms;
+        public SurfaceTransformFlagsKHR CurrentTransform;
+        public CompositeAlphaFlagsKHR SupportedCompositeAlpha;
         public ImageUsageFlags SupportedUsageFlags;
     }
 
     public struct SurfaceFormatKHR
     {
         public Format Format;
-        public ColorSpace ColorSpace;
+        public ColorSpaceKHR ColorSpace;
     }
 
 }

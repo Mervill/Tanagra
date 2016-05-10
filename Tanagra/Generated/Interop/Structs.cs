@@ -558,11 +558,11 @@ namespace Vulkan.Interop
         internal SubpassDescriptionFlags Flags;
         internal PipelineBindPoint PipelineBindPoint;
         internal UInt32 InputAttachmentCount;
-        internal AttachmentReference InputAttachments;
+        internal IntPtr InputAttachments;
         internal UInt32 ColorAttachmentCount;
-        internal AttachmentReference ColorAttachments;
-        internal AttachmentReference ResolveAttachments;
-        internal AttachmentReference DepthStencilAttachment;
+        internal IntPtr ColorAttachments;
+        internal IntPtr ResolveAttachments;
+        internal IntPtr DepthStencilAttachment;
         internal UInt32 PreserveAttachmentCount;
         internal UInt32 PreserveAttachments;
     }
@@ -573,11 +573,11 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal RenderPassCreateFlags Flags;
         internal UInt32 AttachmentCount;
-        internal AttachmentDescription Attachments;
+        internal IntPtr Attachments;
         internal UInt32 SubpassCount;
         internal IntPtr Subpasses;
         internal UInt32 DependencyCount;
-        internal SubpassDependency Dependencies;
+        internal IntPtr Dependencies;
     }
 
     internal struct EventCreateInfo
@@ -643,7 +643,7 @@ namespace Vulkan.Interop
         internal IntPtr DisplayName;
         internal Extent2D PhysicalDimensions;
         internal Extent2D PhysicalResolution;
-        internal SurfaceTransformFlags SupportedTransforms;
+        internal SurfaceTransformFlagsKHR SupportedTransforms;
         internal Bool32 PlaneReorderPossible;
         internal Bool32 PersistentContent;
     }
@@ -652,7 +652,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal DisplayModeCreateFlags Flags;
+        internal DisplayModeCreateFlagsKHR Flags;
         internal DisplayModeParametersKHR Parameters;
     }
 
@@ -660,13 +660,13 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal DisplaySurfaceCreateFlags Flags;
+        internal DisplaySurfaceCreateFlagsKHR Flags;
         internal UInt64 DisplayMode;
         internal UInt32 PlaneIndex;
         internal UInt32 PlaneStackIndex;
-        internal SurfaceTransformFlags Transform;
+        internal SurfaceTransformFlagsKHR Transform;
         internal Single GlobalAlpha;
-        internal DisplayPlaneAlphaFlags AlphaMode;
+        internal DisplayPlaneAlphaFlagsKHR AlphaMode;
         internal Extent2D ImageExtent;
     }
 
@@ -683,7 +683,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal AndroidSurfaceCreateFlags Flags;
+        internal AndroidSurfaceCreateFlagsKHR Flags;
         internal IntPtr Window;
     }
 
@@ -691,7 +691,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal MirSurfaceCreateFlags Flags;
+        internal MirSurfaceCreateFlagsKHR Flags;
         internal IntPtr Connection;
         internal IntPtr MirSurface;
     }
@@ -700,7 +700,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal WaylandSurfaceCreateFlags Flags;
+        internal WaylandSurfaceCreateFlagsKHR Flags;
         internal IntPtr Display;
         internal IntPtr Surface;
     }
@@ -709,7 +709,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal Win32SurfaceCreateFlags Flags;
+        internal Win32SurfaceCreateFlagsKHR Flags;
         internal IntPtr Hinstance;
         internal IntPtr Hwnd;
     }
@@ -718,7 +718,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal XlibSurfaceCreateFlags Flags;
+        internal XlibSurfaceCreateFlagsKHR Flags;
         internal IntPtr Dpy;
         internal IntPtr Window;
     }
@@ -727,7 +727,7 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal XcbSurfaceCreateFlags Flags;
+        internal XcbSurfaceCreateFlagsKHR Flags;
         internal IntPtr Connection;
         internal IntPtr Window;
     }
@@ -736,20 +736,20 @@ namespace Vulkan.Interop
     {
         internal StructureType SType;
         internal IntPtr Next;
-        internal SwapchainCreateFlags Flags;
+        internal SwapchainCreateFlagsKHR Flags;
         internal UInt64 Surface;
         internal UInt32 MinImageCount;
         internal Format ImageFormat;
-        internal ColorSpace ImageColorSpace;
+        internal ColorSpaceKHR ImageColorSpace;
         internal Extent2D ImageExtent;
         internal UInt32 ImageArrayLayers;
         internal ImageUsageFlags ImageUsage;
         internal SharingMode ImageSharingMode;
         internal UInt32 QueueFamilyIndexCount;
         internal UInt32 QueueFamilyIndices;
-        internal SurfaceTransformFlags PreTransform;
-        internal CompositeAlphaFlags CompositeAlpha;
-        internal PresentMode PresentMode;
+        internal SurfaceTransformFlagsKHR PreTransform;
+        internal CompositeAlphaFlagsKHR CompositeAlpha;
+        internal PresentModeKHR PresentMode;
         internal Bool32 Clipped;
         internal UInt64 OldSwapchain;
     }
@@ -773,6 +773,41 @@ namespace Vulkan.Interop
         internal DebugReportFlagsEXT Flags;
         internal IntPtr PfnCallback;
         internal IntPtr UserData;
+    }
+
+    internal struct PipelineRasterizationStateRasterizationOrderAMD
+    {
+        internal StructureType SType;
+        internal IntPtr Next;
+        internal RasterizationOrderAMD RasterizationOrder;
+    }
+
+    internal struct DebugMarkerObjectNameInfoEXT
+    {
+        internal StructureType SType;
+        internal IntPtr Next;
+        internal DebugReportObjectTypeEXT ObjectType;
+        internal UInt64 Object;
+        internal IntPtr ObjectName;
+    }
+
+    internal struct DebugMarkerObjectTagInfoEXT
+    {
+        internal StructureType SType;
+        internal IntPtr Next;
+        internal DebugReportObjectTypeEXT ObjectType;
+        internal UInt64 Object;
+        internal UInt64 TagName;
+        internal UIntPtr TagSize;
+        internal IntPtr Tag;
+    }
+
+    internal struct DebugMarkerMarkerInfoEXT
+    {
+        internal StructureType SType;
+        internal IntPtr Next;
+        internal IntPtr MarkerName;
+        internal Single Color;
     }
 
 }
