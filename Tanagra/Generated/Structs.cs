@@ -1,6 +1,7 @@
 // ReSharper disable BuiltInTypeReferenceStyle
 // ReSharper disable InconsistentNaming
 using System;
+using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
@@ -8,12 +9,19 @@ namespace Vulkan
     {
     }
 
+    [StructLayout(LayoutKind.Explicit)]
     public struct ClearValue
     {
+        [FieldOffset(0)] public IntPtr Color;
+        [FieldOffset(0)] public ClearDepthStencilValue DepthStencil;
     }
 
+    [StructLayout(LayoutKind.Explicit)]
     public struct ClearColorValue
     {
+        [FieldOffset(0)] public Single Float32;
+        [FieldOffset(0)] public Int32 Int32;
+        [FieldOffset(0)] public UInt32 Uint32;
     }
 
     public struct Offset2D

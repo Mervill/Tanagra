@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO;
 
 using SharpDX;
 using SharpDX.Text;
@@ -40,7 +41,7 @@ namespace TanagraExample
 
         static RenderPass renderPass;
         static PipelineLayout pipelineLayout;
-        static Pipeline pipeline;
+        static List<Pipeline> pipeline;
         static Framebuffer[] framebuffers;
 
         static Buffer vertexBuffer;
@@ -63,7 +64,7 @@ namespace TanagraExample
             CreateVertexBuffer();
             CreateRenderPass();
             CreatePipelineLayout();
-            //
+            CreatePipeline();
             CreateFramebuffers();
 
             Console.WriteLine("program complete");
@@ -235,7 +236,7 @@ namespace TanagraExample
                 ImageUsage       = ImageUsageFlags.ColorAttachment,
                 PresentMode      = swapChainPresentMode,
                 CompositeAlpha   = CompositeAlphaFlagsKHR.Opaque,
-                MinImageCount    = 1,
+                MinImageCount    = desiredImageCount,
                 PreTransform     = preTransform,
                 Clipped          = true,
             };
@@ -482,6 +483,122 @@ namespace TanagraExample
 
             // Destroy temporary layout
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
+        }
+
+        private void CreatePipeline()
+        {
+            var dynamicStates = new [] { DynamicState.Viewport, DynamicState.Scissor };
+
+            var entryPointName = System.Text.Encoding.UTF8.GetBytes("main\0");
+
+            var dynamicState = new PipelineDynamicStateCreateInfo
+            {
+                DynamicStateCount = 1, //(uint)dynamicStates.Length,
+                DynamicStates = dynamicStates[0]
+            };
+
+            var viewportState = new PipelineViewportStateCreateInfo
+            {
+                ScissorCount = 1,
+                ViewportCount = 1,
+            };
+            
+            var vertexInputState = new PipelineVertexInputStateCreateInfo
+            {
+                VertexAttributeDescriptionCount = 1, //(uint)vertexAttributes.Length,
+                VertexAttributeDescriptions = vertexAttributes[0],
+                VertexBindingDescriptionCount = 1, //(uint)vertexBindings.Length,
+                VertexBindingDescriptions = vertexBindings[0],
+            };
+
+            var inputAssemblyState = new PipelineInputAssemblyStateCreateInfo
+            {
+                Topology = PrimitiveTopology.TriangleList
+            };
+
+            var rasterizerState = new PipelineRasterizationStateCreateInfo
+            {
+                PolygonMode = PolygonMode.Fill,
+                CullMode = CullModeFlags.None,
+                FrontFace = FrontFace.Clockwise,
+            };
+
+            var colorBlendAttachment = new PipelineColorBlendAttachmentState { ColorWriteMask = ColorComponentFlags.R | ColorComponentFlags.G | ColorComponentFlags.B | ColorComponentFlags.A };
+            var blendState = new PipelineColorBlendStateCreateInfo
+            {
+                AttachmentCount = 1,
+                Attachments = colorBlendAttachment
+            };
+
+            var depthStencilState = new PipelineDepthStencilStateCreateInfo
+            {
+                DepthTestEnable = false,
+                DepthWriteEnable = true,
+                DepthCompareOp = CompareOp.LessOrEqual,
+                Back = new StencilOpState { CompareOp = CompareOp.Always },
+                Front = new StencilOpState { CompareOp = CompareOp.Always }
+            };
+
+            var shaderStages = new[]
+            {
+                new PipelineShaderStageCreateInfo
+                {
+                    Name = "main\0",
+                    Stage = ShaderStageFlags.Vertex,
+                    Module = CreateVertexShader()
+                },
+                new PipelineShaderStageCreateInfo
+                {
+                    Name = "main\0",
+                    Stage = ShaderStageFlags.Fragment,
+                    Module = CreateFragmentShader()
+                }
+            };
+
+                
+            var createInfo = new GraphicsPipelineCreateInfo
+            {
+                Layout = pipelineLayout,
+                DynamicState = dynamicState,
+                ViewportState = viewportState,
+                VertexInputState = vertexInputState,
+                InputAssemblyState = inputAssemblyState,
+                RasterizationState = rasterizerState,
+                ColorBlendState = blendState,
+                DepthStencilState = depthStencilState,
+                StageCount = 1, //(uint)shaderStages.Length,
+                Stages = shaderStages[0],
+                RenderPass = renderPass
+            };
+            pipeline = device.CreateGraphicsPipelines(null, new List<GraphicsPipelineCreateInfo> { createInfo });
+                
+
+            foreach(var shaderStage in shaderStages)
+            {
+                device.DestroyShaderModule(shaderStage.Module);
+            }
+        }
+
+        private ShaderModule CreateVertexShader()
+        {
+            var bytes = File.ReadAllBytes("vert.spv");
+            return CreateShaderModule(bytes);
+        }
+
+        private ShaderModule CreateFragmentShader()
+        {
+            var bytes = File.ReadAllBytes("frag.spv");
+            return CreateShaderModule(bytes);
+        }
+
+        private ShaderModule CreateShaderModule(byte[] shaderCode)
+        {
+            var createInfo = new ShaderModuleCreateInfo
+            {
+                CodeSize = shaderCode.Length,
+                Code = new IntPtr(codePointer)
+            };
+            return device.CreateShaderModule(createInfo);
         }
 
         static void CreateFramebuffers()

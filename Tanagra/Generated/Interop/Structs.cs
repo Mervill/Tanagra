@@ -618,7 +618,7 @@ namespace Vulkan.Interop
         internal FramebufferCreateFlags Flags;
         internal UInt64 RenderPass;
         internal UInt32 AttachmentCount;
-        internal UInt64 Attachments;
+        internal UInt32 Attachments;
         internal UInt32 Width;
         internal UInt32 Height;
         internal UInt32 Layers;

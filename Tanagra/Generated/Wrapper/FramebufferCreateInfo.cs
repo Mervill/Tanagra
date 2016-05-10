@@ -30,7 +30,7 @@ namespace Vulkan
         public ImageView Attachments
         {
             get { return _Attachments; }
-            set { _Attachments = value; NativePointer->Attachments = value.NativePointer; }
+            set { _Attachments = value; NativePointer->Attachments = (UInt32)value.NativePointer; }
         }
         
         public UInt32 Width
