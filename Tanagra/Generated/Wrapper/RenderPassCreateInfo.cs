@@ -18,12 +18,17 @@ namespace Vulkan
             get { return NativePointer->AttachmentCount; }
             set { NativePointer->AttachmentCount = value; }
         }
-
-        AttachmentDescription _Attachments;
+        
         public AttachmentDescription Attachments
         {
-            get { return _Attachments; }
-            set { _Attachments = value; NativePointer->Attachments = (IntPtr)(&value); }
+            get { return Marshal.PtrToStructure<AttachmentDescription>(NativePointer->Attachments); }
+            set
+            {
+                if(NativePointer->Attachments == IntPtr.Zero)
+                    NativePointer->Attachments = Interop.Structure.Allocate(typeof(AttachmentDescription));
+
+                Marshal.StructureToPtr(value, NativePointer->Attachments, false);
+            }
         }
         
         public UInt32 SubpassCount
@@ -44,12 +49,11 @@ namespace Vulkan
             get { return NativePointer->DependencyCount; }
             set { NativePointer->DependencyCount = value; }
         }
-
-        SubpassDependency _Dependencies;
+        
         public SubpassDependency Dependencies
         {
-            get { return _Dependencies; }
-            set { _Dependencies = value; NativePointer->Dependencies = (IntPtr)(&value); }
+            get { return Marshal.PtrToStructure<SubpassDependency>(NativePointer->Dependencies); }
+            set { NativePointer->Dependencies = (IntPtr)(&value); }
         }
         
         public RenderPassCreateInfo()

@@ -20,10 +20,11 @@ namespace Vulkan
             set { NativePointer->BindCount = value; }
         }
         
+        SparseMemoryBind _Binds;
         public SparseMemoryBind Binds
         {
-            get { return NativePointer->Binds; }
-            set { NativePointer->Binds = value; }
+            get { return _Binds; }
+            set { _Binds = value; NativePointer->Binds = (IntPtr)(&value); }
         }
         
         public SparseBufferMemoryBindInfo()

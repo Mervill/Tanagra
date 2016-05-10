@@ -13,10 +13,11 @@ namespace Vulkan
             set { NativePointer->MapEntryCount = value; }
         }
         
+        SpecializationMapEntry _MapEntries;
         public SpecializationMapEntry MapEntries
         {
-            get { return NativePointer->MapEntries; }
-            set { NativePointer->MapEntries = value; }
+            get { return _MapEntries; }
+            set { _MapEntries = value; NativePointer->MapEntries = (IntPtr)(&value); }
         }
         
         public UIntPtr DataSize

@@ -32,10 +32,11 @@ namespace Vulkan
             set { NativePointer->PushConstantRangeCount = value; }
         }
         
+        PushConstantRange _PushConstantRanges;
         public PushConstantRange PushConstantRanges
         {
-            get { return NativePointer->PushConstantRanges; }
-            set { NativePointer->PushConstantRanges = value; }
+            get { return _PushConstantRanges; }
+            set { _PushConstantRanges = value; NativePointer->PushConstantRanges = (IntPtr)(&value); }
         }
         
         public PipelineLayoutCreateInfo()

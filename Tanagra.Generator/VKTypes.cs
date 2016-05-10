@@ -72,6 +72,12 @@ namespace Tanagra.Generator
 
         public bool HasPointerMembers => Members.Any(x => x.IsPointer || x.Type.Name == "Char");
 
+        /// <summary>
+        /// https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#extensions-interactions
+        /// </summary>
+        public bool IsExtensible
+            => Members.Any(x => x.SpecName == "sType") && Members.Any(x => x.SpecName == "pNext");
+
         public VkStruct()
         {
             Members = new VkMember[0];

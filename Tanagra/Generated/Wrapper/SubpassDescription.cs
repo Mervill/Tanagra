@@ -24,7 +24,7 @@ namespace Vulkan
             get { return NativePointer->InputAttachmentCount; }
             set { NativePointer->InputAttachmentCount = value; }
         }
-
+        
         AttachmentReference _InputAttachments;
         public AttachmentReference InputAttachments
         {
@@ -37,21 +37,27 @@ namespace Vulkan
             get { return NativePointer->ColorAttachmentCount; }
             set { NativePointer->ColorAttachmentCount = value; }
         }
-
-        AttachmentReference _ColorAttachments;
+        
         public AttachmentReference ColorAttachments
         {
-            get { return _ColorAttachments; }
-            set { _ColorAttachments = value; NativePointer->ColorAttachments = new IntPtr(&value); }
-        }
+            get { return *NativePointer->ColorAttachments; }
+            set
+            {
+                if(NativePointer->ColorAttachments == null)
+                    NativePointer->ColorAttachments = (AttachmentReference*)Interop.Structure.Allocate(typeof(AttachmentReference));
 
+                Marshal.StructureToPtr(value, (IntPtr)NativePointer->ColorAttachments, false);
+                //NativePointer->ColorAttachments = &value;
+            }
+        }
+        
         AttachmentReference _ResolveAttachments;
         public AttachmentReference ResolveAttachments
         {
             get { return _ResolveAttachments; }
             set { _ResolveAttachments = value; NativePointer->ResolveAttachments = (IntPtr)(&value); }
         }
-
+        
         AttachmentReference _DepthStencilAttachment;
         public AttachmentReference DepthStencilAttachment
         {
@@ -65,7 +71,7 @@ namespace Vulkan
             set { NativePointer->PreserveAttachmentCount = value; }
         }
         
-        public UInt32 PreserveAttachments
+        public IntPtr PreserveAttachments
         {
             get { return NativePointer->PreserveAttachments; }
             set { NativePointer->PreserveAttachments = value; }

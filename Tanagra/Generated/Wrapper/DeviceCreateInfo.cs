@@ -80,10 +80,11 @@ namespace Vulkan
             }
         }
         
+        PhysicalDeviceFeatures _EnabledFeatures;
         public PhysicalDeviceFeatures EnabledFeatures
         {
-            get { return NativePointer->EnabledFeatures; }
-            set { NativePointer->EnabledFeatures = value; }
+            get { return _EnabledFeatures; }
+            set { _EnabledFeatures = value; NativePointer->EnabledFeatures = (IntPtr)(&value); }
         }
         
         public DeviceCreateInfo()

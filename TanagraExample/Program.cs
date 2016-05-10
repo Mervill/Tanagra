@@ -23,6 +23,7 @@ namespace TanagraExample
     {
         static Form form;
 
+        // Handles
         static Instance instance;
         static PhysicalDevice physicalDevice;
         static SurfaceKHR surface;
@@ -38,6 +39,9 @@ namespace TanagraExample
         static List<ImageView> backBufferViews;
 
         static RenderPass renderPass;
+        static PipelineLayout pipelineLayout;
+        static Pipeline pipeline;
+        static Framebuffer[] framebuffers;
 
         static Buffer vertexBuffer;
         static DeviceMemory vertexBufferMemory;
@@ -58,6 +62,9 @@ namespace TanagraExample
 
             CreateVertexBuffer();
             CreateRenderPass();
+            CreatePipelineLayout();
+            //
+            CreateFramebuffers();
 
             Console.WriteLine("program complete");
             Console.ReadKey();
@@ -83,6 +90,8 @@ namespace TanagraExample
             var instanceCreateInfo = new InstanceCreateInfo();
             instanceCreateInfo.ApplicationInfo = appInfo;
             instanceCreateInfo.EnabledExtensionNames = instanceEnabledExtensions;
+
+            Console.WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
             instance = VK.CreateInstance(instanceCreateInfo);
             Console.WriteLine($"[ OK ] Instance {instance}");
@@ -418,7 +427,7 @@ namespace TanagraExample
 
         static void CreateRenderPass()
         {
-            var colorAttachmentReference        = new AttachmentReference { Attachment = 0, Layout = ImageLayout.ColorAttachmentOptimal };
+            var colorAttachmentReference        = new AttachmentReference { Attachment = 0, Layout = ImageLayout.ColorAttachmentOptimal        };
             var depthStencilAttachmentReference = new AttachmentReference { Attachment = 1, Layout = ImageLayout.DepthStencilAttachmentOptimal };
 
             var subpass = new SubpassDescription
@@ -427,7 +436,7 @@ namespace TanagraExample
                 ColorAttachmentCount = 1,
                 ColorAttachments     = colorAttachmentReference,
             };
-
+            
             var attachments = new[]
             {
                 new AttachmentDescription
@@ -451,8 +460,48 @@ namespace TanagraExample
                 Subpasses       = subpass
             };
 
+            Console.WriteLine(createInfo.Attachments.Format);
+
+            var subpasses = createInfo.Subpasses;
+            Console.WriteLine(subpasses.ColorAttachments.Layout);
+            Console.WriteLine(createInfo.Subpasses.ColorAttachments.Layout);
+
             renderPass = device.CreateRenderPass(createInfo);
             Console.WriteLine($"[ OK ] renderPass {renderPass}");
+        }
+
+        static void CreatePipelineLayout()
+        {
+            // We don't need any descriptors, since we don't use any resources/uniforms
+            var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo();
+            var descriptorSetLayout = device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo);
+
+            var createInfo = new PipelineLayoutCreateInfo();
+            pipelineLayout = device.CreatePipelineLayout(createInfo);
+            Console.WriteLine($"[ OK ] pipelineLayout {pipelineLayout}");
+
+            // Destroy temporary layout
+            device.DestroyDescriptorSetLayout(descriptorSetLayout);
+        }
+
+        static void CreateFramebuffers()
+        {
+            framebuffers = new Framebuffer[backBuffers.Count];
+            for(int i = 0; i < backBuffers.Count; i++)
+            {
+                var attachment = backBufferViews[i];
+                var createInfo = new FramebufferCreateInfo
+                {
+                    RenderPass = renderPass,
+                    AttachmentCount = 1,
+                    Attachments = attachment,
+                    Width = (uint)form.ClientSize.Width,
+                    Height = (uint)form.ClientSize.Height,
+                    Layers = 1
+                };
+                framebuffers[i] = device.CreateFramebuffer(createInfo);
+                Console.WriteLine($"[ OK ] framebuffers {framebuffers[i]} {i}/{backBuffers.Count}");
+            }
         }
 
         static void PhysicalDeviceProperties()

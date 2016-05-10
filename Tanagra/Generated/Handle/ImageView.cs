@@ -6,7 +6,7 @@ namespace Vulkan
     public class ImageView
     {
         internal UInt64 NativePointer;
-        
-        public override string ToString() => NativePointer.ToString("X8");
+
+        public override string ToString() => nameof(ImageView) + " " + NativePointer.ToString("X8");
     }
 }

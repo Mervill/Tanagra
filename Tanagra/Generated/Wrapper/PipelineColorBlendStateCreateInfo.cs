@@ -31,10 +31,11 @@ namespace Vulkan
             set { NativePointer->AttachmentCount = value; }
         }
         
+        PipelineColorBlendAttachmentState _Attachments;
         public PipelineColorBlendAttachmentState Attachments
         {
-            get { return NativePointer->Attachments; }
-            set { NativePointer->Attachments = value; }
+            get { return _Attachments; }
+            set { _Attachments = value; NativePointer->Attachments = (IntPtr)(&value); }
         }
         
         public Single BlendConstants

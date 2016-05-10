@@ -31,10 +31,11 @@ namespace Vulkan
             set { NativePointer->MinSampleShading = value; }
         }
         
+        SampleMask _SampleMask;
         public SampleMask SampleMask
         {
-            get { return NativePointer->SampleMask; }
-            set { NativePointer->SampleMask = value; }
+            get { return _SampleMask; }
+            set { _SampleMask = value; NativePointer->SampleMask = (IntPtr)(&value); }
         }
         
         public Bool32 AlphaToCoverageEnable

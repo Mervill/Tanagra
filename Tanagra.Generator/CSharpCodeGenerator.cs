@@ -5,6 +5,24 @@ using System.Text;
 
 namespace Tanagra.Generator
 {
+    // There are a few species of objects we need to handle:
+    //
+    // - Terminal Structs
+    //   - Contain only platform types and other Terminal Structs (also Bool32 and DeviceSize)
+    //   - Cannot contain pointers
+    //   - May contain other Terminal Structs so long as they are refrenced by value and not by pointer
+    //
+    // - Nonterminal Structs
+    //   - May contain pointers to Terminal and Nonterminal structs
+    //   - May refrence Terminal structs either by value or by pointer  
+    //   - Must use pointers to refrence other Nonterminal structs
+    //
+    // Notes:
+    //  - By default, structures use "copy" behaviour on assignment ie; the struct's data is copied
+    //    to a new struct instance and then assigned. So using a simmilar copy method in the interop
+    //    layer actually maintains expected functionality
+    //
+    // http://stackoverflow.com/questions/9302236/why-use-a-public-method-in-an-internal-class
     public class CSharpCodeGenerator
     {
         StringBuilder _sb;
@@ -186,7 +204,7 @@ namespace Tanagra.Generator
                         continue;
                     }
 
-                    if(member.Type is VkStruct && member.Type.Name != "Char")
+                    if(member.Type is VkStruct && !member.IsPointer && member.Type.Name != "Char")
                     {
                         var memberType = member.Type as VkStruct;
                         if(!memberType.HasPointerMembers)
@@ -372,14 +390,18 @@ namespace Tanagra.Generator
             if(vkMember.Type is VkStruct)
             {
                 var vkStruct = vkMember.Type as VkStruct;
-                if(vkStruct.HasPointerMembers)
+                if(vkMember.IsPointer || vkStruct.HasPointerMembers)
                 {
+                    // If this is a pointer to a struct that wont have a wrapper class generated 
+                    // for it, take the address of the struct directily instead of the NativePointer
+                    var valueCast = (vkMember.IsPointer && !vkStruct.HasPointerMembers) ? "(&value)" : $"value.{NativePointer}";
+
                     WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                     WriteLine("{");
                     _tabs++;
                     WriteLine($"get {{ return _{vkMember.Name}; }}");
-                    WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr)value.{NativePointer}; }}");
+                    WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
                     _tabs--;
                     WriteLine("}");
                 }

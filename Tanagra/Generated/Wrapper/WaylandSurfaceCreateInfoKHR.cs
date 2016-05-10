@@ -28,7 +28,7 @@ namespace Vulkan
         public WaylandSurfaceCreateInfoKHR()
         {
             NativePointer = (Interop.WaylandSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.WaylandSurfaceCreateInfoKHR));
-            //NativePointer->SType = StructureType.WaylandSurfaceCreateInfoKHR;
+            NativePointer->SType = StructureType.WaylandSurfaceCreateInfoKHR;
         }
     }
 }

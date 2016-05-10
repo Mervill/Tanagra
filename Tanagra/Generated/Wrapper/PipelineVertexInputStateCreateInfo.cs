@@ -19,10 +19,11 @@ namespace Vulkan
             set { NativePointer->VertexBindingDescriptionCount = value; }
         }
         
+        VertexInputBindingDescription _VertexBindingDescriptions;
         public VertexInputBindingDescription VertexBindingDescriptions
         {
-            get { return NativePointer->VertexBindingDescriptions; }
-            set { NativePointer->VertexBindingDescriptions = value; }
+            get { return _VertexBindingDescriptions; }
+            set { _VertexBindingDescriptions = value; NativePointer->VertexBindingDescriptions = (IntPtr)(&value); }
         }
         
         public UInt32 VertexAttributeDescriptionCount
@@ -31,10 +32,11 @@ namespace Vulkan
             set { NativePointer->VertexAttributeDescriptionCount = value; }
         }
         
+        VertexInputAttributeDescription _VertexAttributeDescriptions;
         public VertexInputAttributeDescription VertexAttributeDescriptions
         {
-            get { return NativePointer->VertexAttributeDescriptions; }
-            set { NativePointer->VertexAttributeDescriptions = value; }
+            get { return _VertexAttributeDescriptions; }
+            set { _VertexAttributeDescriptions = value; NativePointer->VertexAttributeDescriptions = (IntPtr)(&value); }
         }
         
         public PipelineVertexInputStateCreateInfo()

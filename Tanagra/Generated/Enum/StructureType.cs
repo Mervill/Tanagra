@@ -54,6 +54,16 @@ namespace Vulkan
         LoaderInstanceCreateInfo = 47,
         LoaderDeviceCreateInfo = 48,
         SwapchainCreateInfoKHR = 1000001000,
+        PresentInfoKHR = 1000001001,
+        DisplayModeCreateInfoKHR = 1000002000,
+        DisplaySurfaceCreateInfoKHR = 1000002001,
+        DisplayPresentInfoKHR = 1000003000,
+        XlibSurfaceCreateInfoKHR = 1000004000,
+        XcbSurfaceCreateInfoKHR = 1000005000,
+        WaylandSurfaceCreateInfoKHR = 1000006000,
+        MirSurfaceCreateInfoKHR = 1000007000,
+        AndroidSurfaceCreateInfoKHR = 1000008000,
         Win32SurfaceCreateInfoKHR = 1000009000,
+        DebugReportCallbackCreateInfoKHR = 1000011000,
     }
 }
