@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum DebugReportFlagsEXT
     {
+        None = 0,
         DebugReportInformationBitExt = 1 << 0,
         DebugReportWarningBitExt = 1 << 1,
         DebugReportPerformanceWarningBitExt = 1 << 2,

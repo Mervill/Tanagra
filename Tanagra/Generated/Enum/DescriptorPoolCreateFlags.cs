@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum DescriptorPoolCreateFlags
     {
+        None = 0,
         /// <summary>
         /// Descriptor sets may be freed individually
         /// </summary>

@@ -122,7 +122,12 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
 
-            foreach(var vkEnumValue in vkEnum.Values)
+            if(vkEnum.IsBitmask || vkEnum.Values.Any(x => x.Name == "None"))
+            {
+                WriteLine($"None = 0,");
+            }
+
+            foreach(var vkEnumValue in vkEnum.Values.Where(x => x.Name != "None"))
             {
                 var comment = vkEnumValue.Comment;
                 if(!string.IsNullOrEmpty(comment))

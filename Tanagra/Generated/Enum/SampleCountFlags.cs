@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum SampleCountFlags
     {
+        None = 0,
         /// <summary>
         /// Sample count 1 supported
         /// </summary>

@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum QueryPipelineStatisticFlags
     {
+        None = 0,
         /// <summary>
         /// Optional
         /// </summary>

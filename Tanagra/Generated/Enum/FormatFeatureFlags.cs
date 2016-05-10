@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum FormatFeatureFlags
     {
+        None = 0,
         /// <summary>
         /// Format can be used for sampled images (SAMPLED_IMAGE and COMBINED_IMAGE_SAMPLER descriptor types)
         /// </summary>

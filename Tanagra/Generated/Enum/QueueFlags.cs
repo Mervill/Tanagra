@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum QueueFlags
     {
+        None = 0,
         /// <summary>
         /// Queue supports graphics operations
         /// </summary>

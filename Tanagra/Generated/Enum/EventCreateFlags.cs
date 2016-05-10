@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum EventCreateFlags
     {
-        None = 1 << 0,
+        None = 0,
     }
 }

@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum QueryResultFlags
     {
+        None = 0,
         /// <summary>
         /// Results of the queries are written to the destination buffer as 64-bit values
         /// </summary>

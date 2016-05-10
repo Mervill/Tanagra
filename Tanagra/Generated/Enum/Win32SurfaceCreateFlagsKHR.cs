@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum Win32SurfaceCreateFlagsKHR
     {
-        None = 1 << 0,
+        None = 0,
     }
 }

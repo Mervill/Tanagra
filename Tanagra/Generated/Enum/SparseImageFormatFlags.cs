@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum SparseImageFormatFlags
     {
+        None = 0,
         /// <summary>
         /// Image uses a single miptail region for all array layers
         /// </summary>

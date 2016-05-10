@@ -5,7 +5,7 @@ namespace Vulkan
     [Flags]
     public enum CullModeFlags
     {
-        None = 1 << 0,
+        None = 0,
         Front = 1 << 0,
         Back = 1 << 1,
         FrontAndBack = 1 << 0x00000003,

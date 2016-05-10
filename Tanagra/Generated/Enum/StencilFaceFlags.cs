@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum StencilFaceFlags
     {
+        None = 0,
         /// <summary>
         /// Front face
         /// </summary>

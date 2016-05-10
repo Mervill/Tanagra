@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum MemoryPropertyFlags
     {
+        None = 0,
         /// <summary>
         /// If otherwise stated, then allocate memory on device
         /// </summary>

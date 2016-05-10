@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum CommandBufferUsageFlags
     {
+        None = 0,
         OneTimeSubmit = 1 << 0,
         RenderPassContinue = 1 << 1,
         /// <summary>

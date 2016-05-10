@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum BufferCreateFlags
     {
+        None = 0,
         /// <summary>
         /// Buffer should support sparse backing
         /// </summary>

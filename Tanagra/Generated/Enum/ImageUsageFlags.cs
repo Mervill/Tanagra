@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum ImageUsageFlags
     {
+        None = 0,
         /// <summary>
         /// Can be used as a source of transfer operations
         /// </summary>

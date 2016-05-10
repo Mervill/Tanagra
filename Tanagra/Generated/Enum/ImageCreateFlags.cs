@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum ImageCreateFlags
     {
+        None = 0,
         /// <summary>
         /// Image should support sparse backing
         /// </summary>

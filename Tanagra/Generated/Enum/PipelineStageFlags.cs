@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum PipelineStageFlags
     {
+        None = 0,
         /// <summary>
         /// Before subsequent commands are processed
         /// </summary>

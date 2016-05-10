@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum AccessFlags
     {
+        None = 0,
         /// <summary>
         /// Controls coherency of indirect command reads
         /// </summary>

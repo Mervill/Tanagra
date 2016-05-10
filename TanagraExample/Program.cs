@@ -64,7 +64,7 @@ namespace TanagraExample
             CreateVertexBuffer();
             CreateRenderPass();
             CreatePipelineLayout();
-            CreatePipeline();
+            //CreatePipeline();
             CreateFramebuffers();
 
             Console.WriteLine("program complete");
@@ -485,7 +485,7 @@ namespace TanagraExample
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
         }
 
-        private void CreatePipeline()
+        /*private void CreatePipeline()
         {
             var dynamicStates = new [] { DynamicState.Viewport, DynamicState.Scissor };
 
@@ -577,9 +577,9 @@ namespace TanagraExample
             {
                 device.DestroyShaderModule(shaderStage.Module);
             }
-        }
+        }*/
 
-        private ShaderModule CreateVertexShader()
+        /*private ShaderModule CreateVertexShader()
         {
             var bytes = File.ReadAllBytes("vert.spv");
             return CreateShaderModule(bytes);
@@ -599,7 +599,7 @@ namespace TanagraExample
                 Code = new IntPtr(codePointer)
             };
             return device.CreateShaderModule(createInfo);
-        }
+        }*/
 
         static void CreateFramebuffers()
         {

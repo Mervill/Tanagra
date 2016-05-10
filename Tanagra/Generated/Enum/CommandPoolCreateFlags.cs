@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum CommandPoolCreateFlags
     {
+        None = 0,
         /// <summary>
         /// Command buffers have a short lifetime
         /// </summary>

@@ -5,6 +5,6 @@ namespace Vulkan
     [Flags]
     public enum SemaphoreCreateFlags
     {
-        None = 1 << 0,
+        None = 0,
     }
 }

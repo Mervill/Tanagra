@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum ShaderStageFlags
     {
+        None = 0,
         Vertex = 1 << 0,
         TessellationControl = 1 << 1,
         TessellationEvaluation = 1 << 2,

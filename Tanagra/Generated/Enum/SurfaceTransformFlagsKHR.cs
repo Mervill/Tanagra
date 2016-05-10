@@ -5,6 +5,7 @@ namespace Vulkan
     [Flags]
     public enum SurfaceTransformFlagsKHR
     {
+        None = 0,
         Identity = 1 << 0,
         Rotate90 = 1 << 1,
         Rotate180 = 1 << 2,
