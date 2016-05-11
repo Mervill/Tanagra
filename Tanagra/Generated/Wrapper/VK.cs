@@ -22,7 +22,7 @@ namespace Vulkan
         
         public static void DestroyInstance(Instance instance, AllocationCallbacks allocator = null)
         {
-            vkDestroyInstance(instance.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyInstance((instance != null) ? instance.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
@@ -57,7 +57,7 @@ namespace Vulkan
         
         public static PFN_vkVoidFunction GetInstanceProcAddr(Instance instance, String name)
         {
-            var result = vkGetInstanceProcAddr(instance.NativePointer, name);
+            var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
             return result;
         }
         
@@ -130,7 +130,7 @@ namespace Vulkan
         
         public static void DestroyDevice(Device device, AllocationCallbacks allocator = null)
         {
-            vkDestroyDevice(device.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyDevice((device != null) ? device.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static List<LayerProperties> EnumerateInstanceLayerProperties()
@@ -285,7 +285,7 @@ namespace Vulkan
         
         public static void FreeMemory(Device device, DeviceMemory memory, AllocationCallbacks allocator = null)
         {
-            vkFreeMemory(device.NativePointer, memory.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkFreeMemory(device.NativePointer, (memory != null) ? memory.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static IntPtr MapMemory(Device device, DeviceMemory memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags)
@@ -410,7 +410,7 @@ namespace Vulkan
             for(var x = 0; x < bindInfoCount; x++)
                 _bindInfoPtr[x] = bindInfo[x].NativePointer;
             
-            var result = vkQueueBindSparse(queue.NativePointer, bindInfoCount, (Interop.BindSparseInfo*)_bindInfoPtr, fence.NativePointer);
+            var result = vkQueueBindSparse(queue.NativePointer, bindInfoCount, (Interop.BindSparseInfo*)_bindInfoPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueBindSparse), result);
         }
@@ -429,7 +429,7 @@ namespace Vulkan
         
         public static void DestroyFence(Device device, Fence fence, AllocationCallbacks allocator = null)
         {
-            vkDestroyFence(device.NativePointer, fence.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyFence(device.NativePointer, (fence != null) ? fence.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static void ResetFences(Device device, List<Fence> fences)
@@ -481,7 +481,7 @@ namespace Vulkan
         
         public static void DestroySemaphore(Device device, Semaphore semaphore, AllocationCallbacks allocator = null)
         {
-            vkDestroySemaphore(device.NativePointer, semaphore.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroySemaphore(device.NativePointer, (semaphore != null) ? semaphore.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static Event CreateEvent(Device device, EventCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -498,7 +498,7 @@ namespace Vulkan
         
         public static void DestroyEvent(Device device, Event @event, AllocationCallbacks allocator = null)
         {
-            vkDestroyEvent(device.NativePointer, @event.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyEvent(device.NativePointer, (@event != null) ? @event.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static void GetEventStatus(Device device, Event @event)
@@ -536,7 +536,7 @@ namespace Vulkan
         
         public static void DestroyQueryPool(Device device, QueryPool queryPool, AllocationCallbacks allocator = null)
         {
-            vkDestroyQueryPool(device.NativePointer, queryPool.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyQueryPool(device.NativePointer, (queryPool != null) ? queryPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         /*public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
@@ -567,7 +567,7 @@ namespace Vulkan
         
         public static void DestroyBuffer(Device device, Buffer buffer, AllocationCallbacks allocator = null)
         {
-            vkDestroyBuffer(device.NativePointer, buffer.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyBuffer(device.NativePointer, (buffer != null) ? buffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static BufferView CreateBufferView(Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -584,7 +584,7 @@ namespace Vulkan
         
         public static void DestroyBufferView(Device device, BufferView bufferView, AllocationCallbacks allocator = null)
         {
-            vkDestroyBufferView(device.NativePointer, bufferView.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyBufferView(device.NativePointer, (bufferView != null) ? bufferView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static Image CreateImage(Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -601,7 +601,7 @@ namespace Vulkan
         
         public static void DestroyImage(Device device, Image image, AllocationCallbacks allocator = null)
         {
-            vkDestroyImage(device.NativePointer, image.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyImage(device.NativePointer, (image != null) ? image.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static SubresourceLayout GetImageSubresourceLayout(Device device, Image image, ImageSubresource subresource)
@@ -625,7 +625,7 @@ namespace Vulkan
         
         public static void DestroyImageView(Device device, ImageView imageView, AllocationCallbacks allocator = null)
         {
-            vkDestroyImageView(device.NativePointer, imageView.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyImageView(device.NativePointer, (imageView != null) ? imageView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static ShaderModule CreateShaderModule(Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -642,7 +642,7 @@ namespace Vulkan
         
         public static void DestroyShaderModule(Device device, ShaderModule shaderModule, AllocationCallbacks allocator = null)
         {
-            vkDestroyShaderModule(device.NativePointer, shaderModule.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyShaderModule(device.NativePointer, (shaderModule != null) ? shaderModule.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static PipelineCache CreatePipelineCache(Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -659,7 +659,7 @@ namespace Vulkan
         
         public static void DestroyPipelineCache(Device device, PipelineCache pipelineCache, AllocationCallbacks allocator = null)
         {
-            vkDestroyPipelineCache(device.NativePointer, pipelineCache.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyPipelineCache(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         /*public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
@@ -706,10 +706,15 @@ namespace Vulkan
             var _createInfosPtr = (void**)Marshal.AllocHGlobal((int)(_createInfosSize * createInfoCount));
             for(var x = 0; x < createInfoCount; x++)
                 _createInfosPtr[x] = createInfos[x].NativePointer;
+
+            var pipeline = new Pipeline();
+            fixed (UInt64* ptrPipeline = &pipeline.NativePointer)
+            {
+                var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, (Interop.GraphicsPipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, ptrPipeline);
+                if(result != Result.Success)
+                    throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
+            }
             
-            var result = vkCreateGraphicsPipelines(device.NativePointer, pipelineCache.NativePointer, createInfoCount, (Interop.GraphicsPipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, null);
-            if(result != Result.Success)
-                throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
             throw new NotImplementedException();
         }
         
@@ -722,7 +727,7 @@ namespace Vulkan
             for(var x = 0; x < createInfoCount; x++)
                 _createInfosPtr[x] = createInfos[x].NativePointer;
             
-            var result = vkCreateComputePipelines(device.NativePointer, pipelineCache.NativePointer, createInfoCount, (Interop.ComputePipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, null);
+            var result = vkCreateComputePipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, (Interop.ComputePipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, null);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkCreateComputePipelines), result);
             throw new NotImplementedException();
@@ -730,7 +735,7 @@ namespace Vulkan
         
         public static void DestroyPipeline(Device device, Pipeline pipeline, AllocationCallbacks allocator = null)
         {
-            vkDestroyPipeline(device.NativePointer, pipeline.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyPipeline(device.NativePointer, (pipeline != null) ? pipeline.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static PipelineLayout CreatePipelineLayout(Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -747,7 +752,7 @@ namespace Vulkan
         
         public static void DestroyPipelineLayout(Device device, PipelineLayout pipelineLayout, AllocationCallbacks allocator = null)
         {
-            vkDestroyPipelineLayout(device.NativePointer, pipelineLayout.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyPipelineLayout(device.NativePointer, (pipelineLayout != null) ? pipelineLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static Sampler CreateSampler(Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -764,7 +769,7 @@ namespace Vulkan
         
         public static void DestroySampler(Device device, Sampler sampler, AllocationCallbacks allocator = null)
         {
-            vkDestroySampler(device.NativePointer, sampler.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroySampler(device.NativePointer, (sampler != null) ? sampler.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static DescriptorSetLayout CreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -781,7 +786,7 @@ namespace Vulkan
         
         public static void DestroyDescriptorSetLayout(Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks allocator = null)
         {
-            vkDestroyDescriptorSetLayout(device.NativePointer, descriptorSetLayout.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyDescriptorSetLayout(device.NativePointer, (descriptorSetLayout != null) ? descriptorSetLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static DescriptorPool CreateDescriptorPool(Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -798,7 +803,7 @@ namespace Vulkan
         
         public static void DestroyDescriptorPool(Device device, DescriptorPool descriptorPool, AllocationCallbacks allocator = null)
         {
-            vkDestroyDescriptorPool(device.NativePointer, descriptorPool.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyDescriptorPool(device.NativePointer, (descriptorPool != null) ? descriptorPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static void ResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags)
@@ -878,7 +883,7 @@ namespace Vulkan
         
         public static void DestroyFramebuffer(Device device, Framebuffer framebuffer, AllocationCallbacks allocator = null)
         {
-            vkDestroyFramebuffer(device.NativePointer, framebuffer.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyFramebuffer(device.NativePointer, (framebuffer != null) ? framebuffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static RenderPass CreateRenderPass(Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -895,7 +900,7 @@ namespace Vulkan
         
         public static void DestroyRenderPass(Device device, RenderPass renderPass, AllocationCallbacks allocator = null)
         {
-            vkDestroyRenderPass(device.NativePointer, renderPass.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyRenderPass(device.NativePointer, (renderPass != null) ? renderPass.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static Extent2D GetRenderAreaGranularity(Device device, RenderPass renderPass)
@@ -919,7 +924,7 @@ namespace Vulkan
         
         public static void DestroyCommandPool(Device device, CommandPool commandPool, AllocationCallbacks allocator = null)
         {
-            vkDestroyCommandPool(device.NativePointer, commandPool.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroyCommandPool(device.NativePointer, (commandPool != null) ? commandPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static void ResetCommandPool(Device device, CommandPool commandPool, CommandPoolResetFlags flags)
@@ -932,9 +937,10 @@ namespace Vulkan
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.CommandBufferCount;
-            //var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
-            //if(result != Result.Success)
-                //throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);
+            /*var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);*/
+
             Result result;
             var arrayCommandBuffer = new IntPtr[listLength];
             fixed(IntPtr* resultPtr = &arrayCommandBuffer[0])
@@ -1549,7 +1555,7 @@ namespace Vulkan
         
         public static void DestroySurfaceKHR(Instance instance, SurfaceKHR surface, AllocationCallbacks allocator = null)
         {
-            vkDestroySurfaceKHR(instance.NativePointer, surface.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroySurfaceKHR(instance.NativePointer, (surface != null) ? surface.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static Bool32 GetPhysicalDeviceSurfaceSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, SurfaceKHR surface)
@@ -1599,8 +1605,8 @@ namespace Vulkan
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
             
-            var arrayPresentMode = new PresentModeKHR[listLength];
-            fixed(PresentModeKHR* resultPtr = &arrayPresentMode[0])
+            var arrayPresentModeKHR = new PresentModeKHR[listLength];
+            fixed(PresentModeKHR* resultPtr = &arrayPresentModeKHR[0])
                 result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, resultPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
@@ -1608,7 +1614,7 @@ namespace Vulkan
             var list = new List<PresentModeKHR>();
             for(var x = 0; x < listLength; x++)
             {
-                list.Add(arrayPresentMode[x]);
+                list.Add(arrayPresentModeKHR[x]);
             }
             
             return list;
@@ -1628,7 +1634,7 @@ namespace Vulkan
         
         public static void DestroySwapchainKHR(Device device, SwapchainKHR swapchain, AllocationCallbacks allocator = null)
         {
-            vkDestroySwapchainKHR(device.NativePointer, swapchain.NativePointer, (allocator != null) ? allocator.NativePointer : null);
+            vkDestroySwapchainKHR(device.NativePointer, (swapchain != null) ? swapchain.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
         public static List<Image> GetSwapchainImagesKHR(Device device, SwapchainKHR swapchain)
@@ -1658,7 +1664,7 @@ namespace Vulkan
         public static UInt32 AcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence)
         {
             var imageIndex = new UInt32();
-            var result = vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, semaphore.NativePointer, fence.NativePointer, &imageIndex);
+            var result = vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, (semaphore != null) ? semaphore.NativePointer : 0, (fence != null) ? fence.NativePointer : 0, &imageIndex);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkAcquireNextImageKHR), result);
             return imageIndex;
@@ -1764,6 +1770,43 @@ namespace Vulkan
         public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message)
         {
             vkDebugReportMessageEXT(instance.NativePointer, flags, objectType, @object, location, messageCode, layerPrefix, message);
+        }
+        
+        public static DebugMarkerObjectNameInfoEXT DebugMarkerSetObjectNameEXT(Device device)
+        {
+            var nameInfo = new DebugMarkerObjectNameInfoEXT();
+            var result = vkDebugMarkerSetObjectNameEXT(device.NativePointer, nameInfo.NativePointer);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkDebugMarkerSetObjectNameEXT), result);
+            return nameInfo;
+        }
+        
+        public static DebugMarkerObjectTagInfoEXT DebugMarkerSetObjectTagEXT(Device device)
+        {
+            var tagInfo = new DebugMarkerObjectTagInfoEXT();
+            var result = vkDebugMarkerSetObjectTagEXT(device.NativePointer, tagInfo.NativePointer);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkDebugMarkerSetObjectTagEXT), result);
+            return tagInfo;
+        }
+        
+        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerBeginEXT(CommandBuffer commandBuffer)
+        {
+            var markerInfo = new DebugMarkerMarkerInfoEXT();
+            vkCmdDebugMarkerBeginEXT(commandBuffer.NativePointer, markerInfo.NativePointer);
+            return markerInfo;
+        }
+        
+        public static void CmdDebugMarkerEndEXT(CommandBuffer commandBuffer)
+        {
+            vkCmdDebugMarkerEndEXT(commandBuffer.NativePointer);
+        }
+        
+        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerInsertEXT(CommandBuffer commandBuffer)
+        {
+            var markerInfo = new DebugMarkerMarkerInfoEXT();
+            vkCmdDebugMarkerInsertEXT(commandBuffer.NativePointer, markerInfo.NativePointer);
+            return markerInfo;
         }
         
     }

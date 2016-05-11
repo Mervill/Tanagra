@@ -34,7 +34,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->StageCount = (uint)valueCount;
-                NativePointer->Stages = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount));
+                NativePointer->Stages = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount);
                 var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;

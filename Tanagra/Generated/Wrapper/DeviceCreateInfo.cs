@@ -34,7 +34,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->QueueCreateInfoCount = (uint)valueCount;
-                NativePointer->QueueCreateInfos = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.DeviceQueueCreateInfo>() * valueCount));
+                NativePointer->QueueCreateInfos = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DeviceQueueCreateInfo>() * valueCount);
                 var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;

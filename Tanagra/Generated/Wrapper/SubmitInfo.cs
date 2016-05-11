@@ -53,7 +53,13 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->CommandBufferCount;
+                var valueArray = new CommandBuffer[valueCount];
+                var ptr = (IntPtr*)NativePointer->CommandBuffers;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new CommandBuffer { NativePointer = ptr[x] };
+
+                return valueArray;
             }
             set
             {

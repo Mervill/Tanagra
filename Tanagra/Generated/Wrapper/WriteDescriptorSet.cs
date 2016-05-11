@@ -53,7 +53,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->DescriptorCount = (uint)valueCount;
-                NativePointer->ImageInfo = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorImageInfo>() * valueCount));
+                NativePointer->ImageInfo = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorImageInfo>() * valueCount);
                 var ptr = (DescriptorImageInfo*)NativePointer->ImageInfo;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
@@ -75,7 +75,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->DescriptorCount = (uint)valueCount;
-                NativePointer->BufferInfo = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorBufferInfo>() * valueCount));
+                NativePointer->BufferInfo = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorBufferInfo>() * valueCount);
                 var ptr = (DescriptorBufferInfo*)NativePointer->BufferInfo;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

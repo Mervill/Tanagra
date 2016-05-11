@@ -68,7 +68,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->SwapchainCount = (uint)valueCount;
-                NativePointer->ImageIndices = Marshal.AllocHGlobal((int)(Marshal.SizeOf<UInt32>() * valueCount));
+                NativePointer->ImageIndices = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->ImageIndices;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

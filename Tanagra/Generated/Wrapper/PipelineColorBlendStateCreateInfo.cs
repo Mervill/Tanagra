@@ -46,7 +46,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->AttachmentCount = (uint)valueCount;
-                NativePointer->Attachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount));
+                NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount);
                 var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

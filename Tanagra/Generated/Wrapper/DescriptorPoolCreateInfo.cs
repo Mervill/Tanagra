@@ -40,7 +40,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->PoolSizeCount = (uint)valueCount;
-                NativePointer->PoolSizes = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorPoolSize>() * valueCount));
+                NativePointer->PoolSizes = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorPoolSize>() * valueCount);
                 var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

@@ -35,7 +35,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->BindCount = (uint)valueCount;
-                NativePointer->Binds = Marshal.AllocHGlobal((int)(Marshal.SizeOf<SparseImageMemoryBind>() * valueCount));
+                NativePointer->Binds = Marshal.AllocHGlobal(Marshal.SizeOf<SparseImageMemoryBind>() * valueCount);
                 var ptr = (SparseImageMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

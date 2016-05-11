@@ -67,7 +67,7 @@ namespace TanagraExample
             CreateVertexBuffer();
             CreateRenderPass();
             CreatePipelineLayout();
-            //CreatePipeline();
+            CreatePipeline();
             CreateFramebuffers();
 
             Console.WriteLine("program complete");
@@ -329,6 +329,8 @@ namespace TanagraExample
             {
                 CommandBuffers = new[] { setupCommanBuffer }
             };
+
+            Console.WriteLine($"[ OK ] {setupCommanBuffer} / {submitInfo.CommandBuffers[0]}");
 
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
             Console.WriteLine("[ OK ] queue.Submit");

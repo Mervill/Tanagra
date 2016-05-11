@@ -72,5 +72,14 @@ namespace Vulkan
         /// Requested format is not supported on this device
         /// </summary>
         ErrorFormatNotSupported = -11,
+        ERROR_SURFACE_LOST_KHR = -1000000000,
+        ERROR_NATIVE_WINDOW_IN_USE_KHR = -1000000001,
+        SUBOPTIMAL_KHR = 1000001003,
+        ERROR_OUT_OF_DATE_KHR = -1000001004,
+        ERROR_INCOMPATIBLE_DISPLAY_KHR = -1000003001,
+        ERROR_VALIDATION_FAILED_EXT = -1000011001,
+        RESULT_BEGIN_RANGE = ErrorFormatNotSupported,
+        RESULT_END_RANGE = Incomplete,
+        RESULT_RANGE_SIZE = (Incomplete - ErrorFormatNotSupported + 1),
     }
 }

@@ -40,7 +40,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->InputAttachmentCount = (uint)valueCount;
-                NativePointer->InputAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                NativePointer->InputAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->InputAttachments;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
@@ -68,7 +68,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->ColorAttachmentCount = (uint)valueCount;
-                NativePointer->ColorAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                NativePointer->ColorAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
@@ -90,7 +90,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->ColorAttachmentCount = (uint)valueCount;
-                NativePointer->ResolveAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                NativePointer->ResolveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
@@ -125,7 +125,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->PreserveAttachmentCount = (uint)valueCount;
-                NativePointer->PreserveAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<UInt32>() * valueCount));
+                NativePointer->PreserveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->PreserveAttachments;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

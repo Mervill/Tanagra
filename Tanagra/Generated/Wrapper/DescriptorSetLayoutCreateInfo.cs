@@ -34,7 +34,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->BindingCount = (uint)valueCount;
-                NativePointer->Bindings = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.DescriptorSetLayoutBinding>() * valueCount));
+                NativePointer->Bindings = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorSetLayoutBinding>() * valueCount);
                 var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;

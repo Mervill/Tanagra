@@ -40,7 +40,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->QueueCount = (uint)valueCount;
-                NativePointer->QueuePriorities = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Single>() * valueCount));
+                NativePointer->QueuePriorities = Marshal.AllocHGlobal(Marshal.SizeOf<Single>() * valueCount);
                 var ptr = (Single*)NativePointer->QueuePriorities;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

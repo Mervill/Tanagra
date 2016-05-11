@@ -51,7 +51,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->BufferBindCount = (uint)valueCount;
-                NativePointer->BufferBinds = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.SparseBufferMemoryBindInfo>() * valueCount));
+                NativePointer->BufferBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseBufferMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseBufferMemoryBindInfo*)NativePointer->BufferBinds;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;
@@ -79,7 +79,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->ImageOpaqueBindCount = (uint)valueCount;
-                NativePointer->ImageOpaqueBinds = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.SparseImageOpaqueMemoryBindInfo>() * valueCount));
+                NativePointer->ImageOpaqueBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageOpaqueMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseImageOpaqueMemoryBindInfo*)NativePointer->ImageOpaqueBinds;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;
@@ -107,7 +107,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->ImageBindCount = (uint)valueCount;
-                NativePointer->ImageBinds = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.SparseImageMemoryBindInfo>() * valueCount));
+                NativePointer->ImageBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseImageMemoryBindInfo*)NativePointer->ImageBinds;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;

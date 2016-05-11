@@ -57,7 +57,7 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->PushConstantRangeCount = (uint)valueCount;
-                NativePointer->PushConstantRanges = Marshal.AllocHGlobal((int)(Marshal.SizeOf<PushConstantRange>() * valueCount));
+                NativePointer->PushConstantRanges = Marshal.AllocHGlobal(Marshal.SizeOf<PushConstantRange>() * valueCount);
                 var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];

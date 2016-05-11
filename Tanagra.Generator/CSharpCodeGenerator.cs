@@ -945,9 +945,19 @@ namespace Tanagra.Generator
                         else
                         {
                             // struct or handle, pass the native pointer
-                            if(!(vkParam.Type is VkHandle) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true")
+                            // !(vkParam.Type is VkHandle) && 
+                            if(vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true")
                             {
-                                Write($"({vkParam.Name} != null) ? {vkParam.Name}.{NativePointer} : null");
+                                //var nullValue = (vkParam.Type is VkHandle) ? "0" : "null";
+                                var nullValue = "null";
+                                if(vkParam.Type is VkHandle)
+                                {
+                                    nullValue = "0";
+                                    if(((VkHandle)vkParam.Type).IsDispatchable)
+                                        nullValue = "IntPtr.Zero";
+                                }
+
+                                Write($"({vkParam.Name} != null) ? {vkParam.Name}.{NativePointer} : {nullValue}");
                             }
                             else
                             {
@@ -1200,9 +1210,9 @@ namespace Tanagra.Generator
         string GenerateHandleExtensions(IEnumerable<VkHandle> vkHandles, IEnumerable<VkCommand> vkCommands)
         {
             Clear();
-
             WriteLine("using System;");
             WriteLine("using System.Collections.Generic;");
+            //WriteLine("using System.Diagnostics;");
             WriteLine("");
             WriteLine("namespace Vulkan.ObjectModel");
             WriteLine("{");
@@ -1305,6 +1315,7 @@ namespace Tanagra.Generator
                     var hasReturnValue = (returnParam == null) && (returnType != "void");
 
                     WriteTabs();
+                    //WriteLine("[DebuggerStepThrough]");
                     Write("public static ");
 
                     var commandName = vkCommand.Name;
