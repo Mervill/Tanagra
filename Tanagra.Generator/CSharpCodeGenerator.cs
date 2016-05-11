@@ -166,7 +166,7 @@ namespace Tanagra.Generator
             var type = (vkHandle.IsDispatchable) ? "IntPtr" : "UInt64";
             WriteLine($"internal {type} {NativePointer};");
             WriteLine("");
-            WriteLine($"public override string ToString() => {NativePointer}.ToString(\"X8\");");
+            WriteLine($"public override string ToString() => \"{name} 0x\" + {NativePointer}.ToString(\"X8\");");
             _tabs--;
             WriteLine("}");
             _tabs--;

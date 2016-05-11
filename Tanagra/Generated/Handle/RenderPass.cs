@@ -7,6 +7,6 @@ namespace Vulkan
     {
         internal UInt64 NativePointer;
         
-        public override string ToString() => nameof(RenderPass) + " " + NativePointer.ToString("X8");
+        public override string ToString() => "RenderPass 0x" + NativePointer.ToString("X8");
     }
 }

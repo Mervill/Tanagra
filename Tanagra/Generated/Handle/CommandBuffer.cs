@@ -9,6 +9,6 @@ namespace Vulkan
 
         public bool IsValid => NativePointer != IntPtr.Zero;
 
-        public override string ToString() => NativePointer.ToString("X8");
+        public override string ToString() => "CommandBuffer 0x" + NativePointer.ToString("X8");
     }
 }

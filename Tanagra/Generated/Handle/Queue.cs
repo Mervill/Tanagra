@@ -7,6 +7,6 @@ namespace Vulkan
     {
         internal IntPtr NativePointer;
         
-        public override string ToString() => NativePointer.ToString("X8");
+        public override string ToString() => "Queue 0x" + NativePointer.ToString("X8");
     }
 }
