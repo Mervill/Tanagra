@@ -19,11 +19,16 @@ namespace Vulkan
             set { NativePointer->StageCount = value; }
         }
         
-        PipelineShaderStageCreateInfo _Stages;
-        public PipelineShaderStageCreateInfo Stages
+        public PipelineShaderStageCreateInfo[] Stages
         {
-            get { return _Stages; }
-            set { _Stages = value; NativePointer->Stages = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         PipelineVertexInputStateCreateInfo _VertexInputState;

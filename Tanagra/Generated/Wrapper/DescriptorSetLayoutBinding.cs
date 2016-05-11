@@ -31,11 +31,16 @@ namespace Vulkan
             set { NativePointer->StageFlags = value; }
         }
         
-        Sampler _ImmutableSamplers;
-        public Sampler ImmutableSamplers
+        public Sampler[] ImmutableSamplers
         {
-            get { return _ImmutableSamplers; }
-            set { _ImmutableSamplers = value; NativePointer->ImmutableSamplers = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DescriptorSetLayoutBinding()

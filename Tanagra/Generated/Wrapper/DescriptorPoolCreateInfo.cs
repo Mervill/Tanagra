@@ -25,11 +25,16 @@ namespace Vulkan
             set { NativePointer->PoolSizeCount = value; }
         }
         
-        DescriptorPoolSize _PoolSizes;
-        public DescriptorPoolSize PoolSizes
+        public DescriptorPoolSize[] PoolSizes
         {
-            get { return _PoolSizes; }
-            set { _PoolSizes = value; NativePointer->PoolSizes = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DescriptorPoolCreateInfo()

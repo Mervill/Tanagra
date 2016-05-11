@@ -51,8 +51,11 @@ namespace TanagraExample
 
         static void Main(string[] args)
         {
-            form = new RenderForm("Tanagra - Vulkan Sample");
+            var ptrSize = IntPtr.Size;
+            Console.WriteLine($"Running in {((ptrSize == 4) ? "x86" : "x64")} mode, IntPtr.Size = {ptrSize}");
 
+            form = new RenderForm("Tanagra - Vulkan Sample");
+            
             CreateInstance();
             CreateSurface();
             CreateDevice();
@@ -95,15 +98,17 @@ namespace TanagraExample
             Console.WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
             instance = VK.CreateInstance(instanceCreateInfo);
-            Console.WriteLine($"[ OK ] Instance {instance}");
+            Console.WriteLine($"[ OK ] {instance}");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
             Console.WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
 
             physicalDevice = physicalDevices[0];
-            Console.WriteLine($"[ OK ] Physical Device {physicalDevice}");
+            Console.WriteLine($"[ OK ] {physicalDevice}");
 
-            PhysicalDeviceProperties();
+            //appInfo.Dispose();
+            //instanceCreateInfo.Dispose();
+            //PhysicalDeviceProperties();
         }
 
         static void CreateDevice()
@@ -128,7 +133,7 @@ namespace TanagraExample
             };
 
             device = physicalDevice.CreateDevice(deviceCreateInfo);
-            Console.WriteLine("[ OK ] Device " + device);
+            Console.WriteLine($"[ OK ] {device}");
 
             Console.WriteLine($"[INFO] Begin GetQueueFamilyProperties");
             var queueNodeIndex = physicalDevice.GetQueueFamilyProperties()
@@ -137,7 +142,7 @@ namespace TanagraExample
                 .First();
 
             queue = device.GetQueue(0, (uint)queueNodeIndex);
-            Console.WriteLine($"[ OK ] Queue {queue}");
+            Console.WriteLine($"[ OK ] {queue}");
         }
 
         static void CreateSurface()
@@ -150,7 +155,7 @@ namespace TanagraExample
                 Hwnd = form.Handle//HWND,
             };
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
-            Console.WriteLine($"[ OK ] Surface {surface}");
+            Console.WriteLine($"[ OK ] {surface}");
         }
 
         static void CreateCommandBuffer()
@@ -162,7 +167,7 @@ namespace TanagraExample
                 Flags = CommandPoolCreateFlags.ResetCommandBuffer,
             };
             commandPool = device.CreateCommandPool(commandPoolCreateInfo);
-            Console.WriteLine($"[ OK ] Command Pool {commandPool}");
+            Console.WriteLine($"[ OK ] {commandPool}");
 
             // Command Buffer
             var commandBufferAllocationInfo = new CommandBufferAllocateInfo
@@ -173,7 +178,7 @@ namespace TanagraExample
             };
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
-            Console.WriteLine("[ OK ] Command Buffer " + commandBuffer[0]);
+            Console.WriteLine($"[ OK ] {commandBuffer[0]}");
             //if (!commandBuffer[0].IsValid) throw new Exception();
         }
 
@@ -241,7 +246,7 @@ namespace TanagraExample
                 Clipped          = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
-            Console.WriteLine($"[ OK ] Swapchain {swapchain}");
+            Console.WriteLine($"[ OK ] {swapchain}");
 
             backBuffers = device.GetSwapchainImagesKHR(swapchain);
             Console.WriteLine($"[INFO] backBuffers {backBuffers.Count}");
@@ -265,7 +270,7 @@ namespace TanagraExample
                 };
                 setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
                 setupCommanBuffer = setupBuffer;
-                Console.WriteLine($"[ OK ] Command Buffer {setupCommanBuffer}");
+                Console.WriteLine($"[ OK ] {setupCommanBuffer}");
 
                 var inheritanceInfo = new CommandBufferInheritanceInfo();
                 var beginInfo = new CommandBufferBeginInfo
@@ -328,18 +333,7 @@ namespace TanagraExample
                 CommandBuffers     = setupCommanBuffer
             };
 
-            try
-            {
-                queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"[FAIL] {e.Message}");
-                //https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#devsandqueues-lost-device
-                //queue = device.GetQueue(0, 0U);
-                //Console.WriteLine("[ OK ] Queue " + queue);
-            }
-
+            queue.Submit(new List<SubmitInfo> { submitInfo }, null);
             Console.WriteLine("[ OK ] queue.Submit");
 
             queue.WaitIdle();
@@ -392,7 +386,7 @@ namespace TanagraExample
                 Size = (ulong)(sizeof(float) * vertices.Length),
             };
             vertexBuffer = device.CreateBuffer(createInfo);
-            Console.WriteLine($"[ OK ] vertexBuffer {vertexBuffer}");
+            Console.WriteLine($"[ OK ] {vertexBuffer}");
 
             var memoryRequirements = device.GetBufferMemoryRequirements(vertexBuffer);
 
@@ -405,7 +399,7 @@ namespace TanagraExample
                 MemoryTypeIndex = 2,
             };
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
-            Console.WriteLine($"[ OK ] vertexBufferMemory {vertexBufferMemory}");
+            Console.WriteLine($"[ OK ] {vertexBufferMemory}");
 
             var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
             Utils.Copy2DArray(vertices, mapped, createInfo.Size, createInfo.Size);
@@ -468,7 +462,7 @@ namespace TanagraExample
             Console.WriteLine(createInfo.Subpasses.ColorAttachments.Layout);
 
             renderPass = device.CreateRenderPass(createInfo);
-            Console.WriteLine($"[ OK ] renderPass {renderPass}");
+            Console.WriteLine($"[ OK ] {renderPass}");
         }
 
         static void CreatePipelineLayout()
@@ -479,7 +473,7 @@ namespace TanagraExample
 
             var createInfo = new PipelineLayoutCreateInfo();
             pipelineLayout = device.CreatePipelineLayout(createInfo);
-            Console.WriteLine($"[ OK ] pipelineLayout {pipelineLayout}");
+            Console.WriteLine($"[ OK ] {pipelineLayout}");
 
             // Destroy temporary layout
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
@@ -617,7 +611,7 @@ namespace TanagraExample
                     Layers = 1
                 };
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
-                Console.WriteLine($"[ OK ] framebuffers {framebuffers[i]} {i}/{backBuffers.Count}");
+                Console.WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
             }
         }
 

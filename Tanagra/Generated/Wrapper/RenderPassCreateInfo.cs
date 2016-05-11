@@ -19,15 +19,15 @@ namespace Vulkan
             set { NativePointer->AttachmentCount = value; }
         }
         
-        public AttachmentDescription Attachments
+        public AttachmentDescription[] Attachments
         {
-            get { return Marshal.PtrToStructure<AttachmentDescription>(NativePointer->Attachments); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
             set
             {
-                if(NativePointer->Attachments == IntPtr.Zero)
-                    NativePointer->Attachments = Interop.Structure.Allocate(typeof(AttachmentDescription));
-
-                Marshal.StructureToPtr(value, NativePointer->Attachments, false);
+                throw new System.NotImplementedException();
             }
         }
         
@@ -37,11 +37,16 @@ namespace Vulkan
             set { NativePointer->SubpassCount = value; }
         }
         
-        SubpassDescription _Subpasses;
-        public SubpassDescription Subpasses
+        public SubpassDescription[] Subpasses
         {
-            get { return _Subpasses; }
-            set { _Subpasses = value; NativePointer->Subpasses = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 DependencyCount
@@ -50,10 +55,16 @@ namespace Vulkan
             set { NativePointer->DependencyCount = value; }
         }
         
-        public SubpassDependency Dependencies
+        public SubpassDependency[] Dependencies
         {
-            get { return Marshal.PtrToStructure<SubpassDependency>(NativePointer->Dependencies); }
-            set { NativePointer->Dependencies = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public RenderPassCreateInfo()

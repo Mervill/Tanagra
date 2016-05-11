@@ -205,11 +205,14 @@ namespace Tanagra.Generator
                 {
                     if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "Char"))
                     {
-                        WriteLine($"{vis} {member.Type} {member.Name};");
-                        continue;
+                        if(!member.IsArray)
+                        {
+                            WriteLine($"{vis} {member.Type} {member.Name};");
+                            continue;
+                        }
                     }
 
-                    if(member.Type is VkStruct && !member.IsPointer && member.Type.Name != "Char")
+                    if(member.Type is VkStruct && !member.IsArray && !member.IsPointer && member.Type.Name != "Char")
                     {
                         var memberType = member.Type as VkStruct;
                         if(!memberType.HasPointerMembers)
@@ -219,7 +222,7 @@ namespace Tanagra.Generator
                         }
                     }
 
-                    if(member.Type is VkHandle)
+                    if(member.Type is VkHandle && !member.IsArray)
                     {
                         var vkHandle = member.Type as VkHandle;
                         if(!vkHandle.IsDispatchable)
@@ -348,6 +351,13 @@ namespace Tanagra.Generator
                     {
                         WriteMemberString(member);
                     }
+                    WriteLine("");
+                    continue;
+                }
+
+                if(member.IsArray)
+                {
+                    WriteMemeberArray(member);
                     WriteLine("");
                     continue;
                 }
@@ -490,6 +500,36 @@ namespace Tanagra.Generator
             _tabs++;
             WriteLine("ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);");
             _tabs--;
+            _tabs--;
+            WriteLine("}");
+
+            _tabs--;
+            WriteLine("}");
+        }
+
+        void WriteMemeberArray(VkMember vkMember)
+        {
+            WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
+            WriteLine("{");
+            _tabs++;
+
+            // get
+            WriteLine("get");
+            WriteLine("{");
+            _tabs++;
+
+            WriteLine("throw new System.NotImplementedException();");
+            
+            _tabs--;
+            WriteLine("}");
+            
+            // set
+            WriteLine("set");
+            WriteLine("{");
+            _tabs++;
+
+            WriteLine("throw new System.NotImplementedException();");
+            
             _tabs--;
             WriteLine("}");
 

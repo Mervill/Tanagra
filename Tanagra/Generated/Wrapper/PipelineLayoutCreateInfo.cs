@@ -19,11 +19,16 @@ namespace Vulkan
             set { NativePointer->SetLayoutCount = value; }
         }
         
-        DescriptorSetLayout _SetLayouts;
-        public DescriptorSetLayout SetLayouts
+        public DescriptorSetLayout[] SetLayouts
         {
-            get { return _SetLayouts; }
-            set { _SetLayouts = value; NativePointer->SetLayouts = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 PushConstantRangeCount
@@ -32,11 +37,16 @@ namespace Vulkan
             set { NativePointer->PushConstantRangeCount = value; }
         }
         
-        PushConstantRange _PushConstantRanges;
-        public PushConstantRange PushConstantRanges
+        public PushConstantRange[] PushConstantRanges
         {
-            get { return _PushConstantRanges; }
-            set { _PushConstantRanges = value; NativePointer->PushConstantRanges = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public PipelineLayoutCreateInfo()

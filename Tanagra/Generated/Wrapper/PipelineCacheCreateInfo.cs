@@ -19,10 +19,16 @@ namespace Vulkan
             set { NativePointer->InitialDataSize = value; }
         }
         
-        public IntPtr InitialData
+        public IntPtr[] InitialData
         {
-            get { return NativePointer->InitialData; }
-            set { NativePointer->InitialData = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public PipelineCacheCreateInfo()

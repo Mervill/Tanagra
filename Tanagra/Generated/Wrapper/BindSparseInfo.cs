@@ -13,11 +13,16 @@ namespace Vulkan
             set { NativePointer->WaitSemaphoreCount = value; }
         }
         
-        Semaphore _WaitSemaphores;
-        public Semaphore WaitSemaphores
+        public Semaphore[] WaitSemaphores
         {
-            get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 BufferBindCount
@@ -26,11 +31,16 @@ namespace Vulkan
             set { NativePointer->BufferBindCount = value; }
         }
         
-        SparseBufferMemoryBindInfo _BufferBinds;
-        public SparseBufferMemoryBindInfo BufferBinds
+        public SparseBufferMemoryBindInfo[] BufferBinds
         {
-            get { return _BufferBinds; }
-            set { _BufferBinds = value; NativePointer->BufferBinds = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 ImageOpaqueBindCount
@@ -39,11 +49,16 @@ namespace Vulkan
             set { NativePointer->ImageOpaqueBindCount = value; }
         }
         
-        SparseImageOpaqueMemoryBindInfo _ImageOpaqueBinds;
-        public SparseImageOpaqueMemoryBindInfo ImageOpaqueBinds
+        public SparseImageOpaqueMemoryBindInfo[] ImageOpaqueBinds
         {
-            get { return _ImageOpaqueBinds; }
-            set { _ImageOpaqueBinds = value; NativePointer->ImageOpaqueBinds = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 ImageBindCount
@@ -52,11 +67,16 @@ namespace Vulkan
             set { NativePointer->ImageBindCount = value; }
         }
         
-        SparseImageMemoryBindInfo _ImageBinds;
-        public SparseImageMemoryBindInfo ImageBinds
+        public SparseImageMemoryBindInfo[] ImageBinds
         {
-            get { return _ImageBinds; }
-            set { _ImageBinds = value; NativePointer->ImageBinds = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 SignalSemaphoreCount
@@ -65,11 +85,16 @@ namespace Vulkan
             set { NativePointer->SignalSemaphoreCount = value; }
         }
         
-        Semaphore _SignalSemaphores;
-        public Semaphore SignalSemaphores
+        public Semaphore[] SignalSemaphores
         {
-            get { return _SignalSemaphores; }
-            set { _SignalSemaphores = value; NativePointer->SignalSemaphores = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public BindSparseInfo()

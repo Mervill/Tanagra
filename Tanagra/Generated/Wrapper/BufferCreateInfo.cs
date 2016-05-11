@@ -37,10 +37,16 @@ namespace Vulkan
             set { NativePointer->QueueFamilyIndexCount = value; }
         }
         
-        public UInt32 QueueFamilyIndices
+        public UInt32[] QueueFamilyIndices
         {
-            get { return NativePointer->QueueFamilyIndices; }
-            set { NativePointer->QueueFamilyIndices = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public BufferCreateInfo()

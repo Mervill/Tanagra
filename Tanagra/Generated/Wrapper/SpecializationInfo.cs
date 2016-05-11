@@ -13,11 +13,16 @@ namespace Vulkan
             set { NativePointer->MapEntryCount = value; }
         }
         
-        SpecializationMapEntry _MapEntries;
-        public SpecializationMapEntry MapEntries
+        public SpecializationMapEntry[] MapEntries
         {
-            get { return _MapEntries; }
-            set { _MapEntries = value; NativePointer->MapEntries = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UIntPtr DataSize
@@ -26,10 +31,16 @@ namespace Vulkan
             set { NativePointer->DataSize = value; }
         }
         
-        public IntPtr Data
+        public IntPtr[] Data
         {
-            get { return NativePointer->Data; }
-            set { NativePointer->Data = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public SpecializationInfo()

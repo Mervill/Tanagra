@@ -11,8 +11,8 @@ namespace Vulkan.Interop
         internal UInt32 VendorID;
         internal UInt32 DeviceID;
         internal PhysicalDeviceType DeviceType;
-        internal unsafe fixed byte DeviceName[256];
-        internal unsafe fixed byte PipelineCacheUUID[16];
+        internal IntPtr DeviceName;
+        internal Byte PipelineCacheUUID;
         internal PhysicalDeviceLimits Limits;
         internal PhysicalDeviceSparseProperties SparseProperties;
     }
@@ -59,7 +59,7 @@ namespace Vulkan.Interop
         internal DeviceQueueCreateFlags Flags;
         internal UInt32 QueueFamilyIndex;
         internal UInt32 QueueCount;
-        internal Single QueuePriorities;
+        internal IntPtr QueuePriorities;
     }
 
     internal struct DeviceCreateInfo
@@ -116,7 +116,7 @@ namespace Vulkan.Interop
         internal DescriptorType DescriptorType;
         internal IntPtr ImageInfo;
         internal IntPtr BufferInfo;
-        internal UInt64 TexelBufferView;
+        internal IntPtr TexelBufferView;
     }
 
     internal struct CopyDescriptorSet
@@ -141,7 +141,7 @@ namespace Vulkan.Interop
         internal BufferUsageFlags Usage;
         internal SharingMode SharingMode;
         internal UInt32 QueueFamilyIndexCount;
-        internal UInt32 QueueFamilyIndices;
+        internal IntPtr QueueFamilyIndices;
     }
 
     internal struct BufferViewCreateInfo
@@ -205,7 +205,7 @@ namespace Vulkan.Interop
         internal ImageUsageFlags Usage;
         internal SharingMode SharingMode;
         internal UInt32 QueueFamilyIndexCount;
-        internal UInt32 QueueFamilyIndices;
+        internal IntPtr QueueFamilyIndices;
         internal ImageLayout InitialLayout;
     }
 
@@ -247,7 +247,7 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal UInt32 WaitSemaphoreCount;
-        internal UInt64 WaitSemaphores;
+        internal IntPtr WaitSemaphores;
         internal UInt32 BufferBindCount;
         internal IntPtr BufferBinds;
         internal UInt32 ImageOpaqueBindCount;
@@ -255,7 +255,7 @@ namespace Vulkan.Interop
         internal UInt32 ImageBindCount;
         internal IntPtr ImageBinds;
         internal UInt32 SignalSemaphoreCount;
-        internal UInt64 SignalSemaphores;
+        internal IntPtr SignalSemaphores;
     }
 
     internal struct ShaderModuleCreateInfo
@@ -264,7 +264,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal ShaderModuleCreateFlags Flags;
         internal UIntPtr CodeSize;
-        internal UInt32 Code;
+        internal IntPtr Code;
     }
 
     internal struct DescriptorSetLayoutBinding
@@ -273,7 +273,7 @@ namespace Vulkan.Interop
         internal DescriptorType DescriptorType;
         internal UInt32 DescriptorCount;
         internal ShaderStageFlags StageFlags;
-        internal UInt64 ImmutableSamplers;
+        internal IntPtr ImmutableSamplers;
     }
 
     internal struct DescriptorSetLayoutCreateInfo
@@ -301,7 +301,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal UInt64 DescriptorPool;
         internal UInt32 DescriptorSetCount;
-        internal UInt64 SetLayouts;
+        internal IntPtr SetLayouts;
     }
 
     internal struct SpecializationInfo
@@ -421,7 +421,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal PipelineDynamicStateCreateFlags Flags;
         internal UInt32 DynamicStateCount;
-        internal DynamicState DynamicStates;
+        internal IntPtr DynamicStates;
     }
 
     internal struct PipelineDepthStencilStateCreateInfo
@@ -478,7 +478,7 @@ namespace Vulkan.Interop
         internal IntPtr Next;
         internal PipelineLayoutCreateFlags Flags;
         internal UInt32 SetLayoutCount;
-        internal UInt64 SetLayouts;
+        internal IntPtr SetLayouts;
         internal UInt32 PushConstantRangeCount;
         internal IntPtr PushConstantRanges;
     }
@@ -553,14 +553,14 @@ namespace Vulkan.Interop
         internal IntPtr ClearValues;
     }
 
-    internal unsafe struct SubpassDescription
+    internal struct SubpassDescription
     {
         internal SubpassDescriptionFlags Flags;
         internal PipelineBindPoint PipelineBindPoint;
         internal UInt32 InputAttachmentCount;
         internal IntPtr InputAttachments;
         internal UInt32 ColorAttachmentCount;
-        internal AttachmentReference* ColorAttachments;
+        internal IntPtr ColorAttachments;
         internal IntPtr ResolveAttachments;
         internal IntPtr DepthStencilAttachment;
         internal UInt32 PreserveAttachmentCount;
@@ -618,7 +618,7 @@ namespace Vulkan.Interop
         internal FramebufferCreateFlags Flags;
         internal UInt64 RenderPass;
         internal UInt32 AttachmentCount;
-        internal UInt32 Attachments;
+        internal IntPtr Attachments;
         internal UInt32 Width;
         internal UInt32 Height;
         internal UInt32 Layers;
@@ -629,12 +629,12 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal UInt32 WaitSemaphoreCount;
-        internal UInt64 WaitSemaphores;
-        internal PipelineStageFlags WaitDstStageMask;
+        internal IntPtr WaitSemaphores;
+        internal IntPtr WaitDstStageMask;
         internal UInt32 CommandBufferCount;
         internal IntPtr CommandBuffers;
         internal UInt32 SignalSemaphoreCount;
-        internal UInt64 SignalSemaphores;
+        internal IntPtr SignalSemaphores;
     }
 
     internal struct DisplayPropertiesKHR
@@ -746,7 +746,7 @@ namespace Vulkan.Interop
         internal ImageUsageFlags ImageUsage;
         internal SharingMode ImageSharingMode;
         internal UInt32 QueueFamilyIndexCount;
-        internal UInt32 QueueFamilyIndices;
+        internal IntPtr QueueFamilyIndices;
         internal SurfaceTransformFlagsKHR PreTransform;
         internal CompositeAlphaFlagsKHR CompositeAlpha;
         internal PresentModeKHR PresentMode;
@@ -759,11 +759,11 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal UInt32 WaitSemaphoreCount;
-        internal UInt64 WaitSemaphores;
+        internal IntPtr WaitSemaphores;
         internal UInt32 SwapchainCount;
-        internal UInt64 Swapchains;
-        internal UInt32 ImageIndices;
-        internal Result Results;
+        internal IntPtr Swapchains;
+        internal IntPtr ImageIndices;
+        internal IntPtr Results;
     }
 
     internal struct DebugReportCallbackCreateInfoEXT

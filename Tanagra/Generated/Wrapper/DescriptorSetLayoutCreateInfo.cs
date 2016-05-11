@@ -19,11 +19,16 @@ namespace Vulkan
             set { NativePointer->BindingCount = value; }
         }
         
-        DescriptorSetLayoutBinding _Bindings;
-        public DescriptorSetLayoutBinding Bindings
+        public DescriptorSetLayoutBinding[] Bindings
         {
-            get { return _Bindings; }
-            set { _Bindings = value; NativePointer->Bindings = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DescriptorSetLayoutCreateInfo()

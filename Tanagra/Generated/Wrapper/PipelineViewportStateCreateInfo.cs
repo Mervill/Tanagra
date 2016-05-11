@@ -19,11 +19,16 @@ namespace Vulkan
             set { NativePointer->ViewportCount = value; }
         }
         
-        Viewport _Viewports;
-        public Viewport Viewports
+        public Viewport[] Viewports
         {
-            get { return _Viewports; }
-            set { _Viewports = value; NativePointer->Viewports = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 ScissorCount
@@ -32,11 +37,16 @@ namespace Vulkan
             set { NativePointer->ScissorCount = value; }
         }
         
-        Rect2D _Scissors;
-        public Rect2D Scissors
+        public Rect2D[] Scissors
         {
-            get { return _Scissors; }
-            set { _Scissors = value; NativePointer->Scissors = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public PipelineViewportStateCreateInfo()

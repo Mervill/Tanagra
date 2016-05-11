@@ -13,17 +13,28 @@ namespace Vulkan
             set { NativePointer->WaitSemaphoreCount = value; }
         }
         
-        Semaphore _WaitSemaphores;
-        public Semaphore WaitSemaphores
+        public Semaphore[] WaitSemaphores
         {
-            get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
-        public PipelineStageFlags WaitDstStageMask
+        public PipelineStageFlags[] WaitDstStageMask
         {
-            get { return NativePointer->WaitDstStageMask; }
-            set { NativePointer->WaitDstStageMask = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 CommandBufferCount
@@ -32,11 +43,16 @@ namespace Vulkan
             set { NativePointer->CommandBufferCount = value; }
         }
         
-        CommandBuffer _CommandBuffers;
-        public CommandBuffer CommandBuffers
+        public CommandBuffer[] CommandBuffers
         {
-            get { return _CommandBuffers; }
-            set { _CommandBuffers = value; NativePointer->CommandBuffers = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 SignalSemaphoreCount
@@ -45,11 +61,16 @@ namespace Vulkan
             set { NativePointer->SignalSemaphoreCount = value; }
         }
         
-        Semaphore _SignalSemaphores;
-        public Semaphore SignalSemaphores
+        public Semaphore[] SignalSemaphores
         {
-            get { return _SignalSemaphores; }
-            set { _SignalSemaphores = value; NativePointer->SignalSemaphores = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public SubmitInfo()

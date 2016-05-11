@@ -19,11 +19,16 @@ namespace Vulkan
             set { NativePointer->QueueCreateInfoCount = value; }
         }
         
-        DeviceQueueCreateInfo _QueueCreateInfos;
-        public DeviceQueueCreateInfo QueueCreateInfos
+        public DeviceQueueCreateInfo[] QueueCreateInfos
         {
-            get { return _QueueCreateInfos; }
-            set { _QueueCreateInfos = value; NativePointer->QueueCreateInfos = (IntPtr)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 EnabledLayerCount

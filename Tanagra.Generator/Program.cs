@@ -18,6 +18,7 @@ namespace Tanagra.Generator
         // XCB -> X protocol C-language Binding
         // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
+        // http://stackoverflow.com/questions/17562295/if-i-allocate-some-memory-with-allochglobal-do-i-have-to-free-it-with-freehglob
         static void Main(string[] args)
         {
             var raw = File.ReadAllText("./spec/vk.xml");

@@ -13,11 +13,16 @@ namespace Vulkan
             set { NativePointer->WaitSemaphoreCount = value; }
         }
         
-        Semaphore _WaitSemaphores;
-        public Semaphore WaitSemaphores
+        public Semaphore[] WaitSemaphores
         {
-            get { return _WaitSemaphores; }
-            set { _WaitSemaphores = value; NativePointer->WaitSemaphores = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 SwapchainCount
@@ -26,23 +31,40 @@ namespace Vulkan
             set { NativePointer->SwapchainCount = value; }
         }
         
-        SwapchainKHR _Swapchains;
-        public SwapchainKHR Swapchains
+        public SwapchainKHR[] Swapchains
         {
-            get { return _Swapchains; }
-            set { _Swapchains = value; NativePointer->Swapchains = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
-        public UInt32 ImageIndices
+        public UInt32[] ImageIndices
         {
-            get { return NativePointer->ImageIndices; }
-            set { NativePointer->ImageIndices = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
-        public Result Results
+        public Result[] Results
         {
-            get { return NativePointer->Results; }
-            set { NativePointer->Results = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public PresentInfoKHR()

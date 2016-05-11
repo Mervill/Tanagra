@@ -26,11 +26,16 @@ namespace Vulkan
             set { NativePointer->AttachmentCount = value; }
         }
         
-        ImageView _Attachments;
-        public ImageView Attachments
+        public ImageView[] Attachments
         {
-            get { return _Attachments; }
-            set { _Attachments = value; NativePointer->Attachments = (UInt32)value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 Width

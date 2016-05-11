@@ -25,11 +25,16 @@ namespace Vulkan
             set { NativePointer->InputAttachmentCount = value; }
         }
         
-        AttachmentReference _InputAttachments;
-        public AttachmentReference InputAttachments
+        public AttachmentReference[] InputAttachments
         {
-            get { return _InputAttachments; }
-            set { _InputAttachments = value; NativePointer->InputAttachments = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public UInt32 ColorAttachmentCount
@@ -38,24 +43,28 @@ namespace Vulkan
             set { NativePointer->ColorAttachmentCount = value; }
         }
         
-        public AttachmentReference ColorAttachments
+        public AttachmentReference[] ColorAttachments
         {
-            get { return *NativePointer->ColorAttachments; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
             set
             {
-                if(NativePointer->ColorAttachments == null)
-                    NativePointer->ColorAttachments = (AttachmentReference*)Interop.Structure.Allocate(typeof(AttachmentReference));
-
-                Marshal.StructureToPtr(value, (IntPtr)NativePointer->ColorAttachments, false);
-                //NativePointer->ColorAttachments = &value;
+                throw new System.NotImplementedException();
             }
         }
         
-        AttachmentReference _ResolveAttachments;
-        public AttachmentReference ResolveAttachments
+        public AttachmentReference[] ResolveAttachments
         {
-            get { return _ResolveAttachments; }
-            set { _ResolveAttachments = value; NativePointer->ResolveAttachments = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         AttachmentReference _DepthStencilAttachment;
@@ -71,10 +80,16 @@ namespace Vulkan
             set { NativePointer->PreserveAttachmentCount = value; }
         }
         
-        public IntPtr PreserveAttachments
+        public UInt32[] PreserveAttachments
         {
-            get { return NativePointer->PreserveAttachments; }
-            set { NativePointer->PreserveAttachments = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public SubpassDescription()

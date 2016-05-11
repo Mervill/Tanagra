@@ -19,10 +19,16 @@ namespace Vulkan
             set { NativePointer->DynamicStateCount = value; }
         }
         
-        public DynamicState DynamicStates
+        public DynamicState[] DynamicStates
         {
-            get { return NativePointer->DynamicStates; }
-            set { NativePointer->DynamicStates = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public PipelineDynamicStateCreateInfo()

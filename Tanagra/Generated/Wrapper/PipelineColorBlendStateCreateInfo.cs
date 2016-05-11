@@ -31,11 +31,16 @@ namespace Vulkan
             set { NativePointer->AttachmentCount = value; }
         }
         
-        PipelineColorBlendAttachmentState _Attachments;
-        public PipelineColorBlendAttachmentState Attachments
+        public PipelineColorBlendAttachmentState[] Attachments
         {
-            get { return _Attachments; }
-            set { _Attachments = value; NativePointer->Attachments = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public Single BlendConstants

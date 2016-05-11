@@ -38,25 +38,40 @@ namespace Vulkan
             set { NativePointer->DescriptorType = value; }
         }
         
-        DescriptorImageInfo _ImageInfo;
-        public DescriptorImageInfo ImageInfo
+        public DescriptorImageInfo[] ImageInfo
         {
-            get { return _ImageInfo; }
-            set { _ImageInfo = value; NativePointer->ImageInfo = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
-        DescriptorBufferInfo _BufferInfo;
-        public DescriptorBufferInfo BufferInfo
+        public DescriptorBufferInfo[] BufferInfo
         {
-            get { return _BufferInfo; }
-            set { _BufferInfo = value; NativePointer->BufferInfo = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
-        BufferView _TexelBufferView;
-        public BufferView TexelBufferView
+        public BufferView[] TexelBufferView
         {
-            get { return _TexelBufferView; }
-            set { _TexelBufferView = value; NativePointer->TexelBufferView = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public WriteDescriptorSet()

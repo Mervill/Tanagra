@@ -33,11 +33,16 @@ namespace Vulkan
             set { NativePointer->ClearValueCount = value; }
         }
         
-        ClearValue _ClearValues;
-        public ClearValue ClearValues
+        public ClearValue[] ClearValues
         {
-            get { return _ClearValues; }
-            set { _ClearValues = value; NativePointer->ClearValues = (IntPtr)(&value); }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public RenderPassBeginInfo()

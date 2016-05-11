@@ -7,15 +7,14 @@ namespace Vulkan.Interop
 	{
 		internal static IntPtr Allocate(Type type)
 		{
-			int size = Marshal.SizeOf (type);
-			IntPtr ptr = Marshal.AllocHGlobal (size);
+			int size = Marshal.SizeOf(type);
+			IntPtr ptr = Marshal.AllocHGlobal(size);
 			unsafe
             {
-				byte* bptr = (byte*) ptr.ToPointer ();
+				byte* bptr = (byte*)ptr.ToPointer();
 				for (int i = 0; i < size; i++)
 					bptr[i] = 0;
 			}
-
 			return ptr;
 		}
 

@@ -25,10 +25,16 @@ namespace Vulkan
             set { NativePointer->QueueCount = value; }
         }
         
-        public Single QueuePriorities
+        public Single[] QueuePriorities
         {
-            get { return NativePointer->QueuePriorities; }
-            set { NativePointer->QueuePriorities = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DeviceQueueCreateInfo()

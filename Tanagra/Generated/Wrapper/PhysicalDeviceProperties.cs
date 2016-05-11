@@ -39,15 +39,15 @@ namespace Vulkan
         
         public string DeviceName
         {
-            get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->DeviceName); }
-            set { Interop.Structure.MarshalFixedSizeString(NativePointer->DeviceName, value, 256); }
+            get { return Marshal.PtrToStringAnsi(NativePointer->DeviceName); }
+            set { NativePointer->DeviceName = Marshal.StringToHGlobalAnsi(value); }
         }
         
-        /*public Byte PipelineCacheUUID
+        public Byte PipelineCacheUUID
         {
             get { return NativePointer->PipelineCacheUUID; }
             set { NativePointer->PipelineCacheUUID = value; }
-        }*/
+        }
         
         public PhysicalDeviceLimits Limits
         {

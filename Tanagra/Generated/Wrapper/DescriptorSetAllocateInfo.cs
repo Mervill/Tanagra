@@ -20,11 +20,16 @@ namespace Vulkan
             set { NativePointer->DescriptorSetCount = value; }
         }
         
-        DescriptorSetLayout _SetLayouts;
-        public DescriptorSetLayout SetLayouts
+        public DescriptorSetLayout[] SetLayouts
         {
-            get { return _SetLayouts; }
-            set { _SetLayouts = value; NativePointer->SetLayouts = value.NativePointer; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DescriptorSetAllocateInfo()

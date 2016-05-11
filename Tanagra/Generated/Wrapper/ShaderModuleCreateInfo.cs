@@ -19,10 +19,16 @@ namespace Vulkan
             set { NativePointer->CodeSize = value; }
         }
         
-        public UInt32 Code
+        public UInt32[] Code
         {
-            get { return NativePointer->Code; }
-            set { NativePointer->Code = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public ShaderModuleCreateInfo()
