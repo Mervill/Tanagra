@@ -23,11 +23,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->QueueCreateInfoCount;
+                var valueArray = new DeviceQueueCreateInfo[valueCount];
+                var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new DeviceQueueCreateInfo { NativePointer = &ptr[x] };
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->QueueCreateInfoCount = (uint)valueCount;
+                NativePointer->QueueCreateInfos = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.DeviceQueueCreateInfo>() * valueCount));
+                var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         

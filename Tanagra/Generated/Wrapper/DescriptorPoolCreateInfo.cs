@@ -29,11 +29,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->PoolSizeCount;
+                var valueArray = new DescriptorPoolSize[valueCount];
+                var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->PoolSizeCount = (uint)valueCount;
+                NativePointer->PoolSizes = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorPoolSize>() * valueCount));
+                var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

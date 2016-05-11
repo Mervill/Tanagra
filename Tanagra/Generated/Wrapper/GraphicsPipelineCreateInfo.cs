@@ -23,11 +23,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->StageCount;
+                var valueArray = new PipelineShaderStageCreateInfo[valueCount];
+                var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new PipelineShaderStageCreateInfo { NativePointer = &ptr[x] };
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->StageCount = (uint)valueCount;
+                NativePointer->Stages = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount));
+                var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         

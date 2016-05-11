@@ -23,11 +23,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->AttachmentCount;
+                var valueArray = new AttachmentDescription[valueCount];
+                var ptr = (AttachmentDescription*)NativePointer->Attachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->AttachmentCount = (uint)valueCount;
+                NativePointer->Attachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentDescription>() * valueCount));
+                var ptr = (AttachmentDescription*)NativePointer->Attachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -41,11 +51,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SubpassCount;
+                var valueArray = new SubpassDescription[valueCount];
+                var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new SubpassDescription { NativePointer = &ptr[x] };
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SubpassCount = (uint)valueCount;
+                NativePointer->Subpasses = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.SubpassDescription>() * valueCount));
+                var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         
@@ -59,11 +79,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DependencyCount;
+                var valueArray = new SubpassDependency[valueCount];
+                var ptr = (SubpassDependency*)NativePointer->Dependencies;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DependencyCount = (uint)valueCount;
+                NativePointer->Dependencies = Marshal.AllocHGlobal((int)(Marshal.SizeOf<SubpassDependency>() * valueCount));
+                var ptr = (SubpassDependency*)NativePointer->Dependencies;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

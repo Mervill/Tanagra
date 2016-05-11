@@ -21,7 +21,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->WaitSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         
@@ -39,7 +44,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SwapchainCount = (uint)valueCount;
+                NativePointer->Swapchains = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->Swapchains;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         
@@ -47,11 +57,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SwapchainCount;
+                var valueArray = new UInt32[valueCount];
+                var ptr = (UInt32*)NativePointer->ImageIndices;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SwapchainCount = (uint)valueCount;
+                NativePointer->ImageIndices = Marshal.AllocHGlobal((int)(Marshal.SizeOf<UInt32>() * valueCount));
+                var ptr = (UInt32*)NativePointer->ImageIndices;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -59,11 +79,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SwapchainCount = (uint)valueCount;
             }
         }
         

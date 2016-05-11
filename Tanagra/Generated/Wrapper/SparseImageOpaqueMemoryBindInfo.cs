@@ -24,11 +24,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->BindCount;
+                var valueArray = new SparseMemoryBind[valueCount];
+                var ptr = (SparseMemoryBind*)NativePointer->Binds;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->BindCount = (uint)valueCount;
+                NativePointer->Binds = Marshal.AllocHGlobal((int)(Marshal.SizeOf<SparseMemoryBind>() * valueCount));
+                var ptr = (SparseMemoryBind*)NativePointer->Binds;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

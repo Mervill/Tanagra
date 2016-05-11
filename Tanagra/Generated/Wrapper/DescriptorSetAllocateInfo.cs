@@ -28,7 +28,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DescriptorSetCount = (uint)valueCount;
+                NativePointer->SetLayouts = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->SetLayouts;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         

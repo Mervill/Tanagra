@@ -509,6 +509,104 @@ namespace Tanagra.Generator
 
         void WriteMemeberArray(VkMember vkMember)
         {
+            var countName = vkMember.Len[0];
+            if(countName.StartsWith("latexmath"))
+            {
+                WriteNotImplementedArray(vkMember);
+                return;
+            }
+            countName = char.ToUpper(countName[0]) + countName.Substring(1, countName.Length - 1);
+
+            WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
+            WriteLine("{");
+            _tabs++;
+
+            // get
+            WriteLine("get");
+            WriteLine("{");
+            _tabs++;
+
+            if(vkMember.Type is VkHandle)
+            {
+                WriteLine("throw new System.NotImplementedException();");
+            }
+            
+            if(vkMember.Type is VkStruct)
+            {
+                var vkStruct = vkMember.Type as VkStruct;
+                var structType = vkStruct.Name;
+                if(vkStruct.HasPointerMembers)
+                    structType = "Interop." + structType;
+
+                WriteLine($"var valueCount = {NativePointer}->{countName};");
+                WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
+                WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                if(vkStruct.HasPointerMembers)
+                {
+                    WriteLine($"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = &ptr[x] }};");
+                }
+                else
+                {
+                    WriteLine($"valueArray[x] = ptr[x];");
+                }
+                _tabs--;
+                WriteLine("return valueArray;");
+            }
+
+            _tabs--;
+            WriteLine("}");
+            
+            // set
+            WriteLine("set");
+            WriteLine("{");
+            _tabs++;
+            
+            WriteLine("var valueCount = value.Length;");
+            WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+
+            if(vkMember.Type is VkHandle)
+            {
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);");
+                WriteLine($"var ptr = (IntPtr*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
+                _tabs--;
+            }
+
+            if(vkMember.Type is VkStruct)
+            {
+                var vkStruct = vkMember.Type as VkStruct;
+                var structType = vkStruct.Name;
+                if(vkStruct.HasPointerMembers)
+                    structType = "Interop." + structType;
+                
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{structType}>() * valueCount);");
+                WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                if(vkStruct.HasPointerMembers)
+                {
+                    WriteLine("ptr[x] = *value[x].NativePointer;");
+                }
+                else
+                {
+                    WriteLine("ptr[x] = value[x];");
+                }
+                _tabs--;
+            }
+
+            _tabs--;
+            WriteLine("}");
+
+            _tabs--;
+            WriteLine("}");
+        }
+
+        void WriteNotImplementedArray(VkMember vkMember)
+        {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
             _tabs++;
@@ -519,17 +617,17 @@ namespace Tanagra.Generator
             _tabs++;
 
             WriteLine("throw new System.NotImplementedException();");
-            
+
             _tabs--;
             WriteLine("}");
-            
+
             // set
             WriteLine("set");
             WriteLine("{");
             _tabs++;
 
             WriteLine("throw new System.NotImplementedException();");
-            
+
             _tabs--;
             WriteLine("}");
 

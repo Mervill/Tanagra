@@ -23,11 +23,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->BindingCount;
+                var valueArray = new DescriptorSetLayoutBinding[valueCount];
+                var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new DescriptorSetLayoutBinding { NativePointer = &ptr[x] };
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->BindingCount = (uint)valueCount;
+                NativePointer->Bindings = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Interop.DescriptorSetLayoutBinding>() * valueCount));
+                var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         

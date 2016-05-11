@@ -27,7 +27,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SetLayoutCount = (uint)valueCount;
+                NativePointer->SetLayouts = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->SetLayouts;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         
@@ -41,11 +46,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->PushConstantRangeCount;
+                var valueArray = new PushConstantRange[valueCount];
+                var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->PushConstantRangeCount = (uint)valueCount;
+                NativePointer->PushConstantRanges = Marshal.AllocHGlobal((int)(Marshal.SizeOf<PushConstantRange>() * valueCount));
+                var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

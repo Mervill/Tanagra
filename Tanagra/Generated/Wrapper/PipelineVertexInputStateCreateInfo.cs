@@ -23,11 +23,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->VertexBindingDescriptionCount;
+                var valueArray = new VertexInputBindingDescription[valueCount];
+                var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->VertexBindingDescriptionCount = (uint)valueCount;
+                NativePointer->VertexBindingDescriptions = Marshal.AllocHGlobal((int)(Marshal.SizeOf<VertexInputBindingDescription>() * valueCount));
+                var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -41,11 +51,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->VertexAttributeDescriptionCount;
+                var valueArray = new VertexInputAttributeDescription[valueCount];
+                var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->VertexAttributeDescriptionCount = (uint)valueCount;
+                NativePointer->VertexAttributeDescriptions = Marshal.AllocHGlobal((int)(Marshal.SizeOf<VertexInputAttributeDescription>() * valueCount));
+                var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

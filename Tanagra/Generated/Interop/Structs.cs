@@ -308,7 +308,7 @@ namespace Vulkan.Interop
     {
         internal UInt32 MapEntryCount;
         internal IntPtr MapEntries;
-        internal UIntPtr DataSize;
+        internal UInt32 DataSize;
         internal IntPtr Data;
     }
 
@@ -468,7 +468,7 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal PipelineCacheCreateFlags Flags;
-        internal UIntPtr InitialDataSize;
+        internal UInt32 InitialDataSize;
         internal IntPtr InitialData;
     }
 

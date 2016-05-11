@@ -23,11 +23,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DynamicStateCount = (uint)valueCount;
             }
         }
         

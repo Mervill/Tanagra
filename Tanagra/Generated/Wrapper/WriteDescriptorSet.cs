@@ -42,11 +42,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DescriptorCount;
+                var valueArray = new DescriptorImageInfo[valueCount];
+                var ptr = (DescriptorImageInfo*)NativePointer->ImageInfo;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DescriptorCount = (uint)valueCount;
+                NativePointer->ImageInfo = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorImageInfo>() * valueCount));
+                var ptr = (DescriptorImageInfo*)NativePointer->ImageInfo;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -54,11 +64,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DescriptorCount;
+                var valueArray = new DescriptorBufferInfo[valueCount];
+                var ptr = (DescriptorBufferInfo*)NativePointer->BufferInfo;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DescriptorCount = (uint)valueCount;
+                NativePointer->BufferInfo = Marshal.AllocHGlobal((int)(Marshal.SizeOf<DescriptorBufferInfo>() * valueCount));
+                var ptr = (DescriptorBufferInfo*)NativePointer->BufferInfo;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -70,7 +90,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->DescriptorCount = (uint)valueCount;
+                NativePointer->TexelBufferView = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->TexelBufferView;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         

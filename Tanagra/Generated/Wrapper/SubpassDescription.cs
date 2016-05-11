@@ -29,11 +29,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->InputAttachmentCount;
+                var valueArray = new AttachmentReference[valueCount];
+                var ptr = (AttachmentReference*)NativePointer->InputAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->InputAttachmentCount = (uint)valueCount;
+                NativePointer->InputAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                var ptr = (AttachmentReference*)NativePointer->InputAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -47,11 +57,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->ColorAttachmentCount;
+                var valueArray = new AttachmentReference[valueCount];
+                var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->ColorAttachmentCount = (uint)valueCount;
+                NativePointer->ColorAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -59,11 +79,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->ColorAttachmentCount;
+                var valueArray = new AttachmentReference[valueCount];
+                var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->ColorAttachmentCount = (uint)valueCount;
+                NativePointer->ResolveAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<AttachmentReference>() * valueCount));
+                var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
@@ -84,11 +114,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->PreserveAttachmentCount;
+                var valueArray = new UInt32[valueCount];
+                var ptr = (UInt32*)NativePointer->PreserveAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->PreserveAttachmentCount = (uint)valueCount;
+                NativePointer->PreserveAttachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<UInt32>() * valueCount));
+                var ptr = (UInt32*)NativePointer->PreserveAttachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

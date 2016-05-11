@@ -35,11 +35,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->AttachmentCount;
+                var valueArray = new PipelineColorBlendAttachmentState[valueCount];
+                var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->AttachmentCount = (uint)valueCount;
+                NativePointer->Attachments = Marshal.AllocHGlobal((int)(Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount));
+                var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

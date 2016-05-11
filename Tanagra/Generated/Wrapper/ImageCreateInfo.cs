@@ -77,11 +77,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->QueueFamilyIndexCount;
+                var valueArray = new UInt32[valueCount];
+                var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->QueueFamilyIndexCount = (uint)valueCount;
+                NativePointer->QueueFamilyIndices = Marshal.AllocHGlobal((int)(Marshal.SizeOf<UInt32>() * valueCount));
+                var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

@@ -116,8 +116,7 @@ namespace TanagraExample
             var queueCreateInfo = new DeviceQueueCreateInfo
             {
                 QueueFamilyIndex = 0,
-                QueueCount       = 1,
-                QueuePriorities  = 0,
+                QueuePriorities  = new[] { 0f },
             };
 
             var deviceEnabledExtensions = new[]
@@ -127,8 +126,7 @@ namespace TanagraExample
 
             var deviceCreateInfo = new DeviceCreateInfo
             {
-                QueueCreateInfoCount  = 1,
-                QueueCreateInfos      = queueCreateInfo,
+                QueueCreateInfos      = new[] { queueCreateInfo },
                 EnabledExtensionNames = deviceEnabledExtensions,
             };
 
@@ -152,7 +150,7 @@ namespace TanagraExample
             var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
             {
                 Hinstance = HINSTANCE,
-                Hwnd = form.Handle//HWND,
+                Hwnd      = form.Handle // HWND
             };
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
             Console.WriteLine($"[ OK ] {surface}");
@@ -285,7 +283,7 @@ namespace TanagraExample
             {
                 OldLayout = oldLayout,
                 NewLayout = newLayout,
-                Image = image,
+                Image     = image,
                 SubresourceRange = new ImageSubresourceRange
                 {
                     AspectMask     = imageAspect,
@@ -329,8 +327,7 @@ namespace TanagraExample
 
             var submitInfo = new SubmitInfo
             {
-                CommandBufferCount = 1,
-                CommandBuffers     = setupCommanBuffer
+                CommandBuffers = new[] { setupCommanBuffer }
             };
 
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
@@ -383,7 +380,7 @@ namespace TanagraExample
             var createInfo = new BufferCreateInfo
             {
                 Usage = BufferUsageFlags.VertexBuffer,
-                Size = (ulong)(sizeof(float) * vertices.Length),
+                Size  = (ulong)(sizeof(float) * vertices.Length),
             };
             vertexBuffer = device.CreateBuffer(createInfo);
             Console.WriteLine($"[ OK ] {vertexBuffer}");
@@ -395,7 +392,7 @@ namespace TanagraExample
 
             var allocateInfo = new MemoryAllocateInfo
             {
-                AllocationSize = memoryRequirements.Size,
+                AllocationSize  = memoryRequirements.Size,
                 MemoryTypeIndex = 2,
             };
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
@@ -427,9 +424,8 @@ namespace TanagraExample
 
             var subpass = new SubpassDescription
             {
-                PipelineBindPoint    = PipelineBindPoint.Graphics,
-                ColorAttachmentCount = 1,
-                ColorAttachments     = colorAttachmentReference,
+                PipelineBindPoint = PipelineBindPoint.Graphics,
+                ColorAttachments  = new[] { colorAttachmentReference },
             };
             
             var attachments = new[]
@@ -449,17 +445,15 @@ namespace TanagraExample
 
             var createInfo = new RenderPassCreateInfo
             {
-                AttachmentCount = (uint)attachments.Length,
-                Attachments     = attachments[0],
-                SubpassCount    = 1,
-                Subpasses       = subpass
+                Attachments = attachments,
+                Subpasses   = new[] { subpass }
             };
 
-            Console.WriteLine(createInfo.Attachments.Format);
+            Console.WriteLine(createInfo.Attachments[0].Format);
 
             var subpasses = createInfo.Subpasses;
-            Console.WriteLine(subpasses.ColorAttachments.Layout);
-            Console.WriteLine(createInfo.Subpasses.ColorAttachments.Layout);
+            Console.WriteLine(subpasses[0].ColorAttachments[0].Layout);
+            Console.WriteLine(createInfo.Subpasses[0].ColorAttachments[0].Layout);
 
             renderPass = device.CreateRenderPass(createInfo);
             Console.WriteLine($"[ OK ] {renderPass}");
@@ -479,30 +473,27 @@ namespace TanagraExample
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
         }
 
-        /*private void CreatePipeline()
+        static void CreatePipeline()
         {
-            var dynamicStates = new [] { DynamicState.Viewport, DynamicState.Scissor };
+            var dynamicStates = new[] { DynamicState.Viewport, DynamicState.Scissor };
 
             var entryPointName = System.Text.Encoding.UTF8.GetBytes("main\0");
 
             var dynamicState = new PipelineDynamicStateCreateInfo
             {
-                DynamicStateCount = 1, //(uint)dynamicStates.Length,
-                DynamicStates = dynamicStates[0]
+                DynamicStates = dynamicStates
             };
 
             var viewportState = new PipelineViewportStateCreateInfo
             {
-                ScissorCount = 1,
+                ScissorCount  = 1,
                 ViewportCount = 1,
             };
             
             var vertexInputState = new PipelineVertexInputStateCreateInfo
             {
-                VertexAttributeDescriptionCount = 1, //(uint)vertexAttributes.Length,
-                VertexAttributeDescriptions = vertexAttributes[0],
-                VertexBindingDescriptionCount = 1, //(uint)vertexBindings.Length,
-                VertexBindingDescriptions = vertexBindings[0],
+                VertexAttributeDescriptions = vertexAttributes,
+                VertexBindingDescriptions   = vertexBindings,
             };
 
             var inputAssemblyState = new PipelineInputAssemblyStateCreateInfo
@@ -513,24 +504,23 @@ namespace TanagraExample
             var rasterizerState = new PipelineRasterizationStateCreateInfo
             {
                 PolygonMode = PolygonMode.Fill,
-                CullMode = CullModeFlags.None,
-                FrontFace = FrontFace.Clockwise,
+                CullMode    = CullModeFlags.None,
+                FrontFace   = FrontFace.Clockwise,
             };
 
             var colorBlendAttachment = new PipelineColorBlendAttachmentState { ColorWriteMask = ColorComponentFlags.R | ColorComponentFlags.G | ColorComponentFlags.B | ColorComponentFlags.A };
             var blendState = new PipelineColorBlendStateCreateInfo
             {
-                AttachmentCount = 1,
-                Attachments = colorBlendAttachment
+                Attachments = new[] { colorBlendAttachment }
             };
 
             var depthStencilState = new PipelineDepthStencilStateCreateInfo
             {
-                DepthTestEnable = false,
+                DepthTestEnable  = false,
                 DepthWriteEnable = true,
-                DepthCompareOp = CompareOp.LessOrEqual,
-                Back = new StencilOpState { CompareOp = CompareOp.Always },
-                Front = new StencilOpState { CompareOp = CompareOp.Always }
+                DepthCompareOp   = CompareOp.LessOrEqual,
+                Back             = new StencilOpState { CompareOp = CompareOp.Always },
+                Front            = new StencilOpState { CompareOp = CompareOp.Always }
             };
 
             var shaderStages = new[]
@@ -539,39 +529,38 @@ namespace TanagraExample
                 {
                     Name = "main\0",
                     Stage = ShaderStageFlags.Vertex,
-                    Module = CreateVertexShader()
+                    //Module = CreateVertexShader()
                 },
                 new PipelineShaderStageCreateInfo
                 {
                     Name = "main\0",
                     Stage = ShaderStageFlags.Fragment,
-                    Module = CreateFragmentShader()
+                    //Module = CreateFragmentShader()
                 }
             };
 
                 
             var createInfo = new GraphicsPipelineCreateInfo
             {
-                Layout = pipelineLayout,
-                DynamicState = dynamicState,
-                ViewportState = viewportState,
-                VertexInputState = vertexInputState,
+                Layout             = pipelineLayout,
+                DynamicState       = dynamicState,
+                ViewportState      = viewportState,
+                VertexInputState   = vertexInputState,
                 InputAssemblyState = inputAssemblyState,
                 RasterizationState = rasterizerState,
-                ColorBlendState = blendState,
-                DepthStencilState = depthStencilState,
-                StageCount = 1, //(uint)shaderStages.Length,
-                Stages = shaderStages[0],
-                RenderPass = renderPass
+                ColorBlendState    = blendState,
+                DepthStencilState  = depthStencilState,
+                Stages             = shaderStages,
+                RenderPass         = renderPass
             };
             pipeline = device.CreateGraphicsPipelines(null, new List<GraphicsPipelineCreateInfo> { createInfo });
-                
+            Console.WriteLine($"[ OK ] {pipeline}");
 
-            foreach(var shaderStage in shaderStages)
+            /*foreach(var shaderStage in shaderStages)
             {
                 device.DestroyShaderModule(shaderStage.Module);
-            }
-        }*/
+            }*/
+        }
 
         /*private ShaderModule CreateVertexShader()
         {
@@ -603,12 +592,11 @@ namespace TanagraExample
                 var attachment = backBufferViews[i];
                 var createInfo = new FramebufferCreateInfo
                 {
-                    RenderPass = renderPass,
-                    AttachmentCount = 1,
-                    Attachments = attachment,
-                    Width = (uint)form.ClientSize.Width,
-                    Height = (uint)form.ClientSize.Height,
-                    Layers = 1
+                    RenderPass  = renderPass,
+                    Attachments = new[] { attachment },
+                    Width       = (uint)form.ClientSize.Width,
+                    Height      = (uint)form.ClientSize.Height,
+                    Layers      = 1
                 };
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
                 Console.WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");

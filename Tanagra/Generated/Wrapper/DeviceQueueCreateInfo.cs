@@ -29,11 +29,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->QueueCount;
+                var valueArray = new Single[valueCount];
+                var ptr = (Single*)NativePointer->QueuePriorities;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->QueueCount = (uint)valueCount;
+                NativePointer->QueuePriorities = Marshal.AllocHGlobal((int)(Marshal.SizeOf<Single>() * valueCount));
+                var ptr = (Single*)NativePointer->QueuePriorities;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

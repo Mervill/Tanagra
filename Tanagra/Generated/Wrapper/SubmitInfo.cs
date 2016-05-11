@@ -21,7 +21,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->WaitSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         
@@ -29,11 +34,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->WaitSemaphoreCount = (uint)valueCount;
             }
         }
         
@@ -51,7 +57,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->CommandBufferCount = (uint)valueCount;
+                NativePointer->CommandBuffers = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->CommandBuffers;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         
@@ -65,11 +76,22 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SignalSemaphoreCount;
+                var valueArray = new Semaphore[valueCount];
+                var ptr = (UInt64*)NativePointer->SignalSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->SignalSemaphoreCount = (uint)valueCount;
+                NativePointer->SignalSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->SignalSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (IntPtr)value[x].NativePointer;
             }
         }
         

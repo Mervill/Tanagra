@@ -37,11 +37,21 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->ClearValueCount;
+                var valueArray = new ClearValue[valueCount];
+                var ptr = (ClearValue*)NativePointer->ClearValues;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->ClearValueCount = (uint)valueCount;
+                NativePointer->ClearValues = Marshal.AllocHGlobal((int)(Marshal.SizeOf<ClearValue>() * valueCount));
+                var ptr = (ClearValue*)NativePointer->ClearValues;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         
