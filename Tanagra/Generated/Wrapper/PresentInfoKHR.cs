@@ -17,7 +17,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->WaitSemaphoreCount;
+                var valueArray = new Semaphore[valueCount];
+                var ptr = (UInt64*)NativePointer->WaitSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {
@@ -40,7 +45,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SwapchainCount;
+                var valueArray = new SwapchainKHR[valueCount];
+                var ptr = (UInt64*)NativePointer->Swapchains;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new SwapchainKHR { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {
@@ -79,12 +89,16 @@ namespace Vulkan
         {
             get
             {
-                throw new NotImplementedException();
+                throw new System.NotImplementedException();
             }
             set
             {
                 var valueCount = value.Length;
                 NativePointer->SwapchainCount = (uint)valueCount;
+                NativePointer->Results = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
+                var ptr = (UInt32*)NativePointer->Results;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (UInt32)value[x];
             }
         }
         

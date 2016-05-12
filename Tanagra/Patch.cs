@@ -15,16 +15,7 @@ namespace Vulkan
     public struct PFN_vkInternalFreeNotification { }
     public struct PFN_vkDebugReportCallbackEXT { }
     public struct PFN_vkVoidFunction { }
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    public unsafe delegate Bool32 DebugReportCallbackDelegate(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData);
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal unsafe delegate Result CreateDebugReportCallbackEXT_Delegate(IntPtr instance, Interop.DebugReportCallbackCreateInfoEXT* createInfo, Interop.AllocationCallbacks* allocator, UInt64* callback);
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal unsafe delegate Result DestroyDebugReportCallbackDelegate(Instance instance, UInt64* debugReportCallback, Interop.AllocationCallbacks* allocator);
-
+    
     /// <summary>
     /// Boolean explicitly backed by <see cref="UInt32"/>
     /// </summary>
@@ -66,6 +57,15 @@ namespace Vulkan
 
     public static class DebugUtils
     {
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public unsafe delegate Bool32 DebugReportCallbackDelegate(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        internal unsafe delegate Result CreateDebugReportCallbackEXT_Delegate(IntPtr instance, Interop.DebugReportCallbackCreateInfoEXT* createInfo, Interop.AllocationCallbacks* allocator, UInt64* callback);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        internal unsafe delegate Result DestroyDebugReportCallbackDelegate(Instance instance, UInt64* debugReportCallback, Interop.AllocationCallbacks* allocator);
+
         public static unsafe DebugReportCallbackEXT CreateDebugReportCallback(Instance instance, DebugReportCallbackDelegate callback)
         {
             var name = "vkCreateDebugReportCallbackEXT";

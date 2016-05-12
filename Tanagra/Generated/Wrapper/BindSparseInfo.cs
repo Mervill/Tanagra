@@ -17,7 +17,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->WaitSemaphoreCount;
+                var valueArray = new Semaphore[valueCount];
+                var ptr = (UInt64*)NativePointer->WaitSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {
@@ -124,7 +129,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SignalSemaphoreCount;
+                var valueArray = new Semaphore[valueCount];
+                var ptr = (UInt64*)NativePointer->SignalSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {

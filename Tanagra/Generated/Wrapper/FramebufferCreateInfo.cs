@@ -30,7 +30,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->AttachmentCount;
+                var valueArray = new ImageView[valueCount];
+                var ptr = (UInt64*)NativePointer->Attachments;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new ImageView { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {

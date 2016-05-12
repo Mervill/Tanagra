@@ -53,11 +53,11 @@ namespace Vulkan
             }
         }
         
-        public Single BlendConstants
+        /*public Single BlendConstants
         {
             get { return NativePointer->BlendConstants; }
             set { NativePointer->BlendConstants = value; }
-        }
+        }*/
         
         public PipelineColorBlendStateCreateInfo()
         {

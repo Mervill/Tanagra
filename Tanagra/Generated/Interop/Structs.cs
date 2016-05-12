@@ -412,7 +412,7 @@ namespace Vulkan.Interop
         internal LogicOp LogicOp;
         internal UInt32 AttachmentCount;
         internal IntPtr Attachments;
-        internal Single BlendConstants;
+        internal unsafe fixed Single BlendConstants[4];
     }
 
     internal struct PipelineDynamicStateCreateInfo

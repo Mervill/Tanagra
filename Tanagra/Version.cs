@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tanagra
 {
-    public class Version
+    public struct Version
     {
         public uint Major => value >> 22;
         public uint Minor => (value >> 12) & 0x3FF;
@@ -28,6 +28,9 @@ namespace Tanagra
             => version.value;
 
         public override string ToString()
+            => $"{Major}.{Minor}.{Patch}";
+
+        public string ToString(bool hex)
             => $"{Major}.{Minor}.{Patch} ({value.ToString("X8")})";
     }
 }

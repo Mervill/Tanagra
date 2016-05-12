@@ -35,7 +35,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DescriptorCount;
+                var valueArray = new Sampler[valueCount];
+                var ptr = (UInt64*)NativePointer->ImmutableSamplers;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Sampler { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {

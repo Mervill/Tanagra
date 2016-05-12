@@ -86,7 +86,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DescriptorCount;
+                var valueArray = new BufferView[valueCount];
+                var ptr = (UInt64*)NativePointer->TexelBufferView;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new BufferView { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {

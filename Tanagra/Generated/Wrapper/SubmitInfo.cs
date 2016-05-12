@@ -17,7 +17,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->WaitSemaphoreCount;
+                var valueArray = new Semaphore[valueCount];
+                var ptr = (UInt64*)NativePointer->WaitSemaphores;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {
@@ -34,16 +39,16 @@ namespace Vulkan
         {
             get
             {
-                throw new NotImplementedException();
+                throw new System.NotImplementedException();
             }
             set
             {
                 var valueCount = value.Length;
                 NativePointer->WaitSemaphoreCount = (uint)valueCount;
-                NativePointer->WaitDstStageMask = Marshal.AllocHGlobal(Marshal.SizeOf<Int32>() * valueCount);
-                var ptr = (Int32*)NativePointer->WaitDstStageMask;
+                NativePointer->WaitDstStageMask = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
+                var ptr = (UInt32*)NativePointer->WaitDstStageMask;
                 for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (Int32)value[x];
+                    ptr[x] = (UInt32)value[x];
             }
         }
         
@@ -62,7 +67,6 @@ namespace Vulkan
                 var ptr = (IntPtr*)NativePointer->CommandBuffers;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new CommandBuffer { NativePointer = ptr[x] };
-
                 return valueArray;
             }
             set
@@ -91,7 +95,6 @@ namespace Vulkan
                 var ptr = (UInt64*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new Semaphore { NativePointer = ptr[x] };
-
                 return valueArray;
             }
             set

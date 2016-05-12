@@ -83,7 +83,7 @@ namespace TanagraExample
         {
             var version = MakeVersion(1, 0, 8);
             var ver = new Tanagra.Version(version);
-            Console.WriteLine($"version {ver}");
+            Console.WriteLine($"version {ver.ToString(true)}");
 
             var appInfo = new ApplicationInfo
             {
@@ -634,7 +634,7 @@ namespace TanagraExample
 
         static void Draw()
         {
-            Console.WriteLine("Draw");
+            Console.WriteLine("[INFO] !! Draw");
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
 
@@ -689,7 +689,7 @@ namespace TanagraExample
 
         static void DrawInternal()
         {
-            Console.WriteLine("[INFO] DrawInternal");
+            Console.WriteLine("[INFO] -> DrawInternal");
             // Post-present transition
             var memoryBarrier = new ImageMemoryBarrier
             {

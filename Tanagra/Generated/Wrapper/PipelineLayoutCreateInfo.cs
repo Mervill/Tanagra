@@ -23,7 +23,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SetLayoutCount;
+                var valueArray = new DescriptorSetLayout[valueCount];
+                var ptr = (UInt64*)NativePointer->SetLayouts;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                return valueArray;
             }
             set
             {
