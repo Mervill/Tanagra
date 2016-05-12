@@ -708,7 +708,14 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
 
-            WriteLine("throw new System.NotImplementedException();");
+            WriteLine($"var valueCount = {NativePointer}->{countName};");
+            WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
+            WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
+            WriteLine("for(var x = 0; x < valueCount; x++)");
+            _tabs++;
+            WriteLine($"valueArray[x] = ({vkMember.Type})ptr[x];");
+            _tabs--;
+            WriteLine("return valueArray;");
 
             _tabs--;
             WriteLine("}");

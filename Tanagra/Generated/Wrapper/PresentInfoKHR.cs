@@ -89,7 +89,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->SwapchainCount;
+                var valueArray = new Result[valueCount];
+                var ptr = (UInt32*)NativePointer->Results;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = (Result)ptr[x];
+                return valueArray;
             }
             set
             {

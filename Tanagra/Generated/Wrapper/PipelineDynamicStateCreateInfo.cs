@@ -23,7 +23,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->DynamicStateCount;
+                var valueArray = new DynamicState[valueCount];
+                var ptr = (UInt32*)NativePointer->DynamicStates;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = (DynamicState)ptr[x];
+                return valueArray;
             }
             set
             {

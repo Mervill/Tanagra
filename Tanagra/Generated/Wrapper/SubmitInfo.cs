@@ -39,7 +39,12 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->WaitSemaphoreCount;
+                var valueArray = new PipelineStageFlags[valueCount];
+                var ptr = (UInt32*)NativePointer->WaitDstStageMask;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = (PipelineStageFlags)ptr[x];
+                return valueArray;
             }
             set
             {
