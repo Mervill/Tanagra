@@ -263,7 +263,7 @@ namespace Vulkan.Interop
         internal StructureType SType;
         internal IntPtr Next;
         internal ShaderModuleCreateFlags Flags;
-        internal UIntPtr CodeSize;
+        internal IntPtr CodeSize;
         internal IntPtr Code;
     }
 

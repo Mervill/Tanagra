@@ -21,7 +21,7 @@ namespace Vulkan.Interop
         internal static extern PFN_vkVoidFunction vkGetDeviceProcAddr(IntPtr device, String name);
         
         [DllImport(DllName, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = callingConvention)]
-        internal static extern PFN_vkVoidFunction vkGetInstanceProcAddr(IntPtr instance, String name);
+        internal static extern IntPtr vkGetInstanceProcAddr(IntPtr instance, Byte* name);
         
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = callingConvention)]
         internal static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, PhysicalDeviceProperties* properties);

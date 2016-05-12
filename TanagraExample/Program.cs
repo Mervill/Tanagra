@@ -48,6 +48,8 @@ namespace TanagraExample
         static DeviceMemory vertexBufferMemory;
         static VertexInputAttributeDescription[] vertexAttributes;
         static VertexInputBindingDescription[] vertexBindings;
+        
+        static DebugReportCallbackEXT debugCallback;
 
         static void Main(string[] args)
         {
@@ -80,20 +82,25 @@ namespace TanagraExample
             var ver = new Tanagra.Version(version);
             Console.WriteLine($"version {ver}");
 
-            var appInfo = new ApplicationInfo();
-            appInfo.ApplicationName = "vulkanExample";
-            appInfo.EngineName = "vulkanExample";
-            appInfo.ApiVersion = version;
-
+            var appInfo = new ApplicationInfo
+            {
+                ApplicationName = "vulkanExample",
+                EngineName      = "vulkanExample",
+                ApiVersion      = version,
+            };
+            
             var instanceEnabledExtensions = new[]
             {
                 "VK_KHR_surface",       // VK_KHR_SURFACE_EXTENSION_NAME
                 "VK_KHR_win32_surface", // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
+                "VK_EXT_debug_report",
             };
 
-            var instanceCreateInfo = new InstanceCreateInfo();
-            instanceCreateInfo.ApplicationInfo = appInfo;
-            instanceCreateInfo.EnabledExtensionNames = instanceEnabledExtensions;
+            var instanceCreateInfo = new InstanceCreateInfo
+            {
+                ApplicationInfo       = appInfo,
+                EnabledExtensionNames = instanceEnabledExtensions,
+            };
 
             Console.WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
@@ -106,9 +113,19 @@ namespace TanagraExample
             physicalDevice = physicalDevices[0];
             Console.WriteLine($"[ OK ] {physicalDevice}");
 
+            debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
+            Console.WriteLine($"[ OK ] {debugCallback}");
+
             //appInfo.Dispose();
             //instanceCreateInfo.Dispose();
             //PhysicalDeviceProperties();
+        }
+
+        static Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
+        {
+            //Debug.WriteLine($"{flags}: {message} ([{messageCode}] {layerPrefix})");
+            Console.WriteLine($"[VULK] {flags}: {message} ([{messageCode}] {layerPrefix})");
+            return true;
         }
 
         static void CreateDevice()
@@ -124,12 +141,18 @@ namespace TanagraExample
                 "VK_KHR_swapchain",
             };
 
+            var enabledFeatures = new PhysicalDeviceFeatures
+            {
+                ShaderClipDistance = true,
+            };
+
             var deviceCreateInfo = new DeviceCreateInfo
             {
                 QueueCreateInfos      = new[] { queueCreateInfo },
                 EnabledExtensionNames = deviceEnabledExtensions,
+                EnabledFeatures       = enabledFeatures,
             };
-
+            
             device = physicalDevice.CreateDevice(deviceCreateInfo);
             Console.WriteLine($"[ OK ] {device}");
 
@@ -162,7 +185,7 @@ namespace TanagraExample
             var commandPoolCreateInfo = new CommandPoolCreateInfo
             {
                 QueueFamilyIndex = 0,
-                Flags = CommandPoolCreateFlags.ResetCommandBuffer,
+                Flags            = CommandPoolCreateFlags.ResetCommandBuffer,
             };
             commandPool = device.CreateCommandPool(commandPoolCreateInfo);
             Console.WriteLine($"[ OK ] {commandPool}");
@@ -262,8 +285,8 @@ namespace TanagraExample
                 CommandBuffer setupBuffer;
                 var allocateInfo = new CommandBufferAllocateInfo
                 {
-                    CommandPool = commandPool,
-                    Level = CommandBufferLevel.Primary,
+                    CommandPool        = commandPool,
+                    Level              = CommandBufferLevel.Primary,
                     CommandBufferCount = 1,
                 };
                 setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
@@ -351,9 +374,9 @@ namespace TanagraExample
             {
                 var createInfo = new ImageViewCreateInfo
                 {
-                    ViewType = ImageViewType.ImageViewType2d,
-                    Format = backBufferFormat,
-                    Image = backBuffers[x],
+                    ViewType   = ImageViewType.ImageViewType2d,
+                    Format     = backBufferFormat,
+                    Image      = backBuffers[x],
                     Components = new ComponentMapping(),
                     SubresourceRange = new ImageSubresourceRange
                     {
@@ -395,7 +418,7 @@ namespace TanagraExample
             var allocateInfo = new MemoryAllocateInfo
             {
                 AllocationSize  = memoryRequirements.Size,
-                MemoryTypeIndex = 2,
+                MemoryTypeIndex = 2, // TODO
             };
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
             Console.WriteLine($"[ OK ] {vertexBufferMemory}");
@@ -466,6 +489,7 @@ namespace TanagraExample
             // We don't need any descriptors, since we don't use any resources/uniforms
             var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo();
             var descriptorSetLayout = device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo);
+            Console.WriteLine($"[ OK ] {descriptorSetLayout}");
 
             var createInfo = new PipelineLayoutCreateInfo();
             pipelineLayout = device.CreatePipelineLayout(createInfo);
@@ -478,8 +502,6 @@ namespace TanagraExample
         static void CreatePipeline()
         {
             var dynamicStates = new[] { DynamicState.Viewport, DynamicState.Scissor };
-
-            var entryPointName = System.Text.Encoding.UTF8.GetBytes("main\0");
 
             var dynamicState = new PipelineDynamicStateCreateInfo
             {
@@ -529,15 +551,15 @@ namespace TanagraExample
             {
                 new PipelineShaderStageCreateInfo
                 {
-                    Name = "main\0",
-                    Stage = ShaderStageFlags.Vertex,
-                    //Module = CreateVertexShader()
+                    Name   = "main\0",
+                    Stage  = ShaderStageFlags.Vertex,
+                    Module = CreateVertexShader()
                 },
                 new PipelineShaderStageCreateInfo
                 {
-                    Name = "main\0",
-                    Stage = ShaderStageFlags.Fragment,
-                    //Module = CreateFragmentShader()
+                    Name   = "main\0",
+                    Stage  = ShaderStageFlags.Fragment,
+                    Module = CreateFragmentShader()
                 }
             };
 
@@ -558,33 +580,33 @@ namespace TanagraExample
             pipeline = device.CreateGraphicsPipelines(null, new List<GraphicsPipelineCreateInfo> { createInfo });
             Console.WriteLine($"[ OK ] {pipeline}");
 
-            /*foreach(var shaderStage in shaderStages)
+            foreach(var shaderStage in shaderStages)
             {
                 device.DestroyShaderModule(shaderStage.Module);
-            }*/
+            }
         }
 
-        /*private ShaderModule CreateVertexShader()
+        static ShaderModule CreateVertexShader()
         {
             var bytes = File.ReadAllBytes("vert.spv");
             return CreateShaderModule(bytes);
         }
 
-        private ShaderModule CreateFragmentShader()
+        static ShaderModule CreateFragmentShader()
         {
             var bytes = File.ReadAllBytes("frag.spv");
             return CreateShaderModule(bytes);
         }
 
-        private ShaderModule CreateShaderModule(byte[] shaderCode)
+        static ShaderModule CreateShaderModule(byte[] shaderCode)
         {
             var createInfo = new ShaderModuleCreateInfo
             {
-                CodeSize = shaderCode.Length,
-                Code = new IntPtr(codePointer)
+                //CodeSize = shaderCode.Length,
+                Code = shaderCode//new IntPtr(codePointer)
             };
             return device.CreateShaderModule(createInfo);
-        }*/
+        }
 
         static void CreateFramebuffers()
         {

@@ -13,13 +13,13 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UIntPtr CodeSize
+        public IntPtr CodeSize
         {
             get { return NativePointer->CodeSize; }
             set { NativePointer->CodeSize = value; }
         }
         
-        public UInt32[] Code
+        public Byte[] Code
         {
             get
             {
@@ -27,7 +27,12 @@ namespace Vulkan
             }
             set
             {
-                throw new System.NotImplementedException();
+                var valueCount = value.Length;
+                NativePointer->CodeSize = new IntPtr(valueCount);
+                NativePointer->Code = Marshal.AllocHGlobal(Marshal.SizeOf<Byte>() * valueCount);
+                var ptr = (Byte*)NativePointer->Code;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
             }
         }
         

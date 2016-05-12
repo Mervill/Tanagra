@@ -19,7 +19,8 @@ namespace Vulkan.ObjectModel
         
         public static PFN_vkVoidFunction GetProcAddr(this Instance instance, String name)
         {
-            return VK.GetInstanceProcAddr(instance, name);
+            //return VK.GetInstanceProcAddr(instance, name);
+            throw new NotImplementedException();
         }
         
         public static SurfaceKHR CreateAndroidSurfaceKHR(this Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)

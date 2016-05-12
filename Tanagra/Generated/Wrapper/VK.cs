@@ -55,10 +55,9 @@ namespace Vulkan
             return result;
         }
         
-        public static PFN_vkVoidFunction GetInstanceProcAddr(Instance instance, String name)
+        public static IntPtr GetInstanceProcAddr(Instance instance, Byte* name)
         {
-            var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
-            return result;
+            return vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
         }
         
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)

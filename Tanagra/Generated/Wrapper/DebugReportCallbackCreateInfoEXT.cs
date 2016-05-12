@@ -12,12 +12,12 @@ namespace Vulkan
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
-        
-        PFN_vkDebugReportCallbackEXT _PfnCallback;
-        public PFN_vkDebugReportCallbackEXT PfnCallback
+
+        IntPtr _PfnCallback;
+        public IntPtr PfnCallback
         {
             get { return _PfnCallback; }
-            set { _PfnCallback = value; NativePointer->PfnCallback = IntPtr.Zero; }
+            set { _PfnCallback = value; NativePointer->PfnCallback = value; }
         }
         
         public IntPtr UserData
@@ -29,7 +29,7 @@ namespace Vulkan
         public DebugReportCallbackCreateInfoEXT()
         {
             NativePointer = (Interop.DebugReportCallbackCreateInfoEXT*)Interop.Structure.Allocate(typeof(Interop.DebugReportCallbackCreateInfoEXT));
-            //NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
+            NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
     }
 }

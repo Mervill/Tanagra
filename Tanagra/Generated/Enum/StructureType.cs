@@ -64,6 +64,6 @@ namespace Vulkan
         MirSurfaceCreateInfoKHR = 1000007000,
         AndroidSurfaceCreateInfoKHR = 1000008000,
         Win32SurfaceCreateInfoKHR = 1000009000,
-        DebugReportCallbackCreateInfoKHR = 1000011000,
+        DebugReportCallbackCreateInfoEXT = 1000011000,
     }
 }
