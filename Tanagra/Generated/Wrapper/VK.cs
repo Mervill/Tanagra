@@ -705,16 +705,24 @@ namespace Vulkan
             var _createInfosPtr = (void**)Marshal.AllocHGlobal((int)(_createInfosSize * createInfoCount));
             for(var x = 0; x < createInfoCount; x++)
                 _createInfosPtr[x] = createInfos[x].NativePointer;
-
-            var pipeline = new Pipeline();
-            fixed (UInt64* ptrPipeline = &pipeline.NativePointer)
+            
+            var pipelineArray = new UInt64[createInfoCount];
+            fixed (UInt64* ptrPipeline = &pipelineArray[0])
             {
-                var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, (Interop.GraphicsPipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, ptrPipeline);
+                var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, createInfos[0].NativePointer, (allocator != null) ? allocator.NativePointer : null, ptrPipeline);
                 if(result != Result.Success)
                     throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
             }
-            
-            throw new NotImplementedException();
+
+            var list = new List<Pipeline>();
+            for(var x = 0; x < createInfoCount; x++)
+            {
+                var item = new Pipeline();
+                item.NativePointer = pipelineArray[x];
+                list.Add(item);
+            }
+
+            return list;
         }
         
         public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)

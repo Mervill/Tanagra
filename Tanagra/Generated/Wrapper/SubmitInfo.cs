@@ -40,6 +40,10 @@ namespace Vulkan
             {
                 var valueCount = value.Length;
                 NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitDstStageMask = Marshal.AllocHGlobal(Marshal.SizeOf<Int32>() * valueCount);
+                var ptr = (Int32*)NativePointer->WaitDstStageMask;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = (Int32)value[x];
             }
         }
         
