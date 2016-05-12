@@ -25,16 +25,32 @@ namespace Vulkan
             set { NativePointer->TagName = value; }
         }
         
-        public UIntPtr TagSize
+        public UInt32 TagSize
         {
             get { return NativePointer->TagSize; }
             set { NativePointer->TagSize = value; }
         }
         
-        public IntPtr Tag
+        public IntPtr[] Tag
         {
-            get { return NativePointer->Tag; }
-            set { NativePointer->Tag = value; }
+            get
+            {
+                var valueCount = NativePointer->TagSize;
+                var valueArray = new IntPtr[valueCount];
+                var ptr = (IntPtr*)NativePointer->Tag;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
+            }
+            set
+            {
+                var valueCount = value.Length;
+                NativePointer->TagSize = (uint)valueCount;
+                NativePointer->Tag = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (IntPtr*)NativePointer->Tag;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
+            }
         }
         
         public DebugMarkerObjectTagInfoEXT()

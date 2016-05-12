@@ -131,8 +131,6 @@ namespace Tanagra.Generator
                     ReadStruct(structDefMap[vkStruct.Name], vkStruct);
             }
             
-            spec.AllTypes = allTypes.Values.ToList();
-
             // Commands //
             var commandsRoot = registry.Element("commands");
             var commands = commandsRoot.Elements("command");
@@ -141,7 +139,8 @@ namespace Tanagra.Generator
             // Features //
             var features = registry.Elements("feature");
             spec.Features = features.Select(ReadFeature).ToArray();
-            
+
+            spec.AllTypes = allTypes.Values.ToList();
             return spec;
         }
 

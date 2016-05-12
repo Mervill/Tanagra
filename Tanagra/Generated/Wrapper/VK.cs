@@ -49,7 +49,7 @@ namespace Vulkan
             return list;
         }
         
-        public static PFN_vkVoidFunction GetDeviceProcAddr(Device device, String name)
+        public static IntPtr GetDeviceProcAddr(Device device, String name)
         {
             var result = vkGetDeviceProcAddr(device.NativePointer, name);
             return result;
@@ -1774,7 +1774,7 @@ namespace Vulkan
             vkDestroyDebugReportCallbackEXT(instance.NativePointer, callback.NativePointer, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message)
+        public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UInt32 location, Int32 messageCode, String layerPrefix, String message)
         {
             vkDebugReportMessageEXT(instance.NativePointer, flags, objectType, @object, location, messageCode, layerPrefix, message);
         }

@@ -96,7 +96,7 @@ namespace TanagraExample
             {
                 "VK_KHR_surface",       // VK_KHR_SURFACE_EXTENSION_NAME
                 "VK_KHR_win32_surface", // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
-                "VK_EXT_debug_report",
+                "VK_EXT_debug_report",  // VK_EXT_DEBUG_REPORT_EXTENSION_NAME
             };
 
             var instanceCreateInfo = new InstanceCreateInfo

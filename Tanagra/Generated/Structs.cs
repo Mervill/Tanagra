@@ -273,7 +273,7 @@ namespace Vulkan
     {
         public UInt32 ConstantID;
         public UInt32 Offset;
-        public UIntPtr Size;
+        public UInt32 Size;
     }
 
     public struct VertexInputBindingDescription
@@ -500,7 +500,7 @@ namespace Vulkan
         public unsafe fixed uint MaxViewportDimensions[2];
         public unsafe fixed float ViewportBoundsRange[2];
         public UInt32 ViewportSubPixelBits;
-        public UIntPtr MinMemoryMapAlignment;
+        public UInt32 MinMemoryMapAlignment;
         public DeviceSize MinTexelBufferOffsetAlignment;
         public DeviceSize MinUniformBufferOffsetAlignment;
         public DeviceSize MinStorageBufferOffsetAlignment;

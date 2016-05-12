@@ -18,7 +18,7 @@ namespace Vulkan.Interop
         internal static extern Result vkEnumeratePhysicalDevices(IntPtr instance, UInt32* physicalDeviceCount, IntPtr* physicalDevices);
         
         [DllImport(DllName, EntryPoint = "vkGetDeviceProcAddr", CallingConvention = callingConvention)]
-        internal static extern PFN_vkVoidFunction vkGetDeviceProcAddr(IntPtr device, String name);
+        internal static extern IntPtr vkGetDeviceProcAddr(IntPtr device, String name);
         
         [DllImport(DllName, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = callingConvention)]
         internal static extern IntPtr vkGetInstanceProcAddr(IntPtr instance, Byte* name);
@@ -156,7 +156,7 @@ namespace Vulkan.Interop
         internal static extern void vkDestroyQueryPool(IntPtr device, UInt64 queryPool, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkGetQueryPoolResults", CallingConvention = callingConvention)]
-        internal static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, UIntPtr dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
+        internal static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, UInt32 dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
         
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
         internal static extern Result vkCreateBuffer(IntPtr device, BufferCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* buffer);
@@ -198,7 +198,7 @@ namespace Vulkan.Interop
         internal static extern void vkDestroyPipelineCache(IntPtr device, UInt64 pipelineCache, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
-        internal static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, UIntPtr* dataSize, IntPtr* data);
+        internal static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, UInt32* dataSize, IntPtr* data);
         
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
         internal static extern Result vkMergePipelineCaches(IntPtr device, UInt64 dstCache, UInt32 srcCacheCount, UInt64* srcCaches);
@@ -513,7 +513,7 @@ namespace Vulkan.Interop
         internal static extern void vkDestroyDebugReportCallbackEXT(IntPtr instance, UInt64 callback, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkDebugReportMessageEXT", CallingConvention = callingConvention)]
-        internal static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UIntPtr location, Int32 messageCode, String layerPrefix, String message);
+        internal static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UInt32 location, Int32 messageCode, String layerPrefix, String message);
         
         [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectNameEXT", CallingConvention = callingConvention)]
         internal static extern Result vkDebugMarkerSetObjectNameEXT(IntPtr device, DebugMarkerObjectNameInfoEXT* nameInfo);

@@ -13,39 +13,34 @@ namespace Vulkan
             set { NativePointer->UserData = value; }
         }
         
-        PFN_vkAllocationFunction _PfnAllocation;
-        public PFN_vkAllocationFunction PfnAllocation
+        public IntPtr PfnAllocation
         {
-            get { return _PfnAllocation; }
-            set { _PfnAllocation = value; NativePointer->PfnAllocation = IntPtr.Zero; }
+            get { return NativePointer->PfnAllocation; }
+            set { NativePointer->PfnAllocation = value; }
         }
         
-        PFN_vkReallocationFunction _PfnReallocation;
-        public PFN_vkReallocationFunction PfnReallocation
+        public IntPtr PfnReallocation
         {
-            get { return _PfnReallocation; }
-            set { _PfnReallocation = value; NativePointer->PfnReallocation = IntPtr.Zero; }
+            get { return NativePointer->PfnReallocation; }
+            set { NativePointer->PfnReallocation = value; }
         }
         
-        PFN_vkFreeFunction _PfnFree;
-        public PFN_vkFreeFunction PfnFree
+        public IntPtr PfnFree
         {
-            get { return _PfnFree; }
-            set { _PfnFree = value; NativePointer->PfnFree = IntPtr.Zero; }
+            get { return NativePointer->PfnFree; }
+            set { NativePointer->PfnFree = value; }
         }
         
-        PFN_vkInternalAllocationNotification _PfnInternalAllocation;
-        public PFN_vkInternalAllocationNotification PfnInternalAllocation
+        public IntPtr PfnInternalAllocation
         {
-            get { return _PfnInternalAllocation; }
-            set { _PfnInternalAllocation = value; NativePointer->PfnInternalAllocation = IntPtr.Zero; }
+            get { return NativePointer->PfnInternalAllocation; }
+            set { NativePointer->PfnInternalAllocation = value; }
         }
         
-        PFN_vkInternalFreeNotification _PfnInternalFree;
-        public PFN_vkInternalFreeNotification PfnInternalFree
+        public IntPtr PfnInternalFree
         {
-            get { return _PfnInternalFree; }
-            set { _PfnInternalFree = value; NativePointer->PfnInternalFree = IntPtr.Zero; }
+            get { return NativePointer->PfnInternalFree; }
+            set { NativePointer->PfnInternalFree = value; }
         }
         
         public AllocationCallbacks()

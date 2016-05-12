@@ -12,12 +12,11 @@ namespace Vulkan
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
-
-        IntPtr _PfnCallback;
+        
         public IntPtr PfnCallback
         {
-            get { return _PfnCallback; }
-            set { _PfnCallback = value; NativePointer->PfnCallback = value; }
+            get { return NativePointer->PfnCallback; }
+            set { NativePointer->PfnCallback = value; }
         }
         
         public IntPtr UserData

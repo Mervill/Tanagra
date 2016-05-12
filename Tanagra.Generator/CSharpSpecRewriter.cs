@@ -22,14 +22,14 @@ namespace Tanagra.Generator
             
             structNameOverride = new Dictionary<string, string>
             {
-                { "void",     "IntPtr"  },
-                { "char",     "Char"    },
-                { "float",    "Single"  },
-                { "uint8_t",  "Byte"    },
-                { "uint32_t", "UInt32"  },
-                { "uint64_t", "UInt64"  },
-                { "int32_t",  "Int32"   },
-                { "size_t",   "UIntPtr" },
+                { "void",     "IntPtr" },
+                { "char",     "Char"   },
+                { "float",    "Single" },
+                { "uint8_t",  "Byte"   },
+                { "uint32_t", "UInt32" },
+                { "uint64_t", "UInt64" },
+                { "int32_t",  "Int32"  },
+                { "size_t",   "UInt32" },
                 { "VkBool32", "Bool32" }
             };
         }
@@ -57,13 +57,19 @@ namespace Tanagra.Generator
 
             // Replace all imported type refrences with IntPtr
             var intPtr = spec.AllTypes.FirstOrDefault(x => x.Name == "IntPtr");
+
             var platfromTypes = spec.AllTypes.Where(x => x.IsImportedType);
             foreach(var vkType in platfromTypes)
-            {
                 Replace(spec, vkType, intPtr);
-            }
 
             spec.AllTypes = spec.AllTypes.Except(platfromTypes).ToList();
+
+            var functionPointers = spec.AllTypes.Where(x => x.Name.StartsWith("PFN_"));
+            foreach(var vkType in functionPointers)
+                Replace(spec, vkType, intPtr);
+
+            spec.AllTypes = spec.AllTypes.Except(functionPointers).ToList();
+            
 
             return spec;
         }
@@ -253,6 +259,9 @@ namespace Tanagra.Generator
                     if(vkParam.Type == existingType)
                         vkParam.Type = newType;
                 }
+
+                if(vkCommand.ReturnType == existingType)
+                    vkCommand.ReturnType = newType;
             }
 
             //if(spec.AllTypes.Contains(newType))

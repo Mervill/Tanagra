@@ -50,10 +50,10 @@ namespace Tanagra.Generator
                 "Char",
                 "Single",
                 "Byte",
+                "Int32",
                 "UInt32",
                 "UInt64",
-                "Int32",
-                "UIntPtr",
+                //"UIntPtr",
                 "Boolean",
                 "Bool32",
                 "DeviceSize",
@@ -510,12 +510,13 @@ namespace Tanagra.Generator
         void WriteMemeberArray(VkMember vkMember)
         {
             var countName = vkMember.Len[0];
-            if(countName.StartsWith("latexmath"))
+            countName = char.ToUpper(countName[0]) + countName.Substring(1, countName.Length - 1);
+
+            if(countName.StartsWith("Latexmath"))
             {
                 WriteNotImplementedArray(vkMember);
                 return;
             }
-            countName = char.ToUpper(countName[0]) + countName.Substring(1, countName.Length - 1);
 
             if(vkMember.Type is VkHandle)
             {

@@ -798,7 +798,7 @@ namespace Vulkan.Interop
         internal DebugReportObjectTypeEXT ObjectType;
         internal UInt64 Object;
         internal UInt64 TagName;
-        internal UIntPtr TagSize;
+        internal UInt32 TagSize;
         internal IntPtr Tag;
     }
 
