@@ -55,9 +55,10 @@ namespace Vulkan
             return result;
         }
         
-        public static IntPtr GetInstanceProcAddr(Instance instance, Byte* name)
+        public static IntPtr GetInstanceProcAddr(Instance instance, String name)
         {
-            return vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
+            var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
+            return result;
         }
         
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)
@@ -245,13 +246,13 @@ namespace Vulkan
         public static void QueueSubmit(Queue queue, List<SubmitInfo> submits, Fence fence)
         {
             // hasArrayArguments
-            /*var submitCount = (UInt32)submits.Count;
+            var submitCount = (UInt32)submits.Count;
             var _submitsSize = Marshal.SizeOf(typeof(Interop.SubmitInfo));
             var _submitsPtr = (void**)Marshal.AllocHGlobal((int)(_submitsSize * submitCount));
             for(var x = 0; x < submitCount; x++)
-                _submitsPtr[x] = submits[x].NativePointer;*/
+                _submitsPtr[x] = submits[x].NativePointer;
             
-            var result = vkQueueSubmit(queue.NativePointer, 1, submits[0].NativePointer, 0);
+            var result = vkQueueSubmit(queue.NativePointer, submitCount, (Interop.SubmitInfo*)_submitsPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueSubmit), result);
         }
@@ -538,19 +539,19 @@ namespace Vulkan
             vkDestroyQueryPool(device.NativePointer, (queryPool != null) ? queryPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /*public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
+        public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
         {
             // hasArrayArguments
-            var dataSize = (UIntPtr)data.Count;
+            var dataSize = (UInt32)data.Count;
             var _dataSize = Marshal.SizeOf(typeof(IntPtr));
             var _dataPtr = (void**)Marshal.AllocHGlobal((int)(_dataSize * dataSize));
             for(var x = 0; x < dataSize; x++)
-                _dataPtr[x] = (IntPtr*)data[x].NativePointer;
+                _dataPtr[x] = (IntPtr*)data[x];
             
             var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, (IntPtr*)_dataPtr, stride, flags);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetQueryPoolResults), result);
-        }*/
+        }
         
         public static Buffer CreateBuffer(Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
@@ -661,9 +662,9 @@ namespace Vulkan
             vkDestroyPipelineCache(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /*public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
+        public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
-            UIntPtr listLength;
+            UInt32 listLength;
             var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetPipelineCacheData), result);
@@ -681,7 +682,7 @@ namespace Vulkan
             }
             
             return list;
-        }*/
+        }
         
         public static void MergePipelineCaches(Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
@@ -706,23 +707,10 @@ namespace Vulkan
             for(var x = 0; x < createInfoCount; x++)
                 _createInfosPtr[x] = createInfos[x].NativePointer;
             
-            var pipelineArray = new UInt64[createInfoCount];
-            fixed (UInt64* ptrPipeline = &pipelineArray[0])
-            {
-                var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, createInfos[0].NativePointer, (allocator != null) ? allocator.NativePointer : null, ptrPipeline);
-                if(result != Result.Success)
-                    throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
-            }
-
-            var list = new List<Pipeline>();
-            for(var x = 0; x < createInfoCount; x++)
-            {
-                var item = new Pipeline();
-                item.NativePointer = pipelineArray[x];
-                list.Add(item);
-            }
-
-            return list;
+            var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, (Interop.GraphicsPipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, null);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
+            throw new NotImplementedException();
         }
         
         public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
@@ -944,11 +932,10 @@ namespace Vulkan
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.CommandBufferCount;
-            /*var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
+            var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
             if(result != Result.Success)
-                throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);*/
-
-            Result result;
+                throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);
+            
             var arrayCommandBuffer = new IntPtr[listLength];
             fixed(IntPtr* resultPtr = &arrayCommandBuffer[0])
                 result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, resultPtr);
@@ -1004,11 +991,11 @@ namespace Vulkan
             vkCmdBindPipeline(commandBuffer.NativePointer, pipelineBindPoint, pipeline.NativePointer);
         }
         
-        /*public static void CmdSetViewport(CommandBuffer commandBuffer, UInt32 firstViewport, List<Viewport> viewports)
+        public static void CmdSetViewport(CommandBuffer commandBuffer, UInt32 firstViewport, List<Viewport> viewports)
         {
             // hasArrayArguments
             var viewportCount = (UInt32)viewports.Count;
-            var _viewportsSize = Marshal.SizeOf(typeof(Interop.Viewport));
+            var _viewportsSize = Marshal.SizeOf(typeof(Viewport));
             var _viewportsPtr = (void**)Marshal.AllocHGlobal((int)(_viewportsSize * viewportCount));
             for(var x = 0; x < viewportCount; x++)
                 _viewportsPtr[x] = viewports[x].NativePointer;
@@ -1020,13 +1007,13 @@ namespace Vulkan
         {
             // hasArrayArguments
             var scissorCount = (UInt32)scissors.Count;
-            var _scissorsSize = Marshal.SizeOf(typeof(Interop.Rect2D));
+            var _scissorsSize = Marshal.SizeOf(typeof(Rect2D));
             var _scissorsPtr = (void**)Marshal.AllocHGlobal((int)(_scissorsSize * scissorCount));
             for(var x = 0; x < scissorCount; x++)
                 _scissorsPtr[x] = scissors[x].NativePointer;
             
             vkCmdSetScissor(commandBuffer.NativePointer, firstScissor, scissorCount, (Interop.Rect2D*)_scissorsPtr);
-        }*/
+        }
         
         public static void CmdSetLineWidth(CommandBuffer commandBuffer, Single lineWidth)
         {
@@ -1063,7 +1050,7 @@ namespace Vulkan
             vkCmdSetStencilReference(commandBuffer.NativePointer, faceMask, reference);
         }
         
-        /*public static void CmdBindDescriptorSets(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, List<DescriptorSet> descriptorSets, List<UInt32> dynamicOffsets)
+        public static void CmdBindDescriptorSets(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, List<DescriptorSet> descriptorSets, List<UInt32> dynamicOffsets)
         {
             // hasArrayArguments
             var descriptorSetCount = (UInt32)descriptorSets.Count;
@@ -1073,20 +1060,20 @@ namespace Vulkan
                 _descriptorSetsPtr[x] = (IntPtr*)descriptorSets[x].NativePointer;
             
             var dynamicOffsetCount = (UInt32)dynamicOffsets.Count;
-            var _dynamicOffsetsSize = Marshal.SizeOf(typeof(Interop.UInt32));
+            var _dynamicOffsetsSize = Marshal.SizeOf(typeof(UInt32));
             var _dynamicOffsetsPtr = (void**)Marshal.AllocHGlobal((int)(_dynamicOffsetsSize * dynamicOffsetCount));
             for(var x = 0; x < dynamicOffsetCount; x++)
                 _dynamicOffsetsPtr[x] = dynamicOffsets[x].NativePointer;
             
             vkCmdBindDescriptorSets(commandBuffer.NativePointer, pipelineBindPoint, layout.NativePointer, firstSet, descriptorSetCount, (UInt64*)_descriptorSetsPtr, dynamicOffsetCount, (Interop.UInt32*)_dynamicOffsetsPtr);
-        }*/
+        }
         
         public static void CmdBindIndexBuffer(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
         {
             vkCmdBindIndexBuffer(commandBuffer.NativePointer, buffer.NativePointer, offset, indexType);
         }
         
-        /*public static void CmdBindVertexBuffers(CommandBuffer commandBuffer, UInt32 firstBinding, List<Buffer> buffers, List<DeviceSize> offsets)
+        public static void CmdBindVertexBuffers(CommandBuffer commandBuffer, UInt32 firstBinding, List<Buffer> buffers, List<DeviceSize> offsets)
         {
             // hasArrayArguments
             var bindingCount = (UInt32)buffers.Count;
@@ -1096,13 +1083,13 @@ namespace Vulkan
                 _buffersPtr[x] = (IntPtr*)buffers[x].NativePointer;
             
             var bindingCount = (UInt32)offsets.Count;
-            var _offsetsSize = Marshal.SizeOf(typeof(Interop.DeviceSize));
+            var _offsetsSize = Marshal.SizeOf(typeof(DeviceSize));
             var _offsetsPtr = (void**)Marshal.AllocHGlobal((int)(_offsetsSize * bindingCount));
             for(var x = 0; x < bindingCount; x++)
                 _offsetsPtr[x] = offsets[x].NativePointer;
             
             vkCmdBindVertexBuffers(commandBuffer.NativePointer, firstBinding, bindingCount, (UInt64*)_buffersPtr, (Interop.DeviceSize*)_offsetsPtr);
-        }*/
+        }
         
         public static void CmdDraw(CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
         {
@@ -1134,11 +1121,11 @@ namespace Vulkan
             vkCmdDispatchIndirect(commandBuffer.NativePointer, buffer.NativePointer, offset);
         }
         
-        /*public static void CmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, List<BufferCopy> regions)
+        public static void CmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, List<BufferCopy> regions)
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.BufferCopy));
+            var _regionsSize = Marshal.SizeOf(typeof(BufferCopy));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
@@ -1150,7 +1137,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.ImageCopy));
+            var _regionsSize = Marshal.SizeOf(typeof(ImageCopy));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
@@ -1162,7 +1149,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.ImageBlit));
+            var _regionsSize = Marshal.SizeOf(typeof(ImageBlit));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
@@ -1174,7 +1161,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.BufferImageCopy));
+            var _regionsSize = Marshal.SizeOf(typeof(BufferImageCopy));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
@@ -1186,7 +1173,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.BufferImageCopy));
+            var _regionsSize = Marshal.SizeOf(typeof(BufferImageCopy));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
@@ -1199,18 +1186,18 @@ namespace Vulkan
             // hasArrayArguments
             // (no arrayLengthParams)
             vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, (Interop.UInt32*)_dataPtr);
-        }*/
+        }
         
         public static void CmdFillBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
         {
             vkCmdFillBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, size, data);
         }
         
-        /*public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
+        public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
         {
             // hasArrayArguments
             var rangeCount = (UInt32)ranges.Count;
-            var _rangesSize = Marshal.SizeOf(typeof(Interop.ImageSubresourceRange));
+            var _rangesSize = Marshal.SizeOf(typeof(ImageSubresourceRange));
             var _rangesPtr = (void**)Marshal.AllocHGlobal((int)(_rangesSize * rangeCount));
             for(var x = 0; x < rangeCount; x++)
                 _rangesPtr[x] = ranges[x].NativePointer;
@@ -1222,7 +1209,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             var rangeCount = (UInt32)ranges.Count;
-            var _rangesSize = Marshal.SizeOf(typeof(Interop.ImageSubresourceRange));
+            var _rangesSize = Marshal.SizeOf(typeof(ImageSubresourceRange));
             var _rangesPtr = (void**)Marshal.AllocHGlobal((int)(_rangesSize * rangeCount));
             for(var x = 0; x < rangeCount; x++)
                 _rangesPtr[x] = ranges[x].NativePointer;
@@ -1234,13 +1221,13 @@ namespace Vulkan
         {
             // hasArrayArguments
             var attachmentCount = (UInt32)attachments.Count;
-            var _attachmentsSize = Marshal.SizeOf(typeof(Interop.ClearAttachment));
+            var _attachmentsSize = Marshal.SizeOf(typeof(ClearAttachment));
             var _attachmentsPtr = (void**)Marshal.AllocHGlobal((int)(_attachmentsSize * attachmentCount));
             for(var x = 0; x < attachmentCount; x++)
                 _attachmentsPtr[x] = attachments[x].NativePointer;
             
             var rectCount = (UInt32)rects.Count;
-            var _rectsSize = Marshal.SizeOf(typeof(Interop.ClearRect));
+            var _rectsSize = Marshal.SizeOf(typeof(ClearRect));
             var _rectsPtr = (void**)Marshal.AllocHGlobal((int)(_rectsSize * rectCount));
             for(var x = 0; x < rectCount; x++)
                 _rectsPtr[x] = rects[x].NativePointer;
@@ -1252,13 +1239,13 @@ namespace Vulkan
         {
             // hasArrayArguments
             var regionCount = (UInt32)regions.Count;
-            var _regionsSize = Marshal.SizeOf(typeof(Interop.ImageResolve));
+            var _regionsSize = Marshal.SizeOf(typeof(ImageResolve));
             var _regionsPtr = (void**)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
             for(var x = 0; x < regionCount; x++)
                 _regionsPtr[x] = regions[x].NativePointer;
             
             vkCmdResolveImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, (Interop.ImageResolve*)_regionsPtr);
-        }*/
+        }
         
         public static void CmdSetEvent(CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
         {
@@ -1349,17 +1336,17 @@ namespace Vulkan
             vkCmdCopyQueryPoolResults(commandBuffer.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dstBuffer.NativePointer, dstOffset, stride, flags);
         }
         
-        /*public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
+        public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
         {
             // hasArrayArguments
             var size = (UInt32)values.Count;
             var _valuesSize = Marshal.SizeOf(typeof(IntPtr));
             var _valuesPtr = (void**)Marshal.AllocHGlobal((int)(_valuesSize * size));
             for(var x = 0; x < size; x++)
-                _valuesPtr[x] = (IntPtr*)values[x].NativePointer;
+                _valuesPtr[x] = (IntPtr*)values[x];
             
             vkCmdPushConstants(commandBuffer.NativePointer, layout.NativePointer, stageFlags, offset, size, (IntPtr*)_valuesPtr);
-        }*/
+        }
         
         public static void CmdBeginRenderPass(CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
         {
