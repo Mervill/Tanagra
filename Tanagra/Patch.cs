@@ -70,7 +70,7 @@ namespace Vulkan
                 var createDelegate = Marshal.GetDelegateForFunctionPointer<CreateDebugReportCallbackEXT_Delegate>(procAddr);
                 var createInfo = new DebugReportCallbackCreateInfoEXT
                 {
-                    Flags       = DebugReportFlagsEXT.DebugReportErrorBitExt | DebugReportFlagsEXT.DebugReportWarningBitExt | DebugReportFlagsEXT.DebugReportPerformanceWarningBitExt,
+                    Flags       = (DebugReportFlagsEXT)0x1F,//DebugReportFlagsEXT.Error | DebugReportFlagsEXT.Warning | DebugReportFlagsEXT.PerformanceWarning,
                     PfnCallback = Marshal.GetFunctionPointerForDelegate(callback),
                 };
 

@@ -44,19 +44,19 @@ namespace Vulkan
             {
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new DescriptorImageInfo[valueCount];
-                var ptr = (DescriptorImageInfo*)NativePointer->ImageInfo;
+                var ptr = (Interop.DescriptorImageInfo*)NativePointer->ImageInfo;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = ptr[x];
+                    valueArray[x] = new DescriptorImageInfo { NativePointer = &ptr[x] };
                 return valueArray;
             }
             set
             {
                 var valueCount = value.Length;
                 NativePointer->DescriptorCount = (uint)valueCount;
-                NativePointer->ImageInfo = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorImageInfo>() * valueCount);
-                var ptr = (DescriptorImageInfo*)NativePointer->ImageInfo;
+                NativePointer->ImageInfo = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorImageInfo>() * valueCount);
+                var ptr = (Interop.DescriptorImageInfo*)NativePointer->ImageInfo;
                 for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         
@@ -66,19 +66,19 @@ namespace Vulkan
             {
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new DescriptorBufferInfo[valueCount];
-                var ptr = (DescriptorBufferInfo*)NativePointer->BufferInfo;
+                var ptr = (Interop.DescriptorBufferInfo*)NativePointer->BufferInfo;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = ptr[x];
+                    valueArray[x] = new DescriptorBufferInfo { NativePointer = &ptr[x] };
                 return valueArray;
             }
             set
             {
                 var valueCount = value.Length;
                 NativePointer->DescriptorCount = (uint)valueCount;
-                NativePointer->BufferInfo = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorBufferInfo>() * valueCount);
-                var ptr = (DescriptorBufferInfo*)NativePointer->BufferInfo;
+                NativePointer->BufferInfo = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorBufferInfo>() * valueCount);
+                var ptr = (Interop.DescriptorBufferInfo*)NativePointer->BufferInfo;
                 for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         

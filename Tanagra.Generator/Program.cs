@@ -8,13 +8,11 @@ namespace Tanagra.Generator
     class Program
     {
         // todo: spec extensions
-        // todo: hasArrayArguments
-        // todo: Create* commands that return arrays
         // todo: union
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
-        // todo: null input arrays
-        // todo: arrays in structs
-        // todo: Marshal.GetFunctionPointerForDelegate
+        // todo: constructors for interop classes
+        // todo: hide array count variables in interop classes
+        // todo: optional flag to generate arrays instead of lists on commands?
         // XCB -> X protocol C-language Binding
         // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors

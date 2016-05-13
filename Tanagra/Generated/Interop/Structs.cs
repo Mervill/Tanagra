@@ -11,8 +11,8 @@ namespace Vulkan.Interop
         internal UInt32 VendorID;
         internal UInt32 DeviceID;
         internal PhysicalDeviceType DeviceType;
-        internal IntPtr DeviceName;
-        internal Byte PipelineCacheUUID;
+        internal unsafe fixed byte DeviceName[256];
+        internal unsafe fixed byte PipelineCacheUUID[16];
         internal PhysicalDeviceLimits Limits;
         internal PhysicalDeviceSparseProperties SparseProperties;
     }
@@ -103,6 +103,20 @@ namespace Vulkan.Interop
         internal UInt64 Memory;
         internal DeviceSize Offset;
         internal DeviceSize Size;
+    }
+
+    internal struct DescriptorBufferInfo
+    {
+        internal UInt64 Buffer;
+        internal DeviceSize Offset;
+        internal DeviceSize Range;
+    }
+
+    internal struct DescriptorImageInfo
+    {
+        internal UInt64 Sampler;
+        internal UInt64 ImageView;
+        internal ImageLayout ImageLayout;
     }
 
     internal struct WriteDescriptorSet
@@ -219,6 +233,25 @@ namespace Vulkan.Interop
         internal Format Format;
         internal ComponentMapping Components;
         internal ImageSubresourceRange SubresourceRange;
+    }
+
+    internal struct SparseMemoryBind
+    {
+        internal DeviceSize ResourceOffset;
+        internal DeviceSize Size;
+        internal UInt64 Memory;
+        internal DeviceSize MemoryOffset;
+        internal SparseMemoryBindFlags Flags;
+    }
+
+    internal struct SparseImageMemoryBind
+    {
+        internal ImageSubresource Subresource;
+        internal Offset3D Offset;
+        internal Extent3D Extent;
+        internal UInt64 Memory;
+        internal DeviceSize MemoryOffset;
+        internal SparseMemoryBindFlags Flags;
     }
 
     internal struct SparseBufferMemoryBindInfo
@@ -646,6 +679,18 @@ namespace Vulkan.Interop
         internal SurfaceTransformFlagsKHR SupportedTransforms;
         internal Bool32 PlaneReorderPossible;
         internal Bool32 PersistentContent;
+    }
+
+    internal struct DisplayPlanePropertiesKHR
+    {
+        internal UInt64 CurrentDisplay;
+        internal UInt32 CurrentStackIndex;
+    }
+
+    internal struct DisplayModePropertiesKHR
+    {
+        internal UInt64 DisplayMode;
+        internal DisplayModeParametersKHR Parameters;
     }
 
     internal struct DisplayModeCreateInfoKHR

@@ -205,6 +205,8 @@
     <Compile Include="Generated\Wrapper\DebugMarkerObjectNameInfoEXT.cs" />
     <Compile Include="Generated\Wrapper\DebugMarkerObjectTagInfoEXT.cs" />
     <Compile Include="Generated\Wrapper\DebugReportCallbackCreateInfoEXT.cs" />
+    <Compile Include="Generated\Wrapper\DescriptorBufferInfo.cs" />
+    <Compile Include="Generated\Wrapper\DescriptorImageInfo.cs" />
     <Compile Include="Generated\Wrapper\DescriptorPoolCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DescriptorSetAllocateInfo.cs" />
     <Compile Include="Generated\Wrapper\DescriptorSetLayoutBinding.cs" />
@@ -212,6 +214,8 @@
     <Compile Include="Generated\Wrapper\DeviceCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DeviceQueueCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\DisplayModeCreateInfoKHR.cs" />
+    <Compile Include="Generated\Wrapper\DisplayModePropertiesKHR.cs" />
+    <Compile Include="Generated\Wrapper\DisplayPlanePropertiesKHR.cs" />
     <Compile Include="Generated\Wrapper\DisplayPresentInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\DisplayPropertiesKHR.cs" />
     <Compile Include="Generated\Wrapper\DisplaySurfaceCreateInfoKHR.cs" />
@@ -251,8 +255,10 @@
     <Compile Include="Generated\Wrapper\SemaphoreCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\ShaderModuleCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\SparseBufferMemoryBindInfo.cs" />
+    <Compile Include="Generated\Wrapper\SparseImageMemoryBind.cs" />
     <Compile Include="Generated\Wrapper\SparseImageMemoryBindInfo.cs" />
     <Compile Include="Generated\Wrapper\SparseImageOpaqueMemoryBindInfo.cs" />
+    <Compile Include="Generated\Wrapper\SparseMemoryBind.cs" />
     <Compile Include="Generated\Wrapper\SpecializationInfo.cs" />
     <Compile Include="Generated\Wrapper\SubmitInfo.cs" />
     <Compile Include="Generated\Wrapper\SubpassDescription.cs" />

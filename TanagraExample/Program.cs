@@ -73,7 +73,10 @@ namespace TanagraExample
             CreatePipeline();
             CreateFramebuffers();
 
+            Console.WriteLine("[INFO] Starup OK, Launching...");
             RenderLoop.Run(form, Draw);
+
+            Console.WriteLine("[INFO] Render window lost!");
 
             Console.WriteLine("program complete");
             Console.ReadKey();
@@ -126,8 +129,7 @@ namespace TanagraExample
 
         static Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
-            //Debug.WriteLine($"{flags}: {message} ([{messageCode}] {layerPrefix})");
-            Console.WriteLine($"[VULK] {flags}: {message} ([{messageCode}] {layerPrefix})");
+            Console.WriteLine($"[VULK] [{flags}] {message} ([{messageCode}] {layerPrefix})");
             return true;
         }
 
@@ -252,7 +254,7 @@ namespace TanagraExample
 
             Console.WriteLine($"swapChainPresentMode {swapChainPresentMode}");
 
-            var imageExtent = new Extent2D { Width = (uint)form.ClientSize.Width, Height = (uint)form.ClientSize.Height };
+            var imageExtent = new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height);
             // Create swapchain
             var swapchainCreateInfo = new SwapchainCreateInfoKHR
             {
@@ -310,14 +312,15 @@ namespace TanagraExample
                 OldLayout = oldLayout,
                 NewLayout = newLayout,
                 Image     = image,
-                SubresourceRange = new ImageSubresourceRange
+                SubresourceRange = new ImageSubresourceRange(imageAspect, 0, 1, 0, 1)
+                /*SubresourceRange = new ImageSubresourceRange
                 {
                     AspectMask     = imageAspect,
                     BaseArrayLayer = 0,
                     LayerCount     = 1,
                     BaseMipLevel   = 0,
                     LevelCount     = 1,
-                }
+                }*/
             };
 
             switch(newLayout)
@@ -339,7 +342,7 @@ namespace TanagraExample
             var sourceStages = PipelineStageFlags.TopOfPipe;
             var destinationStages = PipelineStageFlags.TopOfPipe;
 
-            setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, new List<MemoryBarrier>(), new List<BufferMemoryBarrier>(), new List<ImageMemoryBarrier> { imageMemoryBarrier });
+            setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { imageMemoryBarrier });
             Console.WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
         }
 
@@ -381,14 +384,15 @@ namespace TanagraExample
                     Format     = backBufferFormat,
                     Image      = backBuffers[x],
                     Components = new ComponentMapping(),
-                    SubresourceRange = new ImageSubresourceRange
+                    SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1)
+                    /*SubresourceRange = new ImageSubresourceRange
                     {
                         AspectMask     = ImageAspectFlags.Color,
                         BaseArrayLayer = 0,
                         LayerCount     = 1,
                         BaseMipLevel   = 0,
                         LevelCount     = 1,
-                    }
+                    }*/
                 };
 
                 backBufferViews.Add(device.CreateImageView(createInfo));
@@ -435,13 +439,16 @@ namespace TanagraExample
 
             vertexAttributes = new[]
             {
-                new VertexInputAttributeDescription { Binding = 0, Location = 0, Format = Format.R32g32b32Sfloat, Offset = 0 },
-                new VertexInputAttributeDescription { Binding = 0, Location = 1, Format = Format.R32g32b32Sfloat, Offset = sizeof(float) * 3 },
+                //new VertexInputAttributeDescription { Binding = 0, Location = 0, Format = Format.R32g32b32Sfloat, Offset = 0 },
+                new VertexInputAttributeDescription(0, 0, Format.R32g32b32Sfloat, 0),
+                //new VertexInputAttributeDescription { Binding = 0, Location = 1, Format = Format.R32g32b32Sfloat, Offset = sizeof(float) * 3 },
+                new VertexInputAttributeDescription(1, 0, Format.R32g32b32Sfloat, sizeof(float) * 3)
             };
 
             vertexBindings = new[]
             {
-                new VertexInputBindingDescription { Binding = 0, InputRate = VertexInputRate.Vertex, Stride = (uint)(sizeof(float) * vertices.GetLength(1)) }
+                //new VertexInputBindingDescription { Binding = 0, InputRate = VertexInputRate.Vertex, Stride = (uint)(sizeof(float) * vertices.GetLength(1)) },
+                new VertexInputBindingDescription(0, (uint)(sizeof(float) * vertices.GetLength(1)), VertexInputRate.Vertex)
             };
         }
 
@@ -634,7 +641,6 @@ namespace TanagraExample
 
         static void Draw()
         {
-            Console.WriteLine("[INFO] !! Draw");
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
 
@@ -666,7 +672,6 @@ namespace TanagraExample
                 CommandBuffers     = new[] { drawCommandBuffer }
             };
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            Console.WriteLine("[INFO] queue.Submit");
 
             // Present
             var currentBackBufferIndexCopy = currentBackBufferIndex;
@@ -676,115 +681,96 @@ namespace TanagraExample
                 ImageIndices = new[] { currentBackBufferIndexCopy }
             };
             queue.PresentKHR(presentInfo);
-            Console.WriteLine("[INFO] queue.PresentKHR");
 
             // Wait
             queue.WaitIdle();
-            Console.WriteLine("[INFO] queue.WaitIdle");
 
             // Cleanup
             device.DestroySemaphore(presentCompleteSemaphore);
-            Console.WriteLine("[INFO] device.DestroySemaphore");
         }
 
         static void DrawInternal()
         {
-            Console.WriteLine("[INFO] -> DrawInternal");
             // Post-present transition
             var memoryBarrier = new ImageMemoryBarrier
             {
                 Image = backBuffers[(int)currentBackBufferIndex],
-                SubresourceRange = new ImageSubresourceRange
+                SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
+                /*SubresourceRange = new ImageSubresourceRange
                 {
                     AspectMask     = ImageAspectFlags.Color,
-                    BaseMipLevel   = 0,
-                    LevelCount     = 1,
                     BaseArrayLayer = 0,
                     LayerCount     = 1,
-                },
+                    BaseMipLevel   = 0,
+                    LevelCount     = 1,
+                }*/
                 OldLayout     = ImageLayout.PresentSrcKHR,
                 NewLayout     = ImageLayout.ColorAttachmentOptimal,
                 SrcAccessMask = AccessFlags.MemoryRead,
                 DstAccessMask = AccessFlags.ColorAttachmentWrite
             };
-            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, new List<MemoryBarrier>(), new List<BufferMemoryBarrier>(), new List<ImageMemoryBarrier> { memoryBarrier });
-            Console.WriteLine("[INFO] CmdPipelineBarrier");
+            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
 
-            var clearRange = new ImageSubresourceRange
+            var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
+            /*SubresourceRange = new ImageSubresourceRange
             {
                 AspectMask     = ImageAspectFlags.Color,
-                BaseMipLevel   = 0,
-                LevelCount     = 1,
                 BaseArrayLayer = 0,
                 LayerCount     = 1,
-            };
+                BaseMipLevel   = 0,
+                LevelCount     = 1,
+            }*/
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
-            Console.WriteLine("[INFO] CmdClearColorImage");
 
             // Begin render pass
             var renderPassBeginInfo = new RenderPassBeginInfo
             {
                 RenderPass  = renderPass,
                 Framebuffer = framebuffers[currentBackBufferIndex],
-                RenderArea  = new Rect2D
-                {
-                    Offset = new Offset2D { X = 0, Y = 0 },
-                    Extent = new Extent2D { Width = (uint)form.ClientSize.Width, Height = (uint)form.ClientSize.Height }
-                }
+                RenderArea  = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height))
             };
             commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
-            Console.WriteLine("[INFO] CmdBeginRenderPass");
 
             // Bind pipeline
             commandBuffer[0].CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
-            Console.WriteLine("[INFO] CmdBindPipeline");
 
             // Set viewport and scissor
             var viewport = new Viewport { X = 0, Y = 0, Width = form.ClientSize.Width, Height = form.ClientSize.Height };
             commandBuffer[0].CmdSetViewport(0, new List<Viewport> { viewport });
-            Console.WriteLine("[INFO] CmdSetViewport");
 
-            var scissor = new Rect2D
-            {
-                Offset = new Offset2D { X = 0, Y = 0 },
-                Extent = new Extent2D { Width = (uint)form.ClientSize.Width, Height = (uint)form.ClientSize.Height }
-            };
+            var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
             commandBuffer[0].CmdSetScissor(0, new List<Rect2D> { scissor });
-            Console.WriteLine("[INFO] CmdSetScissor");
 
             // Bind vertex buffer
             var vertexBufferCopy = vertexBuffer; // todo!
             ulong offset = 0;
             commandBuffer[0].CmdBindVertexBuffers(0, new List<Buffer> { vertexBufferCopy }, new List<DeviceSize> { offset });
-            Console.WriteLine("[INFO] CmdBindVertexBuffers");
 
             // Draw vertices
             commandBuffer[0].CmdDraw(3, 1, 0, 0);
-            Console.WriteLine("[INFO] CmdDraw");
 
             // End render pass
             commandBuffer[0].CmdEndRenderPass();
-            Console.WriteLine("[INFO] CmdEndRenderPass");
 
             // Pre-present transition
             memoryBarrier = new ImageMemoryBarrier 
             {
                 Image = backBuffers[(int)currentBackBufferIndex],
-                SubresourceRange = new ImageSubresourceRange 
+                SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
+                /*SubresourceRange = new ImageSubresourceRange
                 {
                     AspectMask     = ImageAspectFlags.Color,
-                    BaseMipLevel   = 0,
-                    LevelCount     = 1,
                     BaseArrayLayer = 0,
                     LayerCount     = 1,
-                },
-                OldLayout     = ImageLayout.ColorAttachmentOptimal,
+                    BaseMipLevel   = 0,
+                    LevelCount     = 1,
+                }*/
+                OldLayout = ImageLayout.ColorAttachmentOptimal,
                 NewLayout     = ImageLayout.PresentSrcKHR,
                 SrcAccessMask = AccessFlags.ColorAttachmentWrite,
                 DstAccessMask = AccessFlags.MemoryRead
             };
-            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, new List<MemoryBarrier>(), new List<BufferMemoryBarrier>(), new List<ImageMemoryBarrier> { memoryBarrier });
-            Console.WriteLine("[INFO] CmdPipelineBarrier");
+            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
         }
 
         static void PhysicalDeviceProperties()

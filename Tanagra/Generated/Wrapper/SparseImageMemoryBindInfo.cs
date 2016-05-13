@@ -26,19 +26,19 @@ namespace Vulkan
             {
                 var valueCount = NativePointer->BindCount;
                 var valueArray = new SparseImageMemoryBind[valueCount];
-                var ptr = (SparseImageMemoryBind*)NativePointer->Binds;
+                var ptr = (Interop.SparseImageMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = ptr[x];
+                    valueArray[x] = new SparseImageMemoryBind { NativePointer = &ptr[x] };
                 return valueArray;
             }
             set
             {
                 var valueCount = value.Length;
                 NativePointer->BindCount = (uint)valueCount;
-                NativePointer->Binds = Marshal.AllocHGlobal(Marshal.SizeOf<SparseImageMemoryBind>() * valueCount);
-                var ptr = (SparseImageMemoryBind*)NativePointer->Binds;
+                NativePointer->Binds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageMemoryBind>() * valueCount);
+                var ptr = (Interop.SparseImageMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                    ptr[x] = *value[x].NativePointer;
             }
         }
         

@@ -6,10 +6,10 @@ namespace Vulkan
     public enum DebugReportFlagsEXT
     {
         None = 0,
-        DebugReportInformationBitExt = 1 << 0,
-        DebugReportWarningBitExt = 1 << 1,
-        DebugReportPerformanceWarningBitExt = 1 << 2,
-        DebugReportErrorBitExt = 1 << 3,
-        DebugReportDebugBitExt = 1 << 4,
+        Information = 1 << 0,
+        Warning = 1 << 1,
+        PerformanceWarning = 1 << 2,
+        Error = 1 << 3,
+        Debug = 1 << 4,
     }
 }
