@@ -591,6 +591,16 @@ namespace Vulkan.ObjectModel
             return VK.AcquireNextImageKHR(device, swapchain, timeout, semaphore, fence);
         }
         
+        public static DebugMarkerObjectNameInfoEXT DebugMarkerSetObjectNameEXT(this Device device)
+        {
+            return VK.DebugMarkerSetObjectNameEXT(device);
+        }
+        
+        public static DebugMarkerObjectTagInfoEXT DebugMarkerSetObjectTagEXT(this Device device)
+        {
+            return VK.DebugMarkerSetObjectTagEXT(device);
+        }
+        
         #endregion
         
         #region Queue
@@ -852,6 +862,21 @@ namespace Vulkan.ObjectModel
         public static void CmdExecuteCommands(this CommandBuffer commandBuffer, List<CommandBuffer> commandBuffers)
         {
             VK.CmdExecuteCommands(commandBuffer, commandBuffers);
+        }
+        
+        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerBeginEXT(this CommandBuffer commandBuffer)
+        {
+            return VK.CmdDebugMarkerBeginEXT(commandBuffer);
+        }
+        
+        public static void CmdDebugMarkerEndEXT(this CommandBuffer commandBuffer)
+        {
+            VK.CmdDebugMarkerEndEXT(commandBuffer);
+        }
+        
+        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerInsertEXT(this CommandBuffer commandBuffer)
+        {
+            return VK.CmdDebugMarkerInsertEXT(commandBuffer);
         }
         
         #endregion

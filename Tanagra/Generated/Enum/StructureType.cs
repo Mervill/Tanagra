@@ -65,5 +65,9 @@ namespace Vulkan
         AndroidSurfaceCreateInfoKHR = 1000008000,
         Win32SurfaceCreateInfoKHR = 1000009000,
         DebugReportCallbackCreateInfoEXT = 1000011000,
+        PipelineRasterizationStateRasterizationOrderAMD = 1000018000,
+        DebugMarkerObjectNameInfoEXT = 1000022000,
+        DebugMarkerObjectTagInfoEXT = 1000022001,
+        DebugMarkerMarkerInfoEXT = 1000022002,
     }
 }

@@ -56,7 +56,7 @@ namespace Vulkan
         public DebugMarkerObjectTagInfoEXT()
         {
             NativePointer = (Interop.DebugMarkerObjectTagInfoEXT*)Interop.Structure.Allocate(typeof(Interop.DebugMarkerObjectTagInfoEXT));
-            //NativePointer->SType = StructureType.DebugMarkerObjectTagInfoEXT;
+            NativePointer->SType = StructureType.DebugMarkerObjectTagInfoEXT;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Vulkan
             return result;
         }
         
-        public static IntPtr GetInstanceProcAddr(Instance instance, Byte* name)
+        public static IntPtr GetInstanceProcAddr(Instance instance, String name)
         {
             var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
             return result;
@@ -706,24 +706,11 @@ namespace Vulkan
             var _createInfosPtr = (Interop.GraphicsPipelineCreateInfo*)Marshal.AllocHGlobal((int)(_createInfosSize * createInfoCount));
             for(var x = 0; x < createInfoCount; x++)
                 _createInfosPtr[x] = *createInfos[x].NativePointer;
-
-            var pipelineArray = new UInt64[createInfoCount];
-            fixed (UInt64* ptrPipeline = &pipelineArray[0])
-            {
-                var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, ptrPipeline);
-                if(result != Result.Success)
-                    throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
-            }
-
-            var list = new List<Pipeline>();
-            for(var x = 0; x < createInfoCount; x++)
-            {
-                var item = new Pipeline();
-                item.NativePointer = pipelineArray[x];
-                list.Add(item);
-            }
-
-            return list;
+            
+            var result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, createInfoCount, (Interop.GraphicsPipelineCreateInfo*)_createInfosPtr, (allocator != null) ? allocator.NativePointer : null, null);
+            if(result != Result.Success)
+                throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
+            throw new NotImplementedException();
         }
         
         public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
@@ -824,9 +811,7 @@ namespace Vulkan
         public static List<DescriptorSet> AllocateDescriptorSets(Device device, DescriptorSetAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.DescriptorSetCount;
-            var result = vkAllocateDescriptorSets(device.NativePointer, allocateInfo.NativePointer, null);
-            if(result != Result.Success)
-                throw new VulkanCommandException(nameof(vkAllocateDescriptorSets), result);
+            Result result;
             
             var arrayDescriptorSet = new UInt64[listLength];
             fixed(UInt64* resultPtr = &arrayDescriptorSet[0])
@@ -945,11 +930,8 @@ namespace Vulkan
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.CommandBufferCount;
-            /*var result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, null);
-            if(result != Result.Success)
-                throw new VulkanCommandException(nameof(vkAllocateCommandBuffers), result);*/
-
             Result result;
+            
             var arrayCommandBuffer = new IntPtr[listLength];
             fixed(IntPtr* resultPtr = &arrayCommandBuffer[0])
                 result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, resultPtr);
@@ -1198,8 +1180,7 @@ namespace Vulkan
         {
             // hasArrayArguments
             // (no arrayLengthParams)
-            //vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, (UInt32*)_dataPtr);
-            throw new NotImplementedException();
+            vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, (UInt32*)_dataPtr);
         }
         
         public static void CmdFillBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
