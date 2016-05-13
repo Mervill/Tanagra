@@ -975,6 +975,8 @@ namespace Tanagra.Generator
                     if(paramListCountMap.Count == 0)
                         WriteLine("// (no arrayLengthParams)");
 
+                    List<string> existingCounts = new List<string>();
+
                     // Emit a prologue block for each array param
                     foreach (var kv in paramListCountMap)
                     {
@@ -984,17 +986,45 @@ namespace Tanagra.Generator
                         var countName  = kv.Value.Name;
                         var sizeVar    = $"_{paramName}Size";
                         var ptrVar     = $"_{paramName}Ptr";
-                        var paramIsHandle = kv.Key.Type is VkHandle;
-                        var paramIsIntPtr = (paramTypeName == "IntPtr");
-                        var paramIsInterop = (paramType is VkStruct) && (((VkStruct)paramType).HasPointerMembers);
-                        var interop    = (paramIsInterop) ? "Interop." : string.Empty;
-                        var countType  = (paramIsHandle) ? "IntPtr" : paramTypeName;
-                        var intPtrCast = (paramIsHandle || paramIsIntPtr) ? "(IntPtr*)" : string.Empty;
-                        var nativePtr  = (paramIsIntPtr) ? string.Empty : $".{NativePointer}";
 
-                        WriteLine($"var {countName} = ({kv.Value.Type}){paramName}.Count;");
-                        WriteLine($"var {sizeVar} = Marshal.SizeOf(typeof({interop}{countType}));");
-                        WriteLine($"var {ptrVar} = (void**)Marshal.AllocHGlobal((int)({sizeVar} * {countName}));");
+                        var paramIsIntPtr = (paramTypeName == "IntPtr");
+
+                        var paramIsHandle = paramType is VkHandle;
+                        var paramIsDispatchable = (paramIsHandle) ? (paramType as VkHandle).IsDispatchable : false;
+
+                        var paramIsStruct = paramType is VkStruct;
+                        var paramIsInterop = paramIsStruct && (((VkStruct)paramType).HasPointerMembers);
+                        
+                        var sizeType   = (paramIsHandle) ? "IntPtr" : paramTypeName;
+                        if(paramIsInterop)
+                            sizeType = $"Interop.{sizeType}";
+                        
+                        var intPtrCast = string.Empty;
+                        if(paramIsStruct && paramIsInterop)
+                            intPtrCast = "*";
+
+                        var nativePtr = string.Empty;
+                        if(paramIsHandle || paramIsInterop)
+                            nativePtr = $".{NativePointer}";
+                        
+                        var arrayPointerType = string.Empty;
+                        if(paramIsHandle)
+                            arrayPointerType = (paramIsDispatchable) ? "(IntPtr*)" : "(UInt64*)";
+
+                        if(paramIsStruct)
+                            arrayPointerType = (paramIsInterop) ? $"(Interop.{paramType}*)" : $"({paramType}*)";
+
+                        if(paramIsIntPtr)
+                            arrayPointerType = "(IntPtr*)";
+
+                        if(!existingCounts.Contains(countName))
+                        {
+                            WriteLine($"var {countName} = ({kv.Value.Type}){paramName}.Count;");
+                            existingCounts.Add(countName);
+                        }
+                        
+                        WriteLine($"var {sizeVar} = Marshal.SizeOf(typeof({sizeType}));");
+                        WriteLine($"var {ptrVar} = {arrayPointerType}Marshal.AllocHGlobal((int)({sizeVar} * {countName}));");
                         WriteLine($"for(var x = 0; x < {countName}; x++)");
                         _tabs++;
                         WriteLine($"{ptrVar}[x] = {intPtrCast}{paramName}[x]{nativePtr};");
@@ -1053,7 +1083,8 @@ namespace Tanagra.Generator
                         }
                         else
                         {
-                            castType = $"(Interop.{paramType}*)";
+                            var interop = ((VkStruct)paramType).HasPointerMembers ? "Interop." : string.Empty;
+                            castType = $"({interop}{paramType}*)";
                         }
                         
                         internalCallParams.Add($"{castType}_{paramName}Ptr");
