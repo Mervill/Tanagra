@@ -118,5 +118,13 @@ namespace Vulkan
             NativePointer = (Interop.SubmitInfo*)Interop.Structure.Allocate(typeof(Interop.SubmitInfo));
             NativePointer->SType = StructureType.SubmitInfo;
         }
+        
+        public SubmitInfo(Semaphore[] WaitSemaphores, PipelineStageFlags[] WaitDstStageMask, CommandBuffer[] CommandBuffers, Semaphore[] SignalSemaphores) : this()
+        {
+            this.WaitSemaphores = WaitSemaphores;
+            this.WaitDstStageMask = WaitDstStageMask;
+            this.CommandBuffers = CommandBuffers;
+            this.SignalSemaphores = SignalSemaphores;
+        }
     }
 }

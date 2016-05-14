@@ -74,5 +74,11 @@ namespace Vulkan
             NativePointer = (Interop.PipelineViewportStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineViewportStateCreateInfo));
             NativePointer->SType = StructureType.PipelineViewportStateCreateInfo;
         }
+        
+        public PipelineViewportStateCreateInfo(UInt32 ViewportCount, UInt32 ScissorCount) : this()
+        {
+            this.ViewportCount = ViewportCount;
+            this.ScissorCount = ScissorCount;
+        }
     }
 }

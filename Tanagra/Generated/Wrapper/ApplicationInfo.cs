@@ -42,5 +42,12 @@ namespace Vulkan
             NativePointer = (Interop.ApplicationInfo*)Interop.Structure.Allocate(typeof(Interop.ApplicationInfo));
             NativePointer->SType = StructureType.ApplicationInfo;
         }
+        
+        public ApplicationInfo(UInt32 ApplicationVersion, UInt32 EngineVersion, UInt32 ApiVersion) : this()
+        {
+            this.ApplicationVersion = ApplicationVersion;
+            this.EngineVersion = EngineVersion;
+            this.ApiVersion = ApiVersion;
+        }
     }
 }

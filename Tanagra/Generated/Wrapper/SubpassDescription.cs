@@ -136,5 +136,13 @@ namespace Vulkan
         {
             NativePointer = (Interop.SubpassDescription*)Interop.Structure.Allocate(typeof(Interop.SubpassDescription));
         }
+        
+        public SubpassDescription(PipelineBindPoint PipelineBindPoint, AttachmentReference[] InputAttachments, AttachmentReference[] ColorAttachments, UInt32[] PreserveAttachments) : this()
+        {
+            this.PipelineBindPoint = PipelineBindPoint;
+            this.InputAttachments = InputAttachments;
+            this.ColorAttachments = ColorAttachments;
+            this.PreserveAttachments = PreserveAttachments;
+        }
     }
 }

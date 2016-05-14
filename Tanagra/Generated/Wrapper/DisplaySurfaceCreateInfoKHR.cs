@@ -61,5 +61,16 @@ namespace Vulkan
             NativePointer = (Interop.DisplaySurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplaySurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.DisplaySurfaceCreateInfoKHR;
         }
+        
+        public DisplaySurfaceCreateInfoKHR(DisplayModeKHR DisplayMode, UInt32 PlaneIndex, UInt32 PlaneStackIndex, SurfaceTransformFlagsKHR Transform, Single GlobalAlpha, DisplayPlaneAlphaFlagsKHR AlphaMode, Extent2D ImageExtent) : this()
+        {
+            this.DisplayMode = DisplayMode;
+            this.PlaneIndex = PlaneIndex;
+            this.PlaneStackIndex = PlaneStackIndex;
+            this.Transform = Transform;
+            this.GlobalAlpha = GlobalAlpha;
+            this.AlphaMode = AlphaMode;
+            this.ImageExtent = ImageExtent;
+        }
     }
 }

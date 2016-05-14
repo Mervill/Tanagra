@@ -78,5 +78,18 @@ namespace Vulkan
             NativePointer = (Interop.PipelineRasterizationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineRasterizationStateCreateInfo));
             NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
+        
+        public PipelineRasterizationStateCreateInfo(Bool32 DepthClampEnable, Bool32 RasterizerDiscardEnable, PolygonMode PolygonMode, FrontFace FrontFace, Bool32 DepthBiasEnable, Single DepthBiasConstantFactor, Single DepthBiasClamp, Single DepthBiasSlopeFactor, Single LineWidth) : this()
+        {
+            this.DepthClampEnable = DepthClampEnable;
+            this.RasterizerDiscardEnable = RasterizerDiscardEnable;
+            this.PolygonMode = PolygonMode;
+            this.FrontFace = FrontFace;
+            this.DepthBiasEnable = DepthBiasEnable;
+            this.DepthBiasConstantFactor = DepthBiasConstantFactor;
+            this.DepthBiasClamp = DepthBiasClamp;
+            this.DepthBiasSlopeFactor = DepthBiasSlopeFactor;
+            this.LineWidth = LineWidth;
+        }
     }
 }

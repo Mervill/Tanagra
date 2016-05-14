@@ -192,6 +192,13 @@ namespace Tanagra.Generator
                 if (platformStructTypes.Contains(vkStruct.Name))
                     continue;
 
+                if(vkStruct.ReturnedOnly)
+                {
+                    WriteLine("/// <summary>");
+                    WriteLine($"/// Returned Only - This object is never given as input to a Vulkan function");
+                    WriteLine("/// </summary>");
+                }
+
                 WriteLine($"{vis} struct {vkStruct.Name}");
                 WriteLine("{");
                 _tabs++;
@@ -205,7 +212,7 @@ namespace Tanagra.Generator
                     {
                         if(!member.IsArray)
                         {
-                            WriteLine($"{vis} {member.Type} {member.Name};");
+                            WriteLine($"public {member.Type} {member.Name};");
                             continue;
                         }
                     }
@@ -215,7 +222,7 @@ namespace Tanagra.Generator
                         var memberType = member.Type as VkStruct;
                         if(!IsInteropStruct(memberType))
                         {
-                            WriteLine($"{vis} {member.Type} {member.Name};");
+                            WriteLine($"public {member.Type} {member.Name};");
                             continue;
                         }
                     }
@@ -226,14 +233,14 @@ namespace Tanagra.Generator
                         if(!vkHandle.IsDispatchable)
                         {
                             // should never be hit when isPublic == true
-                            WriteLine($"{vis} UInt64 {member.Name};");
+                            WriteLine($"public UInt64 {member.Name};");
                             continue;
                         }
                     }
 
                     // Eveything else is a pointer
                     // `Char` is a C-style string ... so it's a pointer
-                    WriteLine($"{vis} IntPtr {member.Name};");
+                    WriteLine($"public IntPtr {member.Name};");
                 }
 
                 // For public structs that are not returned (only) and contain members
@@ -413,6 +420,72 @@ namespace Tanagra.Generator
                 WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             _tabs--;
             WriteLine("}");
+
+            // Unless the underlying struct is returned-only, generate
+            // a constructor by omitting any members that are marked as
+            // 'optional' in the spec and using the remaning 'mandatory'
+            // members as the constructor arguments. These generated
+            // constructors arent as good as the ones generated for the
+            // simpler public strcuts.
+            if (!vkStruct.ReturnedOnly)
+            {
+
+                var cotorParams = new Dictionary<string, string>();
+                foreach (var member in vkStruct.Members)
+                {
+                    if (member.Optional == "true")
+                        continue;
+
+                    if (member.Name == "Next" && member.Type.Name == "IntPtr")
+                        continue;
+
+                    if (member.Name == "SType" && member.Type.Name == "StructureType")
+                        continue;
+
+                    var memberTypeName = member.Type.Name;
+                    var memberName = member.Name;
+
+                    if (memberTypeName == "Char")
+                    {
+                        if (member.Len.Length > 1)
+                        {
+                            memberTypeName = "String[]";
+                        }
+                        else
+                        {
+                            memberTypeName = "String";
+                        }
+                        cotorParams.Add(memberName, memberTypeName);
+                        continue;
+                    }
+
+                    if (member.IsArray)
+                    {
+                        memberTypeName += "[]";
+                        cotorParams.Add(memberName, memberTypeName);
+                        continue;
+                    }
+
+                    cotorParams.Add(memberName, memberTypeName);
+                }
+
+                if (cotorParams.Count() != 0)
+                {
+                    var mandatoryMemberString = string.Join(", ", cotorParams.Select(x => $"{x.Value} {x.Key}"));
+
+                    WriteLine("");
+                    WriteLine($"public {vkStruct.Name}({mandatoryMemberString}) : this()");
+                    WriteLine("{");
+                    _tabs++;
+
+                    foreach (var kvp in cotorParams)
+                        WriteLine($"this.{kvp.Key} = {kvp.Key};");
+
+                    _tabs--;
+                    WriteLine("}");
+                }
+            }
+
             _tabs--;
             WriteLine("}");
             _tabs--;

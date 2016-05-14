@@ -55,5 +55,14 @@ namespace Vulkan
             NativePointer = (Interop.BufferMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.BufferMemoryBarrier));
             NativePointer->SType = StructureType.BufferMemoryBarrier;
         }
+        
+        public BufferMemoryBarrier(UInt32 SrcQueueFamilyIndex, UInt32 DstQueueFamilyIndex, Buffer Buffer, DeviceSize Offset, DeviceSize Size) : this()
+        {
+            this.SrcQueueFamilyIndex = SrcQueueFamilyIndex;
+            this.DstQueueFamilyIndex = DstQueueFamilyIndex;
+            this.Buffer = Buffer;
+            this.Offset = Offset;
+            this.Size = Size;
+        }
     }
 }

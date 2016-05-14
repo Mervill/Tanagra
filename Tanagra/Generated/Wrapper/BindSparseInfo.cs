@@ -152,5 +152,14 @@ namespace Vulkan
             NativePointer = (Interop.BindSparseInfo*)Interop.Structure.Allocate(typeof(Interop.BindSparseInfo));
             NativePointer->SType = StructureType.BindSparseInfo;
         }
+        
+        public BindSparseInfo(Semaphore[] WaitSemaphores, SparseBufferMemoryBindInfo[] BufferBinds, SparseImageOpaqueMemoryBindInfo[] ImageOpaqueBinds, SparseImageMemoryBindInfo[] ImageBinds, Semaphore[] SignalSemaphores) : this()
+        {
+            this.WaitSemaphores = WaitSemaphores;
+            this.BufferBinds = BufferBinds;
+            this.ImageOpaqueBinds = ImageOpaqueBinds;
+            this.ImageBinds = ImageBinds;
+            this.SignalSemaphores = SignalSemaphores;
+        }
     }
 }

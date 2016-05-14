@@ -60,5 +60,14 @@ namespace Vulkan
             NativePointer = (Interop.PipelineMultisampleStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineMultisampleStateCreateInfo));
             NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
+        
+        public PipelineMultisampleStateCreateInfo(SampleCountFlags RasterizationSamples, Bool32 SampleShadingEnable, Single MinSampleShading, Bool32 AlphaToCoverageEnable, Bool32 AlphaToOneEnable) : this()
+        {
+            this.RasterizationSamples = RasterizationSamples;
+            this.SampleShadingEnable = SampleShadingEnable;
+            this.MinSampleShading = MinSampleShading;
+            this.AlphaToCoverageEnable = AlphaToCoverageEnable;
+            this.AlphaToOneEnable = AlphaToOneEnable;
+        }
     }
 }

@@ -47,5 +47,12 @@ namespace Vulkan
             NativePointer = (Interop.DescriptorSetAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorSetAllocateInfo));
             NativePointer->SType = StructureType.DescriptorSetAllocateInfo;
         }
+        
+        public DescriptorSetAllocateInfo(DescriptorPool DescriptorPool, UInt32 DescriptorSetCount, DescriptorSetLayout[] SetLayouts) : this()
+        {
+            this.DescriptorPool = DescriptorPool;
+            this.DescriptorSetCount = DescriptorSetCount;
+            this.SetLayouts = SetLayouts;
+        }
     }
 }

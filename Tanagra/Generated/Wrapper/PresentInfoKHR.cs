@@ -112,5 +112,12 @@ namespace Vulkan
             NativePointer = (Interop.PresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.PresentInfoKHR));
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
+        
+        public PresentInfoKHR(UInt32 SwapchainCount, SwapchainKHR[] Swapchains, UInt32[] ImageIndices) : this()
+        {
+            this.SwapchainCount = SwapchainCount;
+            this.Swapchains = Swapchains;
+            this.ImageIndices = ImageIndices;
+        }
     }
 }

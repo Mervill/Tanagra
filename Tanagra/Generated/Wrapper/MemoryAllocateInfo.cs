@@ -24,5 +24,11 @@ namespace Vulkan
             NativePointer = (Interop.MemoryAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.MemoryAllocateInfo));
             NativePointer->SType = StructureType.MemoryAllocateInfo;
         }
+        
+        public MemoryAllocateInfo(DeviceSize AllocationSize, UInt32 MemoryTypeIndex) : this()
+        {
+            this.AllocationSize = AllocationSize;
+            this.MemoryTypeIndex = MemoryTypeIndex;
+        }
     }
 }

@@ -102,5 +102,13 @@ namespace Vulkan
             NativePointer = (Interop.RenderPassCreateInfo*)Interop.Structure.Allocate(typeof(Interop.RenderPassCreateInfo));
             NativePointer->SType = StructureType.RenderPassCreateInfo;
         }
+        
+        public RenderPassCreateInfo(AttachmentDescription[] Attachments, UInt32 SubpassCount, SubpassDescription[] Subpasses, SubpassDependency[] Dependencies) : this()
+        {
+            this.Attachments = Attachments;
+            this.SubpassCount = SubpassCount;
+            this.Subpasses = Subpasses;
+            this.Dependencies = Dependencies;
+        }
     }
 }

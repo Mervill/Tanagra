@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 
-using SharpDX;
-using SharpDX.Text;
 using SharpDX.Windows;
 
 using Tanagra;
@@ -175,11 +171,12 @@ namespace TanagraExample
         {
             IntPtr HINSTANCE, HWND;
             GetProcessHandles(out HINSTANCE, out HWND);
-            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
+            /*var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR
             {
                 Hinstance = HINSTANCE,
                 Hwnd      = form.Handle // HWND
-            };
+            };*/
+            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(HINSTANCE, form.Handle);
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
             Console.WriteLine($"[ OK ] {surface}");
         }
@@ -196,12 +193,13 @@ namespace TanagraExample
             Console.WriteLine($"[ OK ] {commandPool}");
 
             // Command Buffer
-            var commandBufferAllocationInfo = new CommandBufferAllocateInfo
+            /*var commandBufferAllocationInfo = new CommandBufferAllocateInfo
             {
                 Level              = CommandBufferLevel.Primary,
                 CommandPool        = commandPool,
                 CommandBufferCount = 1,
-            };
+            };*/
+            var commandBufferAllocationInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
             Console.WriteLine($"[ OK ] {commandBuffer[0]}");
@@ -288,12 +286,13 @@ namespace TanagraExample
             if(setupCommanBuffer == null)
             {
                 CommandBuffer setupBuffer;
-                var allocateInfo = new CommandBufferAllocateInfo
+                /*var allocateInfo = new CommandBufferAllocateInfo
                 {
                     CommandPool        = commandPool,
                     Level              = CommandBufferLevel.Primary,
                     CommandBufferCount = 1,
-                };
+                };*/
+                var allocateInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
                 setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
                 setupCommanBuffer = setupBuffer;
                 Console.WriteLine($"[ OK ] {setupCommanBuffer}");
@@ -313,14 +312,6 @@ namespace TanagraExample
                 NewLayout = newLayout,
                 Image     = image,
                 SubresourceRange = new ImageSubresourceRange(imageAspect, 0, 1, 0, 1)
-                /*SubresourceRange = new ImageSubresourceRange
-                {
-                    AspectMask     = imageAspect,
-                    BaseArrayLayer = 0,
-                    LayerCount     = 1,
-                    BaseMipLevel   = 0,
-                    LevelCount     = 1,
-                }*/
             };
 
             switch(newLayout)
@@ -385,16 +376,7 @@ namespace TanagraExample
                     Image      = backBuffers[x],
                     Components = new ComponentMapping(),
                     SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1)
-                    /*SubresourceRange = new ImageSubresourceRange
-                    {
-                        AspectMask     = ImageAspectFlags.Color,
-                        BaseArrayLayer = 0,
-                        LayerCount     = 1,
-                        BaseMipLevel   = 0,
-                        LevelCount     = 1,
-                    }*/
                 };
-
                 backBufferViews.Add(device.CreateImageView(createInfo));
             }
             Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
@@ -422,11 +404,12 @@ namespace TanagraExample
             if(memoryRequirements.Size == 0) return;
             Console.WriteLine($"[ OK ] memoryRequirements {memoryRequirements.Size}");
 
-            var allocateInfo = new MemoryAllocateInfo
+            /*var allocateInfo = new MemoryAllocateInfo
             {
                 AllocationSize  = memoryRequirements.Size,
                 MemoryTypeIndex = 2, // TODO
-            };
+            };*/
+            var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, 2);
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
             Console.WriteLine($"[ OK ] {vertexBufferMemory}");
 
@@ -454,8 +437,8 @@ namespace TanagraExample
 
         static void CreateRenderPass()
         {
-            var colorAttachmentReference        = new AttachmentReference { Attachment = 0, Layout = ImageLayout.ColorAttachmentOptimal        };
-            var depthStencilAttachmentReference = new AttachmentReference { Attachment = 1, Layout = ImageLayout.DepthStencilAttachmentOptimal };
+            var colorAttachmentReference        = new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal);
+            var depthStencilAttachmentReference = new AttachmentReference(1, ImageLayout.DepthStencilAttachmentOptimal);
 
             var subpass = new SubpassDescription
             {
@@ -666,7 +649,6 @@ namespace TanagraExample
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
             var submitInfo = new SubmitInfo
             {
-                WaitSemaphoreCount = 1,
                 WaitSemaphores     = new[] { presentCompleteSemaphore },
                 WaitDstStageMask   = new[] { pipelineStageFlags  },
                 CommandBuffers     = new[] { drawCommandBuffer }
@@ -696,14 +678,6 @@ namespace TanagraExample
             {
                 Image = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
-                /*SubresourceRange = new ImageSubresourceRange
-                {
-                    AspectMask     = ImageAspectFlags.Color,
-                    BaseArrayLayer = 0,
-                    LayerCount     = 1,
-                    BaseMipLevel   = 0,
-                    LevelCount     = 1,
-                }*/
                 OldLayout     = ImageLayout.PresentSrcKHR,
                 NewLayout     = ImageLayout.ColorAttachmentOptimal,
                 SrcAccessMask = AccessFlags.MemoryRead,
@@ -712,14 +686,6 @@ namespace TanagraExample
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            /*SubresourceRange = new ImageSubresourceRange
-            {
-                AspectMask     = ImageAspectFlags.Color,
-                BaseArrayLayer = 0,
-                LayerCount     = 1,
-                BaseMipLevel   = 0,
-                LevelCount     = 1,
-            }*/
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
 
             // Begin render pass
@@ -757,14 +723,6 @@ namespace TanagraExample
             {
                 Image = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
-                /*SubresourceRange = new ImageSubresourceRange
-                {
-                    AspectMask     = ImageAspectFlags.Color,
-                    BaseArrayLayer = 0,
-                    LayerCount     = 1,
-                    BaseMipLevel   = 0,
-                    LevelCount     = 1,
-                }*/
                 OldLayout = ImageLayout.ColorAttachmentOptimal,
                 NewLayout     = ImageLayout.PresentSrcKHR,
                 SrcAccessMask = AccessFlags.ColorAttachmentWrite,

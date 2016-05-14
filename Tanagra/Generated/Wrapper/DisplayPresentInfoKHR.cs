@@ -30,5 +30,12 @@ namespace Vulkan
             NativePointer = (Interop.DisplayPresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPresentInfoKHR));
             NativePointer->SType = StructureType.DisplayPresentInfoKHR;
         }
+        
+        public DisplayPresentInfoKHR(Rect2D SrcRect, Rect2D DstRect, Bool32 Persistent) : this()
+        {
+            this.SrcRect = SrcRect;
+            this.DstRect = DstRect;
+            this.Persistent = Persistent;
+        }
     }
 }

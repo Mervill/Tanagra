@@ -150,6 +150,9 @@ namespace Vulkan
         }
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct QueueFamilyProperties
     {
         public QueueFlags QueueFlags;
@@ -158,6 +161,9 @@ namespace Vulkan
         public Extent3D MinImageTransferGranularity;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct PhysicalDeviceMemoryProperties
     {
         public UInt32 MemoryTypeCount;
@@ -166,6 +172,9 @@ namespace Vulkan
         public MemoryHeap MemoryHeaps;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct MemoryRequirements
     {
         public DeviceSize Size;
@@ -173,6 +182,9 @@ namespace Vulkan
         public UInt32 MemoryTypeBits;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct SparseImageFormatProperties
     {
         public ImageAspectFlags AspectMask;
@@ -180,6 +192,9 @@ namespace Vulkan
         public SparseImageFormatFlags Flags;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct SparseImageMemoryRequirements
     {
         public SparseImageFormatProperties FormatProperties;
@@ -189,18 +204,27 @@ namespace Vulkan
         public DeviceSize ImageMipTailStride;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct MemoryType
     {
         public MemoryPropertyFlags PropertyFlags;
         public UInt32 HeapIndex;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct MemoryHeap
     {
         public DeviceSize Size;
         public MemoryHeapFlags Flags;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct FormatProperties
     {
         public FormatFeatureFlags LinearTilingFeatures;
@@ -208,6 +232,9 @@ namespace Vulkan
         public FormatFeatureFlags BufferFeatures;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct ImageFormatProperties
     {
         public Extent3D MaxExtent;
@@ -265,6 +292,9 @@ namespace Vulkan
         }
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct SubresourceLayout
     {
         public DeviceSize Offset;
@@ -621,6 +651,9 @@ namespace Vulkan
         public Bool32 InheritedQueries;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct PhysicalDeviceSparseProperties
     {
         public Bool32 ResidencyStandard2DBlockShape;
@@ -630,6 +663,9 @@ namespace Vulkan
         public Bool32 ResidencyNonResidentStrict;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     public struct PhysicalDeviceLimits
     {
         public UInt32 MaxImageDimension1D;

@@ -54,5 +54,15 @@ namespace Vulkan
         {
             NativePointer = (Interop.DisplayPropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPropertiesKHR));
         }
+        
+        public DisplayPropertiesKHR(DisplayKHR Display, String DisplayName, Extent2D PhysicalDimensions, Extent2D PhysicalResolution, Bool32 PlaneReorderPossible, Bool32 PersistentContent) : this()
+        {
+            this.Display = Display;
+            this.DisplayName = DisplayName;
+            this.PhysicalDimensions = PhysicalDimensions;
+            this.PhysicalResolution = PhysicalResolution;
+            this.PlaneReorderPossible = PlaneReorderPossible;
+            this.PersistentContent = PersistentContent;
+        }
     }
 }

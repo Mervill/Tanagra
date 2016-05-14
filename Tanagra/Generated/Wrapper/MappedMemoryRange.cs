@@ -31,5 +31,12 @@ namespace Vulkan
             NativePointer = (Interop.MappedMemoryRange*)Interop.Structure.Allocate(typeof(Interop.MappedMemoryRange));
             NativePointer->SType = StructureType.MappedMemoryRange;
         }
+        
+        public MappedMemoryRange(DeviceMemory Memory, DeviceSize Offset, DeviceSize Size) : this()
+        {
+            this.Memory = Memory;
+            this.Offset = Offset;
+            this.Size = Size;
+        }
     }
 }

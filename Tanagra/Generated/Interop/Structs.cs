@@ -4,855 +4,864 @@ using System;
 
 namespace Vulkan.Interop
 {
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     internal struct PhysicalDeviceProperties
     {
-        internal UInt32 ApiVersion;
-        internal UInt32 DriverVersion;
-        internal UInt32 VendorID;
-        internal UInt32 DeviceID;
-        internal PhysicalDeviceType DeviceType;
-        internal unsafe fixed byte DeviceName[256];
-        internal unsafe fixed byte PipelineCacheUUID[16];
-        internal PhysicalDeviceLimits Limits;
-        internal PhysicalDeviceSparseProperties SparseProperties;
+        public UInt32 ApiVersion;
+        public UInt32 DriverVersion;
+        public UInt32 VendorID;
+        public UInt32 DeviceID;
+        public PhysicalDeviceType DeviceType;
+        public unsafe fixed byte DeviceName[256];
+        public unsafe fixed byte PipelineCacheUUID[16];
+        public PhysicalDeviceLimits Limits;
+        public PhysicalDeviceSparseProperties SparseProperties;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     internal struct ExtensionProperties
     {
-        internal IntPtr ExtensionName;
-        internal UInt32 SpecVersion;
+        public IntPtr ExtensionName;
+        public UInt32 SpecVersion;
     }
 
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     internal struct LayerProperties
     {
-        internal IntPtr LayerName;
-        internal UInt32 SpecVersion;
-        internal UInt32 ImplementationVersion;
-        internal IntPtr Description;
+        public IntPtr LayerName;
+        public UInt32 SpecVersion;
+        public UInt32 ImplementationVersion;
+        public IntPtr Description;
     }
 
     internal struct ApplicationInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal IntPtr ApplicationName;
-        internal UInt32 ApplicationVersion;
-        internal IntPtr EngineName;
-        internal UInt32 EngineVersion;
-        internal UInt32 ApiVersion;
+        public StructureType SType;
+        public IntPtr Next;
+        public IntPtr ApplicationName;
+        public UInt32 ApplicationVersion;
+        public IntPtr EngineName;
+        public UInt32 EngineVersion;
+        public UInt32 ApiVersion;
     }
 
     internal struct AllocationCallbacks
     {
-        internal IntPtr UserData;
-        internal IntPtr PfnAllocation;
-        internal IntPtr PfnReallocation;
-        internal IntPtr PfnFree;
-        internal IntPtr PfnInternalAllocation;
-        internal IntPtr PfnInternalFree;
+        public IntPtr UserData;
+        public IntPtr PfnAllocation;
+        public IntPtr PfnReallocation;
+        public IntPtr PfnFree;
+        public IntPtr PfnInternalAllocation;
+        public IntPtr PfnInternalFree;
     }
 
     internal struct DeviceQueueCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DeviceQueueCreateFlags Flags;
-        internal UInt32 QueueFamilyIndex;
-        internal UInt32 QueueCount;
-        internal IntPtr QueuePriorities;
+        public StructureType SType;
+        public IntPtr Next;
+        public DeviceQueueCreateFlags Flags;
+        public UInt32 QueueFamilyIndex;
+        public UInt32 QueueCount;
+        public IntPtr QueuePriorities;
     }
 
     internal struct DeviceCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DeviceCreateFlags Flags;
-        internal UInt32 QueueCreateInfoCount;
-        internal IntPtr QueueCreateInfos;
-        internal UInt32 EnabledLayerCount;
-        internal IntPtr EnabledLayerNames;
-        internal UInt32 EnabledExtensionCount;
-        internal IntPtr EnabledExtensionNames;
-        internal IntPtr EnabledFeatures;
+        public StructureType SType;
+        public IntPtr Next;
+        public DeviceCreateFlags Flags;
+        public UInt32 QueueCreateInfoCount;
+        public IntPtr QueueCreateInfos;
+        public UInt32 EnabledLayerCount;
+        public IntPtr EnabledLayerNames;
+        public UInt32 EnabledExtensionCount;
+        public IntPtr EnabledExtensionNames;
+        public IntPtr EnabledFeatures;
     }
 
     internal struct InstanceCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal InstanceCreateFlags Flags;
-        internal IntPtr ApplicationInfo;
-        internal UInt32 EnabledLayerCount;
-        internal IntPtr EnabledLayerNames;
-        internal UInt32 EnabledExtensionCount;
-        internal IntPtr EnabledExtensionNames;
+        public StructureType SType;
+        public IntPtr Next;
+        public InstanceCreateFlags Flags;
+        public IntPtr ApplicationInfo;
+        public UInt32 EnabledLayerCount;
+        public IntPtr EnabledLayerNames;
+        public UInt32 EnabledExtensionCount;
+        public IntPtr EnabledExtensionNames;
     }
 
     internal struct MemoryAllocateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DeviceSize AllocationSize;
-        internal UInt32 MemoryTypeIndex;
+        public StructureType SType;
+        public IntPtr Next;
+        public DeviceSize AllocationSize;
+        public UInt32 MemoryTypeIndex;
     }
 
     internal struct MappedMemoryRange
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 Memory;
-        internal DeviceSize Offset;
-        internal DeviceSize Size;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 Memory;
+        public DeviceSize Offset;
+        public DeviceSize Size;
     }
 
     internal struct DescriptorBufferInfo
     {
-        internal UInt64 Buffer;
-        internal DeviceSize Offset;
-        internal DeviceSize Range;
+        public UInt64 Buffer;
+        public DeviceSize Offset;
+        public DeviceSize Range;
     }
 
     internal struct DescriptorImageInfo
     {
-        internal UInt64 Sampler;
-        internal UInt64 ImageView;
-        internal ImageLayout ImageLayout;
+        public UInt64 Sampler;
+        public UInt64 ImageView;
+        public ImageLayout ImageLayout;
     }
 
     internal struct WriteDescriptorSet
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 DstSet;
-        internal UInt32 DstBinding;
-        internal UInt32 DstArrayElement;
-        internal UInt32 DescriptorCount;
-        internal DescriptorType DescriptorType;
-        internal IntPtr ImageInfo;
-        internal IntPtr BufferInfo;
-        internal IntPtr TexelBufferView;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 DstSet;
+        public UInt32 DstBinding;
+        public UInt32 DstArrayElement;
+        public UInt32 DescriptorCount;
+        public DescriptorType DescriptorType;
+        public IntPtr ImageInfo;
+        public IntPtr BufferInfo;
+        public IntPtr TexelBufferView;
     }
 
     internal struct CopyDescriptorSet
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 SrcSet;
-        internal UInt32 SrcBinding;
-        internal UInt32 SrcArrayElement;
-        internal UInt64 DstSet;
-        internal UInt32 DstBinding;
-        internal UInt32 DstArrayElement;
-        internal UInt32 DescriptorCount;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 SrcSet;
+        public UInt32 SrcBinding;
+        public UInt32 SrcArrayElement;
+        public UInt64 DstSet;
+        public UInt32 DstBinding;
+        public UInt32 DstArrayElement;
+        public UInt32 DescriptorCount;
     }
 
     internal struct BufferCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal BufferCreateFlags Flags;
-        internal DeviceSize Size;
-        internal BufferUsageFlags Usage;
-        internal SharingMode SharingMode;
-        internal UInt32 QueueFamilyIndexCount;
-        internal IntPtr QueueFamilyIndices;
+        public StructureType SType;
+        public IntPtr Next;
+        public BufferCreateFlags Flags;
+        public DeviceSize Size;
+        public BufferUsageFlags Usage;
+        public SharingMode SharingMode;
+        public UInt32 QueueFamilyIndexCount;
+        public IntPtr QueueFamilyIndices;
     }
 
     internal struct BufferViewCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal BufferViewCreateFlags Flags;
-        internal UInt64 Buffer;
-        internal Format Format;
-        internal DeviceSize Offset;
-        internal DeviceSize Range;
+        public StructureType SType;
+        public IntPtr Next;
+        public BufferViewCreateFlags Flags;
+        public UInt64 Buffer;
+        public Format Format;
+        public DeviceSize Offset;
+        public DeviceSize Range;
     }
 
     internal struct MemoryBarrier
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal AccessFlags SrcAccessMask;
-        internal AccessFlags DstAccessMask;
+        public StructureType SType;
+        public IntPtr Next;
+        public AccessFlags SrcAccessMask;
+        public AccessFlags DstAccessMask;
     }
 
     internal struct BufferMemoryBarrier
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal AccessFlags SrcAccessMask;
-        internal AccessFlags DstAccessMask;
-        internal UInt32 SrcQueueFamilyIndex;
-        internal UInt32 DstQueueFamilyIndex;
-        internal UInt64 Buffer;
-        internal DeviceSize Offset;
-        internal DeviceSize Size;
+        public StructureType SType;
+        public IntPtr Next;
+        public AccessFlags SrcAccessMask;
+        public AccessFlags DstAccessMask;
+        public UInt32 SrcQueueFamilyIndex;
+        public UInt32 DstQueueFamilyIndex;
+        public UInt64 Buffer;
+        public DeviceSize Offset;
+        public DeviceSize Size;
     }
 
     internal struct ImageMemoryBarrier
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal AccessFlags SrcAccessMask;
-        internal AccessFlags DstAccessMask;
-        internal ImageLayout OldLayout;
-        internal ImageLayout NewLayout;
-        internal UInt32 SrcQueueFamilyIndex;
-        internal UInt32 DstQueueFamilyIndex;
-        internal UInt64 Image;
-        internal ImageSubresourceRange SubresourceRange;
+        public StructureType SType;
+        public IntPtr Next;
+        public AccessFlags SrcAccessMask;
+        public AccessFlags DstAccessMask;
+        public ImageLayout OldLayout;
+        public ImageLayout NewLayout;
+        public UInt32 SrcQueueFamilyIndex;
+        public UInt32 DstQueueFamilyIndex;
+        public UInt64 Image;
+        public ImageSubresourceRange SubresourceRange;
     }
 
     internal struct ImageCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal ImageCreateFlags Flags;
-        internal ImageType ImageType;
-        internal Format Format;
-        internal Extent3D Extent;
-        internal UInt32 MipLevels;
-        internal UInt32 ArrayLayers;
-        internal SampleCountFlags Samples;
-        internal ImageTiling Tiling;
-        internal ImageUsageFlags Usage;
-        internal SharingMode SharingMode;
-        internal UInt32 QueueFamilyIndexCount;
-        internal IntPtr QueueFamilyIndices;
-        internal ImageLayout InitialLayout;
+        public StructureType SType;
+        public IntPtr Next;
+        public ImageCreateFlags Flags;
+        public ImageType ImageType;
+        public Format Format;
+        public Extent3D Extent;
+        public UInt32 MipLevels;
+        public UInt32 ArrayLayers;
+        public SampleCountFlags Samples;
+        public ImageTiling Tiling;
+        public ImageUsageFlags Usage;
+        public SharingMode SharingMode;
+        public UInt32 QueueFamilyIndexCount;
+        public IntPtr QueueFamilyIndices;
+        public ImageLayout InitialLayout;
     }
 
     internal struct ImageViewCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal ImageViewCreateFlags Flags;
-        internal UInt64 Image;
-        internal ImageViewType ViewType;
-        internal Format Format;
-        internal ComponentMapping Components;
-        internal ImageSubresourceRange SubresourceRange;
+        public StructureType SType;
+        public IntPtr Next;
+        public ImageViewCreateFlags Flags;
+        public UInt64 Image;
+        public ImageViewType ViewType;
+        public Format Format;
+        public ComponentMapping Components;
+        public ImageSubresourceRange SubresourceRange;
     }
 
     internal struct SparseMemoryBind
     {
-        internal DeviceSize ResourceOffset;
-        internal DeviceSize Size;
-        internal UInt64 Memory;
-        internal DeviceSize MemoryOffset;
-        internal SparseMemoryBindFlags Flags;
+        public DeviceSize ResourceOffset;
+        public DeviceSize Size;
+        public UInt64 Memory;
+        public DeviceSize MemoryOffset;
+        public SparseMemoryBindFlags Flags;
     }
 
     internal struct SparseImageMemoryBind
     {
-        internal ImageSubresource Subresource;
-        internal Offset3D Offset;
-        internal Extent3D Extent;
-        internal UInt64 Memory;
-        internal DeviceSize MemoryOffset;
-        internal SparseMemoryBindFlags Flags;
+        public ImageSubresource Subresource;
+        public Offset3D Offset;
+        public Extent3D Extent;
+        public UInt64 Memory;
+        public DeviceSize MemoryOffset;
+        public SparseMemoryBindFlags Flags;
     }
 
     internal struct SparseBufferMemoryBindInfo
     {
-        internal UInt64 Buffer;
-        internal UInt32 BindCount;
-        internal IntPtr Binds;
+        public UInt64 Buffer;
+        public UInt32 BindCount;
+        public IntPtr Binds;
     }
 
     internal struct SparseImageOpaqueMemoryBindInfo
     {
-        internal UInt64 Image;
-        internal UInt32 BindCount;
-        internal IntPtr Binds;
+        public UInt64 Image;
+        public UInt32 BindCount;
+        public IntPtr Binds;
     }
 
     internal struct SparseImageMemoryBindInfo
     {
-        internal UInt64 Image;
-        internal UInt32 BindCount;
-        internal IntPtr Binds;
+        public UInt64 Image;
+        public UInt32 BindCount;
+        public IntPtr Binds;
     }
 
     internal struct BindSparseInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt32 WaitSemaphoreCount;
-        internal IntPtr WaitSemaphores;
-        internal UInt32 BufferBindCount;
-        internal IntPtr BufferBinds;
-        internal UInt32 ImageOpaqueBindCount;
-        internal IntPtr ImageOpaqueBinds;
-        internal UInt32 ImageBindCount;
-        internal IntPtr ImageBinds;
-        internal UInt32 SignalSemaphoreCount;
-        internal IntPtr SignalSemaphores;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt32 WaitSemaphoreCount;
+        public IntPtr WaitSemaphores;
+        public UInt32 BufferBindCount;
+        public IntPtr BufferBinds;
+        public UInt32 ImageOpaqueBindCount;
+        public IntPtr ImageOpaqueBinds;
+        public UInt32 ImageBindCount;
+        public IntPtr ImageBinds;
+        public UInt32 SignalSemaphoreCount;
+        public IntPtr SignalSemaphores;
     }
 
     internal struct ShaderModuleCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal ShaderModuleCreateFlags Flags;
-        internal IntPtr CodeSize;
-        internal IntPtr Code;
+        public StructureType SType;
+        public IntPtr Next;
+        public ShaderModuleCreateFlags Flags;
+        public IntPtr CodeSize;
+        public IntPtr Code;
     }
 
     internal struct DescriptorSetLayoutBinding
     {
-        internal UInt32 Binding;
-        internal DescriptorType DescriptorType;
-        internal UInt32 DescriptorCount;
-        internal ShaderStageFlags StageFlags;
-        internal IntPtr ImmutableSamplers;
+        public UInt32 Binding;
+        public DescriptorType DescriptorType;
+        public UInt32 DescriptorCount;
+        public ShaderStageFlags StageFlags;
+        public IntPtr ImmutableSamplers;
     }
 
     internal struct DescriptorSetLayoutCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DescriptorSetLayoutCreateFlags Flags;
-        internal UInt32 BindingCount;
-        internal IntPtr Bindings;
+        public StructureType SType;
+        public IntPtr Next;
+        public DescriptorSetLayoutCreateFlags Flags;
+        public UInt32 BindingCount;
+        public IntPtr Bindings;
     }
 
     internal struct DescriptorPoolCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DescriptorPoolCreateFlags Flags;
-        internal UInt32 MaxSets;
-        internal UInt32 PoolSizeCount;
-        internal IntPtr PoolSizes;
+        public StructureType SType;
+        public IntPtr Next;
+        public DescriptorPoolCreateFlags Flags;
+        public UInt32 MaxSets;
+        public UInt32 PoolSizeCount;
+        public IntPtr PoolSizes;
     }
 
     internal struct DescriptorSetAllocateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 DescriptorPool;
-        internal UInt32 DescriptorSetCount;
-        internal IntPtr SetLayouts;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 DescriptorPool;
+        public UInt32 DescriptorSetCount;
+        public IntPtr SetLayouts;
     }
 
     internal struct SpecializationInfo
     {
-        internal UInt32 MapEntryCount;
-        internal IntPtr MapEntries;
-        internal UInt32 DataSize;
-        internal IntPtr Data;
+        public UInt32 MapEntryCount;
+        public IntPtr MapEntries;
+        public UInt32 DataSize;
+        public IntPtr Data;
     }
 
     internal struct PipelineShaderStageCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineShaderStageCreateFlags Flags;
-        internal ShaderStageFlags Stage;
-        internal UInt64 Module;
-        internal IntPtr Name;
-        internal IntPtr SpecializationInfo;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineShaderStageCreateFlags Flags;
+        public ShaderStageFlags Stage;
+        public UInt64 Module;
+        public IntPtr Name;
+        public IntPtr SpecializationInfo;
     }
 
     internal struct ComputePipelineCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineCreateFlags Flags;
-        internal IntPtr Stage;
-        internal UInt64 Layout;
-        internal UInt64 BasePipelineHandle;
-        internal Int32 BasePipelineIndex;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineCreateFlags Flags;
+        public IntPtr Stage;
+        public UInt64 Layout;
+        public UInt64 BasePipelineHandle;
+        public Int32 BasePipelineIndex;
     }
 
     internal struct PipelineVertexInputStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineVertexInputStateCreateFlags Flags;
-        internal UInt32 VertexBindingDescriptionCount;
-        internal IntPtr VertexBindingDescriptions;
-        internal UInt32 VertexAttributeDescriptionCount;
-        internal IntPtr VertexAttributeDescriptions;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineVertexInputStateCreateFlags Flags;
+        public UInt32 VertexBindingDescriptionCount;
+        public IntPtr VertexBindingDescriptions;
+        public UInt32 VertexAttributeDescriptionCount;
+        public IntPtr VertexAttributeDescriptions;
     }
 
     internal struct PipelineInputAssemblyStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineInputAssemblyStateCreateFlags Flags;
-        internal PrimitiveTopology Topology;
-        internal Bool32 PrimitiveRestartEnable;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineInputAssemblyStateCreateFlags Flags;
+        public PrimitiveTopology Topology;
+        public Bool32 PrimitiveRestartEnable;
     }
 
     internal struct PipelineTessellationStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineTessellationStateCreateFlags Flags;
-        internal UInt32 PatchControlPoints;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineTessellationStateCreateFlags Flags;
+        public UInt32 PatchControlPoints;
     }
 
     internal struct PipelineViewportStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineViewportStateCreateFlags Flags;
-        internal UInt32 ViewportCount;
-        internal IntPtr Viewports;
-        internal UInt32 ScissorCount;
-        internal IntPtr Scissors;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineViewportStateCreateFlags Flags;
+        public UInt32 ViewportCount;
+        public IntPtr Viewports;
+        public UInt32 ScissorCount;
+        public IntPtr Scissors;
     }
 
     internal struct PipelineRasterizationStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineRasterizationStateCreateFlags Flags;
-        internal Bool32 DepthClampEnable;
-        internal Bool32 RasterizerDiscardEnable;
-        internal PolygonMode PolygonMode;
-        internal CullModeFlags CullMode;
-        internal FrontFace FrontFace;
-        internal Bool32 DepthBiasEnable;
-        internal Single DepthBiasConstantFactor;
-        internal Single DepthBiasClamp;
-        internal Single DepthBiasSlopeFactor;
-        internal Single LineWidth;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineRasterizationStateCreateFlags Flags;
+        public Bool32 DepthClampEnable;
+        public Bool32 RasterizerDiscardEnable;
+        public PolygonMode PolygonMode;
+        public CullModeFlags CullMode;
+        public FrontFace FrontFace;
+        public Bool32 DepthBiasEnable;
+        public Single DepthBiasConstantFactor;
+        public Single DepthBiasClamp;
+        public Single DepthBiasSlopeFactor;
+        public Single LineWidth;
     }
 
     internal struct PipelineMultisampleStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineMultisampleStateCreateFlags Flags;
-        internal SampleCountFlags RasterizationSamples;
-        internal Bool32 SampleShadingEnable;
-        internal Single MinSampleShading;
-        internal IntPtr SampleMask;
-        internal Bool32 AlphaToCoverageEnable;
-        internal Bool32 AlphaToOneEnable;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineMultisampleStateCreateFlags Flags;
+        public SampleCountFlags RasterizationSamples;
+        public Bool32 SampleShadingEnable;
+        public Single MinSampleShading;
+        public IntPtr SampleMask;
+        public Bool32 AlphaToCoverageEnable;
+        public Bool32 AlphaToOneEnable;
     }
 
     internal struct PipelineColorBlendStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineColorBlendStateCreateFlags Flags;
-        internal Bool32 LogicOpEnable;
-        internal LogicOp LogicOp;
-        internal UInt32 AttachmentCount;
-        internal IntPtr Attachments;
-        internal unsafe fixed Single BlendConstants[4];
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineColorBlendStateCreateFlags Flags;
+        public Bool32 LogicOpEnable;
+        public LogicOp LogicOp;
+        public UInt32 AttachmentCount;
+        public IntPtr Attachments;
+        public unsafe fixed Single BlendConstants[4];
     }
 
     internal struct PipelineDynamicStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineDynamicStateCreateFlags Flags;
-        internal UInt32 DynamicStateCount;
-        internal IntPtr DynamicStates;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineDynamicStateCreateFlags Flags;
+        public UInt32 DynamicStateCount;
+        public IntPtr DynamicStates;
     }
 
     internal struct PipelineDepthStencilStateCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineDepthStencilStateCreateFlags Flags;
-        internal Bool32 DepthTestEnable;
-        internal Bool32 DepthWriteEnable;
-        internal CompareOp DepthCompareOp;
-        internal Bool32 DepthBoundsTestEnable;
-        internal Bool32 StencilTestEnable;
-        internal StencilOpState Front;
-        internal StencilOpState Back;
-        internal Single MinDepthBounds;
-        internal Single MaxDepthBounds;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineDepthStencilStateCreateFlags Flags;
+        public Bool32 DepthTestEnable;
+        public Bool32 DepthWriteEnable;
+        public CompareOp DepthCompareOp;
+        public Bool32 DepthBoundsTestEnable;
+        public Bool32 StencilTestEnable;
+        public StencilOpState Front;
+        public StencilOpState Back;
+        public Single MinDepthBounds;
+        public Single MaxDepthBounds;
     }
 
     internal struct GraphicsPipelineCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineCreateFlags Flags;
-        internal UInt32 StageCount;
-        internal IntPtr Stages;
-        internal IntPtr VertexInputState;
-        internal IntPtr InputAssemblyState;
-        internal IntPtr TessellationState;
-        internal IntPtr ViewportState;
-        internal IntPtr RasterizationState;
-        internal IntPtr MultisampleState;
-        internal IntPtr DepthStencilState;
-        internal IntPtr ColorBlendState;
-        internal IntPtr DynamicState;
-        internal UInt64 Layout;
-        internal UInt64 RenderPass;
-        internal UInt32 Subpass;
-        internal UInt64 BasePipelineHandle;
-        internal Int32 BasePipelineIndex;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineCreateFlags Flags;
+        public UInt32 StageCount;
+        public IntPtr Stages;
+        public IntPtr VertexInputState;
+        public IntPtr InputAssemblyState;
+        public IntPtr TessellationState;
+        public IntPtr ViewportState;
+        public IntPtr RasterizationState;
+        public IntPtr MultisampleState;
+        public IntPtr DepthStencilState;
+        public IntPtr ColorBlendState;
+        public IntPtr DynamicState;
+        public UInt64 Layout;
+        public UInt64 RenderPass;
+        public UInt32 Subpass;
+        public UInt64 BasePipelineHandle;
+        public Int32 BasePipelineIndex;
     }
 
     internal struct PipelineCacheCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineCacheCreateFlags Flags;
-        internal UInt32 InitialDataSize;
-        internal IntPtr InitialData;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineCacheCreateFlags Flags;
+        public UInt32 InitialDataSize;
+        public IntPtr InitialData;
     }
 
     internal struct PipelineLayoutCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal PipelineLayoutCreateFlags Flags;
-        internal UInt32 SetLayoutCount;
-        internal IntPtr SetLayouts;
-        internal UInt32 PushConstantRangeCount;
-        internal IntPtr PushConstantRanges;
+        public StructureType SType;
+        public IntPtr Next;
+        public PipelineLayoutCreateFlags Flags;
+        public UInt32 SetLayoutCount;
+        public IntPtr SetLayouts;
+        public UInt32 PushConstantRangeCount;
+        public IntPtr PushConstantRanges;
     }
 
     internal struct SamplerCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal SamplerCreateFlags Flags;
-        internal Filter MagFilter;
-        internal Filter MinFilter;
-        internal SamplerMipmapMode MipmapMode;
-        internal SamplerAddressMode AddressModeU;
-        internal SamplerAddressMode AddressModeV;
-        internal SamplerAddressMode AddressModeW;
-        internal Single MipLodBias;
-        internal Bool32 AnisotropyEnable;
-        internal Single MaxAnisotropy;
-        internal Bool32 CompareEnable;
-        internal CompareOp CompareOp;
-        internal Single MinLod;
-        internal Single MaxLod;
-        internal BorderColor BorderColor;
-        internal Bool32 UnnormalizedCoordinates;
+        public StructureType SType;
+        public IntPtr Next;
+        public SamplerCreateFlags Flags;
+        public Filter MagFilter;
+        public Filter MinFilter;
+        public SamplerMipmapMode MipmapMode;
+        public SamplerAddressMode AddressModeU;
+        public SamplerAddressMode AddressModeV;
+        public SamplerAddressMode AddressModeW;
+        public Single MipLodBias;
+        public Bool32 AnisotropyEnable;
+        public Single MaxAnisotropy;
+        public Bool32 CompareEnable;
+        public CompareOp CompareOp;
+        public Single MinLod;
+        public Single MaxLod;
+        public BorderColor BorderColor;
+        public Bool32 UnnormalizedCoordinates;
     }
 
     internal struct CommandPoolCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal CommandPoolCreateFlags Flags;
-        internal UInt32 QueueFamilyIndex;
+        public StructureType SType;
+        public IntPtr Next;
+        public CommandPoolCreateFlags Flags;
+        public UInt32 QueueFamilyIndex;
     }
 
     internal struct CommandBufferAllocateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 CommandPool;
-        internal CommandBufferLevel Level;
-        internal UInt32 CommandBufferCount;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 CommandPool;
+        public CommandBufferLevel Level;
+        public UInt32 CommandBufferCount;
     }
 
     internal struct CommandBufferInheritanceInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 RenderPass;
-        internal UInt32 Subpass;
-        internal UInt64 Framebuffer;
-        internal Bool32 OcclusionQueryEnable;
-        internal QueryControlFlags QueryFlags;
-        internal QueryPipelineStatisticFlags PipelineStatistics;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 RenderPass;
+        public UInt32 Subpass;
+        public UInt64 Framebuffer;
+        public Bool32 OcclusionQueryEnable;
+        public QueryControlFlags QueryFlags;
+        public QueryPipelineStatisticFlags PipelineStatistics;
     }
 
     internal struct CommandBufferBeginInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal CommandBufferUsageFlags Flags;
-        internal IntPtr InheritanceInfo;
+        public StructureType SType;
+        public IntPtr Next;
+        public CommandBufferUsageFlags Flags;
+        public IntPtr InheritanceInfo;
     }
 
     internal struct RenderPassBeginInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt64 RenderPass;
-        internal UInt64 Framebuffer;
-        internal Rect2D RenderArea;
-        internal UInt32 ClearValueCount;
-        internal IntPtr ClearValues;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt64 RenderPass;
+        public UInt64 Framebuffer;
+        public Rect2D RenderArea;
+        public UInt32 ClearValueCount;
+        public IntPtr ClearValues;
     }
 
     internal struct SubpassDescription
     {
-        internal SubpassDescriptionFlags Flags;
-        internal PipelineBindPoint PipelineBindPoint;
-        internal UInt32 InputAttachmentCount;
-        internal IntPtr InputAttachments;
-        internal UInt32 ColorAttachmentCount;
-        internal IntPtr ColorAttachments;
-        internal IntPtr ResolveAttachments;
-        internal IntPtr DepthStencilAttachment;
-        internal UInt32 PreserveAttachmentCount;
-        internal IntPtr PreserveAttachments;
+        public SubpassDescriptionFlags Flags;
+        public PipelineBindPoint PipelineBindPoint;
+        public UInt32 InputAttachmentCount;
+        public IntPtr InputAttachments;
+        public UInt32 ColorAttachmentCount;
+        public IntPtr ColorAttachments;
+        public IntPtr ResolveAttachments;
+        public IntPtr DepthStencilAttachment;
+        public UInt32 PreserveAttachmentCount;
+        public IntPtr PreserveAttachments;
     }
 
     internal struct RenderPassCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal RenderPassCreateFlags Flags;
-        internal UInt32 AttachmentCount;
-        internal IntPtr Attachments;
-        internal UInt32 SubpassCount;
-        internal IntPtr Subpasses;
-        internal UInt32 DependencyCount;
-        internal IntPtr Dependencies;
+        public StructureType SType;
+        public IntPtr Next;
+        public RenderPassCreateFlags Flags;
+        public UInt32 AttachmentCount;
+        public IntPtr Attachments;
+        public UInt32 SubpassCount;
+        public IntPtr Subpasses;
+        public UInt32 DependencyCount;
+        public IntPtr Dependencies;
     }
 
     internal struct EventCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal EventCreateFlags Flags;
+        public StructureType SType;
+        public IntPtr Next;
+        public EventCreateFlags Flags;
     }
 
     internal struct FenceCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal FenceCreateFlags Flags;
+        public StructureType SType;
+        public IntPtr Next;
+        public FenceCreateFlags Flags;
     }
 
     internal struct SemaphoreCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal SemaphoreCreateFlags Flags;
+        public StructureType SType;
+        public IntPtr Next;
+        public SemaphoreCreateFlags Flags;
     }
 
     internal struct QueryPoolCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal QueryPoolCreateFlags Flags;
-        internal QueryType QueryType;
-        internal UInt32 QueryCount;
-        internal QueryPipelineStatisticFlags PipelineStatistics;
+        public StructureType SType;
+        public IntPtr Next;
+        public QueryPoolCreateFlags Flags;
+        public QueryType QueryType;
+        public UInt32 QueryCount;
+        public QueryPipelineStatisticFlags PipelineStatistics;
     }
 
     internal struct FramebufferCreateInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal FramebufferCreateFlags Flags;
-        internal UInt64 RenderPass;
-        internal UInt32 AttachmentCount;
-        internal IntPtr Attachments;
-        internal UInt32 Width;
-        internal UInt32 Height;
-        internal UInt32 Layers;
+        public StructureType SType;
+        public IntPtr Next;
+        public FramebufferCreateFlags Flags;
+        public UInt64 RenderPass;
+        public UInt32 AttachmentCount;
+        public IntPtr Attachments;
+        public UInt32 Width;
+        public UInt32 Height;
+        public UInt32 Layers;
     }
 
     internal struct SubmitInfo
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt32 WaitSemaphoreCount;
-        internal IntPtr WaitSemaphores;
-        internal IntPtr WaitDstStageMask;
-        internal UInt32 CommandBufferCount;
-        internal IntPtr CommandBuffers;
-        internal UInt32 SignalSemaphoreCount;
-        internal IntPtr SignalSemaphores;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt32 WaitSemaphoreCount;
+        public IntPtr WaitSemaphores;
+        public IntPtr WaitDstStageMask;
+        public UInt32 CommandBufferCount;
+        public IntPtr CommandBuffers;
+        public UInt32 SignalSemaphoreCount;
+        public IntPtr SignalSemaphores;
     }
 
     internal struct DisplayPropertiesKHR
     {
-        internal UInt64 Display;
-        internal IntPtr DisplayName;
-        internal Extent2D PhysicalDimensions;
-        internal Extent2D PhysicalResolution;
-        internal SurfaceTransformFlagsKHR SupportedTransforms;
-        internal Bool32 PlaneReorderPossible;
-        internal Bool32 PersistentContent;
+        public UInt64 Display;
+        public IntPtr DisplayName;
+        public Extent2D PhysicalDimensions;
+        public Extent2D PhysicalResolution;
+        public SurfaceTransformFlagsKHR SupportedTransforms;
+        public Bool32 PlaneReorderPossible;
+        public Bool32 PersistentContent;
     }
 
     internal struct DisplayPlanePropertiesKHR
     {
-        internal UInt64 CurrentDisplay;
-        internal UInt32 CurrentStackIndex;
+        public UInt64 CurrentDisplay;
+        public UInt32 CurrentStackIndex;
     }
 
     internal struct DisplayModePropertiesKHR
     {
-        internal UInt64 DisplayMode;
-        internal DisplayModeParametersKHR Parameters;
+        public UInt64 DisplayMode;
+        public DisplayModeParametersKHR Parameters;
     }
 
     internal struct DisplayModeCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DisplayModeCreateFlagsKHR Flags;
-        internal DisplayModeParametersKHR Parameters;
+        public StructureType SType;
+        public IntPtr Next;
+        public DisplayModeCreateFlagsKHR Flags;
+        public DisplayModeParametersKHR Parameters;
     }
 
     internal struct DisplaySurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DisplaySurfaceCreateFlagsKHR Flags;
-        internal UInt64 DisplayMode;
-        internal UInt32 PlaneIndex;
-        internal UInt32 PlaneStackIndex;
-        internal SurfaceTransformFlagsKHR Transform;
-        internal Single GlobalAlpha;
-        internal DisplayPlaneAlphaFlagsKHR AlphaMode;
-        internal Extent2D ImageExtent;
+        public StructureType SType;
+        public IntPtr Next;
+        public DisplaySurfaceCreateFlagsKHR Flags;
+        public UInt64 DisplayMode;
+        public UInt32 PlaneIndex;
+        public UInt32 PlaneStackIndex;
+        public SurfaceTransformFlagsKHR Transform;
+        public Single GlobalAlpha;
+        public DisplayPlaneAlphaFlagsKHR AlphaMode;
+        public Extent2D ImageExtent;
     }
 
     internal struct DisplayPresentInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal Rect2D SrcRect;
-        internal Rect2D DstRect;
-        internal Bool32 Persistent;
+        public StructureType SType;
+        public IntPtr Next;
+        public Rect2D SrcRect;
+        public Rect2D DstRect;
+        public Bool32 Persistent;
     }
 
     internal struct AndroidSurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal AndroidSurfaceCreateFlagsKHR Flags;
-        internal IntPtr Window;
+        public StructureType SType;
+        public IntPtr Next;
+        public AndroidSurfaceCreateFlagsKHR Flags;
+        public IntPtr Window;
     }
 
     internal struct MirSurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal MirSurfaceCreateFlagsKHR Flags;
-        internal IntPtr Connection;
-        internal IntPtr MirSurface;
+        public StructureType SType;
+        public IntPtr Next;
+        public MirSurfaceCreateFlagsKHR Flags;
+        public IntPtr Connection;
+        public IntPtr MirSurface;
     }
 
     internal struct WaylandSurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal WaylandSurfaceCreateFlagsKHR Flags;
-        internal IntPtr Display;
-        internal IntPtr Surface;
+        public StructureType SType;
+        public IntPtr Next;
+        public WaylandSurfaceCreateFlagsKHR Flags;
+        public IntPtr Display;
+        public IntPtr Surface;
     }
 
     internal struct Win32SurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal Win32SurfaceCreateFlagsKHR Flags;
-        internal IntPtr Hinstance;
-        internal IntPtr Hwnd;
+        public StructureType SType;
+        public IntPtr Next;
+        public Win32SurfaceCreateFlagsKHR Flags;
+        public IntPtr Hinstance;
+        public IntPtr Hwnd;
     }
 
     internal struct XlibSurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal XlibSurfaceCreateFlagsKHR Flags;
-        internal IntPtr Dpy;
-        internal IntPtr Window;
+        public StructureType SType;
+        public IntPtr Next;
+        public XlibSurfaceCreateFlagsKHR Flags;
+        public IntPtr Dpy;
+        public IntPtr Window;
     }
 
     internal struct XcbSurfaceCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal XcbSurfaceCreateFlagsKHR Flags;
-        internal IntPtr Connection;
-        internal IntPtr Window;
+        public StructureType SType;
+        public IntPtr Next;
+        public XcbSurfaceCreateFlagsKHR Flags;
+        public IntPtr Connection;
+        public IntPtr Window;
     }
 
     internal struct SwapchainCreateInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal SwapchainCreateFlagsKHR Flags;
-        internal UInt64 Surface;
-        internal UInt32 MinImageCount;
-        internal Format ImageFormat;
-        internal ColorSpaceKHR ImageColorSpace;
-        internal Extent2D ImageExtent;
-        internal UInt32 ImageArrayLayers;
-        internal ImageUsageFlags ImageUsage;
-        internal SharingMode ImageSharingMode;
-        internal UInt32 QueueFamilyIndexCount;
-        internal IntPtr QueueFamilyIndices;
-        internal SurfaceTransformFlagsKHR PreTransform;
-        internal CompositeAlphaFlagsKHR CompositeAlpha;
-        internal PresentModeKHR PresentMode;
-        internal Bool32 Clipped;
-        internal UInt64 OldSwapchain;
+        public StructureType SType;
+        public IntPtr Next;
+        public SwapchainCreateFlagsKHR Flags;
+        public UInt64 Surface;
+        public UInt32 MinImageCount;
+        public Format ImageFormat;
+        public ColorSpaceKHR ImageColorSpace;
+        public Extent2D ImageExtent;
+        public UInt32 ImageArrayLayers;
+        public ImageUsageFlags ImageUsage;
+        public SharingMode ImageSharingMode;
+        public UInt32 QueueFamilyIndexCount;
+        public IntPtr QueueFamilyIndices;
+        public SurfaceTransformFlagsKHR PreTransform;
+        public CompositeAlphaFlagsKHR CompositeAlpha;
+        public PresentModeKHR PresentMode;
+        public Bool32 Clipped;
+        public UInt64 OldSwapchain;
     }
 
     internal struct PresentInfoKHR
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal UInt32 WaitSemaphoreCount;
-        internal IntPtr WaitSemaphores;
-        internal UInt32 SwapchainCount;
-        internal IntPtr Swapchains;
-        internal IntPtr ImageIndices;
-        internal IntPtr Results;
+        public StructureType SType;
+        public IntPtr Next;
+        public UInt32 WaitSemaphoreCount;
+        public IntPtr WaitSemaphores;
+        public UInt32 SwapchainCount;
+        public IntPtr Swapchains;
+        public IntPtr ImageIndices;
+        public IntPtr Results;
     }
 
     internal struct DebugReportCallbackCreateInfoEXT
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DebugReportFlagsEXT Flags;
-        internal IntPtr PfnCallback;
-        internal IntPtr UserData;
+        public StructureType SType;
+        public IntPtr Next;
+        public DebugReportFlagsEXT Flags;
+        public IntPtr PfnCallback;
+        public IntPtr UserData;
     }
 
     internal struct PipelineRasterizationStateRasterizationOrderAMD
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal RasterizationOrderAMD RasterizationOrder;
+        public StructureType SType;
+        public IntPtr Next;
+        public RasterizationOrderAMD RasterizationOrder;
     }
 
     internal struct DebugMarkerObjectNameInfoEXT
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DebugReportObjectTypeEXT ObjectType;
-        internal UInt64 Object;
-        internal IntPtr ObjectName;
+        public StructureType SType;
+        public IntPtr Next;
+        public DebugReportObjectTypeEXT ObjectType;
+        public UInt64 Object;
+        public IntPtr ObjectName;
     }
 
     internal struct DebugMarkerObjectTagInfoEXT
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal DebugReportObjectTypeEXT ObjectType;
-        internal UInt64 Object;
-        internal UInt64 TagName;
-        internal UInt32 TagSize;
-        internal IntPtr Tag;
+        public StructureType SType;
+        public IntPtr Next;
+        public DebugReportObjectTypeEXT ObjectType;
+        public UInt64 Object;
+        public UInt64 TagName;
+        public UInt32 TagSize;
+        public IntPtr Tag;
     }
 
     internal struct DebugMarkerMarkerInfoEXT
     {
-        internal StructureType SType;
-        internal IntPtr Next;
-        internal IntPtr MarkerName;
-        internal Single Color;
+        public StructureType SType;
+        public IntPtr Next;
+        public IntPtr MarkerName;
+        public Single Color;
     }
 
 }

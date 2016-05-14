@@ -24,5 +24,11 @@ namespace Vulkan
         {
             NativePointer = (Interop.DisplayPlanePropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayPlanePropertiesKHR));
         }
+        
+        public DisplayPlanePropertiesKHR(DisplayKHR CurrentDisplay, UInt32 CurrentStackIndex) : this()
+        {
+            this.CurrentDisplay = CurrentDisplay;
+            this.CurrentStackIndex = CurrentStackIndex;
+        }
     }
 }

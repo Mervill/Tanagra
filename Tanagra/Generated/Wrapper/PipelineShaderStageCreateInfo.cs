@@ -44,5 +44,12 @@ namespace Vulkan
             NativePointer = (Interop.PipelineShaderStageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineShaderStageCreateInfo));
             NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
         }
+        
+        public PipelineShaderStageCreateInfo(ShaderStageFlags Stage, ShaderModule Module, String Name) : this()
+        {
+            this.Stage = Stage;
+            this.Module = Module;
+            this.Name = Name;
+        }
     }
 }

@@ -72,5 +72,18 @@ namespace Vulkan
             NativePointer = (Interop.PipelineDepthStencilStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineDepthStencilStateCreateInfo));
             NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
+        
+        public PipelineDepthStencilStateCreateInfo(Bool32 DepthTestEnable, Bool32 DepthWriteEnable, CompareOp DepthCompareOp, Bool32 DepthBoundsTestEnable, Bool32 StencilTestEnable, StencilOpState Front, StencilOpState Back, Single MinDepthBounds, Single MaxDepthBounds) : this()
+        {
+            this.DepthTestEnable = DepthTestEnable;
+            this.DepthWriteEnable = DepthWriteEnable;
+            this.DepthCompareOp = DepthCompareOp;
+            this.DepthBoundsTestEnable = DepthBoundsTestEnable;
+            this.StencilTestEnable = StencilTestEnable;
+            this.Front = Front;
+            this.Back = Back;
+            this.MinDepthBounds = MinDepthBounds;
+            this.MaxDepthBounds = MaxDepthBounds;
+        }
     }
 }

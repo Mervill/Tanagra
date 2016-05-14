@@ -74,5 +74,11 @@ namespace Vulkan
             NativePointer = (Interop.PipelineLayoutCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineLayoutCreateInfo));
             NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
+        
+        public PipelineLayoutCreateInfo(DescriptorSetLayout[] SetLayouts, PushConstantRange[] PushConstantRanges) : this()
+        {
+            this.SetLayouts = SetLayouts;
+            this.PushConstantRanges = PushConstantRanges;
+        }
     }
 }

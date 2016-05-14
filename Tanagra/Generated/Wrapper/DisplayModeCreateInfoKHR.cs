@@ -24,5 +24,10 @@ namespace Vulkan
             NativePointer = (Interop.DisplayModeCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModeCreateInfoKHR));
             NativePointer->SType = StructureType.DisplayModeCreateInfoKHR;
         }
+        
+        public DisplayModeCreateInfoKHR(DisplayModeParametersKHR Parameters) : this()
+        {
+            this.Parameters = Parameters;
+        }
     }
 }

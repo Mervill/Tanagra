@@ -24,5 +24,10 @@ namespace Vulkan
             NativePointer = (Interop.AndroidSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.AndroidSurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.AndroidSurfaceCreateInfoKHR;
         }
+        
+        public AndroidSurfaceCreateInfoKHR(IntPtr Window) : this()
+        {
+            this.Window = Window;
+        }
     }
 }

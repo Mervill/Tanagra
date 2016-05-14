@@ -45,5 +45,12 @@ namespace Vulkan
             NativePointer = (Interop.ComputePipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ComputePipelineCreateInfo));
             NativePointer->SType = StructureType.ComputePipelineCreateInfo;
         }
+        
+        public ComputePipelineCreateInfo(PipelineShaderStageCreateInfo Stage, PipelineLayout Layout, Int32 BasePipelineIndex) : this()
+        {
+            this.Stage = Stage;
+            this.Layout = Layout;
+            this.BasePipelineIndex = BasePipelineIndex;
+        }
     }
 }

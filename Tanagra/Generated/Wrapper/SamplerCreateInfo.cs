@@ -108,5 +108,24 @@ namespace Vulkan
             NativePointer = (Interop.SamplerCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SamplerCreateInfo));
             NativePointer->SType = StructureType.SamplerCreateInfo;
         }
+        
+        public SamplerCreateInfo(Filter MagFilter, Filter MinFilter, SamplerMipmapMode MipmapMode, SamplerAddressMode AddressModeU, SamplerAddressMode AddressModeV, SamplerAddressMode AddressModeW, Single MipLodBias, Bool32 AnisotropyEnable, Single MaxAnisotropy, Bool32 CompareEnable, CompareOp CompareOp, Single MinLod, Single MaxLod, BorderColor BorderColor, Bool32 UnnormalizedCoordinates) : this()
+        {
+            this.MagFilter = MagFilter;
+            this.MinFilter = MinFilter;
+            this.MipmapMode = MipmapMode;
+            this.AddressModeU = AddressModeU;
+            this.AddressModeV = AddressModeV;
+            this.AddressModeW = AddressModeW;
+            this.MipLodBias = MipLodBias;
+            this.AnisotropyEnable = AnisotropyEnable;
+            this.MaxAnisotropy = MaxAnisotropy;
+            this.CompareEnable = CompareEnable;
+            this.CompareOp = CompareOp;
+            this.MinLod = MinLod;
+            this.MaxLod = MaxLod;
+            this.BorderColor = BorderColor;
+            this.UnnormalizedCoordinates = UnnormalizedCoordinates;
+        }
     }
 }

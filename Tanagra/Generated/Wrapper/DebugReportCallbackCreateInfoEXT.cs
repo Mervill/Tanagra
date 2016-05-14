@@ -30,5 +30,11 @@ namespace Vulkan
             NativePointer = (Interop.DebugReportCallbackCreateInfoEXT*)Interop.Structure.Allocate(typeof(Interop.DebugReportCallbackCreateInfoEXT));
             NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
+        
+        public DebugReportCallbackCreateInfoEXT(DebugReportFlagsEXT Flags, IntPtr PfnCallback) : this()
+        {
+            this.Flags = Flags;
+            this.PfnCallback = PfnCallback;
+        }
     }
 }

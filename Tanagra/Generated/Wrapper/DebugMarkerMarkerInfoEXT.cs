@@ -24,5 +24,10 @@ namespace Vulkan
             NativePointer = (Interop.DebugMarkerMarkerInfoEXT*)Interop.Structure.Allocate(typeof(Interop.DebugMarkerMarkerInfoEXT));
             NativePointer->SType = StructureType.DebugMarkerMarkerInfoEXT;
         }
+        
+        public DebugMarkerMarkerInfoEXT(String MarkerName) : this()
+        {
+            this.MarkerName = MarkerName;
+        }
     }
 }

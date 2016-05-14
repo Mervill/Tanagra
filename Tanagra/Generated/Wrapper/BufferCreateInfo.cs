@@ -64,5 +64,13 @@ namespace Vulkan
             NativePointer = (Interop.BufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.BufferCreateInfo));
             NativePointer->SType = StructureType.BufferCreateInfo;
         }
+        
+        public BufferCreateInfo(DeviceSize Size, BufferUsageFlags Usage, SharingMode SharingMode, UInt32[] QueueFamilyIndices) : this()
+        {
+            this.Size = Size;
+            this.Usage = Usage;
+            this.SharingMode = SharingMode;
+            this.QueueFamilyIndices = QueueFamilyIndices;
+        }
     }
 }

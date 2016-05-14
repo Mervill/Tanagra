@@ -106,5 +106,20 @@ namespace Vulkan
             NativePointer = (Interop.ImageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageCreateInfo));
             NativePointer->SType = StructureType.ImageCreateInfo;
         }
+        
+        public ImageCreateInfo(ImageType ImageType, Format Format, Extent3D Extent, UInt32 MipLevels, UInt32 ArrayLayers, SampleCountFlags Samples, ImageTiling Tiling, ImageUsageFlags Usage, SharingMode SharingMode, UInt32[] QueueFamilyIndices, ImageLayout InitialLayout) : this()
+        {
+            this.ImageType = ImageType;
+            this.Format = Format;
+            this.Extent = Extent;
+            this.MipLevels = MipLevels;
+            this.ArrayLayers = ArrayLayers;
+            this.Samples = Samples;
+            this.Tiling = Tiling;
+            this.Usage = Usage;
+            this.SharingMode = SharingMode;
+            this.QueueFamilyIndices = QueueFamilyIndices;
+            this.InitialLayout = InitialLayout;
+        }
     }
 }

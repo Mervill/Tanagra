@@ -41,5 +41,11 @@ namespace Vulkan
             NativePointer = (Interop.ShaderModuleCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ShaderModuleCreateInfo));
             NativePointer->SType = StructureType.ShaderModuleCreateInfo;
         }
+        
+        public ShaderModuleCreateInfo(IntPtr CodeSize, Byte[] Code) : this()
+        {
+            this.CodeSize = CodeSize;
+            this.Code = Code;
+        }
     }
 }

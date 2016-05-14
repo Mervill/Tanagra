@@ -30,5 +30,11 @@ namespace Vulkan
             NativePointer = (Interop.PipelineInputAssemblyStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineInputAssemblyStateCreateInfo));
             NativePointer->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
         }
+        
+        public PipelineInputAssemblyStateCreateInfo(PrimitiveTopology Topology, Bool32 PrimitiveRestartEnable) : this()
+        {
+            this.Topology = Topology;
+            this.PrimitiveRestartEnable = PrimitiveRestartEnable;
+        }
     }
 }

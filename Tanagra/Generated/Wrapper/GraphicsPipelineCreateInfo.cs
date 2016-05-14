@@ -142,5 +142,18 @@ namespace Vulkan
             NativePointer = (Interop.GraphicsPipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.GraphicsPipelineCreateInfo));
             NativePointer->SType = StructureType.GraphicsPipelineCreateInfo;
         }
+        
+        public GraphicsPipelineCreateInfo(UInt32 StageCount, PipelineShaderStageCreateInfo[] Stages, PipelineVertexInputStateCreateInfo VertexInputState, PipelineInputAssemblyStateCreateInfo InputAssemblyState, PipelineRasterizationStateCreateInfo RasterizationState, PipelineLayout Layout, RenderPass RenderPass, UInt32 Subpass, Int32 BasePipelineIndex) : this()
+        {
+            this.StageCount = StageCount;
+            this.Stages = Stages;
+            this.VertexInputState = VertexInputState;
+            this.InputAssemblyState = InputAssemblyState;
+            this.RasterizationState = RasterizationState;
+            this.Layout = Layout;
+            this.RenderPass = RenderPass;
+            this.Subpass = Subpass;
+            this.BasePipelineIndex = BasePipelineIndex;
+        }
     }
 }

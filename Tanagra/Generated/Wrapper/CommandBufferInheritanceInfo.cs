@@ -50,5 +50,11 @@ namespace Vulkan
             NativePointer = (Interop.CommandBufferInheritanceInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferInheritanceInfo));
             NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
         }
+        
+        public CommandBufferInheritanceInfo(UInt32 Subpass, Bool32 OcclusionQueryEnable) : this()
+        {
+            this.Subpass = Subpass;
+            this.OcclusionQueryEnable = OcclusionQueryEnable;
+        }
     }
 }

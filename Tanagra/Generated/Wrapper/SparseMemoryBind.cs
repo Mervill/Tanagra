@@ -42,5 +42,12 @@ namespace Vulkan
         {
             NativePointer = (Interop.SparseMemoryBind*)Interop.Structure.Allocate(typeof(Interop.SparseMemoryBind));
         }
+        
+        public SparseMemoryBind(DeviceSize ResourceOffset, DeviceSize Size, DeviceSize MemoryOffset) : this()
+        {
+            this.ResourceOffset = ResourceOffset;
+            this.Size = Size;
+            this.MemoryOffset = MemoryOffset;
+        }
     }
 }

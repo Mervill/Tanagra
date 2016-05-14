@@ -47,5 +47,12 @@ namespace Vulkan
         {
             NativePointer = (Interop.AllocationCallbacks*)Interop.Structure.Allocate(typeof(Interop.AllocationCallbacks));
         }
+        
+        public AllocationCallbacks(IntPtr PfnAllocation, IntPtr PfnReallocation, IntPtr PfnFree) : this()
+        {
+            this.PfnAllocation = PfnAllocation;
+            this.PfnReallocation = PfnReallocation;
+            this.PfnFree = PfnFree;
+        }
     }
 }

@@ -71,5 +71,14 @@ namespace Vulkan
             NativePointer = (Interop.FramebufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FramebufferCreateInfo));
             NativePointer->SType = StructureType.FramebufferCreateInfo;
         }
+        
+        public FramebufferCreateInfo(RenderPass RenderPass, ImageView[] Attachments, UInt32 Width, UInt32 Height, UInt32 Layers) : this()
+        {
+            this.RenderPass = RenderPass;
+            this.Attachments = Attachments;
+            this.Width = Width;
+            this.Height = Height;
+            this.Layers = Layers;
+        }
     }
 }

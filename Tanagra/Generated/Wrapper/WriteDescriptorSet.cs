@@ -109,5 +109,17 @@ namespace Vulkan
             NativePointer = (Interop.WriteDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.WriteDescriptorSet));
             NativePointer->SType = StructureType.WriteDescriptorSet;
         }
+        
+        public WriteDescriptorSet(DescriptorSet DstSet, UInt32 DstBinding, UInt32 DstArrayElement, UInt32 DescriptorCount, DescriptorType DescriptorType, DescriptorImageInfo[] ImageInfo, DescriptorBufferInfo[] BufferInfo, BufferView[] TexelBufferView) : this()
+        {
+            this.DstSet = DstSet;
+            this.DstBinding = DstBinding;
+            this.DstArrayElement = DstArrayElement;
+            this.DescriptorCount = DescriptorCount;
+            this.DescriptorType = DescriptorType;
+            this.ImageInfo = ImageInfo;
+            this.BufferInfo = BufferInfo;
+            this.TexelBufferView = TexelBufferView;
+        }
     }
 }

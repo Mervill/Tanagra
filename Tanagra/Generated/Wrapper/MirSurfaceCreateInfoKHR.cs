@@ -30,5 +30,11 @@ namespace Vulkan
             NativePointer = (Interop.MirSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.MirSurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.MirSurfaceCreateInfoKHR;
         }
+        
+        public MirSurfaceCreateInfoKHR(IntPtr Connection, IntPtr MirSurface) : this()
+        {
+            this.Connection = Connection;
+            this.MirSurface = MirSurface;
+        }
     }
 }

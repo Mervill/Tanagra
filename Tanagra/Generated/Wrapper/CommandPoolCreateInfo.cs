@@ -24,5 +24,10 @@ namespace Vulkan
             NativePointer = (Interop.CommandPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandPoolCreateInfo));
             NativePointer->SType = StructureType.CommandPoolCreateInfo;
         }
+        
+        public CommandPoolCreateInfo(UInt32 QueueFamilyIndex) : this()
+        {
+            this.QueueFamilyIndex = QueueFamilyIndex;
+        }
     }
 }

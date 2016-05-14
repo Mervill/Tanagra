@@ -79,5 +79,11 @@ namespace Vulkan
             NativePointer = (Interop.InstanceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.InstanceCreateInfo));
             NativePointer->SType = StructureType.InstanceCreateInfo;
         }
+        
+        public InstanceCreateInfo(String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
+        {
+            this.EnabledLayerNames = EnabledLayerNames;
+            this.EnabledExtensionNames = EnabledExtensionNames;
+        }
     }
 }

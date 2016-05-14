@@ -30,5 +30,11 @@ namespace Vulkan
             NativePointer = (Interop.XcbSurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.XcbSurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.XcbSurfaceCreateInfoKHR;
         }
+        
+        public XcbSurfaceCreateInfoKHR(IntPtr Connection, IntPtr Window) : this()
+        {
+            this.Connection = Connection;
+            this.Window = Window;
+        }
     }
 }

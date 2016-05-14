@@ -36,5 +36,11 @@ namespace Vulkan
             NativePointer = (Interop.QueryPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.QueryPoolCreateInfo));
             NativePointer->SType = StructureType.QueryPoolCreateInfo;
         }
+        
+        public QueryPoolCreateInfo(QueryType QueryType, UInt32 QueryCount) : this()
+        {
+            this.QueryType = QueryType;
+            this.QueryCount = QueryCount;
+        }
     }
 }

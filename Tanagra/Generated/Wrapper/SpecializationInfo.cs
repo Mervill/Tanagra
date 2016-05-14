@@ -67,5 +67,11 @@ namespace Vulkan
         {
             NativePointer = (Interop.SpecializationInfo*)Interop.Structure.Allocate(typeof(Interop.SpecializationInfo));
         }
+        
+        public SpecializationInfo(SpecializationMapEntry[] MapEntries, IntPtr[] Data) : this()
+        {
+            this.MapEntries = MapEntries;
+            this.Data = Data;
+        }
     }
 }

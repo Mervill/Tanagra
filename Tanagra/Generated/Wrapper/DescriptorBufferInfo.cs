@@ -30,5 +30,12 @@ namespace Vulkan
         {
             NativePointer = (Interop.DescriptorBufferInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorBufferInfo));
         }
+        
+        public DescriptorBufferInfo(Buffer Buffer, DeviceSize Offset, DeviceSize Range) : this()
+        {
+            this.Buffer = Buffer;
+            this.Offset = Offset;
+            this.Range = Range;
+        }
     }
 }

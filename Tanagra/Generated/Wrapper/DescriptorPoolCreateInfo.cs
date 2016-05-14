@@ -52,5 +52,12 @@ namespace Vulkan
             NativePointer = (Interop.DescriptorPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorPoolCreateInfo));
             NativePointer->SType = StructureType.DescriptorPoolCreateInfo;
         }
+        
+        public DescriptorPoolCreateInfo(UInt32 MaxSets, UInt32 PoolSizeCount, DescriptorPoolSize[] PoolSizes) : this()
+        {
+            this.MaxSets = MaxSets;
+            this.PoolSizeCount = PoolSizeCount;
+            this.PoolSizes = PoolSizes;
+        }
     }
 }

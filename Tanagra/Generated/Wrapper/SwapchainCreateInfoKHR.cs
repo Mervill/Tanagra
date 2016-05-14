@@ -126,5 +126,22 @@ namespace Vulkan
             NativePointer = (Interop.SwapchainCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
             NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
+        
+        public SwapchainCreateInfoKHR(SurfaceKHR Surface, UInt32 MinImageCount, Format ImageFormat, ColorSpaceKHR ImageColorSpace, Extent2D ImageExtent, UInt32 ImageArrayLayers, ImageUsageFlags ImageUsage, SharingMode ImageSharingMode, UInt32[] QueueFamilyIndices, SurfaceTransformFlagsKHR PreTransform, CompositeAlphaFlagsKHR CompositeAlpha, PresentModeKHR PresentMode, Bool32 Clipped) : this()
+        {
+            this.Surface = Surface;
+            this.MinImageCount = MinImageCount;
+            this.ImageFormat = ImageFormat;
+            this.ImageColorSpace = ImageColorSpace;
+            this.ImageExtent = ImageExtent;
+            this.ImageArrayLayers = ImageArrayLayers;
+            this.ImageUsage = ImageUsage;
+            this.ImageSharingMode = ImageSharingMode;
+            this.QueueFamilyIndices = QueueFamilyIndices;
+            this.PreTransform = PreTransform;
+            this.CompositeAlpha = CompositeAlpha;
+            this.PresentMode = PresentMode;
+            this.Clipped = Clipped;
+        }
     }
 }

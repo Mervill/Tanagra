@@ -61,5 +61,15 @@ namespace Vulkan
             NativePointer = (Interop.ImageMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.ImageMemoryBarrier));
             NativePointer->SType = StructureType.ImageMemoryBarrier;
         }
+        
+        public ImageMemoryBarrier(ImageLayout OldLayout, ImageLayout NewLayout, UInt32 SrcQueueFamilyIndex, UInt32 DstQueueFamilyIndex, Image Image, ImageSubresourceRange SubresourceRange) : this()
+        {
+            this.OldLayout = OldLayout;
+            this.NewLayout = NewLayout;
+            this.SrcQueueFamilyIndex = SrcQueueFamilyIndex;
+            this.DstQueueFamilyIndex = DstQueueFamilyIndex;
+            this.Image = Image;
+            this.SubresourceRange = SubresourceRange;
+        }
     }
 }

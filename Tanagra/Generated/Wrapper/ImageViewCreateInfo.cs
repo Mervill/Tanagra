@@ -49,5 +49,14 @@ namespace Vulkan
             NativePointer = (Interop.ImageViewCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageViewCreateInfo));
             NativePointer->SType = StructureType.ImageViewCreateInfo;
         }
+        
+        public ImageViewCreateInfo(Image Image, ImageViewType ViewType, Format Format, ComponentMapping Components, ImageSubresourceRange SubresourceRange) : this()
+        {
+            this.Image = Image;
+            this.ViewType = ViewType;
+            this.Format = Format;
+            this.Components = Components;
+            this.SubresourceRange = SubresourceRange;
+        }
     }
 }

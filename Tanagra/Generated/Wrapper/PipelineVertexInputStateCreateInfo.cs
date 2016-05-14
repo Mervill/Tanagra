@@ -74,5 +74,11 @@ namespace Vulkan
             NativePointer = (Interop.PipelineVertexInputStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineVertexInputStateCreateInfo));
             NativePointer->SType = StructureType.PipelineVertexInputStateCreateInfo;
         }
+        
+        public PipelineVertexInputStateCreateInfo(VertexInputBindingDescription[] VertexBindingDescriptions, VertexInputAttributeDescription[] VertexAttributeDescriptions) : this()
+        {
+            this.VertexBindingDescriptions = VertexBindingDescriptions;
+            this.VertexAttributeDescriptions = VertexAttributeDescriptions;
+        }
     }
 }

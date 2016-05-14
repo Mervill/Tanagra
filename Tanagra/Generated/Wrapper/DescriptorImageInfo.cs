@@ -31,5 +31,12 @@ namespace Vulkan
         {
             NativePointer = (Interop.DescriptorImageInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorImageInfo));
         }
+        
+        public DescriptorImageInfo(Sampler Sampler, ImageView ImageView, ImageLayout ImageLayout) : this()
+        {
+            this.Sampler = Sampler;
+            this.ImageView = ImageView;
+            this.ImageLayout = ImageLayout;
+        }
     }
 }

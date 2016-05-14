@@ -24,5 +24,10 @@ namespace Vulkan
             NativePointer = (Interop.PipelineTessellationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineTessellationStateCreateInfo));
             NativePointer->SType = StructureType.PipelineTessellationStateCreateInfo;
         }
+        
+        public PipelineTessellationStateCreateInfo(UInt32 PatchControlPoints) : this()
+        {
+            this.PatchControlPoints = PatchControlPoints;
+        }
     }
 }

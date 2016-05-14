@@ -46,5 +46,10 @@ namespace Vulkan
             NativePointer = (Interop.PipelineCacheCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineCacheCreateInfo));
             NativePointer->SType = StructureType.PipelineCacheCreateInfo;
         }
+        
+        public PipelineCacheCreateInfo(IntPtr[] InitialData) : this()
+        {
+            this.InitialData = InitialData;
+        }
     }
 }

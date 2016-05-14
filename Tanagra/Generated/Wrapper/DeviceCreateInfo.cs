@@ -107,5 +107,13 @@ namespace Vulkan
             NativePointer = (Interop.DeviceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceCreateInfo));
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
+        
+        public DeviceCreateInfo(UInt32 QueueCreateInfoCount, DeviceQueueCreateInfo[] QueueCreateInfos, String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
+        {
+            this.QueueCreateInfoCount = QueueCreateInfoCount;
+            this.QueueCreateInfos = QueueCreateInfos;
+            this.EnabledLayerNames = EnabledLayerNames;
+            this.EnabledExtensionNames = EnabledExtensionNames;
+        }
     }
 }

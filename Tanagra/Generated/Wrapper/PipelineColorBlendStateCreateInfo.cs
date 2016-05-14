@@ -64,5 +64,13 @@ namespace Vulkan
             NativePointer = (Interop.PipelineColorBlendStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineColorBlendStateCreateInfo));
             NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
+        
+        public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Single BlendConstants) : this()
+        {
+            this.LogicOpEnable = LogicOpEnable;
+            this.LogicOp = LogicOp;
+            this.Attachments = Attachments;
+            //this.BlendConstants = BlendConstants;
+        }
     }
 }

@@ -31,5 +31,12 @@ namespace Vulkan
             NativePointer = (Interop.CommandBufferAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.CommandBufferAllocateInfo));
             NativePointer->SType = StructureType.CommandBufferAllocateInfo;
         }
+        
+        public CommandBufferAllocateInfo(CommandPool CommandPool, CommandBufferLevel Level, UInt32 CommandBufferCount) : this()
+        {
+            this.CommandPool = CommandPool;
+            this.Level = Level;
+            this.CommandBufferCount = CommandBufferCount;
+        }
     }
 }
