@@ -7,12 +7,6 @@ namespace Vulkan
     {
         internal Interop.BindSparseInfo* NativePointer;
         
-        public UInt32 WaitSemaphoreCount
-        {
-            get { return NativePointer->WaitSemaphoreCount; }
-            set { NativePointer->WaitSemaphoreCount = value; }
-        }
-        
         public Semaphore[] WaitSemaphores
         {
             get
@@ -33,12 +27,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = (IntPtr)value[x].NativePointer;
             }
-        }
-        
-        public UInt32 BufferBindCount
-        {
-            get { return NativePointer->BufferBindCount; }
-            set { NativePointer->BufferBindCount = value; }
         }
         
         public SparseBufferMemoryBindInfo[] BufferBinds
@@ -63,12 +51,6 @@ namespace Vulkan
             }
         }
         
-        public UInt32 ImageOpaqueBindCount
-        {
-            get { return NativePointer->ImageOpaqueBindCount; }
-            set { NativePointer->ImageOpaqueBindCount = value; }
-        }
-        
         public SparseImageOpaqueMemoryBindInfo[] ImageOpaqueBinds
         {
             get
@@ -91,12 +73,6 @@ namespace Vulkan
             }
         }
         
-        public UInt32 ImageBindCount
-        {
-            get { return NativePointer->ImageBindCount; }
-            set { NativePointer->ImageBindCount = value; }
-        }
-        
         public SparseImageMemoryBindInfo[] ImageBinds
         {
             get
@@ -117,12 +93,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;
             }
-        }
-        
-        public UInt32 SignalSemaphoreCount
-        {
-            get { return NativePointer->SignalSemaphoreCount; }
-            set { NativePointer->SignalSemaphoreCount = value; }
         }
         
         public Semaphore[] SignalSemaphores

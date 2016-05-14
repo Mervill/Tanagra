@@ -7,12 +7,6 @@ namespace Vulkan
     {
         internal Interop.PresentInfoKHR* NativePointer;
         
-        public UInt32 WaitSemaphoreCount
-        {
-            get { return NativePointer->WaitSemaphoreCount; }
-            set { NativePointer->WaitSemaphoreCount = value; }
-        }
-        
         public Semaphore[] WaitSemaphores
         {
             get
@@ -33,12 +27,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = (IntPtr)value[x].NativePointer;
             }
-        }
-        
-        public UInt32 SwapchainCount
-        {
-            get { return NativePointer->SwapchainCount; }
-            set { NativePointer->SwapchainCount = value; }
         }
         
         public SwapchainKHR[] Swapchains
@@ -113,9 +101,8 @@ namespace Vulkan
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
         
-        public PresentInfoKHR(UInt32 SwapchainCount, SwapchainKHR[] Swapchains, UInt32[] ImageIndices) : this()
+        public PresentInfoKHR(SwapchainKHR[] Swapchains, UInt32[] ImageIndices) : this()
         {
-            this.SwapchainCount = SwapchainCount;
             this.Swapchains = Swapchains;
             this.ImageIndices = ImageIndices;
         }

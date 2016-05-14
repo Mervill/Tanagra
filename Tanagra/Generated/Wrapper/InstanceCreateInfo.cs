@@ -20,12 +20,6 @@ namespace Vulkan
             set { _ApplicationInfo = value; NativePointer->ApplicationInfo = (IntPtr)value.NativePointer; }
         }
         
-        public UInt32 EnabledLayerCount
-        {
-            get { return NativePointer->EnabledLayerCount; }
-            set { NativePointer->EnabledLayerCount = value; }
-        }
-        
         public string[] EnabledLayerNames
         {
             get
@@ -45,12 +39,6 @@ namespace Vulkan
                 for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
-        }
-        
-        public UInt32 EnabledExtensionCount
-        {
-            get { return NativePointer->EnabledExtensionCount; }
-            set { NativePointer->EnabledExtensionCount = value; }
         }
         
         public string[] EnabledExtensionNames

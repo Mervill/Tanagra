@@ -19,12 +19,6 @@ namespace Vulkan
             set { NativePointer->MaxSets = value; }
         }
         
-        public UInt32 PoolSizeCount
-        {
-            get { return NativePointer->PoolSizeCount; }
-            set { NativePointer->PoolSizeCount = value; }
-        }
-        
         public DescriptorPoolSize[] PoolSizes
         {
             get
@@ -53,10 +47,9 @@ namespace Vulkan
             NativePointer->SType = StructureType.DescriptorPoolCreateInfo;
         }
         
-        public DescriptorPoolCreateInfo(UInt32 MaxSets, UInt32 PoolSizeCount, DescriptorPoolSize[] PoolSizes) : this()
+        public DescriptorPoolCreateInfo(UInt32 MaxSets, DescriptorPoolSize[] PoolSizes) : this()
         {
             this.MaxSets = MaxSets;
-            this.PoolSizeCount = PoolSizeCount;
             this.PoolSizes = PoolSizes;
         }
     }

@@ -14,12 +14,6 @@ namespace Vulkan
             set { _DescriptorPool = value; NativePointer->DescriptorPool = value.NativePointer; }
         }
         
-        public UInt32 DescriptorSetCount
-        {
-            get { return NativePointer->DescriptorSetCount; }
-            set { NativePointer->DescriptorSetCount = value; }
-        }
-        
         public DescriptorSetLayout[] SetLayouts
         {
             get
@@ -48,10 +42,9 @@ namespace Vulkan
             NativePointer->SType = StructureType.DescriptorSetAllocateInfo;
         }
         
-        public DescriptorSetAllocateInfo(DescriptorPool DescriptorPool, UInt32 DescriptorSetCount, DescriptorSetLayout[] SetLayouts) : this()
+        public DescriptorSetAllocateInfo(DescriptorPool DescriptorPool, DescriptorSetLayout[] SetLayouts) : this()
         {
             this.DescriptorPool = DescriptorPool;
-            this.DescriptorSetCount = DescriptorSetCount;
             this.SetLayouts = SetLayouts;
         }
     }

@@ -61,7 +61,7 @@ namespace Vulkan
             set { NativePointer->SparseProperties = value; }
         }
         
-        public PhysicalDeviceProperties()
+        internal PhysicalDeviceProperties()
         {
             NativePointer = (Interop.PhysicalDeviceProperties*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceProperties));
         }

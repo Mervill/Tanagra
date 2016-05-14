@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 BindingCount
-        {
-            get { return NativePointer->BindingCount; }
-            set { NativePointer->BindingCount = value; }
-        }
-        
         public DescriptorSetLayoutBinding[] Bindings
         {
             get

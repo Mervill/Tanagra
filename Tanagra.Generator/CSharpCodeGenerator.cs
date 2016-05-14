@@ -354,6 +354,19 @@ namespace Tanagra.Generator
 
         string GenerateWrapperClass(VkStruct vkStruct)
         {
+            var hiddenMembers = new List<string>(); // todo: hashset?
+            foreach (var member in vkStruct.Members)
+            {
+                if (member.Len.Length == 0)
+                    continue;
+
+                var memberCountName = member.Len[0];
+                memberCountName = char.ToUpper(memberCountName[0]) + memberCountName.Substring(1, memberCountName.Length - 1);
+                var isCountMember = vkStruct.Members.Any(x => x.Name == memberCountName);
+                if(isCountMember && !hiddenMembers.Contains(vkStruct.Name))
+                    hiddenMembers.Add(memberCountName);
+            }
+
             Clear();
             
             WriteLine("using System;");
@@ -379,6 +392,9 @@ namespace Tanagra.Generator
                     generateStructureType = true;
                     continue;
                 }
+
+                if (hiddenMembers.Contains(member.Name))
+                    continue;
 
                 if (member.Type.Name == "Char")
                 {
@@ -412,7 +428,10 @@ namespace Tanagra.Generator
                 WriteLine("");
             }
 
-            WriteLine($"public {vkStruct.Name}()");
+            // Give returned-only wrapper classes an internal constructor, meaning that
+            // only internal assembly can create new instances of it (neat!)
+            var cotorVis = (vkStruct.ReturnedOnly) ? "internal" : "public";
+            WriteLine($"{cotorVis} {vkStruct.Name}()");
             WriteLine("{");
             _tabs++;
             WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)Interop.Structure.Allocate(typeof(Interop.{vkStruct.Name}));");
@@ -440,6 +459,9 @@ namespace Tanagra.Generator
                         continue;
 
                     if (member.Name == "SType" && member.Type.Name == "StructureType")
+                        continue;
+
+                    if (hiddenMembers.Contains(member.Name))
                         continue;
 
                     var memberTypeName = member.Type.Name;
@@ -485,6 +507,8 @@ namespace Tanagra.Generator
                     WriteLine("}");
                 }
             }
+
+            // Implement IDisposable and deconstructor
 
             _tabs--;
             WriteLine("}");

@@ -19,12 +19,6 @@ namespace Vulkan
             set { NativePointer->PipelineBindPoint = value; }
         }
         
-        public UInt32 InputAttachmentCount
-        {
-            get { return NativePointer->InputAttachmentCount; }
-            set { NativePointer->InputAttachmentCount = value; }
-        }
-        
         public AttachmentReference[] InputAttachments
         {
             get
@@ -45,12 +39,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
             }
-        }
-        
-        public UInt32 ColorAttachmentCount
-        {
-            get { return NativePointer->ColorAttachmentCount; }
-            set { NativePointer->ColorAttachmentCount = value; }
         }
         
         public AttachmentReference[] ColorAttachments
@@ -102,12 +90,6 @@ namespace Vulkan
         {
             get { return _DepthStencilAttachment; }
             set { _DepthStencilAttachment = value; NativePointer->DepthStencilAttachment = (IntPtr)(&value); }
-        }
-        
-        public UInt32 PreserveAttachmentCount
-        {
-            get { return NativePointer->PreserveAttachmentCount; }
-            set { NativePointer->PreserveAttachmentCount = value; }
         }
         
         public UInt32[] PreserveAttachments

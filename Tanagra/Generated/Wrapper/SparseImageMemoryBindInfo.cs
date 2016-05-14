@@ -14,12 +14,6 @@ namespace Vulkan
             set { _Image = value; NativePointer->Image = value.NativePointer; }
         }
         
-        public UInt32 BindCount
-        {
-            get { return NativePointer->BindCount; }
-            set { NativePointer->BindCount = value; }
-        }
-        
         public SparseImageMemoryBind[] Binds
         {
             get
@@ -47,10 +41,9 @@ namespace Vulkan
             NativePointer = (Interop.SparseImageMemoryBindInfo*)Interop.Structure.Allocate(typeof(Interop.SparseImageMemoryBindInfo));
         }
         
-        public SparseImageMemoryBindInfo(Image Image, UInt32 BindCount, SparseImageMemoryBind[] Binds) : this()
+        public SparseImageMemoryBindInfo(Image Image, SparseImageMemoryBind[] Binds) : this()
         {
             this.Image = Image;
-            this.BindCount = BindCount;
             this.Binds = Binds;
         }
     }

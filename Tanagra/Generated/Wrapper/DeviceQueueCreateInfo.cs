@@ -19,12 +19,6 @@ namespace Vulkan
             set { NativePointer->QueueFamilyIndex = value; }
         }
         
-        public UInt32 QueueCount
-        {
-            get { return NativePointer->QueueCount; }
-            set { NativePointer->QueueCount = value; }
-        }
-        
         public Single[] QueuePriorities
         {
             get
@@ -53,10 +47,9 @@ namespace Vulkan
             NativePointer->SType = StructureType.DeviceQueueCreateInfo;
         }
         
-        public DeviceQueueCreateInfo(UInt32 QueueFamilyIndex, UInt32 QueueCount, Single[] QueuePriorities) : this()
+        public DeviceQueueCreateInfo(UInt32 QueueFamilyIndex, Single[] QueuePriorities) : this()
         {
             this.QueueFamilyIndex = QueueFamilyIndex;
-            this.QueueCount = QueueCount;
             this.QueuePriorities = QueuePriorities;
         }
     }

@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 StageCount
-        {
-            get { return NativePointer->StageCount; }
-            set { NativePointer->StageCount = value; }
-        }
-        
         public PipelineShaderStageCreateInfo[] Stages
         {
             get
@@ -143,9 +137,8 @@ namespace Vulkan
             NativePointer->SType = StructureType.GraphicsPipelineCreateInfo;
         }
         
-        public GraphicsPipelineCreateInfo(UInt32 StageCount, PipelineShaderStageCreateInfo[] Stages, PipelineVertexInputStateCreateInfo VertexInputState, PipelineInputAssemblyStateCreateInfo InputAssemblyState, PipelineRasterizationStateCreateInfo RasterizationState, PipelineLayout Layout, RenderPass RenderPass, UInt32 Subpass, Int32 BasePipelineIndex) : this()
+        public GraphicsPipelineCreateInfo(PipelineShaderStageCreateInfo[] Stages, PipelineVertexInputStateCreateInfo VertexInputState, PipelineInputAssemblyStateCreateInfo InputAssemblyState, PipelineRasterizationStateCreateInfo RasterizationState, PipelineLayout Layout, RenderPass RenderPass, UInt32 Subpass, Int32 BasePipelineIndex) : this()
         {
-            this.StageCount = StageCount;
             this.Stages = Stages;
             this.VertexInputState = VertexInputState;
             this.InputAssemblyState = InputAssemblyState;

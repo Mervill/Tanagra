@@ -26,12 +26,6 @@ namespace Vulkan
             set { NativePointer->DstArrayElement = value; }
         }
         
-        public UInt32 DescriptorCount
-        {
-            get { return NativePointer->DescriptorCount; }
-            set { NativePointer->DescriptorCount = value; }
-        }
-        
         public DescriptorType DescriptorType
         {
             get { return NativePointer->DescriptorType; }
@@ -110,12 +104,11 @@ namespace Vulkan
             NativePointer->SType = StructureType.WriteDescriptorSet;
         }
         
-        public WriteDescriptorSet(DescriptorSet DstSet, UInt32 DstBinding, UInt32 DstArrayElement, UInt32 DescriptorCount, DescriptorType DescriptorType, DescriptorImageInfo[] ImageInfo, DescriptorBufferInfo[] BufferInfo, BufferView[] TexelBufferView) : this()
+        public WriteDescriptorSet(DescriptorSet DstSet, UInt32 DstBinding, UInt32 DstArrayElement, DescriptorType DescriptorType, DescriptorImageInfo[] ImageInfo, DescriptorBufferInfo[] BufferInfo, BufferView[] TexelBufferView) : this()
         {
             this.DstSet = DstSet;
             this.DstBinding = DstBinding;
             this.DstArrayElement = DstArrayElement;
-            this.DescriptorCount = DescriptorCount;
             this.DescriptorType = DescriptorType;
             this.ImageInfo = ImageInfo;
             this.BufferInfo = BufferInfo;

@@ -7,12 +7,6 @@ namespace Vulkan
     {
         internal Interop.SpecializationInfo* NativePointer;
         
-        public UInt32 MapEntryCount
-        {
-            get { return NativePointer->MapEntryCount; }
-            set { NativePointer->MapEntryCount = value; }
-        }
-        
         public SpecializationMapEntry[] MapEntries
         {
             get
@@ -33,12 +27,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
             }
-        }
-        
-        public UInt32 DataSize
-        {
-            get { return NativePointer->DataSize; }
-            set { NativePointer->DataSize = value; }
         }
         
         public IntPtr[] Data

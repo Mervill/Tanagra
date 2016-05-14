@@ -9,10 +9,13 @@ namespace Tanagra.Generator
     {
         // todo: spec extensions
         // todo: union
-        // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
-        // todo: constructors for interop classes
-        // todo: hide array count variables in interop classes
+        // todo: dealloc unmanaged memory
+        // todo: assign null to array
+        // todo: IDisposable
+        // todo: why is Char still a weird edge case
         // todo: optional flag to generate arrays instead of lists on commands?
+        // todo: public structs use properties?
+        // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
         // XCB -> X protocol C-language Binding
         // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors

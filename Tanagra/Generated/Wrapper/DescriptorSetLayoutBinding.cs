@@ -19,12 +19,6 @@ namespace Vulkan
             set { NativePointer->DescriptorType = value; }
         }
         
-        public UInt32 DescriptorCount
-        {
-            get { return NativePointer->DescriptorCount; }
-            set { NativePointer->DescriptorCount = value; }
-        }
-        
         public ShaderStageFlags StageFlags
         {
             get { return NativePointer->StageFlags; }

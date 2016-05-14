@@ -7,12 +7,6 @@ namespace Vulkan
     {
         internal Interop.SubmitInfo* NativePointer;
         
-        public UInt32 WaitSemaphoreCount
-        {
-            get { return NativePointer->WaitSemaphoreCount; }
-            set { NativePointer->WaitSemaphoreCount = value; }
-        }
-        
         public Semaphore[] WaitSemaphores
         {
             get
@@ -57,12 +51,6 @@ namespace Vulkan
             }
         }
         
-        public UInt32 CommandBufferCount
-        {
-            get { return NativePointer->CommandBufferCount; }
-            set { NativePointer->CommandBufferCount = value; }
-        }
-        
         public CommandBuffer[] CommandBuffers
         {
             get
@@ -83,12 +71,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = (IntPtr)value[x].NativePointer;
             }
-        }
-        
-        public UInt32 SignalSemaphoreCount
-        {
-            get { return NativePointer->SignalSemaphoreCount; }
-            set { NativePointer->SignalSemaphoreCount = value; }
         }
         
         public Semaphore[] SignalSemaphores

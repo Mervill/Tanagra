@@ -62,12 +62,6 @@ namespace Vulkan
             set { NativePointer->ImageSharingMode = value; }
         }
         
-        public UInt32 QueueFamilyIndexCount
-        {
-            get { return NativePointer->QueueFamilyIndexCount; }
-            set { NativePointer->QueueFamilyIndexCount = value; }
-        }
-        
         public UInt32[] QueueFamilyIndices
         {
             get

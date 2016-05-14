@@ -31,7 +31,7 @@ namespace Vulkan
             set { NativePointer->Description = Marshal.StringToHGlobalAnsi(value); }
         }
         
-        public LayerProperties()
+        internal LayerProperties()
         {
             NativePointer = (Interop.LayerProperties*)Interop.Structure.Allocate(typeof(Interop.LayerProperties));
         }

@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 VertexBindingDescriptionCount
-        {
-            get { return NativePointer->VertexBindingDescriptionCount; }
-            set { NativePointer->VertexBindingDescriptionCount = value; }
-        }
-        
         public VertexInputBindingDescription[] VertexBindingDescriptions
         {
             get
@@ -39,12 +33,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
             }
-        }
-        
-        public UInt32 VertexAttributeDescriptionCount
-        {
-            get { return NativePointer->VertexAttributeDescriptionCount; }
-            set { NativePointer->VertexAttributeDescriptionCount = value; }
         }
         
         public VertexInputAttributeDescription[] VertexAttributeDescriptions

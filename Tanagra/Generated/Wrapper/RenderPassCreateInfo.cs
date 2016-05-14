@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 AttachmentCount
-        {
-            get { return NativePointer->AttachmentCount; }
-            set { NativePointer->AttachmentCount = value; }
-        }
-        
         public AttachmentDescription[] Attachments
         {
             get
@@ -41,12 +35,6 @@ namespace Vulkan
             }
         }
         
-        public UInt32 SubpassCount
-        {
-            get { return NativePointer->SubpassCount; }
-            set { NativePointer->SubpassCount = value; }
-        }
-        
         public SubpassDescription[] Subpasses
         {
             get
@@ -67,12 +55,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = *value[x].NativePointer;
             }
-        }
-        
-        public UInt32 DependencyCount
-        {
-            get { return NativePointer->DependencyCount; }
-            set { NativePointer->DependencyCount = value; }
         }
         
         public SubpassDependency[] Dependencies
@@ -103,10 +85,9 @@ namespace Vulkan
             NativePointer->SType = StructureType.RenderPassCreateInfo;
         }
         
-        public RenderPassCreateInfo(AttachmentDescription[] Attachments, UInt32 SubpassCount, SubpassDescription[] Subpasses, SubpassDependency[] Dependencies) : this()
+        public RenderPassCreateInfo(AttachmentDescription[] Attachments, SubpassDescription[] Subpasses, SubpassDependency[] Dependencies) : this()
         {
             this.Attachments = Attachments;
-            this.SubpassCount = SubpassCount;
             this.Subpasses = Subpasses;
             this.Dependencies = Dependencies;
         }

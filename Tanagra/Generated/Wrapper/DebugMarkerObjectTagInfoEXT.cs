@@ -25,12 +25,6 @@ namespace Vulkan
             set { NativePointer->TagName = value; }
         }
         
-        public UInt32 TagSize
-        {
-            get { return NativePointer->TagSize; }
-            set { NativePointer->TagSize = value; }
-        }
-        
         public IntPtr[] Tag
         {
             get
@@ -59,12 +53,11 @@ namespace Vulkan
             NativePointer->SType = StructureType.DebugMarkerObjectTagInfoEXT;
         }
         
-        public DebugMarkerObjectTagInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, UInt64 TagName, UInt32 TagSize, IntPtr[] Tag) : this()
+        public DebugMarkerObjectTagInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, UInt64 TagName, IntPtr[] Tag) : this()
         {
             this.ObjectType = ObjectType;
             this.Object = Object;
             this.TagName = TagName;
-            this.TagSize = TagSize;
             this.Tag = Tag;
         }
     }

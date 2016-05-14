@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 InitialDataSize
-        {
-            get { return NativePointer->InitialDataSize; }
-            set { NativePointer->InitialDataSize = value; }
-        }
-        
         public IntPtr[] InitialData
         {
             get

@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 SetLayoutCount
-        {
-            get { return NativePointer->SetLayoutCount; }
-            set { NativePointer->SetLayoutCount = value; }
-        }
-        
         public DescriptorSetLayout[] SetLayouts
         {
             get
@@ -39,12 +33,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = (IntPtr)value[x].NativePointer;
             }
-        }
-        
-        public UInt32 PushConstantRangeCount
-        {
-            get { return NativePointer->PushConstantRangeCount; }
-            set { NativePointer->PushConstantRangeCount = value; }
         }
         
         public PushConstantRange[] PushConstantRanges

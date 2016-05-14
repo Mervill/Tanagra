@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 DynamicStateCount
-        {
-            get { return NativePointer->DynamicStateCount; }
-            set { NativePointer->DynamicStateCount = value; }
-        }
-        
         public DynamicState[] DynamicStates
         {
             get
@@ -47,9 +41,8 @@ namespace Vulkan
             NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
         }
         
-        public PipelineDynamicStateCreateInfo(UInt32 DynamicStateCount, DynamicState[] DynamicStates) : this()
+        public PipelineDynamicStateCreateInfo(DynamicState[] DynamicStates) : this()
         {
-            this.DynamicStateCount = DynamicStateCount;
             this.DynamicStates = DynamicStates;
         }
     }

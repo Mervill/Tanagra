@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 QueueCreateInfoCount
-        {
-            get { return NativePointer->QueueCreateInfoCount; }
-            set { NativePointer->QueueCreateInfoCount = value; }
-        }
-        
         public DeviceQueueCreateInfo[] QueueCreateInfos
         {
             get
@@ -41,12 +35,6 @@ namespace Vulkan
             }
         }
         
-        public UInt32 EnabledLayerCount
-        {
-            get { return NativePointer->EnabledLayerCount; }
-            set { NativePointer->EnabledLayerCount = value; }
-        }
-        
         public string[] EnabledLayerNames
         {
             get
@@ -66,12 +54,6 @@ namespace Vulkan
                 for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
-        }
-        
-        public UInt32 EnabledExtensionCount
-        {
-            get { return NativePointer->EnabledExtensionCount; }
-            set { NativePointer->EnabledExtensionCount = value; }
         }
         
         public string[] EnabledExtensionNames
@@ -108,9 +90,8 @@ namespace Vulkan
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
         
-        public DeviceCreateInfo(UInt32 QueueCreateInfoCount, DeviceQueueCreateInfo[] QueueCreateInfos, String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
+        public DeviceCreateInfo(DeviceQueueCreateInfo[] QueueCreateInfos, String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
         {
-            this.QueueCreateInfoCount = QueueCreateInfoCount;
             this.QueueCreateInfos = QueueCreateInfos;
             this.EnabledLayerNames = EnabledLayerNames;
             this.EnabledExtensionNames = EnabledExtensionNames;

@@ -19,7 +19,7 @@ namespace Vulkan
             set { NativePointer->SpecVersion = value; }
         }
         
-        public ExtensionProperties()
+        internal ExtensionProperties()
         {
             NativePointer = (Interop.ExtensionProperties*)Interop.Structure.Allocate(typeof(Interop.ExtensionProperties));
         }

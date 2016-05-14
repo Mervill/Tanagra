@@ -25,12 +25,6 @@ namespace Vulkan
             set { NativePointer->LogicOp = value; }
         }
         
-        public UInt32 AttachmentCount
-        {
-            get { return NativePointer->AttachmentCount; }
-            set { NativePointer->AttachmentCount = value; }
-        }
-        
         public PipelineColorBlendAttachmentState[] Attachments
         {
             get

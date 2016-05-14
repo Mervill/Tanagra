@@ -20,12 +20,6 @@ namespace Vulkan
             set { _RenderPass = value; NativePointer->RenderPass = value.NativePointer; }
         }
         
-        public UInt32 AttachmentCount
-        {
-            get { return NativePointer->AttachmentCount; }
-            set { NativePointer->AttachmentCount = value; }
-        }
-        
         public ImageView[] Attachments
         {
             get

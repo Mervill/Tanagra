@@ -13,12 +13,6 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 ViewportCount
-        {
-            get { return NativePointer->ViewportCount; }
-            set { NativePointer->ViewportCount = value; }
-        }
-        
         public Viewport[] Viewports
         {
             get
@@ -39,12 +33,6 @@ namespace Vulkan
                 for(var x = 0; x < valueCount; x++)
                     ptr[x] = value[x];
             }
-        }
-        
-        public UInt32 ScissorCount
-        {
-            get { return NativePointer->ScissorCount; }
-            set { NativePointer->ScissorCount = value; }
         }
         
         public Rect2D[] Scissors
@@ -73,12 +61,6 @@ namespace Vulkan
         {
             NativePointer = (Interop.PipelineViewportStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineViewportStateCreateInfo));
             NativePointer->SType = StructureType.PipelineViewportStateCreateInfo;
-        }
-        
-        public PipelineViewportStateCreateInfo(UInt32 ViewportCount, UInt32 ScissorCount) : this()
-        {
-            this.ViewportCount = ViewportCount;
-            this.ScissorCount = ScissorCount;
         }
     }
 }

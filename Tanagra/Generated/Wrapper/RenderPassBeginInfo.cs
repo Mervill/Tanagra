@@ -27,12 +27,6 @@ namespace Vulkan
             set { NativePointer->RenderArea = value; }
         }
         
-        public UInt32 ClearValueCount
-        {
-            get { return NativePointer->ClearValueCount; }
-            set { NativePointer->ClearValueCount = value; }
-        }
-        
         public ClearValue[] ClearValues
         {
             get
