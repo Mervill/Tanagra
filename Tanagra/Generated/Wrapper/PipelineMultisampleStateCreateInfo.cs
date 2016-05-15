@@ -35,11 +35,11 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("Latexmath");
             }
             set
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("Latexmath");
             }
         }
         

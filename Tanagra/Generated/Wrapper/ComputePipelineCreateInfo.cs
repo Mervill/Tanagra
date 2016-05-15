@@ -13,11 +13,10 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        PipelineShaderStageCreateInfo _Stage;
         public PipelineShaderStageCreateInfo Stage
         {
-            get { return _Stage; }
-            set { _Stage = value; NativePointer->Stage = (IntPtr)value.NativePointer; }
+            get { return new PipelineShaderStageCreateInfo { NativePointer = &NativePointer->Stage }; }
+            set { NativePointer->Stage = *value.NativePointer; }
         }
         
         PipelineLayout _Layout;

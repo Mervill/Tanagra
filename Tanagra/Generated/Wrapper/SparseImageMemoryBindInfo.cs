@@ -28,7 +28,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->BindCount = (uint)valueCount;
+                NativePointer->BindCount = (UInt32)valueCount;
                 NativePointer->Binds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageMemoryBind>() * valueCount);
                 var ptr = (Interop.SparseImageMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)

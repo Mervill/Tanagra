@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->InitialDataSize = (uint)valueCount;
+                NativePointer->InitialDataSize = (UInt32)valueCount;
                 NativePointer->InitialData = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->InitialData;
                 for(var x = 0; x < valueCount; x++)

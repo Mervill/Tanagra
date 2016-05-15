@@ -39,7 +39,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->DescriptorCount = (uint)valueCount;
+                NativePointer->DescriptorCount = (UInt32)valueCount;
                 NativePointer->ImmutableSamplers = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->ImmutableSamplers;
                 for(var x = 0; x < valueCount; x++)

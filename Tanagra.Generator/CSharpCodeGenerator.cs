@@ -226,6 +226,12 @@ namespace Tanagra.Generator
                             WriteLine($"public {member.Type} {member.Name};");
                             continue;
                         }
+
+                        if (!member.IsPointer)
+                        {
+                            WriteLine($"public {member.Type} {member.Name};");
+                            continue;
+                        }
                     }
 
                     if(member.Type is VkHandle && !member.IsArray)
@@ -241,10 +247,18 @@ namespace Tanagra.Generator
 
                     if (member.IsFixedSize)
                     {
-                        var fixedType = member.Type.ToString();
-                        if (fixedType == "String")
-                            fixedType = "byte";
-                        WriteLine($"public unsafe fixed {fixedType} {member.Name}[{member.FixedSize}];");
+                        if (!platformStructTypes.Contains(member.Type.Name))
+                        {
+                            WriteLine($"public {member.Type} {member.Name};");
+                        }
+                        else
+                        {
+                            var fixedType = member.Type.ToString();
+                            if (fixedType == "String")
+                                fixedType = "byte";
+
+                            WriteLine($"public unsafe fixed {fixedType} {member.Name}[{member.FixedSize}];");
+                        }
                         continue;
                     }
 
@@ -552,13 +566,35 @@ namespace Tanagra.Generator
                     // for it, take the address of the struct directily instead of the NativePointer
                     var valueCast = (vkMember.IsPointer && !IsInteropStruct(vkStruct)) ? "(&value)" : $"value.{NativePointer}";
 
-                    WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                    if(vkMember.IsPointer)
+                        WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                     WriteLine("{");
                     _tabs++;
-                    WriteLine($"get {{ return _{vkMember.Name}; }}");
-                    if(!readOnly)
-                        WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
+
+                    // get
+                    if(vkMember.IsPointer)
+                    {
+                        WriteLine($"get {{ return _{vkMember.Name}; }}");
+                    }
+                    else
+                    {
+                        WriteLine($"get {{ return new {vkMember.Type.Name} {{ {NativePointer} = &{NativePointer}->{vkMember.Name} }}; }}");
+                    }
+                    
+                    // set
+                    if(vkMember.IsPointer)
+                    {
+                        if(!readOnly)
+                            WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
+                    }
+                    else
+                    {
+                        if(!readOnly)
+                            WriteLine($"set {{ {NativePointer}->{vkMember.Name} = *value.{NativePointer}; }}");
+                    }
+                    
                     _tabs--;
                     WriteLine("}");
                 }
@@ -655,7 +691,7 @@ namespace Tanagra.Generator
                 WriteLine("set");
                 WriteLine("{");
                 _tabs++;
-                WriteLine($"{NativePointer}->{countName} = (uint)value.Length;");
+                WriteLine($"{NativePointer}->{countName} = (UInt32)value.Length;");
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativePointer}->{countName}));");
                 WriteLine($"void** ptr = (void**){NativePointer}->{vkMember.Name};");
                 WriteLine($"for(var x = 0; x < {NativePointer}->{countName}; x++)");
@@ -674,7 +710,7 @@ namespace Tanagra.Generator
         {
             if (vkMember.IsFixedSize)
             {
-                WriteNotImplementedArray(vkMember, readOnly);
+                WriteNotImplementedArray(vkMember, "IsFixedSize", readOnly);
                 return;
             }
 
@@ -683,7 +719,7 @@ namespace Tanagra.Generator
 
             if(countName.StartsWith("Latexmath"))
             {
-                WriteNotImplementedArray(vkMember, readOnly);
+                WriteNotImplementedArray(vkMember, "Latexmath", readOnly);
                 return;
             }
 
@@ -750,7 +786,7 @@ namespace Tanagra.Generator
                 WriteLine("{");
                 _tabs++;
                 WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{structType}>() * valueCount);");
                 WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
@@ -807,7 +843,7 @@ namespace Tanagra.Generator
                 WriteLine("{");
                 _tabs++;
                 WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);");
                 WriteLine($"var ptr = (IntPtr*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
@@ -852,7 +888,7 @@ namespace Tanagra.Generator
                 WriteLine("{");
                 _tabs++;
                 WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{vkMember.Type.Name}>() * valueCount);");
                 WriteLine($"var ptr = ({vkMember.Type.Name}*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
@@ -897,7 +933,7 @@ namespace Tanagra.Generator
                 WriteLine("{");
                 _tabs++;
                 WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);");
                 WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
@@ -912,7 +948,7 @@ namespace Tanagra.Generator
             WriteLine("}");
         }
 
-        void WriteNotImplementedArray(VkMember vkMember, bool readOnly)
+        void WriteNotImplementedArray(VkMember vkMember, string why, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -923,7 +959,7 @@ namespace Tanagra.Generator
             WriteLine("{");
             _tabs++;
 
-            WriteLine("throw new System.NotImplementedException();");
+            WriteLine($"throw new System.NotImplementedException(\"{why}\");");
 
             _tabs--;
             WriteLine("}");
@@ -935,7 +971,7 @@ namespace Tanagra.Generator
                 WriteLine("{");
                 _tabs++;
 
-                WriteLine("throw new System.NotImplementedException();");
+                WriteLine($"throw new System.NotImplementedException(\"{why}\");");
 
                 _tabs--;
                 WriteLine("}");
@@ -944,7 +980,7 @@ namespace Tanagra.Generator
             _tabs--;
             WriteLine("}");
         }
-
+        
         #endregion
         #endregion
 
@@ -1171,7 +1207,7 @@ namespace Tanagra.Generator
 
                         if(!existingCounts.Contains(countName))
                         {
-                            WriteLine($"var {countName} = ({paramName} != null) ? ({kv.Value.Type}){paramName}.Count : 0;");
+                            WriteLine($"var {countName} = ({paramName} != null) ? (UInt32){paramName}.Count : 0;");// ({ kv.Value.Type})
                             existingCounts.Add(countName);
                         }
 
@@ -1514,88 +1550,110 @@ namespace Tanagra.Generator
                 foreach(var vkCommand in handleCommands)
                 {
                     var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
-                    var internalReturnsResult = returnType == "Result";
-                    if (internalReturnsResult)
+                    var internalReturnsVkResult = returnType == "Result";
+                    if(internalReturnsVkResult)
                         returnType = "void";
-
-                    List<VkParam> excludeFromArguments = new List<VkParam>();
 
                     bool returnsList = false;
                     VkParam returnParam = null;
-                    VkParam listLengthParam = null;
+                    VkParam returnListCountParam = null;
+                    VkMember returnListCountMember = null;
+                    bool returnListHasKnownLength = false;
 
+                    var internalParams = new List<VkParam>();
+
+                    #region Determine Return Type
                     //
                     // If the last param is a non-constant pointer, it's a return value
                     //
                     var lastParam = vkCommand.Parameters.Last();
-                    if (lastParam != null && lastParam.IsOut)
+                    if(lastParam != null && lastParam.IsOut)
                     {
-                        if (string.IsNullOrEmpty(lastParam.Len))
+                        if(string.IsNullOrEmpty(lastParam.Len))
                         {
                             // return value is a single object
                             returnParam = lastParam;
                             returnType = returnParam.Type.Name;
-                            excludeFromArguments.Add(returnParam);
+                            internalParams.Add(returnParam);
                         }
                         else
                         {
-                            // return value is an array of objects
+                            // The return value is an array, the count variable can either be
+                            // a member of the current struct, or a member of another struct
+                            // in the same scope, indicated by the value of `Len`
                             var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == lastParam.Len);
-                            if (countParam != null)
+                            if(countParam != null)
                             {
                                 returnsList = true;
-
                                 returnParam = lastParam;
                                 returnType = $"List<{returnParam.Type.Name}>";
-
-                                excludeFromArguments.Add(returnParam);
+                                internalParams.Add(returnParam);
 
                                 // If countParam is a pointer, then we don't know the length
                                 // of the array, so we have to call the function twice. Otherwise
                                 // we provide the length as an argument
-                                if (countParam.IsPointer)
+                                if(countParam.IsPointer)
                                 {
-                                    listLengthParam = countParam;
-                                    excludeFromArguments.Add(listLengthParam);
+                                    returnListCountParam = countParam;
+                                    internalParams.Add(returnListCountParam);
+                                }
+                                else
+                                {
+                                    returnListHasKnownLength = true;
+                                    returnListCountParam = countParam;
+                                    internalParams.Add(returnListCountParam);
                                 }
                             }
                             else
                             {
                                 var splitLen = lastParam.Len.Split(new[] { "->" }, StringSplitOptions.None);
-                                if (splitLen.Length > 1)
+                                countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == splitLen[0]);
+                                var countStruct = countParam?.Type as VkStruct;
+                                var countMember = countStruct?.Members.ToList().FirstOrDefault(x => string.Equals(x.Name, splitLen[1], StringComparison.OrdinalIgnoreCase));
+                                if(countMember != null)
                                 {
-                                    //var argName = 
+                                    returnsList = true;
+                                    returnParam = lastParam;
+                                    returnType = $"List<{returnParam.Type.Name}>";
+                                    returnListCountParam = countParam;
+                                    returnListCountMember = countMember;
+                                    returnListHasKnownLength = true;
+                                    internalParams.Add(returnParam);
                                 }
                             }
                         }
                     }
 
+                    var hasReturnValue = (returnParam == null) && (returnType != "void");
+                    #endregion
+
+                    #region Determine if command has Array Parameters
                     //
                     // In C, arrays are passed using the (uint32_t objectCount, const Object* pObject).
-                    // We can combine the count and array pointer into once object, List<T>. Then we can
-                    // read the length of the list inside the function when needed.
+                    // We can combine the count and array pointer into one object, List<T>. Then we can
+                    // read the length of the list inside the function as needed.
                     //
-                    var arrayParams = vkCommand.Parameters
+                    var paramArrays = vkCommand.Parameters
                         .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "String")
                         .Except(new[] { returnParam });
 
-                    var arrayLengthParams = new Dictionary<VkParam, VkParam>();
-                    var hasArrayParams = arrayParams.Any();
-                    if (hasArrayParams)
+                    var paramListCountMap = new Dictionary<VkParam, VkParam>();
+                    var hasArrayParams = paramArrays.Any();
+                    if(hasArrayParams)
                     {
-                        foreach (var param in arrayParams)
+                        foreach(var param in paramArrays)
                         {
                             var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == param.Len);
-                            if (countParam != null)
+                            if(countParam != null)
                             {
-                                arrayLengthParams.Add(param, countParam);
-                                excludeFromArguments.Add(countParam);
+                                paramListCountMap.Add(param, countParam);
+                                internalParams.Add(countParam);
                             }
                         }
                     }
+                    #endregion
 
-                    var hasReturnValue = (returnParam == null) && (returnType != "void");
-
+                    #region Create Wrapper
                     WriteTabs();
                     //WriteLine("[DebuggerStepThrough]");
                     Write("public static ");
@@ -1614,7 +1672,7 @@ namespace Tanagra.Generator
                     Write($"{returnType} {commandName}");
                     Write("(");
 
-                    var cmdParams = vkCommand.Parameters.Except(excludeFromArguments).ToList();
+                    var cmdParams = vkCommand.Parameters.Except(internalParams).ToList();
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var vkParam = cmdParams[x];
@@ -1628,7 +1686,7 @@ namespace Tanagra.Generator
                         {
                             Write($"String {vkParam.Name}");
                         }
-                        else if (arrayParams.Contains(vkParam))
+                        else if (paramArrays.Contains(vkParam))
                         {
                             Write($"List<{paramType}> {vkParam.Name}");
                         }
@@ -1678,6 +1736,7 @@ namespace Tanagra.Generator
                 }
                 WriteLine("#endregion");
                 WriteLine("");
+                #endregion
             }
 
             _tabs--;

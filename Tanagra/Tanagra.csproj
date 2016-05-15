@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bool32.cs" />
+    <Compile Include="DebugUtils.cs" />
+    <Compile Include="DeviceSize.cs" />
     <Compile Include="Generated\Enum\AccessFlags.cs" />
     <Compile Include="Generated\Enum\AndroidSurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\AttachmentDescriptionFlags.cs" />
@@ -273,7 +276,6 @@
     <Compile Include="Generated\Wrapper\XcbSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Wrapper\XlibSurfaceCreateInfoKHR.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Version.cs" />

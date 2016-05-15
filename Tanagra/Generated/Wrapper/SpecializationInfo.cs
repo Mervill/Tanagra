@@ -21,7 +21,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->MapEntryCount = (uint)valueCount;
+                NativePointer->MapEntryCount = (UInt32)valueCount;
                 NativePointer->MapEntries = Marshal.AllocHGlobal(Marshal.SizeOf<SpecializationMapEntry>() * valueCount);
                 var ptr = (SpecializationMapEntry*)NativePointer->MapEntries;
                 for(var x = 0; x < valueCount; x++)
@@ -43,7 +43,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->DataSize = (uint)valueCount;
+                NativePointer->DataSize = (UInt32)valueCount;
                 NativePointer->Data = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->Data;
                 for(var x = 0; x < valueCount; x++)

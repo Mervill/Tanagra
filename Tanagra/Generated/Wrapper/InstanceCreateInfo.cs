@@ -33,7 +33,7 @@ namespace Vulkan
             }
             set
             {
-                NativePointer->EnabledLayerCount = (uint)value.Length;
+                NativePointer->EnabledLayerCount = (UInt32)value.Length;
                 NativePointer->EnabledLayerNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledLayerCount));
                 void** ptr = (void**)NativePointer->EnabledLayerNames;
                 for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
@@ -54,7 +54,7 @@ namespace Vulkan
             }
             set
             {
-                NativePointer->EnabledExtensionCount = (uint)value.Length;
+                NativePointer->EnabledExtensionCount = (UInt32)value.Length;
                 NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledExtensionCount));
                 void** ptr = (void**)NativePointer->EnabledExtensionNames;
                 for(var x = 0; x < NativePointer->EnabledExtensionCount; x++)

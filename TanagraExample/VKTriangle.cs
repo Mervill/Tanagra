@@ -533,11 +533,7 @@ namespace TanagraExample
 
         private ShaderModule CreateShaderModule(byte[] shaderCode)
         {
-            var createInfo = new ShaderModuleCreateInfo
-            {
-                //CodeSize = shaderCode.Length,
-                Code = shaderCode//new IntPtr(codePointer)
-            };
+            var createInfo = new ShaderModuleCreateInfo(shaderCode);
             return device.CreateShaderModule(createInfo);
         }
 

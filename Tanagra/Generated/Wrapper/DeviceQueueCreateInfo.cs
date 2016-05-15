@@ -33,7 +33,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->QueueCount = (uint)valueCount;
+                NativePointer->QueueCount = (UInt32)valueCount;
                 NativePointer->QueuePriorities = Marshal.AllocHGlobal(Marshal.SizeOf<Single>() * valueCount);
                 var ptr = (Single*)NativePointer->QueuePriorities;
                 for(var x = 0; x < valueCount; x++)

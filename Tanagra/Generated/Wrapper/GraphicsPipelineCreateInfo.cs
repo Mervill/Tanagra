@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->StageCount = (uint)valueCount;
+                NativePointer->StageCount = (UInt32)valueCount;
                 NativePointer->Stages = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount);
                 var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
                 for(var x = 0; x < valueCount; x++)

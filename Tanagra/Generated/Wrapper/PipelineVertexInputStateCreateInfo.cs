@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->VertexBindingDescriptionCount = (uint)valueCount;
+                NativePointer->VertexBindingDescriptionCount = (UInt32)valueCount;
                 NativePointer->VertexBindingDescriptions = Marshal.AllocHGlobal(Marshal.SizeOf<VertexInputBindingDescription>() * valueCount);
                 var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
                 for(var x = 0; x < valueCount; x++)
@@ -49,7 +49,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->VertexAttributeDescriptionCount = (uint)valueCount;
+                NativePointer->VertexAttributeDescriptionCount = (UInt32)valueCount;
                 NativePointer->VertexAttributeDescriptions = Marshal.AllocHGlobal(Marshal.SizeOf<VertexInputAttributeDescription>() * valueCount);
                 var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
                 for(var x = 0; x < valueCount; x++)

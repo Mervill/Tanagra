@@ -13,17 +13,16 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
-        public UInt32 CodeSize
-        {
-            get { return NativePointer->CodeSize; }
-            set { NativePointer->CodeSize = value; }
-        }
-        
         public Byte[] Code
         {
             get
             {
-                throw new System.NotImplementedException();
+                var valueCount = NativePointer->CodeSize;
+                var valueArray = new Byte[valueCount];
+                var ptr = (Byte*)NativePointer->Code;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = ptr[x];
+                return valueArray;
             }
             set
             {
@@ -42,9 +41,8 @@ namespace Vulkan
             NativePointer->SType = StructureType.ShaderModuleCreateInfo;
         }
         
-        public ShaderModuleCreateInfo(UInt32 CodeSize, Byte[] Code) : this()
+        public ShaderModuleCreateInfo(Byte[] Code) : this()
         {
-            this.CodeSize = CodeSize;
             this.Code = Code;
         }
     }

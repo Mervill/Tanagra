@@ -763,9 +763,9 @@ namespace Vulkan.ObjectModel
             VK.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regions);
         }
         
-        public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, List<UInt32> data)
+        public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, List<Byte> data)
         {
-            VK.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, data);
+            VK.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, data);
         }
         
         public static void CmdFillBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)

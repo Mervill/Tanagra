@@ -39,7 +39,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->TagSize = (uint)valueCount;
+                NativePointer->TagSize = (UInt32)valueCount;
                 NativePointer->Tag = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->Tag;
                 for(var x = 0; x < valueCount; x++)

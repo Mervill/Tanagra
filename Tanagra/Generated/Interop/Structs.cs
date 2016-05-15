@@ -389,7 +389,7 @@ namespace Vulkan.Interop
         public StructureType SType;
         public IntPtr Next;
         public PipelineCreateFlags Flags;
-        public IntPtr Stage;
+        public PipelineShaderStageCreateInfo Stage;
         public UInt64 Layout;
         public UInt64 BasePipelineHandle;
         public Int32 BasePipelineIndex;

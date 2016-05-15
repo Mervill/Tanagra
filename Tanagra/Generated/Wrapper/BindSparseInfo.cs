@@ -21,7 +21,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitSemaphoreCount = (UInt32)valueCount;
                 NativePointer->WaitSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
@@ -43,7 +43,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->BufferBindCount = (uint)valueCount;
+                NativePointer->BufferBindCount = (UInt32)valueCount;
                 NativePointer->BufferBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseBufferMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseBufferMemoryBindInfo*)NativePointer->BufferBinds;
                 for(var x = 0; x < valueCount; x++)
@@ -65,7 +65,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ImageOpaqueBindCount = (uint)valueCount;
+                NativePointer->ImageOpaqueBindCount = (UInt32)valueCount;
                 NativePointer->ImageOpaqueBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageOpaqueMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseImageOpaqueMemoryBindInfo*)NativePointer->ImageOpaqueBinds;
                 for(var x = 0; x < valueCount; x++)
@@ -87,7 +87,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ImageBindCount = (uint)valueCount;
+                NativePointer->ImageBindCount = (UInt32)valueCount;
                 NativePointer->ImageBinds = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SparseImageMemoryBindInfo>() * valueCount);
                 var ptr = (Interop.SparseImageMemoryBindInfo*)NativePointer->ImageBinds;
                 for(var x = 0; x < valueCount; x++)
@@ -109,7 +109,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->SignalSemaphoreCount = (uint)valueCount;
+                NativePointer->SignalSemaphoreCount = (UInt32)valueCount;
                 NativePointer->SignalSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)

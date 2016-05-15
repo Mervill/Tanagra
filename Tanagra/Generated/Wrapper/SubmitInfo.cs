@@ -21,7 +21,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitSemaphoreCount = (UInt32)valueCount;
                 NativePointer->WaitSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
@@ -43,7 +43,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->WaitSemaphoreCount = (uint)valueCount;
+                NativePointer->WaitSemaphoreCount = (UInt32)valueCount;
                 NativePointer->WaitDstStageMask = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->WaitDstStageMask;
                 for(var x = 0; x < valueCount; x++)
@@ -65,7 +65,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->CommandBufferCount = (uint)valueCount;
+                NativePointer->CommandBufferCount = (UInt32)valueCount;
                 NativePointer->CommandBuffers = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->CommandBuffers;
                 for(var x = 0; x < valueCount; x++)
@@ -87,7 +87,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->SignalSemaphoreCount = (uint)valueCount;
+                NativePointer->SignalSemaphoreCount = (UInt32)valueCount;
                 NativePointer->SignalSemaphores = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)

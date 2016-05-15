@@ -17,11 +17,11 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("IsFixedSize");
             }
             set
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("IsFixedSize");
             }
         }
         

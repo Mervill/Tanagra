@@ -67,8 +67,14 @@ namespace Tanagra.Generator
             foreach(var vkStruct in spec.Structs)
                 RewriteStructDefinition(vkStruct);
 
-            foreach(var vkCmd in spec.Commands)
+            foreach (var vkStruct in spec.Structs)
+                RewriteStructMemberLen(vkStruct, spec.Structs.ToArray());
+
+            foreach (var vkCmd in spec.Commands)
                 RewriteCommandDefinition(vkCmd);
+
+            foreach(var vkCmd in spec.Commands)
+                RewriteCommandParamLen(vkCmd, spec.Structs.ToArray());
 
             // Replace all imported type refrences with IntPtr
             var intPtr = spec.AllTypes.FirstOrDefault(x => x.Name == "IntPtr");
@@ -125,7 +131,22 @@ namespace Tanagra.Generator
                         member.FixedSize = constantMap[member.FixedSize];
                 }
             }
-            
+        }
+
+        void RewriteStructMemberLen(VkStruct vkStruct, VkStruct[] allStructs)
+        {
+            for (var x = 0; x < vkStruct.Members.Length; x++)
+            {
+                var member = vkStruct.Members[x];
+                if (member.Len.Length > 0)
+                {
+                    if (member.Len[0] == @"latexmath:[$codeSize \over 4$]" && member.Type.Name == "UInt32")
+                    {
+                        member.Len[0] = "codeSize";
+                        member.Type = allStructs.First(y => y.Name == "Byte");
+                    }
+                }
+            }
         }
 
         void MergeExtensionEnums(VkEnum[] specEnums, VkExtension[] extensions)
@@ -147,7 +168,7 @@ namespace Tanagra.Generator
                         {
                             if (newEnumValue.IsFlag)
                             {
-                                // ...
+                                // ... todo
                             }
                             else
                             {
@@ -317,6 +338,19 @@ namespace Tanagra.Generator
                     lenName = lenName.TrimStart(new[] { 'p' });
                     lenName = char.ToLower(lenName[0]) + lenName.Substring(1);
                     param.Len = lenName;
+                }
+            }
+        }
+
+        void RewriteCommandParamLen(VkCommand vkCommand, VkStruct[] allStructs)
+        {
+            for(var x = 0; x < vkCommand.Parameters.Length; x++)
+            {
+                var param = vkCommand.Parameters[x];
+                if(param.Len == @"latexmath:[$dataSize \over 4$]" && param.Type.Name == "UInt32")
+                {
+                    param.Len = "dataSize";
+                    param.Type = allStructs.First(y => y.Name == "Byte");
                 }
             }
         }

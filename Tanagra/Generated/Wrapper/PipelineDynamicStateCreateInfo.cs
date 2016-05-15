@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->DynamicStateCount = (uint)valueCount;
+                NativePointer->DynamicStateCount = (UInt32)valueCount;
                 NativePointer->DynamicStates = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->DynamicStates;
                 for(var x = 0; x < valueCount; x++)

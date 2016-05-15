@@ -360,7 +360,7 @@ namespace Vulkan.Interop
         internal static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstBuffer, UInt32 regionCount, BufferImageCopy* regions);
         
         [DllImport(DllName, EntryPoint = "vkCmdUpdateBuffer", CallingConvention = callingConvention)]
-        internal static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, UInt64 dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, UInt32* data);
+        internal static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, UInt64 dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, Byte* data);
         
         [DllImport(DllName, EntryPoint = "vkCmdFillBuffer", CallingConvention = callingConvention)]
         internal static extern void vkCmdFillBuffer(IntPtr commandBuffer, UInt64 dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data);

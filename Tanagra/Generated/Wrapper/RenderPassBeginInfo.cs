@@ -41,7 +41,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ClearValueCount = (uint)valueCount;
+                NativePointer->ClearValueCount = (UInt32)valueCount;
                 NativePointer->ClearValues = Marshal.AllocHGlobal(Marshal.SizeOf<ClearValue>() * valueCount);
                 var ptr = (ClearValue*)NativePointer->ClearValues;
                 for(var x = 0; x < valueCount; x++)

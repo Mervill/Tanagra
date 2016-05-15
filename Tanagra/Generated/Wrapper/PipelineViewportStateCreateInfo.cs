@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ViewportCount = (uint)valueCount;
+                NativePointer->ViewportCount = (UInt32)valueCount;
                 NativePointer->Viewports = Marshal.AllocHGlobal(Marshal.SizeOf<Viewport>() * valueCount);
                 var ptr = (Viewport*)NativePointer->Viewports;
                 for(var x = 0; x < valueCount; x++)
@@ -49,7 +49,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ScissorCount = (uint)valueCount;
+                NativePointer->ScissorCount = (UInt32)valueCount;
                 NativePointer->Scissors = Marshal.AllocHGlobal(Marshal.SizeOf<Rect2D>() * valueCount);
                 var ptr = (Rect2D*)NativePointer->Scissors;
                 for(var x = 0; x < valueCount; x++)

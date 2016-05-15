@@ -39,7 +39,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->AttachmentCount = (uint)valueCount;
+                NativePointer->AttachmentCount = (UInt32)valueCount;
                 NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount);
                 var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
@@ -51,11 +51,11 @@ namespace Vulkan
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("IsFixedSize");
             }
             set
             {
-                throw new System.NotImplementedException();
+                throw new System.NotImplementedException("IsFixedSize");
             }
         }
         

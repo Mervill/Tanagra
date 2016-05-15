@@ -81,7 +81,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->QueueFamilyIndexCount = (uint)valueCount;
+                NativePointer->QueueFamilyIndexCount = (UInt32)valueCount;
                 NativePointer->QueueFamilyIndices = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
                 for(var x = 0; x < valueCount; x++)

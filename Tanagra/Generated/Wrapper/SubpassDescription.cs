@@ -33,7 +33,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->InputAttachmentCount = (uint)valueCount;
+                NativePointer->InputAttachmentCount = (UInt32)valueCount;
                 NativePointer->InputAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->InputAttachments;
                 for(var x = 0; x < valueCount; x++)
@@ -55,7 +55,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ColorAttachmentCount = (uint)valueCount;
+                NativePointer->ColorAttachmentCount = (UInt32)valueCount;
                 NativePointer->ColorAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
                 for(var x = 0; x < valueCount; x++)
@@ -77,7 +77,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->ColorAttachmentCount = (uint)valueCount;
+                NativePointer->ColorAttachmentCount = (UInt32)valueCount;
                 NativePointer->ResolveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
                 var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
                 for(var x = 0; x < valueCount; x++)
@@ -106,7 +106,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->PreserveAttachmentCount = (uint)valueCount;
+                NativePointer->PreserveAttachmentCount = (UInt32)valueCount;
                 NativePointer->PreserveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
                 var ptr = (UInt32*)NativePointer->PreserveAttachments;
                 for(var x = 0; x < valueCount; x++)

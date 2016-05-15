@@ -16,6 +16,8 @@ namespace Tanagra.Generator
         // todo: public structs use properties?
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
         // todo: Latexmath - exlucde from hiding count
+        // todo: merge flag enums
+        // todo: VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
         // XCB -> X protocol C-language Binding
         // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors

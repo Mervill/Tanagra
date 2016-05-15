@@ -27,7 +27,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->AttachmentCount = (uint)valueCount;
+                NativePointer->AttachmentCount = (UInt32)valueCount;
                 NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentDescription>() * valueCount);
                 var ptr = (AttachmentDescription*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
@@ -49,7 +49,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->SubpassCount = (uint)valueCount;
+                NativePointer->SubpassCount = (UInt32)valueCount;
                 NativePointer->Subpasses = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SubpassDescription>() * valueCount);
                 var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
                 for(var x = 0; x < valueCount; x++)
@@ -71,7 +71,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->DependencyCount = (uint)valueCount;
+                NativePointer->DependencyCount = (UInt32)valueCount;
                 NativePointer->Dependencies = Marshal.AllocHGlobal(Marshal.SizeOf<SubpassDependency>() * valueCount);
                 var ptr = (SubpassDependency*)NativePointer->Dependencies;
                 for(var x = 0; x < valueCount; x++)

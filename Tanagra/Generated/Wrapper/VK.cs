@@ -1307,11 +1307,20 @@ namespace Vulkan
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
-        public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, List<UInt32> data)
+        public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, List<Byte> data)
         {
-            // (no arrayLengthParams)
-            //vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, _dataPtr);
-            throw new NotImplementedException();
+            var dataSize = (data != null) ? (UInt32)data.Count : 0;
+            var _dataPtr = (Byte*)IntPtr.Zero;
+            if(dataSize != 0)
+            {
+                var _dataSize = Marshal.SizeOf(typeof(Byte));
+                _dataPtr = (Byte*)Marshal.AllocHGlobal((int)(_dataSize * dataSize));
+                for(var x = 0; x < dataSize; x++)
+                    _dataPtr[x] = data[x];
+            }
+            
+            vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, _dataPtr);
+            Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
         public static void CmdFillBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)

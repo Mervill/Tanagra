@@ -34,7 +34,7 @@ namespace Vulkan
             set
             {
                 var valueCount = value.Length;
-                NativePointer->AttachmentCount = (uint)valueCount;
+                NativePointer->AttachmentCount = (UInt32)valueCount;
                 NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
                 var ptr = (IntPtr*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
