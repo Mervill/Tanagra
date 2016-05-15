@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum RasterizationOrderAMD
     {
-        RasterizationOrderStrictAmd = 0,
-        RasterizationOrderRelaxedAmd = 1,
+        RasterizationOrderStrictAMD = 0,
+        RasterizationOrderRelaxedAMD = 1,
     }
 }

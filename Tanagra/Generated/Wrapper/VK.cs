@@ -55,7 +55,7 @@ namespace Vulkan
             return result;
         }
         
-        public static IntPtr GetInstanceProcAddr(Instance instance, Byte* name)
+        public static IntPtr GetInstanceProcAddr(Instance instance, String name)
         {
             var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
             return result;

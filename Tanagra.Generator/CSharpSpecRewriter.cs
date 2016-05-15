@@ -56,6 +56,8 @@ namespace Tanagra.Generator
             // and all commands where it is referenced.
             //
 
+            MergeExtensionEnums(spec.Enums.ToArray(), spec.Extensions);
+
             foreach(var vkEnum in spec.Enums)
                 RewriteEnumDefinition(vkEnum);
 
@@ -83,7 +85,6 @@ namespace Tanagra.Generator
 
             spec.AllTypes = spec.AllTypes.Except(functionPointers).ToList();
             
-
             return spec;
         }
         
@@ -126,7 +127,50 @@ namespace Tanagra.Generator
             }
             
         }
-        
+
+        void MergeExtensionEnums(VkEnum[] specEnums, VkExtension[] extensions)
+        {
+            foreach (var specEnum in specEnums)
+            {
+                foreach (var ext in extensions)
+                {
+                    var extNumber = ext.Number - 1;
+
+                    var deltas = ext
+                        .Requirement.Enums
+                        .Where(x => !x.IsConstant && x.Extends == specEnum.Name);
+
+                    if (deltas.Any())
+                    {
+                        var existing = specEnum.Values.ToList();
+                        foreach (var newEnumValue in deltas)
+                        {
+                            if (newEnumValue.IsFlag)
+                            {
+                                // ...
+                            }
+                            else
+                            {
+                                var enumValue = 1000000000;
+                                enumValue += 1000 * extNumber;
+                                enumValue += newEnumValue.Offset.Value;
+                                if (newEnumValue.Dir == "-")
+                                    enumValue *= -1;
+
+                                VkEnumValue vkEnumValue = new VkEnumValue();
+                                vkEnumValue.Name = vkEnumValue.SpecName = newEnumValue.Name;
+                                vkEnumValue.Comment = newEnumValue.Comment;
+                                vkEnumValue.Value = enumValue.ToString();
+
+                                existing.Add(vkEnumValue);
+                            }
+                        }
+                        specEnum.Values = existing.ToArray();
+                    }
+                }
+            }
+        }
+
         void RewriteEnumDefinition(VkEnum vkEnum)
         {
             if(vkEnum.Name.StartsWith("Vk"))
@@ -134,12 +178,24 @@ namespace Tanagra.Generator
             
             var isFlags = vkEnum.Name.EndsWith("Flags");
 
+            var trimKHR = false;
+            var trimEXT = false;
+
             var enumPrefix = vkEnum.Name;
-            if(enumPrefix.EndsWith("KHR"))
+            if (enumPrefix.EndsWith("KHR"))
+            {
                 enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `KHR`
+                trimKHR = true;
+            }
+
+            if (enumPrefix.EndsWith("EXT"))
+            {
+                enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `EXT`
+                trimEXT = true;
+            }
 
             //if(isFlags)
-            if(enumPrefix.EndsWith("Flags"))
+            if (enumPrefix.EndsWith("Flags"))
                 enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
 
             enumPrefix = ToUppercaseEnumName(enumPrefix) + "_";
@@ -154,15 +210,30 @@ namespace Tanagra.Generator
 
                 if(!string.IsNullOrEmpty(enumPrefix) && name.StartsWith(enumPrefix))
                     name = name.Substring(enumPrefix.Length, name.Length - enumPrefix.Length);
+                
+                // bleh, this is janky
 
-                if(name.EndsWith("_KHR"))
+                if(name.EndsWith("_KHR") && trimKHR)
                     name = name.Remove(name.Length - 4, 4); // trim `_KHR`
 
-                //isFlags && 
-                if(name.EndsWith("_BIT"))
+                if (name.EndsWith("_EXT") && trimEXT)
+                    name = name.Remove(name.Length - 4, 4); // trim `_KHR`
+                
+                if (name.EndsWith("_BIT"))
                     name = name.Substring(0, name.Length - 4);
                 
-                vkEnumValue.Name = ToCamelCaseEnumName(name);
+                name = ToCamelCaseEnumName(name);
+
+                if (name.EndsWith("Khr"))
+                    name = name.Remove(name.Length - 3, 3) + "KHR";
+
+                if (name.EndsWith("Ext"))
+                    name = name.Remove(name.Length - 3, 3) + "EXT";
+
+                if (name.EndsWith("Amd"))
+                    name = name.Remove(name.Length - 3, 3) + "AMD";
+
+                vkEnumValue.Name = name;
             }
 
             // After the we've renamed all the enum values, check if there are any that

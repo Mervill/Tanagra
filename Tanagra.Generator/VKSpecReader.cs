@@ -142,6 +142,14 @@ namespace Tanagra.Generator
             spec.Features = features.Select(ReadFeature).ToArray();
 
             spec.AllTypes = allTypes.Values.ToList();
+
+            // Extensions //
+            var extensionsRoot = registry.Element("extensions");
+            spec.Extensions = extensionsRoot
+                .Elements()
+                .Select(ReadExtension)
+                .ToArray();
+
             return spec;
         }
 
@@ -660,7 +668,124 @@ namespace Tanagra.Generator
 
             return vkRequire;
         }
-        
+
+        VkExtension ReadExtension(XElement xextension)
+        {
+            if (xextension.Name != "extension")
+                throw new ArgumentException("Not an extension", nameof(xextension));
+
+            var xelements = xextension.Elements();
+            if (!xelements.Any())
+                throw new ArgumentException("Contains no elements", nameof(xextension));
+
+            var xrequire = xextension.Element("require");
+            if(xrequire == null)
+                throw new ArgumentException("Does not contain a <require> block", nameof(xextension));
+
+            var vkExtension = new VkExtension();
+
+            var xattributes = xextension.Attributes();
+            if (xattributes.Any())
+            {
+                foreach (var xattrib in xattributes)
+                {
+                    switch (xattrib.Name.ToString())
+                    {
+                        case "name":
+                        vkExtension.Name = xattrib.Value;
+                        break;
+                        case "number":
+                        vkExtension.Number = int.Parse(xattrib.Value);
+                        break;
+                        case "supported":
+                        vkExtension.Supported = xattrib.Value;
+                        break;
+                        case "protect":
+                        vkExtension.Supported = xattrib.Value;
+                        break;
+                        case "author":
+                        vkExtension.Supported = xattrib.Value;
+                        break;
+                        case "contact":
+                        vkExtension.Supported = xattrib.Value;
+                        break;
+                        default: throw new NotImplementedException(xattrib.Name.ToString());
+                    }
+                }
+            }
+
+            vkExtension.Requirement = ReadExtensionRequirement(xrequire);
+
+            return vkExtension;
+        }
+
+        VkExtensionRequirement ReadExtensionRequirement(XElement xextensionrequirement)
+        {
+            if (xextensionrequirement.Name != "require")
+                throw new ArgumentException("Not an extension requirement", nameof(xextensionrequirement));
+
+            var xelements = xextensionrequirement.Elements();
+            if (!xelements.Any())
+                throw new ArgumentException("Contains no elements", nameof(xextensionrequirement));
+
+            var vkExtensionRequirement = new VkExtensionRequirement();
+
+            vkExtensionRequirement.Commands = xelements
+                .Where(x => x.Name == "command")
+                .Select(x => x.Attribute("name").Value)
+                .ToArray();
+
+            vkExtensionRequirement.Enums = xelements
+                .Where(x => x.Name == "enum")
+                .Select(ReadExtensionEnum)
+                .ToArray();
+
+            return vkExtensionRequirement;
+        }
+
+        VkExtensionEnum ReadExtensionEnum(XElement xextensionenum)
+        {
+            if (xextensionenum.Name != "enum")
+                throw new ArgumentException("Not an extension enum", nameof(xextensionenum));
+
+            var vkExtensionEnum = new VkExtensionEnum();
+
+            var xattributes = xextensionenum.Attributes();
+            if (xattributes.Any())
+            {
+                foreach (var xattrib in xattributes)
+                {
+                    switch (xattrib.Name.ToString())
+                    {
+                        case "name":
+                        vkExtensionEnum.Name = xattrib.Value;
+                        break;
+                        case "offset":
+                        vkExtensionEnum.Offset = int.Parse(xattrib.Value);
+                        break;
+                        case "dir":
+                        vkExtensionEnum.Dir = xattrib.Value;
+                        break;
+                        case "extends":
+                        vkExtensionEnum.Extends = xattrib.Value;
+                        break;
+                        case "value":
+                        vkExtensionEnum.Value = xattrib.Value;
+                        break;
+                        case "comment":
+                        vkExtensionEnum.Comment = xattrib.Value;
+                        break;
+                        case "bitpos":
+                        vkExtensionEnum.BitPos = int.Parse(xattrib.Value);
+                        break;
+                        default: throw new NotImplementedException(xattrib.Name.ToString());
+                    }
+                }
+            }
+
+            return vkExtensionEnum;
+        }
+
         VkType GetOrAddType(string name)
         {
             if(allTypes.ContainsKey(name))

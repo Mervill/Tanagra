@@ -25,6 +25,15 @@ namespace Vulkan
             {
                 throw new System.NotImplementedException();
             }
+            set
+            {
+                var valueCount = value.Length;
+                NativePointer->CodeSize = (UInt32)valueCount;
+                NativePointer->Code = Marshal.AllocHGlobal(Marshal.SizeOf<Byte>() * valueCount);
+                var ptr = (Byte*)NativePointer->Code;
+                for(var x = 0; x < valueCount; x++)
+                    ptr[x] = value[x];
+            }
         }
         
         public ShaderModuleCreateInfo()

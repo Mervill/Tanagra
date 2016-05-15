@@ -19,8 +19,7 @@ namespace Vulkan.ObjectModel
         
         public static IntPtr GetProcAddr(this Instance instance, String name)
         {
-            //return VK.GetInstanceProcAddr(instance, name);
-            throw new NotImplementedException();
+            return VK.GetInstanceProcAddr(instance, name);
         }
         
         public static SurfaceKHR CreateAndroidSurfaceKHR(this Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)

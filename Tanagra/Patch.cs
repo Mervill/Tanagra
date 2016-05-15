@@ -61,29 +61,25 @@ namespace Vulkan
         {
             var name = "vkCreateDebugReportCallbackEXT";
             var nameBytes = Encoding.ASCII.GetBytes(name);
-            fixed(byte* namePointer = &nameBytes[0])
+            var procAddr = VK.GetInstanceProcAddr(instance, name);
+            if(procAddr == IntPtr.Zero)
+                throw new NullReferenceException($"Didn't find InstanceProcAddr {nameBytes}");
+
+            var createDelegate = Marshal.GetDelegateForFunctionPointer<CreateDebugReportCallbackEXT_Delegate>(procAddr);
+            var createInfo = new DebugReportCallbackCreateInfoEXT
             {
-                var procAddr = VK.GetInstanceProcAddr(instance, namePointer);
-                if(procAddr == IntPtr.Zero)
-                    throw new NullReferenceException($"Didn't find InstanceProcAddr {nameBytes}");
+                Flags       = (DebugReportFlagsEXT)0x1F,//DebugReportFlagsEXT.Error | DebugReportFlagsEXT.Warning | DebugReportFlagsEXT.PerformanceWarning,
+                PfnCallback = Marshal.GetFunctionPointerForDelegate(callback),
+            };
 
-                var createDelegate = Marshal.GetDelegateForFunctionPointer<CreateDebugReportCallbackEXT_Delegate>(procAddr);
-                var createInfo = new DebugReportCallbackCreateInfoEXT
-                {
-                    Flags       = (DebugReportFlagsEXT)0x1F,//DebugReportFlagsEXT.Error | DebugReportFlagsEXT.Warning | DebugReportFlagsEXT.PerformanceWarning,
-                    PfnCallback = Marshal.GetFunctionPointerForDelegate(callback),
-                };
-
-                var debugReportCallbackEXT = new DebugReportCallbackEXT();
-                fixed(UInt64* ptr = &debugReportCallbackEXT.NativePointer)
-                {
-                    var result = createDelegate(instance.NativePointer, createInfo.NativePointer, null, ptr);
-                    if(result != Result.Success)
-                        throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
-                }
-                return debugReportCallbackEXT;
+            var debugReportCallbackEXT = new DebugReportCallbackEXT();
+            fixed(UInt64* ptr = &debugReportCallbackEXT.NativePointer)
+            {
+                var result = createDelegate(instance.NativePointer, createInfo.NativePointer, null, ptr);
+                if(result != Result.Success)
+                    throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
             }
-
+            return debugReportCallbackEXT;
         }
     }
 

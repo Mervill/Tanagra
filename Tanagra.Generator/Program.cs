@@ -7,7 +7,6 @@ namespace Tanagra.Generator
 {
     class Program
     {
-        // todo: spec extensions
         // todo: union
         // todo: dealloc unmanaged memory
         // todo: assign null to array
@@ -24,6 +23,10 @@ namespace Tanagra.Generator
         //
         // Notes
         //
+        // Im not sure how I'd like to handle vendor suffixes. Most generators remove them, but the whole
+        // point of the suffix is to prevent name collision, which while unlikely is still a thing that can
+        // happen. 
+        //
         // Dispatchable Handle:     "struct object##_T*" -> IntPtr
         // Non-dispatchable Handle:
         //     x86: uint64_t -> UInt64
@@ -39,11 +42,12 @@ namespace Tanagra.Generator
             var reader = new VKSpecReader();
             var spec = reader.Read(raw);
 
-            Console.WriteLine("Structs:  {0}", spec.Structs.Count());
-            Console.WriteLine("Handles:  {0}", spec.Handles.Count());
-            Console.WriteLine("Enums:    {0}", spec.Enums.Count());
-            Console.WriteLine("Commands: {0}", spec.Commands.Count());
-            Console.WriteLine("Features: {0}", spec.Features.Count());
+            Console.WriteLine("Structs:    {0}", spec.Structs.Count());
+            Console.WriteLine("Handles:    {0}", spec.Handles.Count());
+            Console.WriteLine("Enums:      {0}", spec.Enums.Count());
+            Console.WriteLine("Commands:   {0}", spec.Commands.Count());
+            Console.WriteLine("Features:   {0}", spec.Features.Count());
+            Console.WriteLine("Extensions: {0}", spec.Extensions.Count());
             Console.WriteLine("----------");
             
             var rewrite = new CSharpSpecRewriter();

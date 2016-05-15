@@ -187,7 +187,6 @@ namespace TanagraExample
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
             Console.WriteLine($"[ OK ] {commandBuffer[0]}");
-            //if (!commandBuffer[0].IsValid) throw new Exception();
         }
 
         private void CreateSwapchain()

@@ -40,7 +40,6 @@ namespace Vulkan
         /// Initial layout used when the data is populated by the CPU
         /// </summary>
         Preinitialized = 8,
-
         PresentSrcKHR = 1000001002,
     }
 }

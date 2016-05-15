@@ -16,6 +16,8 @@ namespace Tanagra.Generator
         public VkCommand[] Commands;
 
         public VkFeature[] Features;
+
+        public VkExtension[] Extensions;
     }
 
     /*public enum VkTypeCategory
@@ -115,13 +117,8 @@ namespace Tanagra.Generator
     
     public class VkEnum : VkType
     {
-        //public string Name { get; set; }
-        //public string EnumType { get; set; }
         public bool IsBitmask { get; set; }
-        //public string Expand { get; set; }
         public string Comment { get; set; }
-        //public string Namespace { get; set; }
-
         public VkEnumValue[] Values;
     }
 
@@ -231,4 +228,49 @@ namespace Tanagra.Generator
         public string[] Enums;
         public string[] Commands;
     }
+
+    public class VkExtension
+    {
+        public string Name;
+        public int Number;
+        public string Supported;
+        public string Protect;
+        public string Author;
+        public string Contact;
+        public VkExtensionRequirement Requirement;
+
+        public override string ToString() => Name;
+
+    }
+
+    public class VkExtensionRequirement
+    {
+        public string[] Commands;
+        public string[] Types;
+        public VkExtensionEnum[] Enums;
+        public VkExtensionUsage[] Usages;
+    }
+
+    public class VkExtensionEnum
+    {
+        public string Name;
+        public int? Offset;
+        public string Dir;
+        public string Extends;
+        public string Value;
+        public int? BitPos;
+        public string Comment;
+
+        public bool IsFlag => Offset == null && BitPos != null && !IsConstant;
+        public bool IsConstant => !string.IsNullOrEmpty(Extends) && !string.IsNullOrEmpty(Value);
+
+    }
+
+    public class VkExtensionUsage
+    {
+        public string Command;
+        public string Struct;
+        public string Content;
+    }
+
 }

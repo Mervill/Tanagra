@@ -124,7 +124,7 @@ namespace Tanagra.Generator
             _tabs++;
 
             if(vkEnum.IsBitmask || vkEnum.Values.Any(x => x.Name == "None"))
-                WriteLine($"None = 0,");
+                WriteLine("None = 0,");
 
             foreach(var vkEnumValue in vkEnum.Values.Where(x => x.Name != "None"))
             {

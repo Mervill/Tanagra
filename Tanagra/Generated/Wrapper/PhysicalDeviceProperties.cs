@@ -46,10 +46,6 @@ namespace Vulkan
             {
                 throw new System.NotImplementedException();
             }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
         }
         
         public PhysicalDeviceLimits Limits

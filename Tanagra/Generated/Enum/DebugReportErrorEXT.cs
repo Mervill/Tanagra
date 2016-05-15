@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public enum DebugReportErrorEXT
     {
-        DebugReportErrorNoneExt = 0,
-        DebugReportErrorCallbackRefExt = 1,
+        None = 0,
+        CallbackRef = 1,
     }
 }
