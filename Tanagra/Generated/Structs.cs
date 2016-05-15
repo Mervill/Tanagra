@@ -164,17 +164,6 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
-    public struct PhysicalDeviceMemoryProperties
-    {
-        public UInt32 MemoryTypeCount;
-        public MemoryType MemoryTypes;
-        public UInt32 MemoryHeapCount;
-        public MemoryHeap MemoryHeaps;
-    }
-
-    /// <summary>
-    /// Returned Only - This object is never given as input to a Vulkan function
-    /// </summary>
     public struct MemoryRequirements
     {
         public DeviceSize Size;
@@ -333,22 +322,6 @@ namespace Vulkan
             this.DstSubresource = DstSubresource;
             this.DstOffset = DstOffset;
             this.Extent = Extent;
-        }
-    }
-
-    public struct ImageBlit
-    {
-        public ImageSubresourceLayers SrcSubresource;
-        public Offset3D SrcOffsets;
-        public ImageSubresourceLayers DstSubresource;
-        public Offset3D DstOffsets;
-        
-        public ImageBlit(ImageSubresourceLayers SrcSubresource, Offset3D SrcOffsets, ImageSubresourceLayers DstSubresource, Offset3D DstOffsets)
-        {
-            this.SrcSubresource = SrcSubresource;
-            this.SrcOffsets = SrcOffsets;
-            this.DstSubresource = DstSubresource;
-            this.DstOffsets = DstOffsets;
         }
     }
 
@@ -661,119 +634,6 @@ namespace Vulkan
         public Bool32 ResidencyStandard3DBlockShape;
         public Bool32 ResidencyAlignedMipSize;
         public Bool32 ResidencyNonResidentStrict;
-    }
-
-    /// <summary>
-    /// Returned Only - This object is never given as input to a Vulkan function
-    /// </summary>
-    public struct PhysicalDeviceLimits
-    {
-        public UInt32 MaxImageDimension1D;
-        public UInt32 MaxImageDimension2D;
-        public UInt32 MaxImageDimension3D;
-        public UInt32 MaxImageDimensionCube;
-        public UInt32 MaxImageArrayLayers;
-        public UInt32 MaxTexelBufferElements;
-        public UInt32 MaxUniformBufferRange;
-        public UInt32 MaxStorageBufferRange;
-        public UInt32 MaxPushConstantsSize;
-        public UInt32 MaxMemoryAllocationCount;
-        public UInt32 MaxSamplerAllocationCount;
-        public DeviceSize BufferImageGranularity;
-        public DeviceSize SparseAddressSpaceSize;
-        public UInt32 MaxBoundDescriptorSets;
-        public UInt32 MaxPerStageDescriptorSamplers;
-        public UInt32 MaxPerStageDescriptorUniformBuffers;
-        public UInt32 MaxPerStageDescriptorStorageBuffers;
-        public UInt32 MaxPerStageDescriptorSampledImages;
-        public UInt32 MaxPerStageDescriptorStorageImages;
-        public UInt32 MaxPerStageDescriptorInputAttachments;
-        public UInt32 MaxPerStageResources;
-        public UInt32 MaxDescriptorSetSamplers;
-        public UInt32 MaxDescriptorSetUniformBuffers;
-        public UInt32 MaxDescriptorSetUniformBuffersDynamic;
-        public UInt32 MaxDescriptorSetStorageBuffers;
-        public UInt32 MaxDescriptorSetStorageBuffersDynamic;
-        public UInt32 MaxDescriptorSetSampledImages;
-        public UInt32 MaxDescriptorSetStorageImages;
-        public UInt32 MaxDescriptorSetInputAttachments;
-        public UInt32 MaxVertexInputAttributes;
-        public UInt32 MaxVertexInputBindings;
-        public UInt32 MaxVertexInputAttributeOffset;
-        public UInt32 MaxVertexInputBindingStride;
-        public UInt32 MaxVertexOutputComponents;
-        public UInt32 MaxTessellationGenerationLevel;
-        public UInt32 MaxTessellationPatchSize;
-        public UInt32 MaxTessellationControlPerVertexInputComponents;
-        public UInt32 MaxTessellationControlPerVertexOutputComponents;
-        public UInt32 MaxTessellationControlPerPatchOutputComponents;
-        public UInt32 MaxTessellationControlTotalOutputComponents;
-        public UInt32 MaxTessellationEvaluationInputComponents;
-        public UInt32 MaxTessellationEvaluationOutputComponents;
-        public UInt32 MaxGeometryShaderInvocations;
-        public UInt32 MaxGeometryInputComponents;
-        public UInt32 MaxGeometryOutputComponents;
-        public UInt32 MaxGeometryOutputVertices;
-        public UInt32 MaxGeometryTotalOutputComponents;
-        public UInt32 MaxFragmentInputComponents;
-        public UInt32 MaxFragmentOutputAttachments;
-        public UInt32 MaxFragmentDualSrcAttachments;
-        public UInt32 MaxFragmentCombinedOutputResources;
-        public UInt32 MaxComputeSharedMemorySize;
-        public unsafe fixed uint MaxComputeWorkGroupCount[3];
-        public UInt32 MaxComputeWorkGroupInvocations;
-        public unsafe fixed uint MaxComputeWorkGroupSize[3];
-        public UInt32 SubPixelPrecisionBits;
-        public UInt32 SubTexelPrecisionBits;
-        public UInt32 MipmapPrecisionBits;
-        public UInt32 MaxDrawIndexedIndexValue;
-        public UInt32 MaxDrawIndirectCount;
-        public Single MaxSamplerLodBias;
-        public Single MaxSamplerAnisotropy;
-        public UInt32 MaxViewports;
-        public unsafe fixed uint MaxViewportDimensions[2];
-        public unsafe fixed float ViewportBoundsRange[2];
-        public UInt32 ViewportSubPixelBits;
-        public UInt32 MinMemoryMapAlignment;
-        public DeviceSize MinTexelBufferOffsetAlignment;
-        public DeviceSize MinUniformBufferOffsetAlignment;
-        public DeviceSize MinStorageBufferOffsetAlignment;
-        public Int32 MinTexelOffset;
-        public UInt32 MaxTexelOffset;
-        public Int32 MinTexelGatherOffset;
-        public UInt32 MaxTexelGatherOffset;
-        public Single MinInterpolationOffset;
-        public Single MaxInterpolationOffset;
-        public UInt32 SubPixelInterpolationOffsetBits;
-        public UInt32 MaxFramebufferWidth;
-        public UInt32 MaxFramebufferHeight;
-        public UInt32 MaxFramebufferLayers;
-        public SampleCountFlags FramebufferColorSampleCounts;
-        public SampleCountFlags FramebufferDepthSampleCounts;
-        public SampleCountFlags FramebufferStencilSampleCounts;
-        public SampleCountFlags FramebufferNoAttachmentsSampleCounts;
-        public UInt32 MaxColorAttachments;
-        public SampleCountFlags SampledImageColorSampleCounts;
-        public SampleCountFlags SampledImageIntegerSampleCounts;
-        public SampleCountFlags SampledImageDepthSampleCounts;
-        public SampleCountFlags SampledImageStencilSampleCounts;
-        public SampleCountFlags StorageImageSampleCounts;
-        public UInt32 MaxSampleMaskWords;
-        public Bool32 TimestampComputeAndGraphics;
-        public Single TimestampPeriod;
-        public UInt32 MaxClipDistances;
-        public UInt32 MaxCullDistances;
-        public UInt32 MaxCombinedClipAndCullDistances;
-        public UInt32 DiscreteQueuePriorities;
-        public unsafe fixed Single PointSizeRange[2];
-        public unsafe fixed Single LineWidthRange[2];
-        public Single PointSizeGranularity;
-        public Single LineWidthGranularity;
-        public Bool32 StrictLines;
-        public Bool32 StandardSampleLocations;
-        public DeviceSize OptimalBufferCopyOffsetAlignment;
-        public DeviceSize OptimalBufferCopyRowPitchAlignment;
-        public DeviceSize NonCoherentAtomSize;
     }
 
     public struct DrawIndirectCommand

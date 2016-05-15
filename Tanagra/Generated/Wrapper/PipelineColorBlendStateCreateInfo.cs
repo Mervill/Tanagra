@@ -47,11 +47,17 @@ namespace Vulkan
             }
         }
         
-        /*public Single BlendConstants
+        public Single[] BlendConstants
         {
-            get { return NativePointer->BlendConstants; }
-            set { NativePointer->BlendConstants = value; }
-        }*/
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
+        }
         
         public PipelineColorBlendStateCreateInfo()
         {
@@ -59,12 +65,12 @@ namespace Vulkan
             NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
         
-        public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Single BlendConstants) : this()
+        public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Single[] BlendConstants) : this()
         {
             this.LogicOpEnable = LogicOpEnable;
             this.LogicOp = LogicOp;
             this.Attachments = Attachments;
-            //this.BlendConstants = BlendConstants;
+            this.BlendConstants = BlendConstants;
         }
     }
 }

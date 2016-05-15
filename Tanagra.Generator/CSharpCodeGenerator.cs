@@ -47,7 +47,7 @@ namespace Tanagra.Generator
             platformStructTypes = new List<string>
             {
                 "IntPtr",
-                "Char",
+                "String",
                 "Single",
                 "Byte",
                 "Int32",
@@ -57,6 +57,7 @@ namespace Tanagra.Generator
                 "Boolean",
                 "Bool32",
                 "DeviceSize",
+                //String?
             };
 
             disabledStructs = new List<string> 
@@ -86,7 +87,7 @@ namespace Tanagra.Generator
             // -- struct
 
             //var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
-            var needsInteropStruct = spec.Structs.Where(x => x.HasPointerMembers || x.Members.Any(y => y.Type is VkHandle));
+            var needsInteropStruct = spec.Structs.Where(IsInteropStruct);
             files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
 
             var regularStruct = spec.Structs.Except(needsInteropStruct);
@@ -208,7 +209,7 @@ namespace Tanagra.Generator
 
                 foreach (var member in vkStruct.Members)
                 {
-                    if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "Char"))
+                    if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "String"))
                     {
                         if(!member.IsArray)
                         {
@@ -217,9 +218,9 @@ namespace Tanagra.Generator
                         }
                     }
 
-                    if(member.Type is VkStruct && !member.IsArray && !member.IsPointer && member.Type.Name != "Char")
+                    if(member.Type is VkStruct && !member.IsArray && !member.IsPointer && member.Type.Name != "String")
                     {
-                        var memberType = member.Type as VkStruct;
+                        var memberType = (VkStruct)member.Type;
                         if(!IsInteropStruct(memberType))
                         {
                             WriteLine($"public {member.Type} {member.Name};");
@@ -229,13 +230,22 @@ namespace Tanagra.Generator
 
                     if(member.Type is VkHandle && !member.IsArray)
                     {
-                        var vkHandle = member.Type as VkHandle;
+                        var vkHandle = (VkHandle)member.Type;
                         if(!vkHandle.IsDispatchable)
                         {
                             // should never be hit when isPublic == true
                             WriteLine($"public UInt64 {member.Name};");
                             continue;
                         }
+                    }
+
+                    if (member.IsFixedSize)
+                    {
+                        var fixedType = member.Type.ToString();
+                        if (fixedType == "String")
+                            fixedType = "byte";
+                        WriteLine($"public unsafe fixed {fixedType} {member.Name}[{member.FixedSize}];");
+                        continue;
                     }
 
                     // Eveything else is a pointer
@@ -321,7 +331,7 @@ namespace Tanagra.Generator
                     if(param.Type is VkHandle)
                         paramType = ((VkHandle)param.Type).IsDispatchable ? "IntPtr" : "UInt64";
 
-                    if(paramType == "Char")
+                    if(paramType == "String")
                     {
                         Write($"String {param.Name}");
                     }
@@ -375,6 +385,14 @@ namespace Tanagra.Generator
             WriteLine("namespace Vulkan");
             WriteLine("{");
             _tabs++;
+
+            if(vkStruct.ReturnedOnly)
+            {
+                WriteLine("/// <summary>");
+                WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
+                WriteLine("/// </summary>");
+            }
+
             WriteLine($"unsafe public class {vkStruct.Name}");
             WriteLine("{");
             _tabs++;
@@ -396,15 +414,15 @@ namespace Tanagra.Generator
                 if (hiddenMembers.Contains(member.Name))
                     continue;
 
-                if (member.Type.Name == "Char")
+                if (member.Type.Name == "String")
                 {
                     if (member.Len.Length > 1)
                     {
-                        WriteMemberStringArray(member);
+                        WriteMemberStringArray(member, vkStruct.ReturnedOnly);
                     }
                     else
                     {
-                        WriteMemberString(member);
+                        WriteMemberString(member, vkStruct.ReturnedOnly);
                     }
                     WriteLine("");
                     continue;
@@ -412,19 +430,19 @@ namespace Tanagra.Generator
 
                 if(member.IsArray)
                 {
-                    WriteMemeberArray(member);
+                    WriteMemeberArray(member, vkStruct.ReturnedOnly);
                     WriteLine("");
                     continue;
                 }
 
                 if (member.Type is VkEnum || platformStructTypes.Contains(member.Type.Name))
                 {
-                    WriteMember(member);
+                    WriteMember(member, vkStruct.ReturnedOnly);
                     WriteLine("");
                     continue;
                 }
                 
-                WriteMemberStruct(member);
+                WriteMemberStruct(member, vkStruct.ReturnedOnly);
                 WriteLine("");
             }
 
@@ -467,16 +485,9 @@ namespace Tanagra.Generator
                     var memberTypeName = member.Type.Name;
                     var memberName = member.Name;
 
-                    if (memberTypeName == "Char")
+                    if (memberTypeName == "String")
                     {
-                        if (member.Len.Length > 1)
-                        {
-                            memberTypeName = "String[]";
-                        }
-                        else
-                        {
-                            memberTypeName = "String";
-                        }
+                        memberTypeName = member.Len.Length > 1 ? "String[]" : "String";
                         cotorParams.Add(memberName, memberTypeName);
                         continue;
                     }
@@ -518,22 +529,23 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
-        void WriteMember(VkMember vkMember)
+        void WriteMember(VkMember vkMember, bool readOnly)
         {
             WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
             WriteLine("{");
             _tabs++;
             WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
-            WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
+            if(!readOnly)
+                WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteMemberStruct(VkMember vkMember)
+        void WriteMemberStruct(VkMember vkMember, bool readOnly)
         {
             if(vkMember.Type is VkStruct)
             {
-                var vkStruct = vkMember.Type as VkStruct;
+                var vkStruct = (VkStruct)vkMember.Type;
                 if(vkMember.IsPointer || IsInteropStruct(vkStruct))
                 {
                     // If this is a pointer to a struct that wont have a wrapper class generated 
@@ -545,7 +557,8 @@ namespace Tanagra.Generator
                     WriteLine("{");
                     _tabs++;
                     WriteLine($"get {{ return _{vkMember.Name}; }}");
-                    WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
+                    if(!readOnly)
+                        WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
                     _tabs--;
                     WriteLine("}");
                 }
@@ -555,7 +568,8 @@ namespace Tanagra.Generator
                     WriteLine("{");
                     _tabs++;
                     WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
-                    WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
+                    if(!readOnly)
+                        WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
                     _tabs--;
                     WriteLine("}");
                 }
@@ -565,7 +579,7 @@ namespace Tanagra.Generator
                 var castTo = "(IntPtr)";
                 if(vkMember.Type is VkHandle)
                 {
-                    var vkHandle = vkMember.Type as VkHandle;
+                    var vkHandle = (VkHandle)vkMember.Type;
                     if(!vkHandle.IsDispatchable)
                         castTo = string.Empty;
                 }
@@ -581,20 +595,35 @@ namespace Tanagra.Generator
             }
         }
 
-        void WriteMemberString(VkMember vkMember)
+        void WriteMemberString(VkMember vkMember, bool readOnly)
         {
-            WriteLine($"public string {vkMember.Name}");
-            WriteLine("{");
-            _tabs++;
-            WriteLine($"get {{ return Marshal.PtrToStringAnsi({NativePointer}->{vkMember.Name}); }}");
-            WriteLine($"set {{ {NativePointer}->{vkMember.Name} = Marshal.StringToHGlobalAnsi(value); }}");
-            _tabs--;
-            WriteLine("}");
+            if (vkMember.IsFixedSize)
+            {
+                WriteLine($"public string {vkMember.Name}");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"get {{ return Marshal.PtrToStringAnsi((IntPtr){NativePointer}->{vkMember.Name}); }}");
+                if(!readOnly)
+                    WriteLine($"set {{ Interop.Structure.MarshalFixedSizeString({NativePointer}->{vkMember.Name}, value, {vkMember.FixedSize}); }}");
+                _tabs--;
+                WriteLine("}");
+            }
+            else
+            {
+                WriteLine($"public string {vkMember.Name}");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"get {{ return Marshal.PtrToStringAnsi({NativePointer}->{vkMember.Name}); }}");
+                if(!readOnly)
+                    WriteLine($"set {{ {NativePointer}->{vkMember.Name} = Marshal.StringToHGlobalAnsi(value); }}");
+                _tabs--;
+                WriteLine("}");
+            }
         }
 
         #region Member Array
 
-        void WriteMemberStringArray(VkMember vkMember)
+        void WriteMemberStringArray(VkMember vkMember, bool readOnly)
         {
             WriteLine($"public string[] {vkMember.Name}");
             WriteLine("{");
@@ -621,56 +650,65 @@ namespace Tanagra.Generator
             WriteLine("}");
 
             // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
-            WriteLine($"{NativePointer}->{countName} = (uint)value.Length;");
-            WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativePointer}->{countName}));");
-            WriteLine($"void** ptr = (void**){NativePointer}->{vkMember.Name};");
-            WriteLine($"for(var x = 0; x < {NativePointer}->{countName}; x++)");
-            _tabs++;
-            WriteLine("ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);");
-            _tabs--;
-            _tabs--;
-            WriteLine("}");
-
+            if (!readOnly)
+            {
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
+                WriteLine($"{NativePointer}->{countName} = (uint)value.Length;");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativePointer}->{countName}));");
+                WriteLine($"void** ptr = (void**){NativePointer}->{vkMember.Name};");
+                WriteLine($"for(var x = 0; x < {NativePointer}->{countName}; x++)");
+                _tabs++;
+                WriteLine("ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);");
+                _tabs--;
+                _tabs--;
+                WriteLine("}");
+            }
+            
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteMemeberArray(VkMember vkMember)
+        void WriteMemeberArray(VkMember vkMember, bool readOnly)
         {
+            if (vkMember.IsFixedSize)
+            {
+                WriteNotImplementedArray(vkMember, readOnly);
+                return;
+            }
+
             var countName = vkMember.Len[0];
             countName = char.ToUpper(countName[0]) + countName.Substring(1, countName.Length - 1);
 
             if(countName.StartsWith("Latexmath"))
             {
-                WriteNotImplementedArray(vkMember);
+                WriteNotImplementedArray(vkMember, readOnly);
                 return;
             }
 
             if(vkMember.Type is VkHandle)
             {
-                WriteHandleArray(vkMember, countName);
+                WriteHandleArray(vkMember, countName, readOnly);
                 return;
             }
 
             if(vkMember.Type is VkEnum)
             {
-                WriteEnumArray(vkMember, countName);
+                WriteEnumArray(vkMember, countName, readOnly);
                 return;
             }
 
             if(platformStructTypes.Contains(vkMember.Type.Name))
             {
-                WritePlatformArray(vkMember, countName);
+                WritePlatformArray(vkMember, countName, readOnly);
                 return;
             }
 
-            WriteStructArray(vkMember, countName);
+            WriteStructArray(vkMember, countName, readOnly);
         }
 
-        void WriteStructArray(VkMember vkMember, string countName)
+        void WriteStructArray(VkMember vkMember, string countName, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -697,7 +735,7 @@ namespace Tanagra.Generator
             }
             else
             {
-                WriteLine($"valueArray[x] = ptr[x];");
+                WriteLine("valueArray[x] = ptr[x];");
             }
             _tabs--;
             WriteLine("return valueArray;");
@@ -705,36 +743,36 @@ namespace Tanagra.Generator
             _tabs--;
             WriteLine("}");
 
-            // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
-
-            WriteLine("var valueCount = value.Length;");
-            WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+            if (!readOnly)
+            {
+                // set
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
+                WriteLine("var valueCount = value.Length;");
+                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{structType}>() * valueCount);");
+                WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                if (IsInteropStruct(vkStruct))
+                {
+                    WriteLine("ptr[x] = *value[x].NativePointer;");
+                }
+                else
+                {
+                    WriteLine("ptr[x] = value[x];");
+                }
+                _tabs--;
+                _tabs--;
+                WriteLine("}");
+            }
             
-            WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{structType}>() * valueCount);");
-            WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            if(IsInteropStruct(vkStruct))
-            {
-                WriteLine("ptr[x] = *value[x].NativePointer;");
-            }
-            else
-            {
-                WriteLine("ptr[x] = value[x];");
-            }
-            _tabs--;
-
-            _tabs--;
-            WriteLine("}");
-
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteHandleArray(VkMember vkMember, string countName)
+        void WriteHandleArray(VkMember vkMember, string countName, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -762,29 +800,29 @@ namespace Tanagra.Generator
             _tabs--;
             WriteLine("}");
 
-            // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
-
-            WriteLine("var valueCount = value.Length;");
-            WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
-
-            WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);");
-            WriteLine($"var ptr = (IntPtr*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
-            _tabs--;
-
-            _tabs--;
-            WriteLine("}");
-
+            if (!readOnly)
+            {
+                // set
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
+                WriteLine("var valueCount = value.Length;");
+                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);");
+                WriteLine($"var ptr = (IntPtr*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
+                _tabs--;
+                _tabs--;
+                WriteLine("}");
+            }
+            
             _tabs--;
             WriteLine("}");
         }
 
-        void WritePlatformArray(VkMember vkMember, string countName)
+        void WritePlatformArray(VkMember vkMember, string countName, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -800,36 +838,36 @@ namespace Tanagra.Generator
             WriteLine($"var ptr = ({vkMember.Type}*){NativePointer}->{vkMember.Name};");
             WriteLine("for(var x = 0; x < valueCount; x++)");
             _tabs++;
-            WriteLine($"valueArray[x] = ptr[x];");
+            WriteLine("valueArray[x] = ptr[x];");
             _tabs--;
             WriteLine("return valueArray;");
 
             _tabs--;
             WriteLine("}");
 
-            // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
-
-            WriteLine("var valueCount = value.Length;");
-            WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
-
-            WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{vkMember.Type.Name}>() * valueCount);");
-            WriteLine($"var ptr = ({vkMember.Type.Name}*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            WriteLine($"ptr[x] = value[x];");
-            _tabs--;
-
-            _tabs--;
-            WriteLine("}");
-
+            if (!readOnly)
+            {
+                // set
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
+                WriteLine("var valueCount = value.Length;");
+                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{vkMember.Type.Name}>() * valueCount);");
+                WriteLine($"var ptr = ({vkMember.Type.Name}*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                WriteLine("ptr[x] = value[x];");
+                _tabs--;
+                _tabs--;
+                WriteLine("}");
+            }
+            
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteEnumArray(VkMember vkMember, string countName)
+        void WriteEnumArray(VkMember vkMember, string countName, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -853,28 +891,28 @@ namespace Tanagra.Generator
             WriteLine("}");
             
             // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
-            
-            WriteLine("var valueCount = value.Length;");
-            WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
-
-            WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);");
-            WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            WriteLine($"ptr[x] = (UInt32)value[x];");
-            _tabs--;
-
-            _tabs--;
-            WriteLine("}");
+            if (!readOnly)
+            {
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
+                WriteLine("var valueCount = value.Length;");
+                WriteLine($"{NativePointer}->{countName} = (uint)valueCount;");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);");
+                WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
+                WriteLine("for(var x = 0; x < valueCount; x++)");
+                _tabs++;
+                WriteLine("ptr[x] = (UInt32)value[x];");
+                _tabs--;
+                _tabs--;
+                WriteLine("}");
+            }
 
             _tabs--;
             WriteLine("}");
         }
 
-        void WriteNotImplementedArray(VkMember vkMember)
+        void WriteNotImplementedArray(VkMember vkMember, bool readOnly)
         {
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteLine("{");
@@ -890,16 +928,19 @@ namespace Tanagra.Generator
             _tabs--;
             WriteLine("}");
 
-            // set
-            WriteLine("set");
-            WriteLine("{");
-            _tabs++;
+            if (!readOnly)
+            {
+                // set
+                WriteLine("set");
+                WriteLine("{");
+                _tabs++;
 
-            WriteLine("throw new System.NotImplementedException();");
+                WriteLine("throw new System.NotImplementedException();");
 
-            _tabs--;
-            WriteLine("}");
-
+                _tabs--;
+                WriteLine("}");
+            }
+            
             _tabs--;
             WriteLine("}");
         }
@@ -1011,7 +1052,7 @@ namespace Tanagra.Generator
                 // read the length of the list inside the function as needed.
                 //
                 var paramArrays = vkCommand.Parameters
-                    .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "Char")
+                    .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "String")
                     .Except(new[] { returnParam });
                 
                 var paramListCountMap = new Dictionary<VkParam, VkParam>();
@@ -1043,7 +1084,7 @@ namespace Tanagra.Generator
                     var paramName = vkParam.Name;
                     var paramType = vkParam.Type.Name;
 
-                    if(paramType == "Char")
+                    if(paramType == "String")
                         paramType = "String";
 
                     if(paramArrays.Contains(vkParam))
@@ -1109,7 +1150,7 @@ namespace Tanagra.Generator
                         var paramIsHandle       = paramType is VkHandle;
                         var paramIsDispatchable = (paramIsHandle) && (paramType as VkHandle).IsDispatchable;
                         var paramIsStruct       = paramType is VkStruct;
-                        var paramIsInterop      = paramIsStruct && IsInteropStruct((VkStruct)paramType);//(((VkStruct)paramType).HasPointerMembers);
+                        var paramIsInterop      = paramIsStruct && IsInteropStruct((VkStruct)paramType);
                         
                         var sizeType = (paramIsHandle) ? "IntPtr" : paramTypeName;
                         if(paramIsInterop)
@@ -1281,7 +1322,7 @@ namespace Tanagra.Generator
                     {
                         WriteLine("");
                         WriteLine($"var list = new {returnType}();");
-                        WriteLine($"for(var x = 0; x < listLength; x++)");
+                        WriteLine("for(var x = 0; x < listLength; x++)");
                         WriteLine("{");
                         _tabs++;
 
@@ -1400,8 +1441,8 @@ namespace Tanagra.Generator
                 if(IsPlatformStruct(paramType) || paramType is VkEnum)
                 {
                     var addressOf = string.Empty;
-                    if(vkParam.IsPointer && paramType.Name != "Char")
-                        addressOf = $"&";
+                    if(vkParam.IsPointer && paramType.Name != "String")
+                        addressOf = "&";
 
                     internalCallParams.Add($"{addressOf}{paramName}");
                     continue;
@@ -1535,7 +1576,7 @@ namespace Tanagra.Generator
                     // read the length of the list inside the function when needed.
                     //
                     var arrayParams = vkCommand.Parameters
-                        .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "Char")
+                        .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "String")
                         .Except(new[] { returnParam });
 
                     var arrayLengthParams = new Dictionary<VkParam, VkParam>();
@@ -1583,7 +1624,7 @@ namespace Tanagra.Generator
                         {
                             Write($"this {paramType} {vkParam.Name}");
                         }
-                        else if(paramType == "Char")
+                        else if(paramType == "String")
                         {
                             Write($"String {vkParam.Name}");
                         }
@@ -1651,7 +1692,9 @@ namespace Tanagra.Generator
             => platformStructTypes.Contains(type.Name);
 
         bool IsInteropStruct(VkStruct vkStruct)
-            => vkStruct.HasPointerMembers || vkStruct.Members.Any(y => y.Type is VkHandle);
+            => vkStruct.HasPointerMembers
+            || vkStruct.Members.Any(y => y.Type is VkHandle)
+            || vkStruct.Members.Any(y => y.IsFixedSize);
 
         void Clear()
         {

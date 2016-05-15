@@ -3,32 +3,31 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Returned Only - This object is never given as input to a Vulkan function
+    /// </summary>
     unsafe public class LayerProperties
     {
         internal Interop.LayerProperties* NativePointer;
         
         public string LayerName
         {
-            get { return Marshal.PtrToStringAnsi(NativePointer->LayerName); }
-            set { NativePointer->LayerName = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->LayerName); }
         }
         
         public UInt32 SpecVersion
         {
             get { return NativePointer->SpecVersion; }
-            set { NativePointer->SpecVersion = value; }
         }
         
         public UInt32 ImplementationVersion
         {
             get { return NativePointer->ImplementationVersion; }
-            set { NativePointer->ImplementationVersion = value; }
         }
         
         public string Description
         {
-            get { return Marshal.PtrToStringAnsi(NativePointer->Description); }
-            set { NativePointer->Description = Marshal.StringToHGlobalAnsi(value); }
+            get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->Description); }
         }
         
         internal LayerProperties()

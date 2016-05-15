@@ -13,10 +13,16 @@ namespace Vulkan
             set { NativePointer->MarkerName = Marshal.StringToHGlobalAnsi(value); }
         }
         
-        public Single Color
+        public Single[] Color
         {
-            get { return NativePointer->Color; }
-            set { NativePointer->Color = value; }
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
         
         public DebugMarkerMarkerInfoEXT()

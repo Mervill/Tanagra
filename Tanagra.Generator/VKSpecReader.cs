@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace Tanagra.Generator
 {
@@ -393,7 +394,15 @@ namespace Tanagra.Generator
                 }
             }
 
-            if(string.IsNullOrEmpty(vkMember.Name) || vkMember.Type == null)
+            const string fixedSizePattern = @"\[(<enum>)?([^<\]]+)(</enum>)?\]";
+            var fixedSizeMatch = Regex.Match(xmember.Value, fixedSizePattern);
+            if (fixedSizeMatch.Success)
+            {
+                vkMember.IsFixedSize = true;
+                vkMember.FixedSize = fixedSizeMatch.Groups[2].Value;
+            }
+
+            if (string.IsNullOrEmpty(vkMember.Name) || vkMember.Type == null)
                 throw new InvalidOperationException("Member does not have proper `<name>` or `<type>` element");
 
             // Gah! Why are these not encoded properly!

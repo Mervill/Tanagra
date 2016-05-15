@@ -224,6 +224,7 @@
     <Compile Include="Generated\Wrapper\FenceCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\FramebufferCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\GraphicsPipelineCreateInfo.cs" />
+    <Compile Include="Generated\Wrapper\ImageBlit.cs" />
     <Compile Include="Generated\Wrapper\ImageCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\ImageMemoryBarrier.cs" />
     <Compile Include="Generated\Wrapper\ImageViewCreateInfo.cs" />
@@ -233,6 +234,8 @@
     <Compile Include="Generated\Wrapper\MemoryAllocateInfo.cs" />
     <Compile Include="Generated\Wrapper\MemoryBarrier.cs" />
     <Compile Include="Generated\Wrapper\MirSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\Wrapper\PhysicalDeviceLimits.cs" />
+    <Compile Include="Generated\Wrapper\PhysicalDeviceMemoryProperties.cs" />
     <Compile Include="Generated\Wrapper\PhysicalDeviceProperties.cs" />
     <Compile Include="Generated\Wrapper\PipelineCacheCreateInfo.cs" />
     <Compile Include="Generated\Wrapper\PipelineColorBlendStateCreateInfo.cs" />

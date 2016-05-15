@@ -10,6 +10,9 @@ namespace Tanagra.Generator
         Dictionary<string, string> basetypeOverride;
         Dictionary<string, string> structNameOverride;
 
+        // TODO: read this info from the constant struct
+        Dictionary<string, string> constantMap;
+
         public CSharpSpecRewriter()
         {
             basetypeOverride = new Dictionary<string, string>
@@ -23,7 +26,7 @@ namespace Tanagra.Generator
             structNameOverride = new Dictionary<string, string>
             {
                 { "void",     "IntPtr" },
-                { "char",     "Char"   },
+                { "char",     "String" },
                 { "float",    "Single" },
                 { "uint8_t",  "Byte"   },
                 { "uint32_t", "UInt32" },
@@ -31,6 +34,16 @@ namespace Tanagra.Generator
                 { "int32_t",  "Int32"  },
                 { "size_t",   "UInt32" },
                 { "VkBool32", "Bool32" }
+            };
+
+            constantMap = new Dictionary<string, string>
+            {
+                { "VK_MAX_PHYSICAL_DEVICE_NAME_SIZE", "256" },
+                { "VK_UUID_SIZE",                      "16" },
+                { "VK_MAX_EXTENSION_NAME_SIZE",       "256" },
+                { "VK_MAX_DESCRIPTION_SIZE",          "256" },
+                { "VK_MAX_MEMORY_TYPES",               "32" },
+                { "VK_MAX_MEMORY_HEAPS",               "16" },
             };
         }
 
@@ -99,13 +112,18 @@ namespace Tanagra.Generator
                 if(member.PointerRank != 0)
                     memberName = memberName.TrimStart(new[] { 'p' });
 
-                if (memberName.Contains('['))
-                    memberName = memberName.Substring(0, memberName.IndexOf('['));
+                /*if (memberName.Contains('['))
+                    memberName = memberName.Substring(0, memberName.IndexOf('['));*/
                 
                 memberName = char.ToUpper(memberName[0]) + memberName.Substring(1);
                 member.Name = memberName;
-            }
 
+                if (member.IsFixedSize)
+                {
+                    if (constantMap.ContainsKey(member.FixedSize))
+                        member.FixedSize = constantMap[member.FixedSize];
+                }
+            }
             
         }
         

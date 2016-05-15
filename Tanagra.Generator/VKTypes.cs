@@ -90,6 +90,8 @@ namespace Tanagra.Generator
     {
         public string Name { get; set; }
         public VkType Type { get; set; }
+        public bool IsFixedSize { get; set; }
+        public string FixedSize { get; set; }
         public bool IsConst { get; set; }
         public int PointerRank { get; set; }
 
@@ -101,7 +103,7 @@ namespace Tanagra.Generator
         public string SpecName { get; set; }
 
         public bool IsPointer => PointerRank > 0;
-        public bool IsArray => Len.Length != 0;
+        public bool IsArray => Len.Length != 0 || IsFixedSize;
 
         public VkMember()
         {

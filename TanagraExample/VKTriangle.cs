@@ -86,8 +86,8 @@ namespace TanagraExample
             var appInfo = new ApplicationInfo
             {
                 ApplicationName = "vulkanExample",
-                EngineName = "vulkanExample",
-                ApiVersion = ver
+                EngineName      = "vulkanExample",
+                ApiVersion      = ver
             };
 
             var instanceEnabledExtensions = new[]
