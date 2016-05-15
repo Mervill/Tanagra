@@ -258,6 +258,7 @@ namespace Vulkan
             var result = vkQueueSubmit(queue.NativePointer, submitCount, _submitsPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueSubmit), result);
+            Marshal.FreeHGlobal((IntPtr)_submitsPtr);
         }
         
         public static void QueueWaitIdle(Queue queue)
@@ -320,6 +321,7 @@ namespace Vulkan
             var result = vkFlushMappedMemoryRanges(device.NativePointer, memoryRangeCount, _memoryRangesPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkFlushMappedMemoryRanges), result);
+            Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
         public static void InvalidateMappedMemoryRanges(Device device, List<MappedMemoryRange> memoryRanges)
@@ -337,6 +339,7 @@ namespace Vulkan
             var result = vkInvalidateMappedMemoryRanges(device.NativePointer, memoryRangeCount, _memoryRangesPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkInvalidateMappedMemoryRanges), result);
+            Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
         public static DeviceSize GetDeviceMemoryCommitment(Device device, DeviceMemory memory)
@@ -425,6 +428,7 @@ namespace Vulkan
             var result = vkQueueBindSparse(queue.NativePointer, bindInfoCount, _bindInfoPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkQueueBindSparse), result);
+            Marshal.FreeHGlobal((IntPtr)_bindInfoPtr);
         }
         
         public static Fence CreateFence(Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -459,6 +463,7 @@ namespace Vulkan
             var result = vkResetFences(device.NativePointer, fenceCount, _fencesPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetFences), result);
+            Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
         public static void GetFenceStatus(Device device, Fence fence)
@@ -483,6 +488,7 @@ namespace Vulkan
             var result = vkWaitForFences(device.NativePointer, fenceCount, _fencesPtr, waitAll, timeout);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkWaitForFences), result);
+            Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
         public static Semaphore CreateSemaphore(Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -572,6 +578,7 @@ namespace Vulkan
             var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, _dataPtr, stride, flags);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkGetQueryPoolResults), result);
+            Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
         public static Buffer CreateBuffer(Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -720,6 +727,7 @@ namespace Vulkan
             var result = vkMergePipelineCaches(device.NativePointer, dstCache.NativePointer, srcCacheCount, _srcCachesPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkMergePipelineCaches), result);
+            Marshal.FreeHGlobal((IntPtr)_srcCachesPtr);
         }
         
         public static List<Pipeline> CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
@@ -742,6 +750,7 @@ namespace Vulkan
                 result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkCreateGraphicsPipelines), result);
+            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new List<Pipeline>();
             for(var x = 0; x < listLength; x++)
@@ -774,6 +783,7 @@ namespace Vulkan
                 result = vkCreateComputePipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkCreateComputePipelines), result);
+            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new List<Pipeline>();
             for(var x = 0; x < listLength; x++)
@@ -903,6 +913,7 @@ namespace Vulkan
             var result = vkFreeDescriptorSets(device.NativePointer, descriptorPool.NativePointer, descriptorSetCount, _descriptorSetsPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkFreeDescriptorSets), result);
+            Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
         }
         
         public static void UpdateDescriptorSets(Device device, List<WriteDescriptorSet> descriptorWrites, List<CopyDescriptorSet> descriptorCopies)
@@ -928,6 +939,8 @@ namespace Vulkan
             }
             
             vkUpdateDescriptorSets(device.NativePointer, descriptorWriteCount, _descriptorWritesPtr, descriptorCopyCount, _descriptorCopiesPtr);
+            Marshal.FreeHGlobal((IntPtr)_descriptorWritesPtr);
+            Marshal.FreeHGlobal((IntPtr)_descriptorCopiesPtr);
         }
         
         public static Framebuffer CreateFramebuffer(Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = null)
@@ -1030,6 +1043,7 @@ namespace Vulkan
             }
             
             vkFreeCommandBuffers(device.NativePointer, commandPool.NativePointer, commandBufferCount, _commandBuffersPtr);
+            Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
         public static void BeginCommandBuffer(CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
@@ -1071,6 +1085,7 @@ namespace Vulkan
             }
             
             vkCmdSetViewport(commandBuffer.NativePointer, firstViewport, viewportCount, _viewportsPtr);
+            Marshal.FreeHGlobal((IntPtr)_viewportsPtr);
         }
         
         public static void CmdSetScissor(CommandBuffer commandBuffer, UInt32 firstScissor, List<Rect2D> scissors)
@@ -1086,6 +1101,7 @@ namespace Vulkan
             }
             
             vkCmdSetScissor(commandBuffer.NativePointer, firstScissor, scissorCount, _scissorsPtr);
+            Marshal.FreeHGlobal((IntPtr)_scissorsPtr);
         }
         
         public static void CmdSetLineWidth(CommandBuffer commandBuffer, Single lineWidth)
@@ -1146,6 +1162,8 @@ namespace Vulkan
             }
             
             vkCmdBindDescriptorSets(commandBuffer.NativePointer, pipelineBindPoint, layout.NativePointer, firstSet, descriptorSetCount, _descriptorSetsPtr, dynamicOffsetCount, _dynamicOffsetsPtr);
+            Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
+            Marshal.FreeHGlobal((IntPtr)_dynamicOffsetsPtr);
         }
         
         public static void CmdBindIndexBuffer(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
@@ -1175,6 +1193,8 @@ namespace Vulkan
             }
             
             vkCmdBindVertexBuffers(commandBuffer.NativePointer, firstBinding, bindingCount, _buffersPtr, _offsetsPtr);
+            Marshal.FreeHGlobal((IntPtr)_buffersPtr);
+            Marshal.FreeHGlobal((IntPtr)_offsetsPtr);
         }
         
         public static void CmdDraw(CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
@@ -1220,6 +1240,7 @@ namespace Vulkan
             }
             
             vkCmdCopyBuffer(commandBuffer.NativePointer, srcBuffer.NativePointer, dstBuffer.NativePointer, regionCount, _regionsPtr);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageCopy> regions)
@@ -1235,6 +1256,7 @@ namespace Vulkan
             }
             
             vkCmdCopyImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageBlit> regions, Filter filter)
@@ -1250,6 +1272,7 @@ namespace Vulkan
             }
             
             vkCmdBlitImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr, filter);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, List<BufferImageCopy> regions)
@@ -1265,6 +1288,7 @@ namespace Vulkan
             }
             
             vkCmdCopyBufferToImage(commandBuffer.NativePointer, srcBuffer.NativePointer, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdCopyImageToBuffer(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, List<BufferImageCopy> regions)
@@ -1280,6 +1304,7 @@ namespace Vulkan
             }
             
             vkCmdCopyImageToBuffer(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstBuffer.NativePointer, regionCount, _regionsPtr);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, List<UInt32> data)
@@ -1307,6 +1332,7 @@ namespace Vulkan
             }
             
             vkCmdClearColorImage(commandBuffer.NativePointer, image.NativePointer, imageLayout, &color, rangeCount, _rangesPtr);
+            Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
         public static void CmdClearDepthStencilImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, List<ImageSubresourceRange> ranges)
@@ -1322,6 +1348,7 @@ namespace Vulkan
             }
             
             vkCmdClearDepthStencilImage(commandBuffer.NativePointer, image.NativePointer, imageLayout, &depthStencil, rangeCount, _rangesPtr);
+            Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
         public static void CmdClearAttachments(CommandBuffer commandBuffer, List<ClearAttachment> attachments, List<ClearRect> rects)
@@ -1347,6 +1374,8 @@ namespace Vulkan
             }
             
             vkCmdClearAttachments(commandBuffer.NativePointer, attachmentCount, _attachmentsPtr, rectCount, _rectsPtr);
+            Marshal.FreeHGlobal((IntPtr)_attachmentsPtr);
+            Marshal.FreeHGlobal((IntPtr)_rectsPtr);
         }
         
         public static void CmdResolveImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageResolve> regions)
@@ -1362,6 +1391,7 @@ namespace Vulkan
             }
             
             vkCmdResolveImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
+            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         public static void CmdSetEvent(CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
@@ -1417,6 +1447,10 @@ namespace Vulkan
             }
             
             vkCmdWaitEvents(commandBuffer.NativePointer, eventCount, _eventsPtr, srcStageMask, dstStageMask, memoryBarrierCount, _memoryBarriersPtr, bufferMemoryBarrierCount, _bufferMemoryBarriersPtr, imageMemoryBarrierCount, _imageMemoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_eventsPtr);
+            Marshal.FreeHGlobal((IntPtr)_memoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_bufferMemoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
         public static void CmdPipelineBarrier(CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
@@ -1452,6 +1486,9 @@ namespace Vulkan
             }
             
             vkCmdPipelineBarrier(commandBuffer.NativePointer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount, _memoryBarriersPtr, bufferMemoryBarrierCount, _bufferMemoryBarriersPtr, imageMemoryBarrierCount, _imageMemoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_memoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_bufferMemoryBarriersPtr);
+            Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
         public static void CmdBeginQuery(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags)
@@ -1492,6 +1529,7 @@ namespace Vulkan
             }
             
             vkCmdPushConstants(commandBuffer.NativePointer, layout.NativePointer, stageFlags, offset, size, _valuesPtr);
+            Marshal.FreeHGlobal((IntPtr)_valuesPtr);
         }
         
         public static void CmdBeginRenderPass(CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
@@ -1522,6 +1560,7 @@ namespace Vulkan
             }
             
             vkCmdExecuteCommands(commandBuffer.NativePointer, commandBufferCount, _commandBuffersPtr);
+            Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
         public static SurfaceKHR CreateAndroidSurfaceKHR(Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
@@ -1688,6 +1727,7 @@ namespace Vulkan
                 result = vkCreateSharedSwapchainsKHR(device.NativePointer, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkCreateSharedSwapchainsKHR), result);
+            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new List<SwapchainKHR>();
             for(var x = 0; x < listLength; x++)

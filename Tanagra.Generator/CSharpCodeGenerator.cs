@@ -1107,7 +1107,7 @@ namespace Tanagra.Generator
 
                         var paramIsIntPtr       = (paramTypeName == "IntPtr");
                         var paramIsHandle       = paramType is VkHandle;
-                        var paramIsDispatchable = (paramIsHandle) ? (paramType as VkHandle).IsDispatchable : false;
+                        var paramIsDispatchable = (paramIsHandle) && (paramType as VkHandle).IsDispatchable;
                         var paramIsStruct       = paramType is VkStruct;
                         var paramIsInterop      = paramIsStruct && IsInteropStruct((VkStruct)paramType);//(((VkStruct)paramType).HasPointerMembers);
                         
@@ -1259,8 +1259,23 @@ namespace Tanagra.Generator
                 }
                 #endregion
 
+                #region Array Parameters Prologue
+                if (hasArrayParams)
+                {
+                    List<string> existingCounts = new List<string>();
+
+                    // Emit a prologue block for each array param
+                    foreach (var kv in paramListCountMap)
+                    {
+                        var paramName = kv.Key.Name;
+                        var ptrVar = $"_{paramName}Ptr";
+                        WriteLine($"Marshal.FreeHGlobal((IntPtr){ptrVar});");
+                    }
+                }
+                #endregion
+
                 #region Epilogue
-                if(returnParam != null)
+                if (returnParam != null)
                 {
                     if (returnsList)
                     {

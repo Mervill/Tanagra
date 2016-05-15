@@ -16,6 +16,7 @@ namespace Tanagra.Generator
         // todo: optional flag to generate arrays instead of lists on commands?
         // todo: public structs use properties?
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
+        // todo: Latexmath - exlucde from hiding count
         // XCB -> X protocol C-language Binding
         // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors

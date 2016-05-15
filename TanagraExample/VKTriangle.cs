@@ -558,6 +558,7 @@ namespace TanagraExample
         {
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
+            //semaphoreCreateInfo.Dispose();
 
             try
             {
@@ -575,6 +576,7 @@ namespace TanagraExample
             commandBuffer[0].Begin(beginInfo);
             DrawInternal();
             commandBuffer[0].End();
+            //beginInfo.Dispose();
 
             // Submit
             var drawCommandBuffer = commandBuffer[0];
@@ -586,11 +588,13 @@ namespace TanagraExample
                 CommandBuffers = new[] { drawCommandBuffer }
             };
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            //submitInfo.Dispose();
 
             // Present
             var currentBackBufferIndexCopy = currentBackBufferIndex;
             var presentInfo = new PresentInfoKHR(new[] { swapchain }, new[] { currentBackBufferIndexCopy });
             queue.PresentKHR(presentInfo);
+            //presentInfo.Dispose();
 
             // Wait
             queue.WaitIdle();
@@ -612,10 +616,11 @@ namespace TanagraExample
                 DstAccessMask = AccessFlags.ColorAttachmentWrite
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            //memoryBarrier.Dispose();
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
-
+            
             // Begin render pass
             var renderPassBeginInfo = new RenderPassBeginInfo
             {
@@ -624,14 +629,15 @@ namespace TanagraExample
                 RenderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height))
             };
             commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
+            //renderPassBeginInfo.Dispose();
 
             // Bind pipeline
             commandBuffer[0].CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
 
             // Set viewport and scissor
-            var viewport = new Viewport { X = 0, Y = 0, Width = form.ClientSize.Width, Height = form.ClientSize.Height };
+            var viewport = new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0, 0);
             commandBuffer[0].CmdSetViewport(0, new List<Viewport> { viewport });
-
+            
             var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
             commandBuffer[0].CmdSetScissor(0, new List<Rect2D> { scissor });
 
@@ -657,6 +663,7 @@ namespace TanagraExample
                 DstAccessMask = AccessFlags.MemoryRead
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            //memoryBarrier.Dispose();
         }
 
         private void PhysicalDeviceProperties()
