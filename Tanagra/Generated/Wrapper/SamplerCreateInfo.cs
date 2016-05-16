@@ -7,24 +7,36 @@ namespace Vulkan
     {
         internal Interop.SamplerCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public SamplerCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Filter mode for magnification
+        /// </summary>
         public Filter MagFilter
         {
             get { return NativePointer->MagFilter; }
             set { NativePointer->MagFilter = value; }
         }
         
+        /// <summary>
+        /// Filter mode for minifiation
+        /// </summary>
         public Filter MinFilter
         {
             get { return NativePointer->MinFilter; }
             set { NativePointer->MinFilter = value; }
         }
         
+        /// <summary>
+        /// Mipmap selection mode
+        /// </summary>
         public SamplerMipmapMode MipmapMode
         {
             get { return NativePointer->MipmapMode; }

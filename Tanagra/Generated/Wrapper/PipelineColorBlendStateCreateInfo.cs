@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineColorBlendStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineColorBlendStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }

@@ -225,6 +225,8 @@ namespace Tanagra.Generator
 
                 foreach (var member in vkStruct.Members)
                 {
+                    WriteMemberComments(member);
+
                     if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "String"))
                     {
                         if(!member.IsArray)
@@ -531,6 +533,7 @@ namespace Tanagra.Generator
 
         void WriteMember(VkMember vkMember, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
             WriteBeginBlock();
             WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
@@ -552,6 +555,7 @@ namespace Tanagra.Generator
                     if(vkMember.IsPointer)
                         WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
 
+                    WriteMemberComments(vkMember);
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                     WriteBeginBlock();
                     // get
@@ -578,6 +582,7 @@ namespace Tanagra.Generator
                 }
                 else
                 {
+                    WriteMemberComments(vkMember);
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                     WriteBeginBlock();
                     WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
@@ -597,6 +602,7 @@ namespace Tanagra.Generator
                 }
 
                 WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                WriteMemberComments(vkMember);
                 WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                 WriteBeginBlock();
                 WriteLine($"get {{ return _{vkMember.Name}; }}");
@@ -609,6 +615,7 @@ namespace Tanagra.Generator
         {
             if (vkMember.IsFixedSize)
             {
+                WriteMemberComments(vkMember);
                 WriteLine($"public string {vkMember.Name}");
                 WriteBeginBlock();
                 WriteLine($"get {{ return Marshal.PtrToStringAnsi((IntPtr){NativePointer}->{vkMember.Name}); }}");
@@ -618,6 +625,7 @@ namespace Tanagra.Generator
             }
             else
             {
+                WriteMemberComments(vkMember);
                 WriteLine($"public string {vkMember.Name}");
                 WriteBeginBlock();
                 WriteLine($"get {{ return Marshal.PtrToStringAnsi({NativePointer}->{vkMember.Name}); }}");
@@ -631,6 +639,7 @@ namespace Tanagra.Generator
 
         void WriteMemberStringArray(VkMember vkMember, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public string[] {vkMember.Name}");
             WriteBeginBlock();
             // get
@@ -706,6 +715,7 @@ namespace Tanagra.Generator
 
         void WriteStructArray(VkMember vkMember, string countName, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
             // get
@@ -747,6 +757,7 @@ namespace Tanagra.Generator
 
         void WriteHandleArray(VkMember vkMember, string countName, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
             var structType = "UInt64";
@@ -786,6 +797,7 @@ namespace Tanagra.Generator
 
         void WritePlatformArray(VkMember vkMember, string countName, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
             // get
@@ -820,6 +832,7 @@ namespace Tanagra.Generator
 
         void WriteEnumArray(VkMember vkMember, string countName, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
             // get
@@ -854,6 +867,7 @@ namespace Tanagra.Generator
 
         void WriteNotImplementedArray(VkMember vkMember, string why, bool readOnly)
         {
+            WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
             // get
@@ -871,10 +885,20 @@ namespace Tanagra.Generator
             }
             WriteEndBlock();
         }
-        
+
         #endregion
         #endregion
 
+        void WriteMemberComments(VkMember vkMember)
+        {
+            if(!string.IsNullOrEmpty(vkMember.XMLComment))
+            {
+                WriteLine("/// <summary>");
+                WriteLine($"/// {vkMember.XMLComment}");
+                WriteLine("/// </summary>");
+            }
+        }
+        
         string GenerateCommandWrapper(IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
         {
             Clear();

@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineViewportStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineViewportStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }

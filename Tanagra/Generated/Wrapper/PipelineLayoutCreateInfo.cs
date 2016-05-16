@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.PipelineLayoutCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineLayoutCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Array of setCount number of descriptor set layout objects defining the layout of the
+        /// </summary>
         public DescriptorSetLayout[] SetLayouts
         {
             get
@@ -35,6 +41,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Array of pushConstantRangeCount number of ranges used by various shader stages
+        /// </summary>
         public PushConstantRange[] PushConstantRanges
         {
             get

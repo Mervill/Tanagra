@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.CommandBufferBeginInfo* NativePointer;
         
+        /// <summary>
+        /// Command buffer usage flags
+        /// </summary>
         public CommandBufferUsageFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -14,6 +17,9 @@ namespace Vulkan
         }
         
         CommandBufferInheritanceInfo _InheritanceInfo;
+        /// <summary>
+        /// Pointer to inheritance info for secondary command buffers
+        /// </summary>
         public CommandBufferInheritanceInfo InheritanceInfo
         {
             get { return _InheritanceInfo; }

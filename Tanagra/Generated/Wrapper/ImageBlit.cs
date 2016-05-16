@@ -13,6 +13,9 @@ namespace Vulkan
             set { NativePointer->SrcSubresource = value; }
         }
         
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Offset3D[] SrcOffsets
         {
             get
@@ -31,6 +34,9 @@ namespace Vulkan
             set { NativePointer->DstSubresource = value; }
         }
         
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Offset3D[] DstOffsets
         {
             get

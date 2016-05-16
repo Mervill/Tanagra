@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PresentInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Semaphores to wait for before presenting
+        /// </summary>
         public Semaphore[] WaitSemaphores
         {
             get
@@ -29,6 +32,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Swapchains to present an image from
+        /// </summary>
         public SwapchainKHR[] Swapchains
         {
             get
@@ -51,6 +57,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Indices of which swapchain images to present
+        /// </summary>
         public UInt32[] ImageIndices
         {
             get
@@ -73,6 +82,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Optional (i.e. if non-NULL) VkResult for each swapchain
+        /// </summary>
         public Result[] Results
         {
             get

@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineVertexInputStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineVertexInputStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }

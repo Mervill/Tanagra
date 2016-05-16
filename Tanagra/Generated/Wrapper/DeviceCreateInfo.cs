@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.DeviceCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public DeviceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -35,6 +38,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Ordered list of layer names to be enabled
+        /// </summary>
         public string[] EnabledLayerNames
         {
             get

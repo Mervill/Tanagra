@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.ComputePipelineCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Pipeline creation flags
+        /// </summary>
         public PipelineCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -20,6 +23,9 @@ namespace Vulkan
         }
         
         PipelineLayout _Layout;
+        /// <summary>
+        /// Interface layout of the pipeline
+        /// </summary>
         public PipelineLayout Layout
         {
             get { return _Layout; }
@@ -27,12 +33,18 @@ namespace Vulkan
         }
         
         Pipeline _BasePipelineHandle;
+        /// <summary>
+        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of
+        /// </summary>
         public Pipeline BasePipelineHandle
         {
             get { return _BasePipelineHandle; }
             set { _BasePipelineHandle = value; NativePointer->BasePipelineHandle = value.NativePointer; }
         }
         
+        /// <summary>
+        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is not -1, it specifies an index into pCreateInfos of the base pipeline this is a derivative of
+        /// </summary>
         public Int32 BasePipelineIndex
         {
             get { return NativePointer->BasePipelineIndex; }

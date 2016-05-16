@@ -21,7 +21,7 @@ namespace Vulkan
         /// </summary>
         EventSet = 3,
         /// <summary>
-        /// An event is unsignalled
+        /// An event is unsignaled
         /// </summary>
         EventReset = 4,
         /// <summary>

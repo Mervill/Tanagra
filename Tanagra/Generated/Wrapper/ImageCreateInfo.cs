@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.ImageCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Image creation flags
+        /// </summary>
         public ImageCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -55,18 +58,27 @@ namespace Vulkan
             set { NativePointer->Tiling = value; }
         }
         
+        /// <summary>
+        /// Image usage flags
+        /// </summary>
         public ImageUsageFlags Usage
         {
             get { return NativePointer->Usage; }
             set { NativePointer->Usage = value; }
         }
         
+        /// <summary>
+        /// Cross-queue-family sharing mode
+        /// </summary>
         public SharingMode SharingMode
         {
             get { return NativePointer->SharingMode; }
             set { NativePointer->SharingMode = value; }
         }
         
+        /// <summary>
+        /// Array of queue family indices to share across
+        /// </summary>
         public UInt32[] QueueFamilyIndices
         {
             get
@@ -89,6 +101,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Initial image layout for all subresources
+        /// </summary>
         public ImageLayout InitialLayout
         {
             get { return NativePointer->InitialLayout; }

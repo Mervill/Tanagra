@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.EventCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Event creation flags
+        /// </summary>
         public EventCreateFlags Flags
         {
             get { return NativePointer->Flags; }

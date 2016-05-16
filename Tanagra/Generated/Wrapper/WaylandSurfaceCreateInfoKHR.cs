@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.WaylandSurfaceCreateInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public WaylandSurfaceCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }

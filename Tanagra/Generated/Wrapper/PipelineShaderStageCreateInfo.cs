@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.PipelineShaderStageCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineShaderStageCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Shader stage
+        /// </summary>
         public ShaderStageFlags Stage
         {
             get { return NativePointer->Stage; }
@@ -20,12 +26,18 @@ namespace Vulkan
         }
         
         ShaderModule _Module;
+        /// <summary>
+        /// Module containing entry point
+        /// </summary>
         public ShaderModule Module
         {
             get { return _Module; }
             set { _Module = value; NativePointer->Module = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Null-terminated entry point name
+        /// </summary>
         public string Name
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->Name); }

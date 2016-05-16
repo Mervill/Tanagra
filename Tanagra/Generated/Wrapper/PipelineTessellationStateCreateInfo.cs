@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineTessellationStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineTessellationStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }

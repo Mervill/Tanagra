@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.AndroidSurfaceCreateInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public AndroidSurfaceCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }

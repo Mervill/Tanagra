@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.CommandPoolCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Command pool creation flags
+        /// </summary>
         public CommandPoolCreateFlags Flags
         {
             get { return NativePointer->Flags; }

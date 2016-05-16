@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.Win32SurfaceCreateInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public Win32SurfaceCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }

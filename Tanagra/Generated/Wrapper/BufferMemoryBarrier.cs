@@ -7,24 +7,36 @@ namespace Vulkan
     {
         internal Interop.BufferMemoryBarrier* NativePointer;
         
+        /// <summary>
+        /// Memory accesses from the source of the dependency to synchronize
+        /// </summary>
         public AccessFlags SrcAccessMask
         {
             get { return NativePointer->SrcAccessMask; }
             set { NativePointer->SrcAccessMask = value; }
         }
         
+        /// <summary>
+        /// Memory accesses from the destination of the dependency to synchronize
+        /// </summary>
         public AccessFlags DstAccessMask
         {
             get { return NativePointer->DstAccessMask; }
             set { NativePointer->DstAccessMask = value; }
         }
         
+        /// <summary>
+        /// Queue family to transition ownership from
+        /// </summary>
         public UInt32 SrcQueueFamilyIndex
         {
             get { return NativePointer->SrcQueueFamilyIndex; }
             set { NativePointer->SrcQueueFamilyIndex = value; }
         }
         
+        /// <summary>
+        /// Queue family to transition ownership to
+        /// </summary>
         public UInt32 DstQueueFamilyIndex
         {
             get { return NativePointer->DstQueueFamilyIndex; }
@@ -32,18 +44,27 @@ namespace Vulkan
         }
         
         Buffer _Buffer;
+        /// <summary>
+        /// Buffer to sync
+        /// </summary>
         public Buffer Buffer
         {
             get { return _Buffer; }
             set { _Buffer = value; NativePointer->Buffer = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Offset within the buffer to sync
+        /// </summary>
         public DeviceSize Offset
         {
             get { return NativePointer->Offset; }
             set { NativePointer->Offset = value; }
         }
         
+        /// <summary>
+        /// Amount of bytes to sync
+        /// </summary>
         public DeviceSize Size
         {
             get { return NativePointer->Size; }

@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.DebugMarkerMarkerInfoEXT* NativePointer;
         
+        /// <summary>
+        /// Name of the debug marker
+        /// </summary>
         public string MarkerName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->MarkerName); }
             set { NativePointer->MarkerName = Marshal.StringToHGlobalAnsi(value); }
         }
         
+        /// <summary>
+        /// Optional color for debug marker
+        /// </summary>
         public Single[] Color
         {
             get

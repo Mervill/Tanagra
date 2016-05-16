@@ -8,18 +8,27 @@ namespace Vulkan
         internal Interop.MappedMemoryRange* NativePointer;
         
         DeviceMemory _Memory;
+        /// <summary>
+        /// Mapped memory object
+        /// </summary>
         public DeviceMemory Memory
         {
             get { return _Memory; }
             set { _Memory = value; NativePointer->Memory = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Offset within the memory object where the range starts
+        /// </summary>
         public DeviceSize Offset
         {
             get { return NativePointer->Offset; }
             set { NativePointer->Offset = value; }
         }
         
+        /// <summary>
+        /// Size of the range within the memory object
+        /// </summary>
         public DeviceSize Size
         {
             get { return NativePointer->Size; }

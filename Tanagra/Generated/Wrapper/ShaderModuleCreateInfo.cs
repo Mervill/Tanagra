@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.ShaderModuleCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public ShaderModuleCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Binary code of size codeSize
+        /// </summary>
         public Byte[] Code
         {
             get

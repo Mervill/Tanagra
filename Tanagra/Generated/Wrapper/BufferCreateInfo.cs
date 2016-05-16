@@ -7,18 +7,27 @@ namespace Vulkan
     {
         internal Interop.BufferCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Buffer creation flags
+        /// </summary>
         public BufferCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Size
         {
             get { return NativePointer->Size; }
             set { NativePointer->Size = value; }
         }
         
+        /// <summary>
+        /// Buffer usage flags
+        /// </summary>
         public BufferUsageFlags Usage
         {
             get { return NativePointer->Usage; }

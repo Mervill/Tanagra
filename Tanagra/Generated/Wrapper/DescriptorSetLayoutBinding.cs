@@ -7,24 +7,36 @@ namespace Vulkan
     {
         internal Interop.DescriptorSetLayoutBinding* NativePointer;
         
+        /// <summary>
+        /// Binding number for this entry
+        /// </summary>
         public UInt32 Binding
         {
             get { return NativePointer->Binding; }
             set { NativePointer->Binding = value; }
         }
         
+        /// <summary>
+        /// Type of the descriptors in this binding
+        /// </summary>
         public DescriptorType DescriptorType
         {
             get { return NativePointer->DescriptorType; }
             set { NativePointer->DescriptorType = value; }
         }
         
+        /// <summary>
+        /// Shader stages this binding is visible to
+        /// </summary>
         public ShaderStageFlags StageFlags
         {
             get { return NativePointer->StageFlags; }
             set { NativePointer->StageFlags = value; }
         }
         
+        /// <summary>
+        /// Immutable samplers (used if descriptor type is SAMPLER or COMBINED_IMAGE_SAMPLER, is either NULL or contains count number of elements)
+        /// </summary>
         public Sampler[] ImmutableSamplers
         {
             get

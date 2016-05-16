@@ -119,9 +119,9 @@ namespace Tanagra.Generator
                 if(member.PointerRank != 0)
                     memberName = memberName.TrimStart(new[] { 'p' });
 
-                /*if (memberName.Contains('['))
-                    memberName = memberName.Substring(0, memberName.IndexOf('['));*/
-                
+                if(memberName.StartsWith("pfn"))
+                    memberName = memberName.Remove(0, 3);
+
                 memberName = char.ToUpper(memberName[0]) + memberName.Substring(1);
                 member.Name = memberName;
 
@@ -129,6 +129,19 @@ namespace Tanagra.Generator
                 {
                     if (constantMap.ContainsKey(member.FixedSize))
                         member.FixedSize = constantMap[member.FixedSize];
+                }
+
+                if(!string.IsNullOrEmpty(member.XMLComment))
+                {
+                    var comment = member.XMLComment;
+                    comment = char.ToUpper(comment[0]) + comment.Substring(1, comment.Length - 1);
+                    comment = comment.Replace("\r", string.Empty);
+                    comment = comment.Replace("\n", " ");
+                    
+                    Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
+                    comment = regex.Replace(comment, " ");
+
+                    member.XMLComment = comment;
                 }
             }
         }

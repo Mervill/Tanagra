@@ -139,9 +139,15 @@ namespace Vulkan
     /// </summary>
     public struct QueueFamilyProperties
     {
+        /// <summary>
+        /// Queue flags
+        /// </summary>
         public QueueFlags QueueFlags;
         public UInt32 QueueCount;
         public UInt32 TimestampValidBits;
+        /// <summary>
+        /// Minimum alignment requirement for image transfers
+        /// </summary>
         public Extent3D MinImageTransferGranularity;
     }
 
@@ -150,8 +156,17 @@ namespace Vulkan
     /// </summary>
     public struct MemoryRequirements
     {
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Size;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Alignment;
+        /// <summary>
+        /// Bitfield of the allowed memory type indices into memoryTypes[] for this object
+        /// </summary>
         public UInt32 MemoryTypeBits;
     }
 
@@ -172,8 +187,17 @@ namespace Vulkan
     {
         public SparseImageFormatProperties FormatProperties;
         public UInt32 ImageMipTailFirstLod;
+        /// <summary>
+        /// Specified in bytes, must be a multiple of sparse block size in bytes / alignment
+        /// </summary>
         public DeviceSize ImageMipTailSize;
+        /// <summary>
+        /// Specified in bytes, must be a multiple of sparse block size in bytes / alignment
+        /// </summary>
         public DeviceSize ImageMipTailOffset;
+        /// <summary>
+        /// Specified in bytes, must be a multiple of sparse block size in bytes / alignment
+        /// </summary>
         public DeviceSize ImageMipTailStride;
     }
 
@@ -182,7 +206,13 @@ namespace Vulkan
     /// </summary>
     public struct MemoryType
     {
+        /// <summary>
+        /// Memory properties of this memory type
+        /// </summary>
         public MemoryPropertyFlags PropertyFlags;
+        /// <summary>
+        /// Index of the memory heap allocations of this memory type are taken from
+        /// </summary>
         public UInt32 HeapIndex;
     }
 
@@ -191,7 +221,13 @@ namespace Vulkan
     /// </summary>
     public struct MemoryHeap
     {
+        /// <summary>
+        /// Available memory in the heap
+        /// </summary>
         public DeviceSize Size;
+        /// <summary>
+        /// Flags for the heap
+        /// </summary>
         public MemoryHeapFlags Flags;
     }
 
@@ -200,8 +236,17 @@ namespace Vulkan
     /// </summary>
     public struct FormatProperties
     {
+        /// <summary>
+        /// Format features in case of linear tiling
+        /// </summary>
         public FormatFeatureFlags LinearTilingFeatures;
+        /// <summary>
+        /// Format features in case of optimal tiling
+        /// </summary>
         public FormatFeatureFlags OptimalTilingFeatures;
+        /// <summary>
+        /// Format features supported by buffers
+        /// </summary>
         public FormatFeatureFlags BufferFeatures;
     }
 
@@ -210,10 +255,25 @@ namespace Vulkan
     /// </summary>
     public struct ImageFormatProperties
     {
+        /// <summary>
+        /// Max image dimensions for this resource type
+        /// </summary>
         public Extent3D MaxExtent;
+        /// <summary>
+        /// Max number of mipmap levels for this resource type
+        /// </summary>
         public UInt32 MaxMipLevels;
+        /// <summary>
+        /// Max array size for this resource type
+        /// </summary>
         public UInt32 MaxArrayLayers;
+        /// <summary>
+        /// Supported sample counts for this resource type
+        /// </summary>
         public SampleCountFlags SampleCounts;
+        /// <summary>
+        /// Max size (in bytes) of this resource type
+        /// </summary>
         public DeviceSize MaxResourceSize;
     }
 
@@ -270,17 +330,41 @@ namespace Vulkan
     /// </summary>
     public struct SubresourceLayout
     {
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Offset;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Size;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize RowPitch;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize ArrayPitch;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize DepthPitch;
     }
 
     public struct BufferCopy
     {
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize SrcOffset;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize DstOffset;
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Size;
         
         public BufferCopy(DeviceSize SrcOffset, DeviceSize DstOffset, DeviceSize Size)
@@ -294,9 +378,18 @@ namespace Vulkan
     public struct ImageCopy
     {
         public ImageSubresourceLayers SrcSubresource;
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Offset3D SrcOffset;
         public ImageSubresourceLayers DstSubresource;
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Offset3D DstOffset;
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Extent3D Extent;
         
         public ImageCopy(ImageSubresourceLayers SrcSubresource, Offset3D SrcOffset, ImageSubresourceLayers DstSubresource, Offset3D DstOffset, Extent3D Extent)
@@ -311,11 +404,23 @@ namespace Vulkan
 
     public struct BufferImageCopy
     {
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize BufferOffset;
+        /// <summary>
+        /// Specified in texels
+        /// </summary>
         public UInt32 BufferRowLength;
         public UInt32 BufferImageHeight;
         public ImageSubresourceLayers ImageSubresource;
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Offset3D ImageOffset;
+        /// <summary>
+        /// Specified in pixels for both compressed and uncompressed images
+        /// </summary>
         public Extent3D ImageExtent;
         
         public BufferImageCopy(DeviceSize BufferOffset, UInt32 BufferRowLength, UInt32 BufferImageHeight, ImageSubresourceLayers ImageSubresource, Offset3D ImageOffset, Extent3D ImageExtent)
@@ -361,8 +466,17 @@ namespace Vulkan
 
     public struct SpecializationMapEntry
     {
+        /// <summary>
+        /// The SpecConstant ID specified in the BIL
+        /// </summary>
         public UInt32 ConstantID;
+        /// <summary>
+        /// Offset of the value in the data block
+        /// </summary>
         public UInt32 Offset;
+        /// <summary>
+        /// Size in bytes of the SpecConstant
+        /// </summary>
         public UInt32 Size;
         
         public SpecializationMapEntry(UInt32 ConstantID, UInt32 Offset, UInt32 Size)
@@ -375,8 +489,17 @@ namespace Vulkan
 
     public struct VertexInputBindingDescription
     {
+        /// <summary>
+        /// Vertex buffer binding id
+        /// </summary>
         public UInt32 Binding;
+        /// <summary>
+        /// Distance between vertices in bytes (0 = no advancement)
+        /// </summary>
         public UInt32 Stride;
+        /// <summary>
+        /// The rate at which the vertex data is consumed
+        /// </summary>
         public VertexInputRate InputRate;
         
         public VertexInputBindingDescription(UInt32 Binding, UInt32 Stride, VertexInputRate InputRate)
@@ -389,9 +512,21 @@ namespace Vulkan
 
     public struct VertexInputAttributeDescription
     {
+        /// <summary>
+        /// Location of the shader vertex attrib
+        /// </summary>
         public UInt32 Location;
+        /// <summary>
+        /// Vertex buffer binding id
+        /// </summary>
         public UInt32 Binding;
+        /// <summary>
+        /// Format of source data
+        /// </summary>
         public Format Format;
+        /// <summary>
+        /// Offset of first element in bytes from base of vertex
+        /// </summary>
         public UInt32 Offset;
         
         public VertexInputAttributeDescription(UInt32 Location, UInt32 Binding, Format Format, UInt32 Offset)
@@ -451,8 +586,17 @@ namespace Vulkan
 
     public struct PushConstantRange
     {
+        /// <summary>
+        /// Which stages use the range
+        /// </summary>
         public ShaderStageFlags StageFlags;
+        /// <summary>
+        /// Start of the range, in bytes
+        /// </summary>
         public UInt32 Offset;
+        /// <summary>
+        /// Size of the range, in bytes
+        /// </summary>
         public UInt32 Size;
         
         public PushConstantRange(ShaderStageFlags StageFlags, UInt32 Offset, UInt32 Size)
@@ -494,9 +638,21 @@ namespace Vulkan
         public AttachmentDescriptionFlags Flags;
         public Format Format;
         public SampleCountFlags Samples;
+        /// <summary>
+        /// Load operation for color or depth data
+        /// </summary>
         public AttachmentLoadOp LoadOp;
+        /// <summary>
+        /// Store operation for color or depth data
+        /// </summary>
         public AttachmentStoreOp StoreOp;
+        /// <summary>
+        /// Load operation for stencil data
+        /// </summary>
         public AttachmentLoadOp StencilLoadOp;
+        /// <summary>
+        /// Store operation for stencil data
+        /// </summary>
         public AttachmentStoreOp StencilStoreOp;
         public ImageLayout InitialLayout;
         public ImageLayout FinalLayout;
@@ -533,7 +689,13 @@ namespace Vulkan
         public UInt32 DstSubpass;
         public PipelineStageFlags SrcStageMask;
         public PipelineStageFlags DstStageMask;
+        /// <summary>
+        /// Memory accesses from the source of the dependency to synchronize
+        /// </summary>
         public AccessFlags SrcAccessMask;
+        /// <summary>
+        /// Memory accesses from the destination of the dependency to synchronize
+        /// </summary>
         public AccessFlags DstAccessMask;
         public DependencyFlags DependencyFlags;
         
@@ -551,60 +713,225 @@ namespace Vulkan
 
     public struct PhysicalDeviceFeatures
     {
+        /// <summary>
+        /// Out of bounds buffer accesses are well defined
+        /// </summary>
         public Bool32 RobustBufferAccess;
+        /// <summary>
+        /// Full 32-bit range of indices for indexed draw calls
+        /// </summary>
         public Bool32 FullDrawIndexUint32;
+        /// <summary>
+        /// Image views which are arrays of cube maps
+        /// </summary>
         public Bool32 ImageCubeArray;
+        /// <summary>
+        /// Blending operations are controlled per-attachment
+        /// </summary>
         public Bool32 IndependentBlend;
+        /// <summary>
+        /// Geometry stage
+        /// </summary>
         public Bool32 GeometryShader;
+        /// <summary>
+        /// Tessellation control and evaluation stage
+        /// </summary>
         public Bool32 TessellationShader;
+        /// <summary>
+        /// Per-sample shading and interpolation
+        /// </summary>
         public Bool32 SampleRateShading;
+        /// <summary>
+        /// Blend operations which take two sources
+        /// </summary>
         public Bool32 DualSrcBlend;
+        /// <summary>
+        /// Logic operations
+        /// </summary>
         public Bool32 LogicOp;
+        /// <summary>
+        /// Multi draw indirect
+        /// </summary>
         public Bool32 MultiDrawIndirect;
+        /// <summary>
+        /// Indirect draws can use non-zero firstInstance
+        /// </summary>
         public Bool32 DrawIndirectFirstInstance;
+        /// <summary>
+        /// Depth clamping
+        /// </summary>
         public Bool32 DepthClamp;
+        /// <summary>
+        /// Depth bias clamping
+        /// </summary>
         public Bool32 DepthBiasClamp;
+        /// <summary>
+        /// Point and wireframe fill modes
+        /// </summary>
         public Bool32 FillModeNonSolid;
+        /// <summary>
+        /// Depth bounds test
+        /// </summary>
         public Bool32 DepthBounds;
+        /// <summary>
+        /// Lines with width greater than 1
+        /// </summary>
         public Bool32 WideLines;
+        /// <summary>
+        /// Points with size greater than 1
+        /// </summary>
         public Bool32 LargePoints;
+        /// <summary>
+        /// The fragment alpha component can be forced to maximum representable alpha value
+        /// </summary>
         public Bool32 AlphaToOne;
+        /// <summary>
+        /// Viewport arrays
+        /// </summary>
         public Bool32 MultiViewport;
+        /// <summary>
+        /// Anisotropic sampler filtering
+        /// </summary>
         public Bool32 SamplerAnisotropy;
+        /// <summary>
+        /// ETC texture compression formats
+        /// </summary>
         public Bool32 TextureCompressionETC2;
+        /// <summary>
+        /// ASTC LDR texture compression formats
+        /// </summary>
         public Bool32 TextureCompressionASTC_LDR;
+        /// <summary>
+        /// BC1-7 texture compressed formats
+        /// </summary>
         public Bool32 TextureCompressionBC;
+        /// <summary>
+        /// Precise occlusion queries returning actual sample counts
+        /// </summary>
         public Bool32 OcclusionQueryPrecise;
+        /// <summary>
+        /// Pipeline statistics query
+        /// </summary>
         public Bool32 PipelineStatisticsQuery;
+        /// <summary>
+        /// Stores and atomic ops on storage buffers and images are supported in vertex, tessellation, and geometry stages
+        /// </summary>
         public Bool32 VertexPipelineStoresAndAtomics;
+        /// <summary>
+        /// Stores and atomic ops on storage buffers and images are supported in the fragment stage
+        /// </summary>
         public Bool32 FragmentStoresAndAtomics;
+        /// <summary>
+        /// Tessellation and geometry stages can export point size
+        /// </summary>
         public Bool32 ShaderTessellationAndGeometryPointSize;
+        /// <summary>
+        /// Image gather with run-time values and independent offsets
+        /// </summary>
         public Bool32 ShaderImageGatherExtended;
+        /// <summary>
+        /// The extended set of formats can be used for storage images
+        /// </summary>
         public Bool32 ShaderStorageImageExtendedFormats;
+        /// <summary>
+        /// Multisample images can be used for storage images
+        /// </summary>
         public Bool32 ShaderStorageImageMultisample;
+        /// <summary>
+        /// Read from storage image does not require format qualifier
+        /// </summary>
         public Bool32 ShaderStorageImageReadWithoutFormat;
+        /// <summary>
+        /// Write to storage image does not require format qualifier
+        /// </summary>
         public Bool32 ShaderStorageImageWriteWithoutFormat;
+        /// <summary>
+        /// Arrays of uniform buffers can be accessed with dynamically uniform indices
+        /// </summary>
         public Bool32 ShaderUniformBufferArrayDynamicIndexing;
+        /// <summary>
+        /// Arrays of sampled images can be accessed with dynamically uniform indices
+        /// </summary>
         public Bool32 ShaderSampledImageArrayDynamicIndexing;
+        /// <summary>
+        /// Arrays of storage buffers can be accessed with dynamically uniform indices
+        /// </summary>
         public Bool32 ShaderStorageBufferArrayDynamicIndexing;
+        /// <summary>
+        /// Arrays of storage images can be accessed with dynamically uniform indices
+        /// </summary>
         public Bool32 ShaderStorageImageArrayDynamicIndexing;
+        /// <summary>
+        /// Clip distance in shaders
+        /// </summary>
         public Bool32 ShaderClipDistance;
+        /// <summary>
+        /// Cull distance in shaders
+        /// </summary>
         public Bool32 ShaderCullDistance;
+        /// <summary>
+        /// 64-bit floats (doubles) in shaders
+        /// </summary>
         public Bool32 ShaderFloat64;
+        /// <summary>
+        /// 64-bit integers in shaders
+        /// </summary>
         public Bool32 ShaderInt64;
+        /// <summary>
+        /// 16-bit integers in shaders
+        /// </summary>
         public Bool32 ShaderInt16;
+        /// <summary>
+        /// Shader can use texture operations that return resource residency information (requires sparseNonResident support)
+        /// </summary>
         public Bool32 ShaderResourceResidency;
+        /// <summary>
+        /// Shader can use texture operations that specify minimum resource level of detail
+        /// </summary>
         public Bool32 ShaderResourceMinLod;
+        /// <summary>
+        /// Sparse resources support: Resource memory can be managed at opaque page level rather than object level
+        /// </summary>
         public Bool32 SparseBinding;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident buffers
+        /// </summary>
         public Bool32 SparseResidencyBuffer;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident 2D (non-MSAA non-depth/stencil) images
+        /// </summary>
         public Bool32 SparseResidencyImage2D;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident 3D images
+        /// </summary>
         public Bool32 SparseResidencyImage3D;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident MSAA 2D images with 2 samples
+        /// </summary>
         public Bool32 SparseResidency2Samples;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident MSAA 2D images with 4 samples
+        /// </summary>
         public Bool32 SparseResidency4Samples;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident MSAA 2D images with 8 samples
+        /// </summary>
         public Bool32 SparseResidency8Samples;
+        /// <summary>
+        /// Sparse resources support: GPU can access partially resident MSAA 2D images with 16 samples
+        /// </summary>
         public Bool32 SparseResidency16Samples;
+        /// <summary>
+        /// Sparse resources support: GPU can correctly access data aliased into multiple locations (opt-in)
+        /// </summary>
         public Bool32 SparseResidencyAliased;
+        /// <summary>
+        /// Multisample rate must be the same for all pipelines in a subpass
+        /// </summary>
         public Bool32 VariableMultisampleRate;
+        /// <summary>
+        /// Queries may be inherited from primary to secondary command buffers
+        /// </summary>
         public Bool32 InheritedQueries;
     }
 
@@ -613,10 +940,25 @@ namespace Vulkan
     /// </summary>
     public struct PhysicalDeviceSparseProperties
     {
+        /// <summary>
+        /// Sparse resources support: GPU will access all 2D (single sample) sparse resources using the standard sparse image block shapes (based on pixel format)
+        /// </summary>
         public Bool32 ResidencyStandard2DBlockShape;
+        /// <summary>
+        /// Sparse resources support: GPU will access all 2D (multisample) sparse resources using the standard sparse image block shapes (based on pixel format)
+        /// </summary>
         public Bool32 ResidencyStandard2DMultisampleBlockShape;
+        /// <summary>
+        /// Sparse resources support: GPU will access all 3D sparse resources using the standard sparse image block shapes (based on pixel format)
+        /// </summary>
         public Bool32 ResidencyStandard3DBlockShape;
+        /// <summary>
+        /// Sparse resources support: Images with mip-level dimensions that are NOT a multiple of the sparse image block dimensions will be placed in the mip tail
+        /// </summary>
         public Bool32 ResidencyAlignedMipSize;
+        /// <summary>
+        /// Sparse resources support: GPU can consistently access non-resident regions of a resource, all reads return as if data is 0, writes are discarded
+        /// </summary>
         public Bool32 ResidencyNonResidentStrict;
     }
 
@@ -670,7 +1012,13 @@ namespace Vulkan
 
     public struct DisplayModeParametersKHR
     {
+        /// <summary>
+        /// Visible scannout region.
+        /// </summary>
         public Extent2D VisibleRegion;
+        /// <summary>
+        /// Number of times per second the display is updated.
+        /// </summary>
         public UInt32 RefreshRate;
         
         public DisplayModeParametersKHR(Extent2D VisibleRegion, UInt32 RefreshRate)
@@ -682,7 +1030,13 @@ namespace Vulkan
 
     public struct DisplayPlaneCapabilitiesKHR
     {
+        /// <summary>
+        /// Types of alpha blending supported, if any.
+        /// </summary>
         public DisplayPlaneAlphaFlagsKHR SupportedAlpha;
+        /// <summary>
+        /// Does the plane have any position and extent restrictions?
+        /// </summary>
         public Offset2D MinSrcPosition;
         public Offset2D MaxSrcPosition;
         public Extent2D MinSrcExtent;
@@ -708,15 +1062,45 @@ namespace Vulkan
 
     public struct SurfaceCapabilitiesKHR
     {
+        /// <summary>
+        /// Supported minimum number of images for the surface
+        /// </summary>
         public UInt32 MinImageCount;
+        /// <summary>
+        /// Supported maximum number of images for the surface, 0 for unlimited
+        /// </summary>
         public UInt32 MaxImageCount;
+        /// <summary>
+        /// Current image width and height for the surface, (0, 0) if undefined
+        /// </summary>
         public Extent2D CurrentExtent;
+        /// <summary>
+        /// Supported minimum image width and height for the surface
+        /// </summary>
         public Extent2D MinImageExtent;
+        /// <summary>
+        /// Supported maximum image width and height for the surface
+        /// </summary>
         public Extent2D MaxImageExtent;
+        /// <summary>
+        /// Supported maximum number of image layers for the surface
+        /// </summary>
         public UInt32 MaxImageArrayLayers;
+        /// <summary>
+        /// 1 or more bits representing the transforms supported
+        /// </summary>
         public SurfaceTransformFlagsKHR SupportedTransforms;
+        /// <summary>
+        /// The surface's current transform relative to the device's natural orientation
+        /// </summary>
         public SurfaceTransformFlagsKHR CurrentTransform;
+        /// <summary>
+        /// 1 or more bits representing the alpha compositing modes supported
+        /// </summary>
         public CompositeAlphaFlagsKHR SupportedCompositeAlpha;
+        /// <summary>
+        /// Supported image usage flags for the surface
+        /// </summary>
         public ImageUsageFlags SupportedUsageFlags;
         
         public SurfaceCapabilitiesKHR(UInt32 MinImageCount, UInt32 MaxImageCount, Extent2D CurrentExtent, Extent2D MinImageExtent, Extent2D MaxImageExtent, UInt32 MaxImageArrayLayers, SurfaceTransformFlagsKHR CurrentTransform)
@@ -736,7 +1120,13 @@ namespace Vulkan
 
     public struct SurfaceFormatKHR
     {
+        /// <summary>
+        /// Supported pair of rendering format
+        /// </summary>
         public Format Format;
+        /// <summary>
+        /// And colorspace for the surface
+        /// </summary>
         public ColorSpaceKHR ColorSpace;
         
         public SurfaceFormatKHR(Format Format, ColorSpaceKHR ColorSpace)

@@ -8,30 +8,45 @@ namespace Vulkan
         internal Interop.WriteDescriptorSet* NativePointer;
         
         DescriptorSet _DstSet;
+        /// <summary>
+        /// Destination descriptor set
+        /// </summary>
         public DescriptorSet DstSet
         {
             get { return _DstSet; }
             set { _DstSet = value; NativePointer->DstSet = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Binding within the destination descriptor set to write
+        /// </summary>
         public UInt32 DstBinding
         {
             get { return NativePointer->DstBinding; }
             set { NativePointer->DstBinding = value; }
         }
         
+        /// <summary>
+        /// Array element within the destination binding to write
+        /// </summary>
         public UInt32 DstArrayElement
         {
             get { return NativePointer->DstArrayElement; }
             set { NativePointer->DstArrayElement = value; }
         }
         
+        /// <summary>
+        /// Descriptor type to write (determines which members of the array pointed by pDescriptors are going to be used)
+        /// </summary>
         public DescriptorType DescriptorType
         {
             get { return NativePointer->DescriptorType; }
             set { NativePointer->DescriptorType = value; }
         }
         
+        /// <summary>
+        /// Sampler, image view, and layout for SAMPLER, COMBINED_IMAGE_SAMPLER, {SAMPLED,STORAGE}_IMAGE, and INPUT_ATTACHMENT descriptor types.
+        /// </summary>
         public DescriptorImageInfo[] ImageInfo
         {
             get
@@ -54,6 +69,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Raw buffer, size, and offset for {UNIFORM,STORAGE}_BUFFER[_DYNAMIC] descriptor types.
+        /// </summary>
         public DescriptorBufferInfo[] BufferInfo
         {
             get
@@ -76,6 +94,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Buffer view to write to the descriptor for {UNIFORM,STORAGE}_TEXEL_BUFFER descriptor types.
+        /// </summary>
         public BufferView[] TexelBufferView
         {
             get

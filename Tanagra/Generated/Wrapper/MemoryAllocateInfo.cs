@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.MemoryAllocateInfo* NativePointer;
         
+        /// <summary>
+        /// Size of memory allocation
+        /// </summary>
         public DeviceSize AllocationSize
         {
             get { return NativePointer->AllocationSize; }
             set { NativePointer->AllocationSize = value; }
         }
         
+        /// <summary>
+        /// Index of the of the memory type to allocate from
+        /// </summary>
         public UInt32 MemoryTypeIndex
         {
             get { return NativePointer->MemoryTypeIndex; }

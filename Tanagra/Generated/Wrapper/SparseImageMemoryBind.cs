@@ -32,12 +32,18 @@ namespace Vulkan
             set { _Memory = value; NativePointer->Memory = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize MemoryOffset
         {
             get { return NativePointer->MemoryOffset; }
             set { NativePointer->MemoryOffset = value; }
         }
         
+        /// <summary>
+        /// Reserved for future
+        /// </summary>
         public SparseMemoryBindFlags Flags
         {
             get { return NativePointer->Flags; }

@@ -7,24 +7,36 @@ namespace Vulkan
     {
         internal Interop.DebugMarkerObjectTagInfoEXT* NativePointer;
         
+        /// <summary>
+        /// The type of the object
+        /// </summary>
         public DebugReportObjectTypeEXT ObjectType
         {
             get { return NativePointer->ObjectType; }
             set { NativePointer->ObjectType = value; }
         }
         
+        /// <summary>
+        /// The handle of the object, cast to uint64_t
+        /// </summary>
         public UInt64 Object
         {
             get { return NativePointer->Object; }
             set { NativePointer->Object = value; }
         }
         
+        /// <summary>
+        /// The name of the tag to set on the object
+        /// </summary>
         public UInt64 TagName
         {
             get { return NativePointer->TagName; }
             set { NativePointer->TagName = value; }
         }
         
+        /// <summary>
+        /// Tag data to attach to the object
+        /// </summary>
         public IntPtr[] Tag
         {
             get

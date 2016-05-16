@@ -7,18 +7,27 @@ namespace Vulkan
     {
         internal Interop.DebugMarkerObjectNameInfoEXT* NativePointer;
         
+        /// <summary>
+        /// The type of the object
+        /// </summary>
         public DebugReportObjectTypeEXT ObjectType
         {
             get { return NativePointer->ObjectType; }
             set { NativePointer->ObjectType = value; }
         }
         
+        /// <summary>
+        /// The handle of the object, cast to uint64_t
+        /// </summary>
         public UInt64 Object
         {
             get { return NativePointer->Object; }
             set { NativePointer->Object = value; }
         }
         
+        /// <summary>
+        /// Name to apply to the object
+        /// </summary>
         public string ObjectName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->ObjectName); }

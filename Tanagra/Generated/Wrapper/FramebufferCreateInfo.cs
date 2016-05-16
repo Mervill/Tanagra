@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.FramebufferCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public FramebufferCreateFlags Flags
         {
             get { return NativePointer->Flags; }

@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.DeviceQueueCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public DeviceQueueCreateFlags Flags
         {
             get { return NativePointer->Flags; }

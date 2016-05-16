@@ -7,30 +7,45 @@ namespace Vulkan
     {
         internal Interop.PipelineMultisampleStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineMultisampleStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Number of samples used for rasterization
+        /// </summary>
         public SampleCountFlags RasterizationSamples
         {
             get { return NativePointer->RasterizationSamples; }
             set { NativePointer->RasterizationSamples = value; }
         }
         
+        /// <summary>
+        /// Optional (GL45)
+        /// </summary>
         public Bool32 SampleShadingEnable
         {
             get { return NativePointer->SampleShadingEnable; }
             set { NativePointer->SampleShadingEnable = value; }
         }
         
+        /// <summary>
+        /// Optional (GL45)
+        /// </summary>
         public Single MinSampleShading
         {
             get { return NativePointer->MinSampleShading; }
             set { NativePointer->MinSampleShading = value; }
         }
         
+        /// <summary>
+        /// Array of sampleMask words
+        /// </summary>
         public SampleMask[] SampleMask
         {
             get

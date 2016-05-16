@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.InstanceCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public InstanceCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -20,6 +23,9 @@ namespace Vulkan
             set { _ApplicationInfo = value; NativePointer->ApplicationInfo = (IntPtr)value.NativePointer; }
         }
         
+        /// <summary>
+        /// Ordered list of layer names to be enabled
+        /// </summary>
         public string[] EnabledLayerNames
         {
             get
@@ -41,6 +47,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Extension names to be enabled
+        /// </summary>
         public string[] EnabledExtensionNames
         {
             get

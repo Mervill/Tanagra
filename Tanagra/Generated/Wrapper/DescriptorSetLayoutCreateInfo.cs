@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.DescriptorSetLayoutCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public DescriptorSetLayoutCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Array of descriptor set layout bindings
+        /// </summary>
         public DescriptorSetLayoutBinding[] Bindings
         {
             get

@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.BufferViewCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public BufferViewCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -20,18 +23,27 @@ namespace Vulkan
             set { _Buffer = value; NativePointer->Buffer = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Optionally specifies format of elements
+        /// </summary>
         public Format Format
         {
             get { return NativePointer->Format; }
             set { NativePointer->Format = value; }
         }
         
+        /// <summary>
+        /// Specified in bytes
+        /// </summary>
         public DeviceSize Offset
         {
             get { return NativePointer->Offset; }
             set { NativePointer->Offset = value; }
         }
         
+        /// <summary>
+        /// View size specified in bytes
+        /// </summary>
         public DeviceSize Range
         {
             get { return NativePointer->Range; }

@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineRasterizationStateRasterizationOrderAMD* NativePointer;
         
+        /// <summary>
+        /// Rasterization order to use for the pipeline
+        /// </summary>
         public RasterizationOrderAMD RasterizationOrder
         {
             get { return NativePointer->RasterizationOrder; }

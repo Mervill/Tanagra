@@ -7,18 +7,27 @@ namespace Vulkan
     {
         internal Interop.DebugReportCallbackCreateInfoEXT* NativePointer;
         
+        /// <summary>
+        /// Indicates which events call this callback
+        /// </summary>
         public DebugReportFlagsEXT Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
-        public IntPtr PfnCallback
+        /// <summary>
+        /// Function pointer of a callback function
+        /// </summary>
+        public IntPtr Callback
         {
-            get { return NativePointer->PfnCallback; }
-            set { NativePointer->PfnCallback = value; }
+            get { return NativePointer->Callback; }
+            set { NativePointer->Callback = value; }
         }
         
+        /// <summary>
+        /// User data provided to callback function
+        /// </summary>
         public IntPtr UserData
         {
             get { return NativePointer->UserData; }
@@ -31,10 +40,10 @@ namespace Vulkan
             NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
         
-        public DebugReportCallbackCreateInfoEXT(DebugReportFlagsEXT Flags, IntPtr PfnCallback) : this()
+        public DebugReportCallbackCreateInfoEXT(DebugReportFlagsEXT Flags, IntPtr Callback) : this()
         {
             this.Flags = Flags;
-            this.PfnCallback = PfnCallback;
+            this.Callback = Callback;
         }
     }
 }

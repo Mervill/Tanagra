@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.FenceCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Fence creation flags
+        /// </summary>
         public FenceCreateFlags Flags
         {
             get { return NativePointer->Flags; }

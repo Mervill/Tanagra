@@ -13,34 +13,34 @@ namespace Vulkan
             set { NativePointer->UserData = value; }
         }
         
-        public IntPtr PfnAllocation
+        public IntPtr Allocation
         {
-            get { return NativePointer->PfnAllocation; }
-            set { NativePointer->PfnAllocation = value; }
+            get { return NativePointer->Allocation; }
+            set { NativePointer->Allocation = value; }
         }
         
-        public IntPtr PfnReallocation
+        public IntPtr Reallocation
         {
-            get { return NativePointer->PfnReallocation; }
-            set { NativePointer->PfnReallocation = value; }
+            get { return NativePointer->Reallocation; }
+            set { NativePointer->Reallocation = value; }
         }
         
-        public IntPtr PfnFree
+        public IntPtr Free
         {
-            get { return NativePointer->PfnFree; }
-            set { NativePointer->PfnFree = value; }
+            get { return NativePointer->Free; }
+            set { NativePointer->Free = value; }
         }
         
-        public IntPtr PfnInternalAllocation
+        public IntPtr InternalAllocation
         {
-            get { return NativePointer->PfnInternalAllocation; }
-            set { NativePointer->PfnInternalAllocation = value; }
+            get { return NativePointer->InternalAllocation; }
+            set { NativePointer->InternalAllocation = value; }
         }
         
-        public IntPtr PfnInternalFree
+        public IntPtr InternalFree
         {
-            get { return NativePointer->PfnInternalFree; }
-            set { NativePointer->PfnInternalFree = value; }
+            get { return NativePointer->InternalFree; }
+            set { NativePointer->InternalFree = value; }
         }
         
         public AllocationCallbacks()
@@ -48,11 +48,11 @@ namespace Vulkan
             NativePointer = (Interop.AllocationCallbacks*)Interop.Structure.Allocate(typeof(Interop.AllocationCallbacks));
         }
         
-        public AllocationCallbacks(IntPtr PfnAllocation, IntPtr PfnReallocation, IntPtr PfnFree) : this()
+        public AllocationCallbacks(IntPtr Allocation, IntPtr Reallocation, IntPtr Free) : this()
         {
-            this.PfnAllocation = PfnAllocation;
-            this.PfnReallocation = PfnReallocation;
-            this.PfnFree = PfnFree;
+            this.Allocation = Allocation;
+            this.Reallocation = Reallocation;
+            this.Free = Free;
         }
     }
 }

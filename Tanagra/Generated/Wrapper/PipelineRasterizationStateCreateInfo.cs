@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineRasterizationStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineRasterizationStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -25,6 +28,9 @@ namespace Vulkan
             set { NativePointer->RasterizerDiscardEnable = value; }
         }
         
+        /// <summary>
+        /// Optional (GL45)
+        /// </summary>
         public PolygonMode PolygonMode
         {
             get { return NativePointer->PolygonMode; }

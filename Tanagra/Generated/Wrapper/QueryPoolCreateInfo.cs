@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.QueryPoolCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public QueryPoolCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -25,6 +28,9 @@ namespace Vulkan
             set { NativePointer->QueryCount = value; }
         }
         
+        /// <summary>
+        /// Optional
+        /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics
         {
             get { return NativePointer->PipelineStatistics; }

@@ -8,6 +8,9 @@ namespace Vulkan
         internal Interop.CommandBufferInheritanceInfo* NativePointer;
         
         RenderPass _RenderPass;
+        /// <summary>
+        /// Render pass for secondary command buffers
+        /// </summary>
         public RenderPass RenderPass
         {
             get { return _RenderPass; }
@@ -21,24 +24,36 @@ namespace Vulkan
         }
         
         Framebuffer _Framebuffer;
+        /// <summary>
+        /// Framebuffer for secondary command buffers
+        /// </summary>
         public Framebuffer Framebuffer
         {
             get { return _Framebuffer; }
             set { _Framebuffer = value; NativePointer->Framebuffer = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Whether this secondary command buffer may be executed during an occlusion query
+        /// </summary>
         public Bool32 OcclusionQueryEnable
         {
             get { return NativePointer->OcclusionQueryEnable; }
             set { NativePointer->OcclusionQueryEnable = value; }
         }
         
+        /// <summary>
+        /// Query flags used by this secondary command buffer, if executed during an occlusion query
+        /// </summary>
         public QueryControlFlags QueryFlags
         {
             get { return NativePointer->QueryFlags; }
             set { NativePointer->QueryFlags = value; }
         }
         
+        /// <summary>
+        /// Pipeline statistics that may be counted for this secondary command buffer
+        /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics
         {
             get { return NativePointer->PipelineStatistics; }

@@ -10,11 +10,17 @@ namespace Vulkan
     {
         internal Interop.ExtensionProperties* NativePointer;
         
+        /// <summary>
+        /// Extension name
+        /// </summary>
         public string ExtensionName
         {
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->ExtensionName); }
         }
         
+        /// <summary>
+        /// Version of the extension specification implemented
+        /// </summary>
         public UInt32 SpecVersion
         {
             get { return NativePointer->SpecVersion; }

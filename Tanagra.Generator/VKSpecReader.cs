@@ -360,7 +360,18 @@ namespace Tanagra.Generator
                 }
             }
 
-            vkStruct.Members = xstruct.Elements("member").Select(ReadMember).ToArray();
+            var memberList = new List<VkMember>();
+            foreach(var xmember in xstruct.Elements("member"))
+            {
+                var vkMember = ReadMember(xmember);
+                // Why... WHY is this important data encoded as an xml comment?!
+                if(xmember.NextNode is XComment)
+                {
+                    vkMember.XMLComment = ((XComment)xmember.NextNode).Value.Trim();
+                }
+                memberList.Add(vkMember);
+            }
+            vkStruct.Members = memberList.ToArray();
             
             var xvalidity = xstruct.Element("validity");
             if(xvalidity != null)
@@ -441,7 +452,7 @@ namespace Tanagra.Generator
                             vkMember.NoAutoValidity = xattrib.Value == "true";
                             break;
                         case "validextensionstructs":
-                            // TODO
+                            vkMember.ValidExtensionStructs = xattrib.Value.Split(',');
                             break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }

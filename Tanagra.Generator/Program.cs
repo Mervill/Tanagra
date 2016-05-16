@@ -9,18 +9,21 @@ namespace Tanagra.Generator
     {
         // todo: union
         // todo: dealloc unmanaged memory
-        // todo: assign null to array
+        // todo: assign null to struct array
         // todo: IDisposable
         // todo: why is Char still a weird edge case
         // todo: optional flag to generate arrays instead of lists on commands?
         // todo: public structs use properties?
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
-        // todo: Latexmath - exlucde from hiding count
         // todo: merge flag enums
         // todo: VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
-        // XCB -> X protocol C-language Binding
-        // https://msdn.microsoft.com/en-us/library/dn823273(v=vs.110).aspx
+        // todo: VK_STENCIL_FRONT_AND_BACK
+        // todo: AddMemoryPressure / RemoveMemoryPressure
+        // todo: there is a common case where a command that takes arrays only takes a single entry
+        // todo: API Constants
+        ///
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
+        // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior
         // http://stackoverflow.com/questions/17562295/if-i-allocate-some-memory-with-allochglobal-do-i-have-to-free-it-with-freehglob
         //
         // Notes
@@ -59,14 +62,6 @@ namespace Tanagra.Generator
             gen.Generate(spec);
             Console.WriteLine("Generated {0} files", gen.files.Count);
             
-            var notHandleFn = spec.Commands.Where(x => !(x.Parameters.First().Type is VkHandle));
-
-            //var codes = spec.Commands.SelectMany(x => x.ErrorCodes).Distinct().ToList();
-            //codes.ForEach(Console.WriteLine);
-
-            //var types = spec.AllTypes.Values.Where(x => x.Category == VkTypeCategory.None).Select(x => x.Name).ToList();
-            //types.ForEach(Console.WriteLine);
-
             WriteCode(gen);
 
             Console.WriteLine("program complete");

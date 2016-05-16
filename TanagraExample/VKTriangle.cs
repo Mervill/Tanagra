@@ -242,7 +242,7 @@ namespace TanagraExample
                 Surface = surface,
                 MinImageCount = desiredImageCount,
                 ImageFormat = backBufferFormat,
-                ImageColorSpace = ColorSpaceKHR.ColorspaceSrgbNonlinear,
+                ImageColorSpace = ColorSpaceKHR.SrgbNonlinear,
                 ImageExtent = imageExtent,
                 ImageArrayLayers = 1,
                 ImageUsage = ImageUsageFlags.ColorAttachment,
@@ -284,13 +284,14 @@ namespace TanagraExample
                 Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
             }
 
-            var imageMemoryBarrier = new ImageMemoryBarrier
+            /*var imageMemoryBarrier = new ImageMemoryBarrier
             {
                 OldLayout = oldLayout,
                 NewLayout = newLayout,
                 Image = image,
                 SubresourceRange = new ImageSubresourceRange(imageAspect, 0, 1, 0, 1)
-            };
+            };*/
+            var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, new ImageSubresourceRange(imageAspect, 0, 1, 0, 1));
 
             switch (newLayout)
             {
@@ -423,6 +424,7 @@ namespace TanagraExample
                     InitialLayout  = ImageLayout.ColorAttachmentOptimal,
                     FinalLayout    = ImageLayout.ColorAttachmentOptimal
                 },
+                //new AttachmentDescription(backBufferFormat, SampleCountFlags.SampleCountFlags1, AttachmentLoadOp.Load, AttachmentStoreOp.Store, AttachmentLoadOp.DontCare, AttachmentStoreOp.DontCare, ImageLayout.ColorAttachmentOptimal, ImageLayout.ColorAttachmentOptimal)
             };
 
             var createInfo = new RenderPassCreateInfo
@@ -582,6 +584,7 @@ namespace TanagraExample
                 WaitDstStageMask = new[] { pipelineStageFlags },
                 CommandBuffers = new[] { drawCommandBuffer }
             };
+            //submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
             //submitInfo.Dispose();
 

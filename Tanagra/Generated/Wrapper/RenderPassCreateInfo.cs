@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.RenderPassCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public RenderPassCreateFlags Flags
         {
             get { return NativePointer->Flags; }

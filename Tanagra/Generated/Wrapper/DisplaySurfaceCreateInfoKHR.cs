@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.DisplaySurfaceCreateInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public DisplaySurfaceCreateFlagsKHR Flags
         {
             get { return NativePointer->Flags; }
@@ -14,42 +17,63 @@ namespace Vulkan
         }
         
         DisplayModeKHR _DisplayMode;
+        /// <summary>
+        /// The mode to use when displaying this surface
+        /// </summary>
         public DisplayModeKHR DisplayMode
         {
             get { return _DisplayMode; }
             set { _DisplayMode = value; NativePointer->DisplayMode = value.NativePointer; }
         }
         
+        /// <summary>
+        /// The plane on which this surface appears. Must be between 0 and the value returned by vkGetPhysicalDeviceDisplayPlanePropertiesKHR() in pPropertyCount.
+        /// </summary>
         public UInt32 PlaneIndex
         {
             get { return NativePointer->PlaneIndex; }
             set { NativePointer->PlaneIndex = value; }
         }
         
+        /// <summary>
+        /// The z-order of the plane.
+        /// </summary>
         public UInt32 PlaneStackIndex
         {
             get { return NativePointer->PlaneStackIndex; }
             set { NativePointer->PlaneStackIndex = value; }
         }
         
+        /// <summary>
+        /// Transform to apply to the images as part of the scannout operation
+        /// </summary>
         public SurfaceTransformFlagsKHR Transform
         {
             get { return NativePointer->Transform; }
             set { NativePointer->Transform = value; }
         }
         
+        /// <summary>
+        /// Global alpha value. Must be between 0 and 1, inclusive. Ignored if alphaMode is not VK_DISPLAY_PLANE_ALPHA_GLOBAL_BIT_KHR
+        /// </summary>
         public Single GlobalAlpha
         {
             get { return NativePointer->GlobalAlpha; }
             set { NativePointer->GlobalAlpha = value; }
         }
         
+        /// <summary>
+        /// What type of alpha blending to use. Must be a bit from vkGetDisplayPlanePropertiesKHR::supportedAlpha.
+        /// </summary>
         public DisplayPlaneAlphaFlagsKHR AlphaMode
         {
             get { return NativePointer->AlphaMode; }
             set { NativePointer->AlphaMode = value; }
         }
         
+        /// <summary>
+        /// Size of the images to use with this surface
+        /// </summary>
         public Extent2D ImageExtent
         {
             get { return NativePointer->ImageExtent; }

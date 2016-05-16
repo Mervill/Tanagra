@@ -13,6 +13,9 @@ namespace Vulkan
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Must be VK_PIPELINE_BIND_POINT_GRAPHICS for now
+        /// </summary>
         public PipelineBindPoint PipelineBindPoint
         {
             get { return NativePointer->PipelineBindPoint; }

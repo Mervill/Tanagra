@@ -7,12 +7,18 @@ namespace Vulkan
     {
         internal Interop.PipelineCacheCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineCacheCreateFlags Flags
         {
             get { return NativePointer->Flags; }
             set { NativePointer->Flags = value; }
         }
         
+        /// <summary>
+        /// Initial data to populate cache
+        /// </summary>
         public IntPtr[] InitialData
         {
             get

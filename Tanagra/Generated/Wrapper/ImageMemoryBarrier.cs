@@ -7,36 +7,54 @@ namespace Vulkan
     {
         internal Interop.ImageMemoryBarrier* NativePointer;
         
+        /// <summary>
+        /// Memory accesses from the source of the dependency to synchronize
+        /// </summary>
         public AccessFlags SrcAccessMask
         {
             get { return NativePointer->SrcAccessMask; }
             set { NativePointer->SrcAccessMask = value; }
         }
         
+        /// <summary>
+        /// Memory accesses from the destination of the dependency to synchronize
+        /// </summary>
         public AccessFlags DstAccessMask
         {
             get { return NativePointer->DstAccessMask; }
             set { NativePointer->DstAccessMask = value; }
         }
         
+        /// <summary>
+        /// Current layout of the image
+        /// </summary>
         public ImageLayout OldLayout
         {
             get { return NativePointer->OldLayout; }
             set { NativePointer->OldLayout = value; }
         }
         
+        /// <summary>
+        /// New layout to transition the image to
+        /// </summary>
         public ImageLayout NewLayout
         {
             get { return NativePointer->NewLayout; }
             set { NativePointer->NewLayout = value; }
         }
         
+        /// <summary>
+        /// Queue family to transition ownership from
+        /// </summary>
         public UInt32 SrcQueueFamilyIndex
         {
             get { return NativePointer->SrcQueueFamilyIndex; }
             set { NativePointer->SrcQueueFamilyIndex = value; }
         }
         
+        /// <summary>
+        /// Queue family to transition ownership to
+        /// </summary>
         public UInt32 DstQueueFamilyIndex
         {
             get { return NativePointer->DstQueueFamilyIndex; }
@@ -44,12 +62,18 @@ namespace Vulkan
         }
         
         Image _Image;
+        /// <summary>
+        /// Image to sync
+        /// </summary>
         public Image Image
         {
             get { return _Image; }
             set { _Image = value; NativePointer->Image = value.NativePointer; }
         }
         
+        /// <summary>
+        /// Subresource range to sync
+        /// </summary>
         public ImageSubresourceRange SubresourceRange
         {
             get { return NativePointer->SubresourceRange; }

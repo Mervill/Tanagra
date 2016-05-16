@@ -7,18 +7,27 @@ namespace Vulkan
     {
         internal Interop.DisplayPresentInfoKHR* NativePointer;
         
+        /// <summary>
+        /// Rectangle within the presentable image to read pixel data from when presenting to the display.
+        /// </summary>
         public Rect2D SrcRect
         {
             get { return NativePointer->SrcRect; }
             set { NativePointer->SrcRect = value; }
         }
         
+        /// <summary>
+        /// Rectangle within the current display mode's visible region to display srcRectangle in.
+        /// </summary>
         public Rect2D DstRect
         {
             get { return NativePointer->DstRect; }
             set { NativePointer->DstRect = value; }
         }
         
+        /// <summary>
+        /// For smart displays, use buffered mode. If the display properties member "persistentMode" is VK_FALSE, this member must always be VK_FALSE.
+        /// </summary>
         public Bool32 Persistent
         {
             get { return NativePointer->Persistent; }

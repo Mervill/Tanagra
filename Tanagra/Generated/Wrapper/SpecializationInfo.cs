@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.SpecializationInfo* NativePointer;
         
+        /// <summary>
+        /// Array of map entries
+        /// </summary>
         public SpecializationMapEntry[] MapEntries
         {
             get
@@ -29,6 +32,9 @@ namespace Vulkan
             }
         }
         
+        /// <summary>
+        /// Pointer to SpecConstant data
+        /// </summary>
         public IntPtr[] Data
         {
             get

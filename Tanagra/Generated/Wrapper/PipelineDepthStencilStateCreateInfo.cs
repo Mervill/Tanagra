@@ -7,6 +7,9 @@ namespace Vulkan
     {
         internal Interop.PipelineDepthStencilStateCreateInfo* NativePointer;
         
+        /// <summary>
+        /// Reserved
+        /// </summary>
         public PipelineDepthStencilStateCreateFlags Flags
         {
             get { return NativePointer->Flags; }
@@ -31,6 +34,9 @@ namespace Vulkan
             set { NativePointer->DepthCompareOp = value; }
         }
         
+        /// <summary>
+        /// Optional (depth_bounds_test)
+        /// </summary>
         public Bool32 DepthBoundsTestEnable
         {
             get { return NativePointer->DepthBoundsTestEnable; }
