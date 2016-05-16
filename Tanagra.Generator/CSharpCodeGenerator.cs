@@ -62,6 +62,8 @@ namespace Tanagra.Generator
 
             disabledStructs = new List<string> 
             {
+                "ClearValue",
+                "ClearColorValue"
             };
 
             disabledCommands = new List<string>
@@ -87,18 +89,17 @@ namespace Tanagra.Generator
             // -- struct
 
             //var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
-            var needsInteropStruct = spec.Structs.Where(IsInteropStruct);
+            var needsInteropStruct = spec.Structs.Where(x => IsInteropStruct(x));
             files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
 
-            var regularStruct = spec.Structs.Except(needsInteropStruct);
+            var regularStruct = spec.Structs.Except(needsInteropStruct).Where(x => !disabledStructs.Contains(x.Name));
             files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
 
             // -- vk
             files.Add("./Interop/VK.cs", GenerateCommandBindings(commands));
 
-            var generateStructs = needsInteropStruct.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
-
-            foreach (var vkStruct in generateStructs)
+            var generateWrapper = needsInteropStruct.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
+            foreach (var vkStruct in generateWrapper)
                 files.Add($"./Wrapper/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
 
             files.Add("./Wrapper/VK.cs", GenerateCommandWrapper(commands));
@@ -1167,9 +1168,6 @@ namespace Tanagra.Generator
                 #region Array Parameters Prologue
                 if(hasArrayParams)
                 {
-                    if(paramListCountMap.Count == 0)
-                        WriteLine("// (no arrayLengthParams)");
-
                     List<string> existingCounts = new List<string>();
 
                     // Emit a prologue block for each array param
@@ -1250,7 +1248,7 @@ namespace Tanagra.Generator
                         }
                         else
                         {
-                            WriteLine($"var listLength = {returnListCountParam.Name}.{returnListCountMember.Name};");
+                            WriteLine($"var listLength = {returnListCountParam.Name}.{NativePointer}->{returnListCountMember.Name};");
                         }
                     }
                 }

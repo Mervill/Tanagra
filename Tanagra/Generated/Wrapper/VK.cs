@@ -878,7 +878,7 @@ namespace Vulkan
         
         public static List<DescriptorSet> AllocateDescriptorSets(Device device, DescriptorSetAllocateInfo allocateInfo)
         {
-            var listLength = allocateInfo.NativePointer->DescriptorSetCount;//.DescriptorSetCount;
+            var listLength = allocateInfo.NativePointer->DescriptorSetCount;
             Result result;
             
             var arrayDescriptorSet = new UInt64[listLength];
@@ -1010,7 +1010,7 @@ namespace Vulkan
         
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
-            var listLength = allocateInfo.CommandBufferCount;
+            var listLength = allocateInfo.NativePointer->CommandBufferCount;
             Result result;
             
             var arrayCommandBuffer = new IntPtr[listLength];

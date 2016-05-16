@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bool32.cs" />
+    <Compile Include="ClearColorValue.cs" />
+    <Compile Include="ClearValue.cs" />
     <Compile Include="DebugUtils.cs" />
     <Compile Include="DeviceSize.cs" />
     <Compile Include="Generated\Enum\AccessFlags.cs" />
