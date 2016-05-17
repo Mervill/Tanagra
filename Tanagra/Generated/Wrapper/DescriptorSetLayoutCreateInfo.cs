@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.DescriptorSetLayoutCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DescriptorSetLayoutCreateFlags Flags
         {
@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Bindings == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->BindingCount;
                 var valueArray = new DescriptorSetLayoutBinding[valueCount];
                 var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DescriptorSetLayoutBinding { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->BindingCount = (UInt32)valueCount;
-                NativePointer->Bindings = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorSetLayoutBinding>() * valueCount);
-                var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.DescriptorSetLayoutBinding>() * valueCount;
+                    if(NativePointer->Bindings != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Bindings, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Bindings == IntPtr.Zero)
+                        NativePointer->Bindings = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->BindingCount = (UInt32)valueCount;
+                    var ptr = (Interop.DescriptorSetLayoutBinding*)NativePointer->Bindings;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->Bindings != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Bindings);
+                    
+                    NativePointer->Bindings = IntPtr.Zero;
+                    NativePointer->BindingCount = 0;
+                }
             }
         }
         

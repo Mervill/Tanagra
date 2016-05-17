@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.ImageCreateInfo* NativePointer;
         
         /// <summary>
-        /// Image creation flags
+        /// Image creation flags (Optional)
         /// </summary>
         public ImageCreateFlags Flags
         {
@@ -83,21 +83,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->QueueFamilyIndices == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->QueueFamilyIndexCount;
                 var valueArray = new UInt32[valueCount];
                 var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->QueueFamilyIndexCount = (UInt32)valueCount;
-                NativePointer->QueueFamilyIndices = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
-                var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    if(NativePointer->QueueFamilyIndices != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->QueueFamilyIndices, (IntPtr)typeSize);
+                    
+                    if(NativePointer->QueueFamilyIndices == IntPtr.Zero)
+                        NativePointer->QueueFamilyIndices = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->QueueFamilyIndexCount = (UInt32)valueCount;
+                    var ptr = (UInt32*)NativePointer->QueueFamilyIndices;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->QueueFamilyIndices != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
+                    
+                    NativePointer->QueueFamilyIndices = IntPtr.Zero;
+                    NativePointer->QueueFamilyIndexCount = 0;
+                }
             }
         }
         

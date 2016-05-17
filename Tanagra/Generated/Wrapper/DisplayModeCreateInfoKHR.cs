@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.DisplayModeCreateInfoKHR* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DisplayModeCreateFlagsKHR Flags
         {

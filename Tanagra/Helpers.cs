@@ -5,27 +5,25 @@ namespace Vulkan.Interop
 {
 	internal class Structure
 	{
-		internal static IntPtr Allocate(Type type)
+        unsafe internal static IntPtr Allocate(Type type)
 		{
-			int size = Marshal.SizeOf(type);
-			IntPtr ptr = Marshal.AllocHGlobal(size);
-			unsafe
-            {
-				byte* bptr = (byte*)ptr.ToPointer();
-				for (int i = 0; i < size; i++)
-					bptr[i] = 0;
-			}
+			var size = Marshal.SizeOf(type);
+			var ptr = Marshal.AllocHGlobal(size);
+			var bptr = (byte*)ptr;
+			for(var i = 0; i < size; i++)
+				bptr[i] = 0;
+
 			return ptr;
 		}
 
 		unsafe internal static void MarshalFixedSizeString(byte* dst, string src, int size)
 		{
-			var bytes = System.Text.UTF8Encoding.UTF8.GetBytes (src);
-			size = Math.Min (size - 1, bytes.Length);
+			var bytes = System.Text.Encoding.UTF8.GetBytes(src);
+			size = Math.Min(size - 1, bytes.Length);
 			int i;
-			for (i = 0; i < size; i++)
-				dst [i] = bytes[i];
-			dst [i] = 0;
+			for(i = 0; i < size; i++)
+				dst[i] = bytes[i];
+			dst[i] = 0;
 		}
 	}
 }

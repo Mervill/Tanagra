@@ -9,7 +9,7 @@ namespace Vulkan
         
         RenderPass _RenderPass;
         /// <summary>
-        /// Render pass for secondary command buffers
+        /// Render pass for secondary command buffers (Optional)
         /// </summary>
         public RenderPass RenderPass
         {
@@ -25,7 +25,7 @@ namespace Vulkan
         
         Framebuffer _Framebuffer;
         /// <summary>
-        /// Framebuffer for secondary command buffers
+        /// Framebuffer for secondary command buffers (Optional)
         /// </summary>
         public Framebuffer Framebuffer
         {
@@ -43,7 +43,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Query flags used by this secondary command buffer, if executed during an occlusion query
+        /// Query flags used by this secondary command buffer, if executed during an occlusion query (Optional)
         /// </summary>
         public QueryControlFlags QueryFlags
         {
@@ -52,7 +52,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Pipeline statistics that may be counted for this secondary command buffer
+        /// Pipeline statistics that may be counted for this secondary command buffer (Optional)
         /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics
         {

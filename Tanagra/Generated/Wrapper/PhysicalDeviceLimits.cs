@@ -663,7 +663,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported color sample counts for a framebuffer
+        /// Supported color sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferColorSampleCounts
         {
@@ -671,7 +671,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported depth sample counts for a framebuffer
+        /// Supported depth sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferDepthSampleCounts
         {
@@ -679,7 +679,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported stencil sample counts for a framebuffer
+        /// Supported stencil sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferStencilSampleCounts
         {
@@ -687,7 +687,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported sample counts for a framebuffer with no attachments
+        /// Supported sample counts for a framebuffer with no attachments (Optional)
         /// </summary>
         public SampleCountFlags FramebufferNoAttachmentsSampleCounts
         {
@@ -703,7 +703,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported color sample counts for a non-integer sampled image
+        /// Supported color sample counts for a non-integer sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageColorSampleCounts
         {
@@ -711,7 +711,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported sample counts for an integer image
+        /// Supported sample counts for an integer image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageIntegerSampleCounts
         {
@@ -719,7 +719,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported depth sample counts for a sampled image
+        /// Supported depth sample counts for a sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageDepthSampleCounts
         {
@@ -727,7 +727,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported stencil sample counts for a sampled image
+        /// Supported stencil sample counts for a sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageStencilSampleCounts
         {
@@ -735,7 +735,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Supported sample counts for a storage image
+        /// Supported sample counts for a storage image (Optional)
         /// </summary>
         public SampleCountFlags StorageImageSampleCounts
         {

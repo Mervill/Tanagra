@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineTessellationStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineTessellationStateCreateFlags Flags
         {

@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.SamplerCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public SamplerCreateFlags Flags
         {

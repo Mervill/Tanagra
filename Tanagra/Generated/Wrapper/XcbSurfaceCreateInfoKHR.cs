@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.XcbSurfaceCreateInfoKHR* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public XcbSurfaceCreateFlagsKHR Flags
         {

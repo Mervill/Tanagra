@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineShaderStageCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineShaderStageCreateFlags Flags
         {

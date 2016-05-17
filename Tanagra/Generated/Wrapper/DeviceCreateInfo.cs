@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.DeviceCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DeviceCreateFlags Flags
         {
@@ -20,21 +20,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->QueueCreateInfos == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->QueueCreateInfoCount;
                 var valueArray = new DeviceQueueCreateInfo[valueCount];
                 var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DeviceQueueCreateInfo { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->QueueCreateInfoCount = (UInt32)valueCount;
-                NativePointer->QueueCreateInfos = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DeviceQueueCreateInfo>() * valueCount);
-                var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.DeviceQueueCreateInfo>() * valueCount;
+                    if(NativePointer->QueueCreateInfos != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->QueueCreateInfos, (IntPtr)typeSize);
+                    
+                    if(NativePointer->QueueCreateInfos == IntPtr.Zero)
+                        NativePointer->QueueCreateInfos = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->QueueCreateInfoCount = (UInt32)valueCount;
+                    var ptr = (Interop.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->QueueCreateInfos != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
+                    
+                    NativePointer->QueueCreateInfos = IntPtr.Zero;
+                    NativePointer->QueueCreateInfoCount = 0;
+                }
             }
         }
         
@@ -45,21 +65,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->EnabledLayerNames == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->EnabledLayerCount;
                 var valueArray = new String[valueCount];
                 var ptr = (void**)NativePointer->EnabledLayerNames;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->EnabledLayerCount = (UInt32)valueCount;
-                NativePointer->EnabledLayerNames = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (void**)NativePointer->EnabledLayerNames;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->EnabledLayerNames != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->EnabledLayerNames, (IntPtr)typeSize);
+                    
+                    if(NativePointer->EnabledLayerNames == IntPtr.Zero)
+                        NativePointer->EnabledLayerNames = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->EnabledLayerCount = (UInt32)valueCount;
+                    var ptr = (void**)NativePointer->EnabledLayerNames;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
+                }
+                else
+                {
+                    if(NativePointer->EnabledLayerNames != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
+                    
+                    NativePointer->EnabledLayerNames = IntPtr.Zero;
+                    NativePointer->EnabledLayerCount = 0;
+                }
             }
         }
         
@@ -67,21 +107,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->EnabledExtensionNames == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->EnabledExtensionCount;
                 var valueArray = new String[valueCount];
                 var ptr = (void**)NativePointer->EnabledExtensionNames;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->EnabledExtensionCount = (UInt32)valueCount;
-                NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (void**)NativePointer->EnabledExtensionNames;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->EnabledExtensionNames != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->EnabledExtensionNames, (IntPtr)typeSize);
+                    
+                    if(NativePointer->EnabledExtensionNames == IntPtr.Zero)
+                        NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->EnabledExtensionCount = (UInt32)valueCount;
+                    var ptr = (void**)NativePointer->EnabledExtensionNames;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
+                }
+                else
+                {
+                    if(NativePointer->EnabledExtensionNames != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
+                    
+                    NativePointer->EnabledExtensionNames = IntPtr.Zero;
+                    NativePointer->EnabledExtensionCount = 0;
+                }
             }
         }
         

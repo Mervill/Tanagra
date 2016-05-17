@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.ShaderModuleCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public ShaderModuleCreateFlags Flags
         {
@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Code == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->CodeSize;
                 var valueArray = new Byte[valueCount];
                 var ptr = (Byte*)NativePointer->Code;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->CodeSize = (UInt32)valueCount;
-                NativePointer->Code = Marshal.AllocHGlobal(Marshal.SizeOf<Byte>() * valueCount);
-                var ptr = (Byte*)NativePointer->Code;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Byte>() * valueCount;
+                    if(NativePointer->Code != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Code, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Code == IntPtr.Zero)
+                        NativePointer->Code = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->CodeSize = (UInt32)valueCount;
+                    var ptr = (Byte*)NativePointer->Code;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Code != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Code);
+                    
+                    NativePointer->Code = IntPtr.Zero;
+                    NativePointer->CodeSize = 0;
+                }
             }
         }
         

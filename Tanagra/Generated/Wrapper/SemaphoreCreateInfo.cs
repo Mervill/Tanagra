@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.SemaphoreCreateInfo* NativePointer;
         
         /// <summary>
-        /// Semaphore creation flags
+        /// Semaphore creation flags (Optional)
         /// </summary>
         public SemaphoreCreateFlags Flags
         {

@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineVertexInputStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineVertexInputStateCreateFlags Flags
         {
@@ -20,21 +20,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->VertexBindingDescriptions == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->VertexBindingDescriptionCount;
                 var valueArray = new VertexInputBindingDescription[valueCount];
                 var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->VertexBindingDescriptionCount = (UInt32)valueCount;
-                NativePointer->VertexBindingDescriptions = Marshal.AllocHGlobal(Marshal.SizeOf<VertexInputBindingDescription>() * valueCount);
-                var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<VertexInputBindingDescription>() * valueCount;
+                    if(NativePointer->VertexBindingDescriptions != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->VertexBindingDescriptions, (IntPtr)typeSize);
+                    
+                    if(NativePointer->VertexBindingDescriptions == IntPtr.Zero)
+                        NativePointer->VertexBindingDescriptions = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->VertexBindingDescriptionCount = (UInt32)valueCount;
+                    var ptr = (VertexInputBindingDescription*)NativePointer->VertexBindingDescriptions;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->VertexBindingDescriptions != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
+                    
+                    NativePointer->VertexBindingDescriptions = IntPtr.Zero;
+                    NativePointer->VertexBindingDescriptionCount = 0;
+                }
             }
         }
         
@@ -42,21 +62,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->VertexAttributeDescriptions == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->VertexAttributeDescriptionCount;
                 var valueArray = new VertexInputAttributeDescription[valueCount];
                 var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->VertexAttributeDescriptionCount = (UInt32)valueCount;
-                NativePointer->VertexAttributeDescriptions = Marshal.AllocHGlobal(Marshal.SizeOf<VertexInputAttributeDescription>() * valueCount);
-                var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<VertexInputAttributeDescription>() * valueCount;
+                    if(NativePointer->VertexAttributeDescriptions != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->VertexAttributeDescriptions, (IntPtr)typeSize);
+                    
+                    if(NativePointer->VertexAttributeDescriptions == IntPtr.Zero)
+                        NativePointer->VertexAttributeDescriptions = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->VertexAttributeDescriptionCount = (UInt32)valueCount;
+                    var ptr = (VertexInputAttributeDescription*)NativePointer->VertexAttributeDescriptions;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->VertexAttributeDescriptions != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
+                    
+                    NativePointer->VertexAttributeDescriptions = IntPtr.Zero;
+                    NativePointer->VertexAttributeDescriptionCount = 0;
+                }
             }
         }
         

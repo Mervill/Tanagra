@@ -227,42 +227,6 @@ namespace Tanagra.Generator
                 {
                     WriteMemberComments(member);
 
-                    if (member.Type is VkEnum || (platformStructTypes.Contains(member.Type.Name) && member.Type.Name != "String"))
-                    {
-                        if(!member.IsArray)
-                        {
-                            WriteLine($"public {member.Type} {member.Name};");
-                            continue;
-                        }
-                    }
-
-                    if(member.Type is VkStruct && !member.IsArray && !member.IsPointer && member.Type.Name != "String")
-                    {
-                        var memberType = (VkStruct)member.Type;
-                        if(!IsInteropStruct(memberType))
-                        {
-                            WriteLine($"public {member.Type} {member.Name};");
-                            continue;
-                        }
-
-                        if (!member.IsPointer)
-                        {
-                            WriteLine($"public {member.Type} {member.Name};");
-                            continue;
-                        }
-                    }
-
-                    if(member.Type is VkHandle && !member.IsArray)
-                    {
-                        var vkHandle = (VkHandle)member.Type;
-                        if(!vkHandle.IsDispatchable)
-                        {
-                            // should never be hit when isPublic == true
-                            WriteLine($"public UInt64 {member.Name};");
-                            continue;
-                        }
-                    }
-
                     if (member.IsFixedSize)
                     {
                         if (!platformStructTypes.Contains(member.Type.Name))
@@ -280,9 +244,24 @@ namespace Tanagra.Generator
                         continue;
                     }
 
-                    // Eveything else is a pointer
-                    // `Char` is a C-style string ... so it's a pointer
-                    WriteLine($"public IntPtr {member.Name};");
+                    if (member.IsArray || member.IsPointer || member.Type.Name == "String")
+                    {
+                        WriteLine($"public IntPtr {member.Name};");
+                        continue;
+                    }
+
+                    if (member.Type is VkHandle)
+                    {
+                        var vkHandle = (VkHandle)member.Type;
+                        if (!vkHandle.IsDispatchable)
+                        {
+                            // should never be hit when isPublic == true
+                            WriteLine($"public UInt64 {member.Name};");
+                            continue;
+                        }
+                    }
+
+                    WriteLine($"public {member.Type} {member.Name};");
                 }
 
                 // For public structs that are not returned (only) and contain members
@@ -378,7 +357,7 @@ namespace Tanagra.Generator
 
         string GenerateWrapperClass(VkStruct vkStruct)
         {
-            var hiddenMembers = new List<string>(); // todo: hashset?
+            var hiddenMembers = new HashSet<string>();
             foreach (var member in vkStruct.Members)
             {
                 if (member.Len.Length == 0)
@@ -474,7 +453,6 @@ namespace Tanagra.Generator
             // simpler public strcuts.
             if (!vkStruct.ReturnedOnly)
             {
-
                 var cotorParams = new Dictionary<string, string>();
                 foreach (var member in vkStruct.Members)
                 {
@@ -716,14 +694,18 @@ namespace Tanagra.Generator
             // get
             WriteLine("get");
             WriteBeginBlock();
+            WriteLine($"if({NativePointer}->{vkMember.Name} == IntPtr.Zero)");
+            _tabs++;
+            WriteLine($"return null;");
+            _tabs--;
             WriteLine($"var valueCount = {NativePointer}->{countName};");
             WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
             WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
             WriteLine("for(var x = 0; x < valueCount; x++)");
             _tabs++;
             WriteLine(get);
-            //WriteLine($"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};");
             _tabs--;
+            WriteLine("");
             WriteLine("return valueArray;");
             WriteEndBlock();
             if (!readOnly)
@@ -731,41 +713,42 @@ namespace Tanagra.Generator
                 // set
                 WriteLine("set");
                 WriteBeginBlock();
-
-                //WriteLine("if(value != null)");
-                //WriteBeginBlock();
-
-                //WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
-                //_tabs++;
-                //WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
-                //_tabs--;
+                WriteLine("if(value != null)");
+                WriteBeginBlock();
                 WriteLine("var valueCount = value.Length;");
+                WriteLine($"var typeSize = Marshal.SizeOf<{sizeType}>() * valueCount;");
+                WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
+                _tabs++;
+                WriteLine($"Marshal.ReAllocHGlobal({NativePointer}->{vkMember.Name}, (IntPtr)typeSize);");
+                _tabs--;
+                WriteLine("");
+                WriteLine($"if({NativePointer}->{vkMember.Name} == IntPtr.Zero)");
+                _tabs++;
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(typeSize);");
+                _tabs--;
+                WriteLine("");
                 WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{sizeType}>() * valueCount);");
                 WriteLine($"var ptr = ({pointerType}*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
                 _tabs++;
                 WriteLine(set);
-                //WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
                 _tabs--;
-
-                //WriteEndBlock();
-
-                /*WriteLine("else");
+                WriteEndBlock();
+                WriteLine("else");
                 WriteBeginBlock();
                 WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
                 _tabs++;
                 WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
                 _tabs--;
+                WriteLine("");
                 WriteLine($"{NativePointer}->{vkMember.Name} = IntPtr.Zero;");
-                WriteEndBlock();*/
-
+                WriteLine($"{NativePointer}->{countName} = 0;");
+                WriteEndBlock();
                 WriteEndBlock();
             }
             WriteEndBlock();
         }
-
-
+        
         void WriteNotImplementedArray(VkMember vkMember, string why, bool readOnly)
         {
             WriteMemberComments(vkMember);
@@ -795,7 +778,13 @@ namespace Tanagra.Generator
             if(!string.IsNullOrEmpty(vkMember.XMLComment))
             {
                 WriteLine("/// <summary>");
-                WriteLine($"/// {vkMember.XMLComment}");
+                WriteTabs();
+                Write($"/// {vkMember.XMLComment}");
+
+                if(vkMember.Optional == "true")
+                    Write(" (Optional)");
+
+                Write(LineEnding);
                 WriteLine("/// </summary>");
             }
         }
@@ -906,7 +895,7 @@ namespace Tanagra.Generator
 
                         if(!existingCounts.Contains(countName))
                         {
-                            WriteLine($"var {countName} = ({paramName} != null) ? (UInt32){paramName}.Count : 0;");// ({ kv.Value.Type})
+                            WriteLine($"var {countName} = ({paramName} != null) ? (UInt32){paramName}.Count : 0;");
                             existingCounts.Add(countName);
                         }
 

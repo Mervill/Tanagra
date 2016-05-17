@@ -42,7 +42,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Reserved for future
+        /// Reserved for future (Optional)
         /// </summary>
         public SparseMemoryBindFlags Flags
         {

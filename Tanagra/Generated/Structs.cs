@@ -140,7 +140,7 @@ namespace Vulkan
     public struct QueueFamilyProperties
     {
         /// <summary>
-        /// Queue flags
+        /// Queue flags (Optional)
         /// </summary>
         public QueueFlags QueueFlags;
         public UInt32 QueueCount;
@@ -207,7 +207,7 @@ namespace Vulkan
     public struct MemoryType
     {
         /// <summary>
-        /// Memory properties of this memory type
+        /// Memory properties of this memory type (Optional)
         /// </summary>
         public MemoryPropertyFlags PropertyFlags;
         /// <summary>
@@ -226,7 +226,7 @@ namespace Vulkan
         /// </summary>
         public DeviceSize Size;
         /// <summary>
-        /// Flags for the heap
+        /// Flags for the heap (Optional)
         /// </summary>
         public MemoryHeapFlags Flags;
     }
@@ -237,15 +237,15 @@ namespace Vulkan
     public struct FormatProperties
     {
         /// <summary>
-        /// Format features in case of linear tiling
+        /// Format features in case of linear tiling (Optional)
         /// </summary>
         public FormatFeatureFlags LinearTilingFeatures;
         /// <summary>
-        /// Format features in case of optimal tiling
+        /// Format features in case of optimal tiling (Optional)
         /// </summary>
         public FormatFeatureFlags OptimalTilingFeatures;
         /// <summary>
-        /// Format features supported by buffers
+        /// Format features supported by buffers (Optional)
         /// </summary>
         public FormatFeatureFlags BufferFeatures;
     }
@@ -268,7 +268,7 @@ namespace Vulkan
         /// </summary>
         public UInt32 MaxArrayLayers;
         /// <summary>
-        /// Supported sample counts for this resource type
+        /// Supported sample counts for this resource type (Optional)
         /// </summary>
         public SampleCountFlags SampleCounts;
         /// <summary>
@@ -690,11 +690,11 @@ namespace Vulkan
         public PipelineStageFlags SrcStageMask;
         public PipelineStageFlags DstStageMask;
         /// <summary>
-        /// Memory accesses from the source of the dependency to synchronize
+        /// Memory accesses from the source of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags SrcAccessMask;
         /// <summary>
-        /// Memory accesses from the destination of the dependency to synchronize
+        /// Memory accesses from the destination of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags DstAccessMask;
         public DependencyFlags DependencyFlags;
@@ -1031,7 +1031,7 @@ namespace Vulkan
     public struct DisplayPlaneCapabilitiesKHR
     {
         /// <summary>
-        /// Types of alpha blending supported, if any.
+        /// Types of alpha blending supported, if any. (Optional)
         /// </summary>
         public DisplayPlaneAlphaFlagsKHR SupportedAlpha;
         /// <summary>
@@ -1087,7 +1087,7 @@ namespace Vulkan
         /// </summary>
         public UInt32 MaxImageArrayLayers;
         /// <summary>
-        /// 1 or more bits representing the transforms supported
+        /// 1 or more bits representing the transforms supported (Optional)
         /// </summary>
         public SurfaceTransformFlagsKHR SupportedTransforms;
         /// <summary>
@@ -1095,11 +1095,11 @@ namespace Vulkan
         /// </summary>
         public SurfaceTransformFlagsKHR CurrentTransform;
         /// <summary>
-        /// 1 or more bits representing the alpha compositing modes supported
+        /// 1 or more bits representing the alpha compositing modes supported (Optional)
         /// </summary>
         public CompositeAlphaFlagsKHR SupportedCompositeAlpha;
         /// <summary>
-        /// Supported image usage flags for the surface
+        /// Supported image usage flags for the surface (Optional)
         /// </summary>
         public ImageUsageFlags SupportedUsageFlags;
         

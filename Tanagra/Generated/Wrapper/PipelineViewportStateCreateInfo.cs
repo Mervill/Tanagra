@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineViewportStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineViewportStateCreateFlags Flags
         {
@@ -20,21 +20,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Viewports == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->ViewportCount;
                 var valueArray = new Viewport[valueCount];
                 var ptr = (Viewport*)NativePointer->Viewports;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->ViewportCount = (UInt32)valueCount;
-                NativePointer->Viewports = Marshal.AllocHGlobal(Marshal.SizeOf<Viewport>() * valueCount);
-                var ptr = (Viewport*)NativePointer->Viewports;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Viewport>() * valueCount;
+                    if(NativePointer->Viewports != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Viewports, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Viewports == IntPtr.Zero)
+                        NativePointer->Viewports = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->ViewportCount = (UInt32)valueCount;
+                    var ptr = (Viewport*)NativePointer->Viewports;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Viewports != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Viewports);
+                    
+                    NativePointer->Viewports = IntPtr.Zero;
+                    NativePointer->ViewportCount = 0;
+                }
             }
         }
         
@@ -42,21 +62,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Scissors == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->ScissorCount;
                 var valueArray = new Rect2D[valueCount];
                 var ptr = (Rect2D*)NativePointer->Scissors;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->ScissorCount = (UInt32)valueCount;
-                NativePointer->Scissors = Marshal.AllocHGlobal(Marshal.SizeOf<Rect2D>() * valueCount);
-                var ptr = (Rect2D*)NativePointer->Scissors;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Rect2D>() * valueCount;
+                    if(NativePointer->Scissors != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Scissors, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Scissors == IntPtr.Zero)
+                        NativePointer->Scissors = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->ScissorCount = (UInt32)valueCount;
+                    var ptr = (Rect2D*)NativePointer->Scissors;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Scissors != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Scissors);
+                    
+                    NativePointer->Scissors = IntPtr.Zero;
+                    NativePointer->ScissorCount = 0;
+                }
             }
         }
         

@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.FenceCreateInfo* NativePointer;
         
         /// <summary>
-        /// Fence creation flags
+        /// Fence creation flags (Optional)
         /// </summary>
         public FenceCreateFlags Flags
         {

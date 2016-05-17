@@ -35,27 +35,47 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Immutable samplers (used if descriptor type is SAMPLER or COMBINED_IMAGE_SAMPLER, is either NULL or contains count number of elements)
+        /// Immutable samplers (used if descriptor type is SAMPLER or COMBINED_IMAGE_SAMPLER, is either NULL or contains count number of elements) (Optional)
         /// </summary>
         public Sampler[] ImmutableSamplers
         {
             get
             {
+                if(NativePointer->ImmutableSamplers == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new Sampler[valueCount];
                 var ptr = (UInt64*)NativePointer->ImmutableSamplers;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new Sampler { NativePointer = ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DescriptorCount = (UInt32)valueCount;
-                NativePointer->ImmutableSamplers = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->ImmutableSamplers;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (IntPtr)value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->ImmutableSamplers != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->ImmutableSamplers, (IntPtr)typeSize);
+                    
+                    if(NativePointer->ImmutableSamplers == IntPtr.Zero)
+                        NativePointer->ImmutableSamplers = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DescriptorCount = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->ImmutableSamplers;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (IntPtr)value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->ImmutableSamplers != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
+                    
+                    NativePointer->ImmutableSamplers = IntPtr.Zero;
+                    NativePointer->DescriptorCount = 0;
+                }
             }
         }
         

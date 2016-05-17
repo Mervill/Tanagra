@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.GraphicsPipelineCreateInfo* NativePointer;
         
         /// <summary>
-        /// Pipeline creation flags
+        /// Pipeline creation flags (Optional)
         /// </summary>
         public PipelineCreateFlags Flags
         {
@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Stages == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->StageCount;
                 var valueArray = new PipelineShaderStageCreateInfo[valueCount];
                 var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new PipelineShaderStageCreateInfo { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->StageCount = (UInt32)valueCount;
-                NativePointer->Stages = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount);
-                var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.PipelineShaderStageCreateInfo>() * valueCount;
+                    if(NativePointer->Stages != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Stages, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Stages == IntPtr.Zero)
+                        NativePointer->Stages = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->StageCount = (UInt32)valueCount;
+                    var ptr = (Interop.PipelineShaderStageCreateInfo*)NativePointer->Stages;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->Stages != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Stages);
+                    
+                    NativePointer->Stages = IntPtr.Zero;
+                    NativePointer->StageCount = 0;
+                }
             }
         }
         
@@ -129,7 +149,7 @@ namespace Vulkan
         
         Pipeline _BasePipelineHandle;
         /// <summary>
-        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of
+        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of (Optional)
         /// </summary>
         public Pipeline BasePipelineHandle
         {

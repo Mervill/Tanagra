@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineDynamicStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineDynamicStateCreateFlags Flags
         {
@@ -20,21 +20,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->DynamicStates == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DynamicStateCount;
                 var valueArray = new DynamicState[valueCount];
                 var ptr = (UInt32*)NativePointer->DynamicStates;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = (DynamicState)ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DynamicStateCount = (UInt32)valueCount;
-                NativePointer->DynamicStates = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
-                var ptr = (UInt32*)NativePointer->DynamicStates;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (UInt32)value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    if(NativePointer->DynamicStates != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->DynamicStates, (IntPtr)typeSize);
+                    
+                    if(NativePointer->DynamicStates == IntPtr.Zero)
+                        NativePointer->DynamicStates = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DynamicStateCount = (UInt32)valueCount;
+                    var ptr = (UInt32*)NativePointer->DynamicStates;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (UInt32)value[x];
+                }
+                else
+                {
+                    if(NativePointer->DynamicStates != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->DynamicStates);
+                    
+                    NativePointer->DynamicStates = IntPtr.Zero;
+                    NativePointer->DynamicStateCount = 0;
+                }
             }
         }
         

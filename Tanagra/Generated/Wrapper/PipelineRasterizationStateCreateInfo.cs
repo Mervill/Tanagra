@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineRasterizationStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineRasterizationStateCreateFlags Flags
         {

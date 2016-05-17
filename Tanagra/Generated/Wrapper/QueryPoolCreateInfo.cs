@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.QueryPoolCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public QueryPoolCreateFlags Flags
         {
@@ -29,7 +29,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Optional
+        /// Optional (Optional)
         /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics
         {

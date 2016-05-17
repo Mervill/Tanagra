@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineCacheCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineCacheCreateFlags Flags
         {
@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->InitialData == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->InitialDataSize;
                 var valueArray = new IntPtr[valueCount];
                 var ptr = (IntPtr*)NativePointer->InitialData;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->InitialDataSize = (UInt32)valueCount;
-                NativePointer->InitialData = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->InitialData;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->InitialData != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->InitialData, (IntPtr)typeSize);
+                    
+                    if(NativePointer->InitialData == IntPtr.Zero)
+                        NativePointer->InitialData = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->InitialDataSize = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->InitialData;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->InitialData != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->InitialData);
+                    
+                    NativePointer->InitialData = IntPtr.Zero;
+                    NativePointer->InitialDataSize = 0;
+                }
             }
         }
         

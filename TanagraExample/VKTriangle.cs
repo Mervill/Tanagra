@@ -239,19 +239,19 @@ namespace TanagraExample
             // Create swapchain
             var swapchainCreateInfo = new SwapchainCreateInfoKHR
             {
-                Surface = surface,
-                MinImageCount = desiredImageCount,
-                ImageFormat = backBufferFormat,
-                ImageColorSpace = ColorSpaceKHR.SrgbNonlinear,
-                ImageExtent = imageExtent,
-                ImageArrayLayers = 1,
-                ImageUsage = ImageUsageFlags.ColorAttachment,
-                ImageSharingMode = SharingMode.Exclusive,
-                //QueueFamilyIndices = null,
-                PreTransform = preTransform,
-                CompositeAlpha = CompositeAlphaFlagsKHR.Opaque,
-                PresentMode = swapChainPresentMode,
-                Clipped = true,
+                Surface            = surface,
+                MinImageCount      = desiredImageCount,
+                ImageFormat        = backBufferFormat,
+                ImageColorSpace    = ColorSpaceKHR.SrgbNonlinear,
+                ImageExtent        = imageExtent,
+                ImageArrayLayers   = 1,
+                ImageUsage         = ImageUsageFlags.ColorAttachment,
+                ImageSharingMode   = SharingMode.Exclusive,
+                QueueFamilyIndices = null,
+                PreTransform       = preTransform,
+                CompositeAlpha     = CompositeAlphaFlagsKHR.Opaque,
+                PresentMode        = swapChainPresentMode,
+                Clipped            = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
             Console.WriteLine($"[ OK ] {swapchain}");
@@ -269,28 +269,17 @@ namespace TanagraExample
         {
             if (setupCommanBuffer == null)
             {
-                CommandBuffer setupBuffer;
                 var allocateInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
-                setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
+                var setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
                 setupCommanBuffer = setupBuffer;
                 Console.WriteLine($"[ OK ] {setupCommanBuffer}");
 
                 var inheritanceInfo = new CommandBufferInheritanceInfo();
-                var beginInfo = new CommandBufferBeginInfo
-                {
-                    InheritanceInfo = inheritanceInfo
-                };
+                var beginInfo = new CommandBufferBeginInfo { InheritanceInfo = inheritanceInfo };
                 setupCommanBuffer.Begin(beginInfo);
                 Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
             }
-
-            /*var imageMemoryBarrier = new ImageMemoryBarrier
-            {
-                OldLayout = oldLayout,
-                NewLayout = newLayout,
-                Image = image,
-                SubresourceRange = new ImageSubresourceRange(imageAspect, 0, 1, 0, 1)
-            };*/
+            
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, new ImageSubresourceRange(imageAspect, 0, 1, 0, 1));
 
             switch (newLayout)
@@ -323,11 +312,8 @@ namespace TanagraExample
 
             setupCommanBuffer.End();
             Console.WriteLine("[ OK ] setupCommanBuffer.End");
-
-            var submitInfo = new SubmitInfo
-            {
-                CommandBuffers = new[] { setupCommanBuffer }
-            };
+            
+            var submitInfo = new SubmitInfo(null, null, new[] { setupCommanBuffer }, null);
 
             Console.WriteLine($"[ OK ] {setupCommanBuffer} / {submitInfo.CommandBuffers[0]}");
 
@@ -346,10 +332,10 @@ namespace TanagraExample
         private void CreateBackBufferViews()
         {
             backBufferViews = new List<ImageView>();
-            for (int x = 0; x < backBuffers.Count; x++)
+            foreach (var img in backBuffers)
             {
                 var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-                var createInfo = new ImageViewCreateInfo(backBuffers[x], ImageViewType.ImageViewType2d, backBufferFormat, new ComponentMapping(), subresourceRange);
+                var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, backBufferFormat, new ComponentMapping(), subresourceRange);
                 backBufferViews.Add(device.CreateImageView(createInfo));
             }
             Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
@@ -367,7 +353,7 @@ namespace TanagraExample
             var createInfo = new BufferCreateInfo
             {
                 Usage = BufferUsageFlags.VertexBuffer,
-                Size = (ulong)(sizeof(float) * vertices.Length),
+                Size  = (ulong)(sizeof(float) * vertices.Length),
             };
             vertexBuffer = device.CreateBuffer(createInfo);
             Console.WriteLine($"[ OK ] {vertexBuffer}");
@@ -404,12 +390,8 @@ namespace TanagraExample
         {
             var colorAttachmentReference = new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal);
             var depthStencilAttachmentReference = new AttachmentReference(1, ImageLayout.DepthStencilAttachmentOptimal);
-
-            var subpass = new SubpassDescription
-            {
-                PipelineBindPoint = PipelineBindPoint.Graphics,
-                ColorAttachments = new[] { colorAttachmentReference },
-            };
+            
+            var subpass = new SubpassDescription(PipelineBindPoint.Graphics, null, new[] { colorAttachmentReference }, null);
 
             var attachments = new[]
             {
@@ -426,12 +408,8 @@ namespace TanagraExample
                 },
                 //new AttachmentDescription(backBufferFormat, SampleCountFlags.SampleCountFlags1, AttachmentLoadOp.Load, AttachmentStoreOp.Store, AttachmentLoadOp.DontCare, AttachmentStoreOp.DontCare, ImageLayout.ColorAttachmentOptimal, ImageLayout.ColorAttachmentOptimal)
             };
-
-            var createInfo = new RenderPassCreateInfo
-            {
-                Attachments = attachments,
-                Subpasses = new[] { subpass }
-            };
+            
+            var createInfo = new RenderPassCreateInfo(attachments, new[] { subpass }, null);
 
             Console.WriteLine(createInfo.Attachments[0].Format);
 
@@ -469,8 +447,8 @@ namespace TanagraExample
             var rasterizerState = new PipelineRasterizationStateCreateInfo
             {
                 PolygonMode = PolygonMode.Fill,
-                CullMode = CullModeFlags.None,
-                FrontFace = FrontFace.Clockwise,
+                CullMode    = CullModeFlags.None,
+                FrontFace   = FrontFace.Clockwise,
             };
 
             var colorBlendAttachment = new PipelineColorBlendAttachmentState { ColorWriteMask = ColorComponentFlags.R | ColorComponentFlags.G | ColorComponentFlags.B | ColorComponentFlags.A };
@@ -481,11 +459,11 @@ namespace TanagraExample
 
             var depthStencilState = new PipelineDepthStencilStateCreateInfo
             {
-                DepthTestEnable = false,
+                DepthTestEnable  = false,
                 DepthWriteEnable = true,
-                DepthCompareOp = CompareOp.LessOrEqual,
-                Back = new StencilOpState { CompareOp = CompareOp.Always },
-                Front = new StencilOpState { CompareOp = CompareOp.Always }
+                DepthCompareOp   = CompareOp.LessOrEqual,
+                Back             = new StencilOpState { CompareOp = CompareOp.Always },
+                Front            = new StencilOpState { CompareOp = CompareOp.Always }
             };
 
             var shaderStages = new[]
@@ -517,7 +495,7 @@ namespace TanagraExample
             foreach (var shaderStage in shaderStages)
             {
                 device.DestroyShaderModule(shaderStage.Module);
-                Console.WriteLine($"[INFO] device.DestroyShaderModule");
+                Console.WriteLine("[INFO] device.DestroyShaderModule");
             }
         }
 
@@ -578,13 +556,7 @@ namespace TanagraExample
             // Submit
             var drawCommandBuffer = commandBuffer[0];
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
-            var submitInfo = new SubmitInfo
-            {
-                WaitSemaphores = new[] { presentCompleteSemaphore },
-                WaitDstStageMask = new[] { pipelineStageFlags },
-                CommandBuffers = new[] { drawCommandBuffer }
-            };
-            //submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
+            var submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
             //submitInfo.Dispose();
 
@@ -606,12 +578,12 @@ namespace TanagraExample
             // Post-present transition
             var memoryBarrier = new ImageMemoryBarrier
             {
-                Image = backBuffers[(int)currentBackBufferIndex],
+                OldLayout        = ImageLayout.PresentSrcKHR,
+                NewLayout        = ImageLayout.ColorAttachmentOptimal,
+                SrcAccessMask    = AccessFlags.MemoryRead,
+                DstAccessMask    = AccessFlags.ColorAttachmentWrite,
+                Image            = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
-                OldLayout = ImageLayout.PresentSrcKHR,
-                NewLayout = ImageLayout.ColorAttachmentOptimal,
-                SrcAccessMask = AccessFlags.MemoryRead,
-                DstAccessMask = AccessFlags.ColorAttachmentWrite
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
             //memoryBarrier.Dispose();
@@ -620,12 +592,8 @@ namespace TanagraExample
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
             
             // Begin render pass
-            var renderPassBeginInfo = new RenderPassBeginInfo
-            {
-                RenderPass = renderPass,
-                Framebuffer = framebuffers[currentBackBufferIndex],
-                RenderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height))
-            };
+            var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
+            var renderPassBeginInfo = new RenderPassBeginInfo(renderPass, framebuffers[currentBackBufferIndex], renderArea, null);
             commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
             //renderPassBeginInfo.Dispose();
 
@@ -653,12 +621,12 @@ namespace TanagraExample
             // Pre-present transition
             memoryBarrier = new ImageMemoryBarrier
             {
-                Image = backBuffers[(int)currentBackBufferIndex],
+                OldLayout        = ImageLayout.ColorAttachmentOptimal,
+                NewLayout        = ImageLayout.PresentSrcKHR,
+                Image            = backBuffers[(int)currentBackBufferIndex],
+                SrcAccessMask    = AccessFlags.ColorAttachmentWrite,
+                DstAccessMask    = AccessFlags.MemoryRead,
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
-                OldLayout = ImageLayout.ColorAttachmentOptimal,
-                NewLayout = ImageLayout.PresentSrcKHR,
-                SrcAccessMask = AccessFlags.ColorAttachmentWrite,
-                DstAccessMask = AccessFlags.MemoryRead
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
             //memoryBarrier.Dispose();

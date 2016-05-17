@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineLayoutCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineLayoutCreateFlags Flags
         {
@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->SetLayouts == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->SetLayoutCount;
                 var valueArray = new DescriptorSetLayout[valueCount];
                 var ptr = (UInt64*)NativePointer->SetLayouts;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->SetLayoutCount = (UInt32)valueCount;
-                NativePointer->SetLayouts = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->SetLayouts;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (IntPtr)value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->SetLayouts != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->SetLayouts, (IntPtr)typeSize);
+                    
+                    if(NativePointer->SetLayouts == IntPtr.Zero)
+                        NativePointer->SetLayouts = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->SetLayoutCount = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->SetLayouts;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (IntPtr)value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->SetLayouts != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->SetLayouts);
+                    
+                    NativePointer->SetLayouts = IntPtr.Zero;
+                    NativePointer->SetLayoutCount = 0;
+                }
             }
         }
         
@@ -48,21 +68,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->PushConstantRanges == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->PushConstantRangeCount;
                 var valueArray = new PushConstantRange[valueCount];
                 var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->PushConstantRangeCount = (UInt32)valueCount;
-                NativePointer->PushConstantRanges = Marshal.AllocHGlobal(Marshal.SizeOf<PushConstantRange>() * valueCount);
-                var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<PushConstantRange>() * valueCount;
+                    if(NativePointer->PushConstantRanges != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->PushConstantRanges, (IntPtr)typeSize);
+                    
+                    if(NativePointer->PushConstantRanges == IntPtr.Zero)
+                        NativePointer->PushConstantRanges = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->PushConstantRangeCount = (UInt32)valueCount;
+                    var ptr = (PushConstantRange*)NativePointer->PushConstantRanges;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->PushConstantRanges != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
+                    
+                    NativePointer->PushConstantRanges = IntPtr.Zero;
+                    NativePointer->PushConstantRangeCount = 0;
+                }
             }
         }
         

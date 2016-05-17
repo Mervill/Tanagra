@@ -18,21 +18,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->SetLayouts == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DescriptorSetCount;
                 var valueArray = new DescriptorSetLayout[valueCount];
                 var ptr = (UInt64*)NativePointer->SetLayouts;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DescriptorSetCount = (UInt32)valueCount;
-                NativePointer->SetLayouts = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->SetLayouts;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (IntPtr)value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->SetLayouts != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->SetLayouts, (IntPtr)typeSize);
+                    
+                    if(NativePointer->SetLayouts == IntPtr.Zero)
+                        NativePointer->SetLayouts = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DescriptorSetCount = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->SetLayouts;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (IntPtr)value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->SetLayouts != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->SetLayouts);
+                    
+                    NativePointer->SetLayouts = IntPtr.Zero;
+                    NativePointer->DescriptorSetCount = 0;
+                }
             }
         }
         

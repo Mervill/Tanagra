@@ -12,7 +12,7 @@ namespace Tanagra
         public uint Minor => (value >> 12) & 0x3FF;
         public uint Patch => value & 0xFFF;
 
-        private readonly uint value;
+        readonly uint value;
 
         public Version(uint major, uint minor, uint patch)
         {

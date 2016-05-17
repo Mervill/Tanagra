@@ -31,21 +31,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->ClearValues == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->ClearValueCount;
                 var valueArray = new ClearValue[valueCount];
                 var ptr = (ClearValue*)NativePointer->ClearValues;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->ClearValueCount = (UInt32)valueCount;
-                NativePointer->ClearValues = Marshal.AllocHGlobal(Marshal.SizeOf<ClearValue>() * valueCount);
-                var ptr = (ClearValue*)NativePointer->ClearValues;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<ClearValue>() * valueCount;
+                    if(NativePointer->ClearValues != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->ClearValues, (IntPtr)typeSize);
+                    
+                    if(NativePointer->ClearValues == IntPtr.Zero)
+                        NativePointer->ClearValues = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->ClearValueCount = (UInt32)valueCount;
+                    var ptr = (ClearValue*)NativePointer->ClearValues;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->ClearValues != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->ClearValues);
+                    
+                    NativePointer->ClearValues = IntPtr.Zero;
+                    NativePointer->ClearValueCount = 0;
+                }
             }
         }
         

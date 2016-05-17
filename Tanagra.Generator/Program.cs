@@ -8,12 +8,9 @@ namespace Tanagra.Generator
     class Program
     {
         // todo: union
-        // todo: dealloc unmanaged memory
-        // todo: assign null to struct array
-        // todo: IDisposable
+        // todo: dealloc unmanaged class memory (IDisposable)
         // todo: why is Char still a weird edge case
-        // todo: optional flag to generate arrays instead of lists on commands?
-        // todo: public structs use properties?
+        // todo: generate arrays instead of lists on commands?
         // todo: x64 and VK_DEFINE_NON_DISPATCHABLE_HANDLE
         // todo: merge flag enums
         // todo: VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
@@ -21,7 +18,10 @@ namespace Tanagra.Generator
         // todo: AddMemoryPressure / RemoveMemoryPressure
         // todo: there is a common case where a command that takes arrays only takes a single entry
         // todo: API Constants
-        // todo: use ReAlloc in arrays http://stackoverflow.com/questions/641564
+        // todo: typed pointers in structs?
+        // todo: typed non-dispatchable?
+        // todo: allocation?
+        // http://stackoverflow.com/questions/641564
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior
         // http://stackoverflow.com/questions/17562295/if-i-allocate-some-memory-with-allochglobal-do-i-have-to-free-it-with-freehglob

@@ -17,7 +17,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Optional color for debug marker
+        /// Optional color for debug marker (Optional)
         /// </summary>
         public Single[] Color
         {

@@ -26,21 +26,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->InputAttachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->InputAttachmentCount;
                 var valueArray = new AttachmentReference[valueCount];
                 var ptr = (AttachmentReference*)NativePointer->InputAttachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->InputAttachmentCount = (UInt32)valueCount;
-                NativePointer->InputAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
-                var ptr = (AttachmentReference*)NativePointer->InputAttachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    if(NativePointer->InputAttachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->InputAttachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->InputAttachments == IntPtr.Zero)
+                        NativePointer->InputAttachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->InputAttachmentCount = (UInt32)valueCount;
+                    var ptr = (AttachmentReference*)NativePointer->InputAttachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->InputAttachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->InputAttachments);
+                    
+                    NativePointer->InputAttachments = IntPtr.Zero;
+                    NativePointer->InputAttachmentCount = 0;
+                }
             }
         }
         
@@ -48,21 +68,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->ColorAttachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->ColorAttachmentCount;
                 var valueArray = new AttachmentReference[valueCount];
                 var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->ColorAttachmentCount = (UInt32)valueCount;
-                NativePointer->ColorAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
-                var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    if(NativePointer->ColorAttachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->ColorAttachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->ColorAttachments == IntPtr.Zero)
+                        NativePointer->ColorAttachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->ColorAttachmentCount = (UInt32)valueCount;
+                    var ptr = (AttachmentReference*)NativePointer->ColorAttachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->ColorAttachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->ColorAttachments);
+                    
+                    NativePointer->ColorAttachments = IntPtr.Zero;
+                    NativePointer->ColorAttachmentCount = 0;
+                }
             }
         }
         
@@ -70,21 +110,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->ResolveAttachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->ColorAttachmentCount;
                 var valueArray = new AttachmentReference[valueCount];
                 var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->ColorAttachmentCount = (UInt32)valueCount;
-                NativePointer->ResolveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentReference>() * valueCount);
-                var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    if(NativePointer->ResolveAttachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->ResolveAttachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->ResolveAttachments == IntPtr.Zero)
+                        NativePointer->ResolveAttachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->ColorAttachmentCount = (UInt32)valueCount;
+                    var ptr = (AttachmentReference*)NativePointer->ResolveAttachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->ResolveAttachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
+                    
+                    NativePointer->ResolveAttachments = IntPtr.Zero;
+                    NativePointer->ColorAttachmentCount = 0;
+                }
             }
         }
         
@@ -99,21 +159,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->PreserveAttachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->PreserveAttachmentCount;
                 var valueArray = new UInt32[valueCount];
                 var ptr = (UInt32*)NativePointer->PreserveAttachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->PreserveAttachmentCount = (UInt32)valueCount;
-                NativePointer->PreserveAttachments = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);
-                var ptr = (UInt32*)NativePointer->PreserveAttachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    if(NativePointer->PreserveAttachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->PreserveAttachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->PreserveAttachments == IntPtr.Zero)
+                        NativePointer->PreserveAttachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->PreserveAttachmentCount = (UInt32)valueCount;
+                    var ptr = (UInt32*)NativePointer->PreserveAttachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->PreserveAttachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
+                    
+                    NativePointer->PreserveAttachments = IntPtr.Zero;
+                    NativePointer->PreserveAttachmentCount = 0;
+                }
             }
         }
         

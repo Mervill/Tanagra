@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.WaylandSurfaceCreateInfoKHR* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public WaylandSurfaceCreateFlagsKHR Flags
         {

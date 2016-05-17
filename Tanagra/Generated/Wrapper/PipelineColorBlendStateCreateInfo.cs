@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineColorBlendStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineColorBlendStateCreateFlags Flags
         {
@@ -32,21 +32,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Attachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->AttachmentCount;
                 var valueArray = new PipelineColorBlendAttachmentState[valueCount];
                 var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->AttachmentCount = (UInt32)valueCount;
-                NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount);
-                var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount;
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Attachments == IntPtr.Zero)
+                        NativePointer->Attachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->AttachmentCount = (UInt32)valueCount;
+                    var ptr = (PipelineColorBlendAttachmentState*)NativePointer->Attachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Attachments);
+                    
+                    NativePointer->Attachments = IntPtr.Zero;
+                    NativePointer->AttachmentCount = 0;
+                }
             }
         }
         

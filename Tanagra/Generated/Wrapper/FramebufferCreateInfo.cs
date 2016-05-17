@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.FramebufferCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public FramebufferCreateFlags Flags
         {
@@ -27,21 +27,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Attachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->AttachmentCount;
                 var valueArray = new ImageView[valueCount];
                 var ptr = (UInt64*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new ImageView { NativePointer = ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->AttachmentCount = (UInt32)valueCount;
-                NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->Attachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (IntPtr)value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Attachments == IntPtr.Zero)
+                        NativePointer->Attachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->AttachmentCount = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->Attachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (IntPtr)value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Attachments);
+                    
+                    NativePointer->Attachments = IntPtr.Zero;
+                    NativePointer->AttachmentCount = 0;
+                }
             }
         }
         

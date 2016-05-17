@@ -23,21 +23,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->PoolSizes == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->PoolSizeCount;
                 var valueArray = new DescriptorPoolSize[valueCount];
                 var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->PoolSizeCount = (UInt32)valueCount;
-                NativePointer->PoolSizes = Marshal.AllocHGlobal(Marshal.SizeOf<DescriptorPoolSize>() * valueCount);
-                var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<DescriptorPoolSize>() * valueCount;
+                    if(NativePointer->PoolSizes != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->PoolSizes, (IntPtr)typeSize);
+                    
+                    if(NativePointer->PoolSizes == IntPtr.Zero)
+                        NativePointer->PoolSizes = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->PoolSizeCount = (UInt32)valueCount;
+                    var ptr = (DescriptorPoolSize*)NativePointer->PoolSizes;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->PoolSizes != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->PoolSizes);
+                    
+                    NativePointer->PoolSizes = IntPtr.Zero;
+                    NativePointer->PoolSizeCount = 0;
+                }
             }
         }
         

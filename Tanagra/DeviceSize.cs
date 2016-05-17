@@ -2,12 +2,20 @@
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Essentially a <see cref="UInt64"/> 
+    /// </summary>
     public struct DeviceSize
     {
-        UInt64 value;
+        readonly UInt64 value;
 
-        public static implicit operator DeviceSize(UInt64 iValue)
-            => new DeviceSize { value = iValue };
+        public DeviceSize(UInt64 value)
+        {
+            this.value = value;
+        }
+
+        public static implicit operator DeviceSize(UInt64 value)
+            => new DeviceSize(value);
 
         public static implicit operator UInt64(DeviceSize size)
             => size.value;

@@ -51,21 +51,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->ImageInfo == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new DescriptorImageInfo[valueCount];
                 var ptr = (Interop.DescriptorImageInfo*)NativePointer->ImageInfo;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DescriptorImageInfo { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DescriptorCount = (UInt32)valueCount;
-                NativePointer->ImageInfo = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorImageInfo>() * valueCount);
-                var ptr = (Interop.DescriptorImageInfo*)NativePointer->ImageInfo;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.DescriptorImageInfo>() * valueCount;
+                    if(NativePointer->ImageInfo != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->ImageInfo, (IntPtr)typeSize);
+                    
+                    if(NativePointer->ImageInfo == IntPtr.Zero)
+                        NativePointer->ImageInfo = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DescriptorCount = (UInt32)valueCount;
+                    var ptr = (Interop.DescriptorImageInfo*)NativePointer->ImageInfo;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->ImageInfo != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->ImageInfo);
+                    
+                    NativePointer->ImageInfo = IntPtr.Zero;
+                    NativePointer->DescriptorCount = 0;
+                }
             }
         }
         
@@ -76,21 +96,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->BufferInfo == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new DescriptorBufferInfo[valueCount];
                 var ptr = (Interop.DescriptorBufferInfo*)NativePointer->BufferInfo;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new DescriptorBufferInfo { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DescriptorCount = (UInt32)valueCount;
-                NativePointer->BufferInfo = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.DescriptorBufferInfo>() * valueCount);
-                var ptr = (Interop.DescriptorBufferInfo*)NativePointer->BufferInfo;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.DescriptorBufferInfo>() * valueCount;
+                    if(NativePointer->BufferInfo != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->BufferInfo, (IntPtr)typeSize);
+                    
+                    if(NativePointer->BufferInfo == IntPtr.Zero)
+                        NativePointer->BufferInfo = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DescriptorCount = (UInt32)valueCount;
+                    var ptr = (Interop.DescriptorBufferInfo*)NativePointer->BufferInfo;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->BufferInfo != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->BufferInfo);
+                    
+                    NativePointer->BufferInfo = IntPtr.Zero;
+                    NativePointer->DescriptorCount = 0;
+                }
             }
         }
         
@@ -101,21 +141,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->TexelBufferView == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DescriptorCount;
                 var valueArray = new BufferView[valueCount];
                 var ptr = (UInt64*)NativePointer->TexelBufferView;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new BufferView { NativePointer = ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DescriptorCount = (UInt32)valueCount;
-                NativePointer->TexelBufferView = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->TexelBufferView;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = (IntPtr)value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->TexelBufferView != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->TexelBufferView, (IntPtr)typeSize);
+                    
+                    if(NativePointer->TexelBufferView == IntPtr.Zero)
+                        NativePointer->TexelBufferView = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DescriptorCount = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->TexelBufferView;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = (IntPtr)value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->TexelBufferView != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->TexelBufferView);
+                    
+                    NativePointer->TexelBufferView = IntPtr.Zero;
+                    NativePointer->DescriptorCount = 0;
+                }
             }
         }
         

@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.BufferViewCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public BufferViewCreateFlags Flags
         {

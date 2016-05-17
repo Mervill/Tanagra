@@ -45,7 +45,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// One or more bits from VkSurfaceTransformFlagsKHR
+        /// One or more bits from VkSurfaceTransformFlagsKHR (Optional)
         /// </summary>
         public SurfaceTransformFlagsKHR SupportedTransforms
         {

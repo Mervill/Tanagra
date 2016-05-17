@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.Win32SurfaceCreateInfoKHR* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public Win32SurfaceCreateFlagsKHR Flags
         {

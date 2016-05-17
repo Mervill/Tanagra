@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.MirSurfaceCreateInfoKHR* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public MirSurfaceCreateFlagsKHR Flags
         {

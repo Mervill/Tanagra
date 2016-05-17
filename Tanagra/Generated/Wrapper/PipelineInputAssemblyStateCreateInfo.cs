@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineInputAssemblyStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineInputAssemblyStateCreateFlags Flags
         {

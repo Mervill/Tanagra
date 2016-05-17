@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.ImageViewCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public ImageViewCreateFlags Flags
         {

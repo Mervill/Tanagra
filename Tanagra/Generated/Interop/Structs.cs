@@ -96,7 +96,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DeviceQueueCreateFlags Flags;
         public UInt32 QueueFamilyIndex;
@@ -115,7 +115,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DeviceCreateFlags Flags;
         public UInt32 QueueCreateInfoCount;
@@ -141,7 +141,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public InstanceCreateFlags Flags;
         public IntPtr ApplicationInfo;
@@ -339,7 +339,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Buffer creation flags
+        /// Buffer creation flags (Optional)
         /// </summary>
         public BufferCreateFlags Flags;
         /// <summary>
@@ -366,7 +366,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public BufferViewCreateFlags Flags;
         public UInt64 Buffer;
@@ -395,11 +395,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Memory accesses from the source of the dependency to synchronize
+        /// Memory accesses from the source of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags SrcAccessMask;
         /// <summary>
-        /// Memory accesses from the destination of the dependency to synchronize
+        /// Memory accesses from the destination of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags DstAccessMask;
     }
@@ -415,11 +415,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Memory accesses from the source of the dependency to synchronize
+        /// Memory accesses from the source of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags SrcAccessMask;
         /// <summary>
-        /// Memory accesses from the destination of the dependency to synchronize
+        /// Memory accesses from the destination of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags DstAccessMask;
         /// <summary>
@@ -455,11 +455,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Memory accesses from the source of the dependency to synchronize
+        /// Memory accesses from the source of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags SrcAccessMask;
         /// <summary>
-        /// Memory accesses from the destination of the dependency to synchronize
+        /// Memory accesses from the destination of the dependency to synchronize (Optional)
         /// </summary>
         public AccessFlags DstAccessMask;
         /// <summary>
@@ -499,7 +499,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Image creation flags
+        /// Image creation flags (Optional)
         /// </summary>
         public ImageCreateFlags Flags;
         public ImageType ImageType;
@@ -518,7 +518,7 @@ namespace Vulkan.Interop
         /// </summary>
         public SharingMode SharingMode;
         /// <summary>
-        /// Number of queue families to share across
+        /// Number of queue families to share across (Optional)
         /// </summary>
         public UInt32 QueueFamilyIndexCount;
         /// <summary>
@@ -542,7 +542,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public ImageViewCreateFlags Flags;
         public UInt64 Image;
@@ -568,7 +568,7 @@ namespace Vulkan.Interop
         /// </summary>
         public DeviceSize MemoryOffset;
         /// <summary>
-        /// Reserved for future
+        /// Reserved for future (Optional)
         /// </summary>
         public SparseMemoryBindFlags Flags;
     }
@@ -584,7 +584,7 @@ namespace Vulkan.Interop
         /// </summary>
         public DeviceSize MemoryOffset;
         /// <summary>
-        /// Reserved for future
+        /// Reserved for future (Optional)
         /// </summary>
         public SparseMemoryBindFlags Flags;
     }
@@ -657,7 +657,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public ShaderModuleCreateFlags Flags;
         /// <summary>
@@ -681,7 +681,7 @@ namespace Vulkan.Interop
         /// </summary>
         public DescriptorType DescriptorType;
         /// <summary>
-        /// Number of descriptors in this binding
+        /// Number of descriptors in this binding (Optional)
         /// </summary>
         public UInt32 DescriptorCount;
         /// <summary>
@@ -689,7 +689,7 @@ namespace Vulkan.Interop
         /// </summary>
         public ShaderStageFlags StageFlags;
         /// <summary>
-        /// Immutable samplers (used if descriptor type is SAMPLER or COMBINED_IMAGE_SAMPLER, is either NULL or contains count number of elements)
+        /// Immutable samplers (used if descriptor type is SAMPLER or COMBINED_IMAGE_SAMPLER, is either NULL or contains count number of elements) (Optional)
         /// </summary>
         public IntPtr ImmutableSamplers;
     }
@@ -705,11 +705,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DescriptorSetLayoutCreateFlags Flags;
         /// <summary>
-        /// Number of bindings in the descriptor set layout
+        /// Number of bindings in the descriptor set layout (Optional)
         /// </summary>
         public UInt32 BindingCount;
         /// <summary>
@@ -752,7 +752,7 @@ namespace Vulkan.Interop
     internal struct SpecializationInfo
     {
         /// <summary>
-        /// Number of entries in the map
+        /// Number of entries in the map (Optional)
         /// </summary>
         public UInt32 MapEntryCount;
         /// <summary>
@@ -760,7 +760,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr MapEntries;
         /// <summary>
-        /// Size in bytes of pData
+        /// Size in bytes of pData (Optional)
         /// </summary>
         public UInt32 DataSize;
         /// <summary>
@@ -780,7 +780,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineShaderStageCreateFlags Flags;
         /// <summary>
@@ -809,7 +809,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Pipeline creation flags
+        /// Pipeline creation flags (Optional)
         /// </summary>
         public PipelineCreateFlags Flags;
         public PipelineShaderStageCreateInfo Stage;
@@ -818,7 +818,7 @@ namespace Vulkan.Interop
         /// </summary>
         public UInt64 Layout;
         /// <summary>
-        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of
+        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of (Optional)
         /// </summary>
         public UInt64 BasePipelineHandle;
         /// <summary>
@@ -838,16 +838,16 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineVertexInputStateCreateFlags Flags;
         /// <summary>
-        /// Number of bindings
+        /// Number of bindings (Optional)
         /// </summary>
         public UInt32 VertexBindingDescriptionCount;
         public IntPtr VertexBindingDescriptions;
         /// <summary>
-        /// Number of attributes
+        /// Number of attributes (Optional)
         /// </summary>
         public UInt32 VertexAttributeDescriptionCount;
         public IntPtr VertexAttributeDescriptions;
@@ -864,7 +864,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineInputAssemblyStateCreateFlags Flags;
         public PrimitiveTopology Topology;
@@ -882,7 +882,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineTessellationStateCreateFlags Flags;
         public UInt32 PatchControlPoints;
@@ -899,7 +899,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineViewportStateCreateFlags Flags;
         public UInt32 ViewportCount;
@@ -919,7 +919,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineRasterizationStateCreateFlags Flags;
         public Bool32 DepthClampEnable;
@@ -948,7 +948,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineMultisampleStateCreateFlags Flags;
         /// <summary>
@@ -964,7 +964,7 @@ namespace Vulkan.Interop
         /// </summary>
         public Single MinSampleShading;
         /// <summary>
-        /// Array of sampleMask words
+        /// Array of sampleMask words (Optional)
         /// </summary>
         public IntPtr SampleMask;
         public Bool32 AlphaToCoverageEnable;
@@ -982,13 +982,13 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineColorBlendStateCreateFlags Flags;
         public Bool32 LogicOpEnable;
         public LogicOp LogicOp;
         /// <summary>
-        /// # of pAttachments
+        /// # of pAttachments (Optional)
         /// </summary>
         public UInt32 AttachmentCount;
         public IntPtr Attachments;
@@ -1006,7 +1006,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineDynamicStateCreateFlags Flags;
         public UInt32 DynamicStateCount;
@@ -1024,7 +1024,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineDepthStencilStateCreateFlags Flags;
         public Bool32 DepthTestEnable;
@@ -1052,7 +1052,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Pipeline creation flags
+        /// Pipeline creation flags (Optional)
         /// </summary>
         public PipelineCreateFlags Flags;
         public UInt32 StageCount;
@@ -1076,7 +1076,7 @@ namespace Vulkan.Interop
         public UInt64 RenderPass;
         public UInt32 Subpass;
         /// <summary>
-        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of
+        /// If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is nonzero, it specifies the handle of the base pipeline this is a derivative of (Optional)
         /// </summary>
         public UInt64 BasePipelineHandle;
         /// <summary>
@@ -1096,11 +1096,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineCacheCreateFlags Flags;
         /// <summary>
-        /// Size of initial data to populate cache, in bytes
+        /// Size of initial data to populate cache, in bytes (Optional)
         /// </summary>
         public UInt32 InitialDataSize;
         /// <summary>
@@ -1120,11 +1120,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineLayoutCreateFlags Flags;
         /// <summary>
-        /// Number of descriptor sets interfaced by the pipeline
+        /// Number of descriptor sets interfaced by the pipeline (Optional)
         /// </summary>
         public UInt32 SetLayoutCount;
         /// <summary>
@@ -1132,7 +1132,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr SetLayouts;
         /// <summary>
-        /// Number of push-constant ranges used by the pipeline
+        /// Number of push-constant ranges used by the pipeline (Optional)
         /// </summary>
         public UInt32 PushConstantRangeCount;
         /// <summary>
@@ -1152,7 +1152,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public SamplerCreateFlags Flags;
         /// <summary>
@@ -1192,7 +1192,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Command pool creation flags
+        /// Command pool creation flags (Optional)
         /// </summary>
         public CommandPoolCreateFlags Flags;
         public UInt32 QueueFamilyIndex;
@@ -1224,12 +1224,12 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Render pass for secondary command buffers
+        /// Render pass for secondary command buffers (Optional)
         /// </summary>
         public UInt64 RenderPass;
         public UInt32 Subpass;
         /// <summary>
-        /// Framebuffer for secondary command buffers
+        /// Framebuffer for secondary command buffers (Optional)
         /// </summary>
         public UInt64 Framebuffer;
         /// <summary>
@@ -1237,11 +1237,11 @@ namespace Vulkan.Interop
         /// </summary>
         public Bool32 OcclusionQueryEnable;
         /// <summary>
-        /// Query flags used by this secondary command buffer, if executed during an occlusion query
+        /// Query flags used by this secondary command buffer, if executed during an occlusion query (Optional)
         /// </summary>
         public QueryControlFlags QueryFlags;
         /// <summary>
-        /// Pipeline statistics that may be counted for this secondary command buffer
+        /// Pipeline statistics that may be counted for this secondary command buffer (Optional)
         /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics;
     }
@@ -1257,11 +1257,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Command buffer usage flags
+        /// Command buffer usage flags (Optional)
         /// </summary>
         public CommandBufferUsageFlags Flags;
         /// <summary>
-        /// Pointer to inheritance info for secondary command buffers
+        /// Pointer to inheritance info for secondary command buffers (Optional)
         /// </summary>
         public IntPtr InheritanceInfo;
     }
@@ -1311,7 +1311,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public RenderPassCreateFlags Flags;
         public UInt32 AttachmentCount;
@@ -1333,7 +1333,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Event creation flags
+        /// Event creation flags (Optional)
         /// </summary>
         public EventCreateFlags Flags;
     }
@@ -1349,7 +1349,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Fence creation flags
+        /// Fence creation flags (Optional)
         /// </summary>
         public FenceCreateFlags Flags;
     }
@@ -1680,19 +1680,19 @@ namespace Vulkan.Interop
         /// </summary>
         public UInt32 MaxFramebufferLayers;
         /// <summary>
-        /// Supported color sample counts for a framebuffer
+        /// Supported color sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferColorSampleCounts;
         /// <summary>
-        /// Supported depth sample counts for a framebuffer
+        /// Supported depth sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferDepthSampleCounts;
         /// <summary>
-        /// Supported stencil sample counts for a framebuffer
+        /// Supported stencil sample counts for a framebuffer (Optional)
         /// </summary>
         public SampleCountFlags FramebufferStencilSampleCounts;
         /// <summary>
-        /// Supported sample counts for a framebuffer with no attachments
+        /// Supported sample counts for a framebuffer with no attachments (Optional)
         /// </summary>
         public SampleCountFlags FramebufferNoAttachmentsSampleCounts;
         /// <summary>
@@ -1700,23 +1700,23 @@ namespace Vulkan.Interop
         /// </summary>
         public UInt32 MaxColorAttachments;
         /// <summary>
-        /// Supported color sample counts for a non-integer sampled image
+        /// Supported color sample counts for a non-integer sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageColorSampleCounts;
         /// <summary>
-        /// Supported sample counts for an integer image
+        /// Supported sample counts for an integer image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageIntegerSampleCounts;
         /// <summary>
-        /// Supported depth sample counts for a sampled image
+        /// Supported depth sample counts for a sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageDepthSampleCounts;
         /// <summary>
-        /// Supported stencil sample counts for a sampled image
+        /// Supported stencil sample counts for a sampled image (Optional)
         /// </summary>
         public SampleCountFlags SampledImageStencilSampleCounts;
         /// <summary>
-        /// Supported sample counts for a storage image
+        /// Supported sample counts for a storage image (Optional)
         /// </summary>
         public SampleCountFlags StorageImageSampleCounts;
         /// <summary>
@@ -1796,7 +1796,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Semaphore creation flags
+        /// Semaphore creation flags (Optional)
         /// </summary>
         public SemaphoreCreateFlags Flags;
     }
@@ -1812,13 +1812,13 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public QueryPoolCreateFlags Flags;
         public QueryType QueryType;
         public UInt32 QueryCount;
         /// <summary>
-        /// Optional
+        /// Optional (Optional)
         /// </summary>
         public QueryPipelineStatisticFlags PipelineStatistics;
     }
@@ -1834,7 +1834,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public FramebufferCreateFlags Flags;
         public UInt64 RenderPass;
@@ -1883,7 +1883,7 @@ namespace Vulkan.Interop
         /// </summary>
         public Extent2D PhysicalResolution;
         /// <summary>
-        /// One or more bits from VkSurfaceTransformFlagsKHR
+        /// One or more bits from VkSurfaceTransformFlagsKHR (Optional)
         /// </summary>
         public SurfaceTransformFlagsKHR SupportedTransforms;
         /// <summary>
@@ -1931,7 +1931,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DisplayModeCreateFlagsKHR Flags;
         /// <summary>
@@ -1951,7 +1951,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public DisplaySurfaceCreateFlagsKHR Flags;
         /// <summary>
@@ -2019,7 +2019,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public AndroidSurfaceCreateFlagsKHR Flags;
         public IntPtr Window;
@@ -2036,7 +2036,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public MirSurfaceCreateFlagsKHR Flags;
         public IntPtr Connection;
@@ -2054,7 +2054,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public WaylandSurfaceCreateFlagsKHR Flags;
         public IntPtr Display;
@@ -2072,7 +2072,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public Win32SurfaceCreateFlagsKHR Flags;
         public IntPtr Hinstance;
@@ -2090,7 +2090,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public XlibSurfaceCreateFlagsKHR Flags;
         public IntPtr Dpy;
@@ -2108,7 +2108,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public XcbSurfaceCreateFlagsKHR Flags;
         public IntPtr Connection;
@@ -2126,7 +2126,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public SwapchainCreateFlagsKHR Flags;
         /// <summary>
@@ -2162,7 +2162,7 @@ namespace Vulkan.Interop
         /// </summary>
         public SharingMode ImageSharingMode;
         /// <summary>
-        /// Number of queue families having access to the images in case of concurrent sharing mode
+        /// Number of queue families having access to the images in case of concurrent sharing mode (Optional)
         /// </summary>
         public UInt32 QueueFamilyIndexCount;
         /// <summary>
@@ -2186,7 +2186,7 @@ namespace Vulkan.Interop
         /// </summary>
         public Bool32 Clipped;
         /// <summary>
-        /// Existing swap chain to replace, if any
+        /// Existing swap chain to replace, if any (Optional)
         /// </summary>
         public UInt64 OldSwapchain;
     }
@@ -2202,11 +2202,11 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Number of semaphores to wait for before presenting
+        /// Number of semaphores to wait for before presenting (Optional)
         /// </summary>
         public UInt32 WaitSemaphoreCount;
         /// <summary>
-        /// Semaphores to wait for before presenting
+        /// Semaphores to wait for before presenting (Optional)
         /// </summary>
         public IntPtr WaitSemaphores;
         /// <summary>
@@ -2222,7 +2222,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr ImageIndices;
         /// <summary>
-        /// Optional (i.e. if non-NULL) VkResult for each swapchain
+        /// Optional (i.e. if non-NULL) VkResult for each swapchain (Optional)
         /// </summary>
         public IntPtr Results;
     }
@@ -2246,7 +2246,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr Callback;
         /// <summary>
-        /// User data provided to callback function
+        /// User data provided to callback function (Optional)
         /// </summary>
         public IntPtr UserData;
     }
@@ -2338,7 +2338,7 @@ namespace Vulkan.Interop
         /// </summary>
         public IntPtr MarkerName;
         /// <summary>
-        /// Optional color for debug marker
+        /// Optional color for debug marker (Optional)
         /// </summary>
         public unsafe fixed Single Color[4];
     }

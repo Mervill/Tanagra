@@ -26,7 +26,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// User data provided to callback function
+        /// User data provided to callback function (Optional)
         /// </summary>
         public IntPtr UserData
         {

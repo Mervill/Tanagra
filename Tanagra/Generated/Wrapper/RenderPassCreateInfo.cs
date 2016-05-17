@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.RenderPassCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public RenderPassCreateFlags Flags
         {
@@ -20,21 +20,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Attachments == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->AttachmentCount;
                 var valueArray = new AttachmentDescription[valueCount];
                 var ptr = (AttachmentDescription*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->AttachmentCount = (UInt32)valueCount;
-                NativePointer->Attachments = Marshal.AllocHGlobal(Marshal.SizeOf<AttachmentDescription>() * valueCount);
-                var ptr = (AttachmentDescription*)NativePointer->Attachments;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<AttachmentDescription>() * valueCount;
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Attachments == IntPtr.Zero)
+                        NativePointer->Attachments = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->AttachmentCount = (UInt32)valueCount;
+                    var ptr = (AttachmentDescription*)NativePointer->Attachments;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Attachments != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Attachments);
+                    
+                    NativePointer->Attachments = IntPtr.Zero;
+                    NativePointer->AttachmentCount = 0;
+                }
             }
         }
         
@@ -42,21 +62,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Subpasses == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->SubpassCount;
                 var valueArray = new SubpassDescription[valueCount];
                 var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = new SubpassDescription { NativePointer = &ptr[x] };
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->SubpassCount = (UInt32)valueCount;
-                NativePointer->Subpasses = Marshal.AllocHGlobal(Marshal.SizeOf<Interop.SubpassDescription>() * valueCount);
-                var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = *value[x].NativePointer;
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<Interop.SubpassDescription>() * valueCount;
+                    if(NativePointer->Subpasses != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Subpasses, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Subpasses == IntPtr.Zero)
+                        NativePointer->Subpasses = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->SubpassCount = (UInt32)valueCount;
+                    var ptr = (Interop.SubpassDescription*)NativePointer->Subpasses;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = *value[x].NativePointer;
+                }
+                else
+                {
+                    if(NativePointer->Subpasses != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Subpasses);
+                    
+                    NativePointer->Subpasses = IntPtr.Zero;
+                    NativePointer->SubpassCount = 0;
+                }
             }
         }
         
@@ -64,21 +104,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Dependencies == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->DependencyCount;
                 var valueArray = new SubpassDependency[valueCount];
                 var ptr = (SubpassDependency*)NativePointer->Dependencies;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->DependencyCount = (UInt32)valueCount;
-                NativePointer->Dependencies = Marshal.AllocHGlobal(Marshal.SizeOf<SubpassDependency>() * valueCount);
-                var ptr = (SubpassDependency*)NativePointer->Dependencies;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<SubpassDependency>() * valueCount;
+                    if(NativePointer->Dependencies != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Dependencies, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Dependencies == IntPtr.Zero)
+                        NativePointer->Dependencies = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->DependencyCount = (UInt32)valueCount;
+                    var ptr = (SubpassDependency*)NativePointer->Dependencies;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Dependencies != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Dependencies);
+                    
+                    NativePointer->Dependencies = IntPtr.Zero;
+                    NativePointer->DependencyCount = 0;
+                }
             }
         }
         

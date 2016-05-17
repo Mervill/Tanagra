@@ -41,21 +41,41 @@ namespace Vulkan
         {
             get
             {
+                if(NativePointer->Tag == IntPtr.Zero)
+                    return null;
                 var valueCount = NativePointer->TagSize;
                 var valueArray = new IntPtr[valueCount];
                 var ptr = (IntPtr*)NativePointer->Tag;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
+                
                 return valueArray;
             }
             set
             {
-                var valueCount = value.Length;
-                NativePointer->TagSize = (UInt32)valueCount;
-                NativePointer->Tag = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
-                var ptr = (IntPtr*)NativePointer->Tag;
-                for(var x = 0; x < valueCount; x++)
-                    ptr[x] = value[x];
+                if(value != null)
+                {
+                    var valueCount = value.Length;
+                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    if(NativePointer->Tag != IntPtr.Zero)
+                        Marshal.ReAllocHGlobal(NativePointer->Tag, (IntPtr)typeSize);
+                    
+                    if(NativePointer->Tag == IntPtr.Zero)
+                        NativePointer->Tag = Marshal.AllocHGlobal(typeSize);
+                    
+                    NativePointer->TagSize = (UInt32)valueCount;
+                    var ptr = (IntPtr*)NativePointer->Tag;
+                    for(var x = 0; x < valueCount; x++)
+                        ptr[x] = value[x];
+                }
+                else
+                {
+                    if(NativePointer->Tag != IntPtr.Zero)
+                        Marshal.FreeHGlobal(NativePointer->Tag);
+                    
+                    NativePointer->Tag = IntPtr.Zero;
+                    NativePointer->TagSize = 0;
+                }
             }
         }
         

@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineMultisampleStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineMultisampleStateCreateFlags Flags
         {
@@ -44,7 +44,7 @@ namespace Vulkan
         }
         
         /// <summary>
-        /// Array of sampleMask words
+        /// Array of sampleMask words (Optional)
         /// </summary>
         public SampleMask[] SampleMask
         {

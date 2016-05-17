@@ -8,7 +8,7 @@ namespace Vulkan
         internal Interop.PipelineDepthStencilStateCreateInfo* NativePointer;
         
         /// <summary>
-        /// Reserved
+        /// Reserved (Optional)
         /// </summary>
         public PipelineDepthStencilStateCreateFlags Flags
         {

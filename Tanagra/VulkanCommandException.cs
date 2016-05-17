@@ -4,7 +4,7 @@ namespace Vulkan
 {
     public class VulkanCommandException : Exception
     {
-        public readonly String CommandName;
+        public readonly string CommandName;
         public readonly Result Result;
 
         public VulkanCommandException(string commandName, Result result)
