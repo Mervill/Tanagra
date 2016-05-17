@@ -119,7 +119,7 @@ namespace TanagraExample
 
             //appInfo.Dispose();
             //instanceCreateInfo.Dispose();
-            //PhysicalDeviceProperties();
+            PhysicalDeviceProperties();
         }
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
@@ -556,13 +556,13 @@ namespace TanagraExample
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
             //semaphoreCreateInfo.Dispose();
-
+            
             try
             {
                 // Get the index of the next available swapchain image
                 currentBackBufferIndex = device.AcquireNextImageKHR(swapchain, ulong.MaxValue, presentCompleteSemaphore, null);
             }
-            catch (VulkanCommandException e) //when(e. == Result.ErrorOutOfDate) // ?!
+            catch (VulkanCommandException e) when (e.Result == Result.ErrorOutOfDateKHR)
             {
                 // TODO: Handle resize and retry draw
                 throw new NotImplementedException();

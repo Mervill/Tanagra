@@ -21,7 +21,7 @@ namespace Tanagra.Generator
         // todo: AddMemoryPressure / RemoveMemoryPressure
         // todo: there is a common case where a command that takes arrays only takes a single entry
         // todo: API Constants
-        ///
+        // todo: use ReAlloc in arrays http://stackoverflow.com/questions/641564
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior
         // http://stackoverflow.com/questions/17562295/if-i-allocate-some-memory-with-allochglobal-do-i-have-to-free-it-with-freehglob

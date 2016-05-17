@@ -639,40 +639,10 @@ namespace Tanagra.Generator
 
         void WriteMemberStringArray(VkMember vkMember, bool readOnly)
         {
-            WriteMemberComments(vkMember);
-            WriteLine($"public string[] {vkMember.Name}");
-            WriteBeginBlock();
-            // get
-            WriteLine("get");
-            WriteBeginBlock();
-            if (!vkMember.Name.EndsWith("Names"))
-                throw new Exception($"unable to handle member {vkMember.Name}");
-
             var countName = vkMember.Name.Substring(0, vkMember.Name.Length - 5) + "Count";
-            WriteLine($"var strings = new String[{NativePointer}->{countName}];");
-            WriteLine($"void** ptr = (void**){NativePointer}->{vkMember.Name};");
-            WriteLine($"for(var x = 0; x < {NativePointer}->{countName}; x++)");
-            _tabs++;
-            WriteLine("strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);");
-            _tabs--;
-            WriteLine("");
-            WriteLine("return strings;");
-            WriteEndBlock();
-            // set
-            if (!readOnly)
-            {
-                WriteLine("set");
-                WriteBeginBlock();
-                WriteLine($"{NativePointer}->{countName} = (UInt32)value.Length;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*{NativePointer}->{countName}));");
-                WriteLine($"void** ptr = (void**){NativePointer}->{vkMember.Name};");
-                WriteLine($"for(var x = 0; x < {NativePointer}->{countName}; x++)");
-                _tabs++;
-                WriteLine("ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);");
-                _tabs--;
-                WriteEndBlock();
-            }
-            WriteEndBlock();
+            string get = "valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);";
+            string set = "ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);";
+            WriteArray(vkMember, countName, readOnly, "void*", "IntPtr", "void*", get, set);
         }
 
         void WriteMemeberArray(VkMember vkMember, bool readOnly)
@@ -694,77 +664,55 @@ namespace Tanagra.Generator
 
             if(vkMember.Type is VkHandle)
             {
-                WriteHandleArray(vkMember, countName, readOnly);
+                var structType = "UInt64";
+                var vkHandle = vkMember.Type as VkHandle;
+                if (vkHandle.IsDispatchable)
+                    structType = "IntPtr";
+
+                var get = $"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};";
+                var set = "ptr[x] = (IntPtr)value[x].NativePointer;";
+                WriteArray(vkMember, countName, readOnly, structType, "IntPtr", "IntPtr", get, set);
                 return;
             }
 
             if(vkMember.Type is VkEnum)
             {
-                WriteEnumArray(vkMember, countName, readOnly);
+                string get = $"valueArray[x] = ({vkMember.Type})ptr[x];";
+                string set = "ptr[x] = (UInt32)value[x];";
+                WriteArray(vkMember, countName, readOnly, "UInt32", "UInt32", "UInt32", get, set);
                 return;
             }
 
             if(platformStructTypes.Contains(vkMember.Type.Name))
             {
-                WritePlatformArray(vkMember, countName, readOnly);
+                string get = "valueArray[x] = ptr[x];";
+                string set = "ptr[x] = value[x];";
+                WriteArray(vkMember, countName, readOnly, vkMember.Type.Name, vkMember.Type.Name, vkMember.Type.Name, get, set);
                 return;
             }
 
-            WriteStructArray(vkMember, countName, readOnly);
-        }
-
-        void WriteStructArray(VkMember vkMember, string countName, bool readOnly)
-        {
-            WriteMemberComments(vkMember);
-            WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
-            WriteBeginBlock();
-            // get
-            WriteLine("get");
-            WriteBeginBlock();
-            var vkStruct = vkMember.Type as VkStruct;
-            var structType = vkStruct.Name;
-            if(IsInteropStruct(vkStruct))
-                structType = "Interop." + structType;
-
-            WriteLine($"var valueCount = {NativePointer}->{countName};");
-            WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
-            WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            var getValueCast = IsInteropStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
-            WriteLine($"valueArray[x] = {getValueCast};");
-            _tabs--;
-            WriteLine("return valueArray;");
-            WriteEndBlock();
-            if (!readOnly)
+            // struct
             {
-                // set
-                WriteLine("set");
-                WriteBeginBlock();
-                WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{structType}>() * valueCount);");
-                WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
-                WriteLine("for(var x = 0; x < valueCount; x++)");
-                _tabs++;
+                var vkStruct = vkMember.Type as VkStruct;
+                var structType = vkStruct.Name;
+                if (IsInteropStruct(vkStruct))
+                    structType = "Interop." + structType;
+
+                var getValueCast = IsInteropStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
+                string get = $"valueArray[x] = {getValueCast};";
+
                 var setValueCast = IsInteropStruct(vkStruct) ? "*value[x].NativePointer" : "value[x]";
-                WriteLine($"ptr[x] = {setValueCast};");
-                _tabs--;
-                WriteEndBlock();
-            }
-            WriteEndBlock();
-        }
+                string set = $"ptr[x] = {setValueCast};";
 
-        void WriteHandleArray(VkMember vkMember, string countName, bool readOnly)
+                WriteArray(vkMember, countName, readOnly, structType, structType, structType, get, set);
+            }
+        }
+        
+        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string sizeType, string pointerType, string get, string set)
         {
             WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
             WriteBeginBlock();
-            var structType = "UInt64";
-            var vkHandle = vkMember.Type as VkHandle;
-            if(vkHandle.IsDispatchable)
-                structType = "IntPtr";
-
             // get
             WriteLine("get");
             WriteBeginBlock();
@@ -773,7 +721,8 @@ namespace Tanagra.Generator
             WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
             WriteLine("for(var x = 0; x < valueCount; x++)");
             _tabs++;
-            WriteLine($"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};");
+            WriteLine(get);
+            //WriteLine($"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};");
             _tabs--;
             WriteLine("return valueArray;");
             WriteEndBlock();
@@ -782,88 +731,40 @@ namespace Tanagra.Generator
                 // set
                 WriteLine("set");
                 WriteBeginBlock();
+
+                //WriteLine("if(value != null)");
+                //WriteBeginBlock();
+
+                //WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
+                //_tabs++;
+                //WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
+                //_tabs--;
                 WriteLine("var valueCount = value.Length;");
                 WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);");
-                WriteLine($"var ptr = (IntPtr*){NativePointer}->{vkMember.Name};");
+                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{sizeType}>() * valueCount);");
+                WriteLine($"var ptr = ({pointerType}*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
                 _tabs++;
-                WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
+                WriteLine(set);
+                //WriteLine("ptr[x] = (IntPtr)value[x].NativePointer;");
                 _tabs--;
+
+                //WriteEndBlock();
+
+                /*WriteLine("else");
+                WriteBeginBlock();
+                WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
+                _tabs++;
+                WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
+                _tabs--;
+                WriteLine($"{NativePointer}->{vkMember.Name} = IntPtr.Zero;");
+                WriteEndBlock();*/
+
                 WriteEndBlock();
             }
             WriteEndBlock();
         }
 
-        void WritePlatformArray(VkMember vkMember, string countName, bool readOnly)
-        {
-            WriteMemberComments(vkMember);
-            WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
-            WriteBeginBlock();
-            // get
-            WriteLine("get");
-            WriteBeginBlock();
-            WriteLine($"var valueCount = {NativePointer}->{countName};");
-            WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
-            WriteLine($"var ptr = ({vkMember.Type}*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            WriteLine("valueArray[x] = ptr[x];");
-            _tabs--;
-            WriteLine("return valueArray;");
-            WriteEndBlock();
-            if (!readOnly)
-            {
-                // set
-                WriteLine("set");
-                WriteBeginBlock();
-                WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<{vkMember.Type.Name}>() * valueCount);");
-                WriteLine($"var ptr = ({vkMember.Type.Name}*){NativePointer}->{vkMember.Name};");
-                WriteLine("for(var x = 0; x < valueCount; x++)");
-                _tabs++;
-                WriteLine("ptr[x] = value[x];");
-                _tabs--;
-                WriteEndBlock();
-            }
-            WriteEndBlock();
-        }
-
-        void WriteEnumArray(VkMember vkMember, string countName, bool readOnly)
-        {
-            WriteMemberComments(vkMember);
-            WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
-            WriteBeginBlock();
-            // get
-            WriteLine("get");
-            WriteBeginBlock();
-            WriteLine($"var valueCount = {NativePointer}->{countName};");
-            WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
-            WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
-            WriteLine("for(var x = 0; x < valueCount; x++)");
-            _tabs++;
-            WriteLine($"valueArray[x] = ({vkMember.Type})ptr[x];");
-            _tabs--;
-            WriteLine("return valueArray;");
-            WriteEndBlock();
-            // set
-            if (!readOnly)
-            {
-                WriteLine("set");
-                WriteBeginBlock();
-                WriteLine("var valueCount = value.Length;");
-                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
-                WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf<UInt32>() * valueCount);");
-                WriteLine($"var ptr = (UInt32*){NativePointer}->{vkMember.Name};");
-                WriteLine("for(var x = 0; x < valueCount; x++)");
-                _tabs++;
-                WriteLine("ptr[x] = (UInt32)value[x];");
-                _tabs--;
-                WriteEndBlock();
-            }
-            WriteEndBlock();
-        }
 
         void WriteNotImplementedArray(VkMember vkMember, string why, bool readOnly)
         {

@@ -41,44 +41,46 @@ namespace Vulkan
         /// <summary>
         /// Ordered list of layer names to be enabled
         /// </summary>
-        public string[] EnabledLayerNames
+        public String[] EnabledLayerNames
         {
             get
             {
-                var strings = new String[NativePointer->EnabledLayerCount];
-                void** ptr = (void**)NativePointer->EnabledLayerNames;
-                for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
-                    strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
-                
-                return strings;
+                var valueCount = NativePointer->EnabledLayerCount;
+                var valueArray = new String[valueCount];
+                var ptr = (void**)NativePointer->EnabledLayerNames;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
+                return valueArray;
             }
             set
             {
-                NativePointer->EnabledLayerCount = (UInt32)value.Length;
-                NativePointer->EnabledLayerNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledLayerCount));
-                void** ptr = (void**)NativePointer->EnabledLayerNames;
-                for(var x = 0; x < NativePointer->EnabledLayerCount; x++)
+                var valueCount = value.Length;
+                NativePointer->EnabledLayerCount = (UInt32)valueCount;
+                NativePointer->EnabledLayerNames = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (void**)NativePointer->EnabledLayerNames;
+                for(var x = 0; x < valueCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }
         
-        public string[] EnabledExtensionNames
+        public String[] EnabledExtensionNames
         {
             get
             {
-                var strings = new String[NativePointer->EnabledExtensionCount];
-                void** ptr = (void**)NativePointer->EnabledExtensionNames;
-                for(var x = 0; x < NativePointer->EnabledExtensionCount; x++)
-                    strings[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
-                
-                return strings;
+                var valueCount = NativePointer->EnabledExtensionCount;
+                var valueArray = new String[valueCount];
+                var ptr = (void**)NativePointer->EnabledExtensionNames;
+                for(var x = 0; x < valueCount; x++)
+                    valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);
+                return valueArray;
             }
             set
             {
-                NativePointer->EnabledExtensionCount = (UInt32)value.Length;
-                NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal((int)(sizeof(IntPtr)*NativePointer->EnabledExtensionCount));
-                void** ptr = (void**)NativePointer->EnabledExtensionNames;
-                for(var x = 0; x < NativePointer->EnabledExtensionCount; x++)
+                var valueCount = value.Length;
+                NativePointer->EnabledExtensionCount = (UInt32)valueCount;
+                NativePointer->EnabledExtensionNames = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * valueCount);
+                var ptr = (void**)NativePointer->EnabledExtensionNames;
+                for(var x = 0; x < valueCount; x++)
                     ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);
             }
         }
