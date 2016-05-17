@@ -38,7 +38,7 @@ namespace Vulkan
         
         public DescriptorImageInfo()
         {
-            NativePointer = (Interop.DescriptorImageInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorImageInfo));
+            NativePointer = (Interop.DescriptorImageInfo*)MemoryUtils.Allocate(typeof(Interop.DescriptorImageInfo));
         }
         
         public DescriptorImageInfo(Sampler Sampler, ImageView ImageView, ImageLayout ImageLayout) : this()

@@ -13,7 +13,7 @@ namespace Vulkan
         internal unsafe delegate Result CreateDebugReportCallbackEXT_Delegate(IntPtr instance, Interop.DebugReportCallbackCreateInfoEXT* createInfo, Interop.AllocationCallbacks* allocator, UInt64* callback);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        internal unsafe delegate Result DestroyDebugReportCallbackDelegate(Instance instance, UInt64* debugReportCallback, Interop.AllocationCallbacks* allocator);
+        internal unsafe delegate Result DestroyDebugReportCallbackDelegate(IntPtr instance, UInt64 callback, Interop.AllocationCallbacks* allocator);
 
         public static unsafe DebugReportCallbackEXT CreateDebugReportCallback(Instance instance, DebugReportCallbackDelegate callback)
         {
@@ -38,6 +38,20 @@ namespace Vulkan
                     throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
             }
             return debugReportCallbackEXT;
+        }
+
+        public static unsafe void DestroyDebugReportCallback(Instance instance, DebugReportCallbackEXT debugReportCallbackEXT)
+        {
+            if(debugReportCallbackEXT.NativePointer != 0)
+            {
+                var name = "vkDestroyDebugReportCallbackEXT";
+                var fnPointer = VK.GetInstanceProcAddr(instance, name);
+                if(fnPointer == IntPtr.Zero)
+                    throw new NullReferenceException($"Didn't find InstanceProcAddr {name}");
+
+                var destroyDebugReportCallback = Marshal.GetDelegateForFunctionPointer<DestroyDebugReportCallbackDelegate>(fnPointer);
+                destroyDebugReportCallback(instance.NativePointer, debugReportCallbackEXT.NativePointer, null);
+            }
         }
     }
 }

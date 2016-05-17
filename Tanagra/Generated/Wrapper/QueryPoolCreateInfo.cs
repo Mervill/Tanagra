@@ -39,7 +39,7 @@ namespace Vulkan
         
         public QueryPoolCreateInfo()
         {
-            NativePointer = (Interop.QueryPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.QueryPoolCreateInfo));
+            NativePointer = (Interop.QueryPoolCreateInfo*)MemoryUtils.Allocate(typeof(Interop.QueryPoolCreateInfo));
             NativePointer->SType = StructureType.QueryPoolCreateInfo;
         }
         

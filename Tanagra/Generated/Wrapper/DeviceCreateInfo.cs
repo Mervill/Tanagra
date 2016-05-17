@@ -154,7 +154,7 @@ namespace Vulkan
         
         public DeviceCreateInfo()
         {
-            NativePointer = (Interop.DeviceCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DeviceCreateInfo));
+            NativePointer = (Interop.DeviceCreateInfo*)MemoryUtils.Allocate(typeof(Interop.DeviceCreateInfo));
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
         

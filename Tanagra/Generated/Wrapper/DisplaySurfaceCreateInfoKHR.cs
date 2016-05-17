@@ -82,7 +82,7 @@ namespace Vulkan
         
         public DisplaySurfaceCreateInfoKHR()
         {
-            NativePointer = (Interop.DisplaySurfaceCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.DisplaySurfaceCreateInfoKHR));
+            NativePointer = (Interop.DisplaySurfaceCreateInfoKHR*)MemoryUtils.Allocate(typeof(Interop.DisplaySurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.DisplaySurfaceCreateInfoKHR;
         }
         

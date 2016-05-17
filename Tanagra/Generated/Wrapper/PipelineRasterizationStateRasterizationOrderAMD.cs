@@ -18,7 +18,7 @@ namespace Vulkan
         
         public PipelineRasterizationStateRasterizationOrderAMD()
         {
-            NativePointer = (Interop.PipelineRasterizationStateRasterizationOrderAMD*)Interop.Structure.Allocate(typeof(Interop.PipelineRasterizationStateRasterizationOrderAMD));
+            NativePointer = (Interop.PipelineRasterizationStateRasterizationOrderAMD*)MemoryUtils.Allocate(typeof(Interop.PipelineRasterizationStateRasterizationOrderAMD));
             NativePointer->SType = StructureType.PipelineRasterizationStateRasterizationOrderAMD;
         }
         

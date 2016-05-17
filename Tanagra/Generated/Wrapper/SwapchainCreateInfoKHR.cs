@@ -182,7 +182,7 @@ namespace Vulkan
         
         public SwapchainCreateInfoKHR()
         {
-            NativePointer = (Interop.SwapchainCreateInfoKHR*)Interop.Structure.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
+            NativePointer = (Interop.SwapchainCreateInfoKHR*)MemoryUtils.Allocate(typeof(Interop.SwapchainCreateInfoKHR));
             NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
         

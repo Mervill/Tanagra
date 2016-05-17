@@ -53,7 +53,7 @@ namespace Vulkan
         
         public ComputePipelineCreateInfo()
         {
-            NativePointer = (Interop.ComputePipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ComputePipelineCreateInfo));
+            NativePointer = (Interop.ComputePipelineCreateInfo*)MemoryUtils.Allocate(typeof(Interop.ComputePipelineCreateInfo));
             NativePointer->SType = StructureType.ComputePipelineCreateInfo;
         }
         

@@ -71,7 +71,7 @@ namespace Vulkan
         
         public RenderPassBeginInfo()
         {
-            NativePointer = (Interop.RenderPassBeginInfo*)Interop.Structure.Allocate(typeof(Interop.RenderPassBeginInfo));
+            NativePointer = (Interop.RenderPassBeginInfo*)MemoryUtils.Allocate(typeof(Interop.RenderPassBeginInfo));
             NativePointer->SType = StructureType.RenderPassBeginInfo;
         }
         

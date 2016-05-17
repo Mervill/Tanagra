@@ -85,7 +85,7 @@ namespace Vulkan
         
         public FramebufferCreateInfo()
         {
-            NativePointer = (Interop.FramebufferCreateInfo*)Interop.Structure.Allocate(typeof(Interop.FramebufferCreateInfo));
+            NativePointer = (Interop.FramebufferCreateInfo*)MemoryUtils.Allocate(typeof(Interop.FramebufferCreateInfo));
             NativePointer->SType = StructureType.FramebufferCreateInfo;
         }
         

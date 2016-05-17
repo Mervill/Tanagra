@@ -52,7 +52,7 @@ namespace Vulkan
         
         public SparseImageMemoryBind()
         {
-            NativePointer = (Interop.SparseImageMemoryBind*)Interop.Structure.Allocate(typeof(Interop.SparseImageMemoryBind));
+            NativePointer = (Interop.SparseImageMemoryBind*)MemoryUtils.Allocate(typeof(Interop.SparseImageMemoryBind));
         }
         
         public SparseImageMemoryBind(ImageSubresource Subresource, Offset3D Offset, Extent3D Extent, DeviceSize MemoryOffset) : this()

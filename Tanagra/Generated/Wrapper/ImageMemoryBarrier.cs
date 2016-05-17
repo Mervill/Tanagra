@@ -82,7 +82,7 @@ namespace Vulkan
         
         public ImageMemoryBarrier()
         {
-            NativePointer = (Interop.ImageMemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.ImageMemoryBarrier));
+            NativePointer = (Interop.ImageMemoryBarrier*)MemoryUtils.Allocate(typeof(Interop.ImageMemoryBarrier));
             NativePointer->SType = StructureType.ImageMemoryBarrier;
         }
         

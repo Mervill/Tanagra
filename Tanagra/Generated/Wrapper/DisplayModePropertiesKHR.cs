@@ -28,7 +28,7 @@ namespace Vulkan
         
         public DisplayModePropertiesKHR()
         {
-            NativePointer = (Interop.DisplayModePropertiesKHR*)Interop.Structure.Allocate(typeof(Interop.DisplayModePropertiesKHR));
+            NativePointer = (Interop.DisplayModePropertiesKHR*)MemoryUtils.Allocate(typeof(Interop.DisplayModePropertiesKHR));
         }
         
         public DisplayModePropertiesKHR(DisplayModeKHR DisplayMode, DisplayModeParametersKHR Parameters) : this()

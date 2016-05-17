@@ -102,7 +102,7 @@ namespace Vulkan
         
         public PipelineViewportStateCreateInfo()
         {
-            NativePointer = (Interop.PipelineViewportStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineViewportStateCreateInfo));
+            NativePointer = (Interop.PipelineViewportStateCreateInfo*)MemoryUtils.Allocate(typeof(Interop.PipelineViewportStateCreateInfo));
             NativePointer->SType = StructureType.PipelineViewportStateCreateInfo;
         }
     }

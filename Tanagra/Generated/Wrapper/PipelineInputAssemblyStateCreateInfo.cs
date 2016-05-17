@@ -30,7 +30,7 @@ namespace Vulkan
         
         public PipelineInputAssemblyStateCreateInfo()
         {
-            NativePointer = (Interop.PipelineInputAssemblyStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineInputAssemblyStateCreateInfo));
+            NativePointer = (Interop.PipelineInputAssemblyStateCreateInfo*)MemoryUtils.Allocate(typeof(Interop.PipelineInputAssemblyStateCreateInfo));
             NativePointer->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
         }
         

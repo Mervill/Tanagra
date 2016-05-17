@@ -20,6 +20,7 @@ namespace TanagraExample
     {
         static void Main(string[] args)
         {
+            Console.ReadKey();
             var tri = new VKTriangle();
             tri.Main(null);
         }

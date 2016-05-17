@@ -58,7 +58,7 @@ namespace Vulkan
         
         public SparseBufferMemoryBindInfo()
         {
-            NativePointer = (Interop.SparseBufferMemoryBindInfo*)Interop.Structure.Allocate(typeof(Interop.SparseBufferMemoryBindInfo));
+            NativePointer = (Interop.SparseBufferMemoryBindInfo*)MemoryUtils.Allocate(typeof(Interop.SparseBufferMemoryBindInfo));
         }
         
         public SparseBufferMemoryBindInfo(Buffer Buffer, SparseMemoryBind[] Binds) : this()

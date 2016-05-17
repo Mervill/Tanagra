@@ -37,7 +37,7 @@ namespace Vulkan
         
         public MappedMemoryRange()
         {
-            NativePointer = (Interop.MappedMemoryRange*)Interop.Structure.Allocate(typeof(Interop.MappedMemoryRange));
+            NativePointer = (Interop.MappedMemoryRange*)MemoryUtils.Allocate(typeof(Interop.MappedMemoryRange));
             NativePointer->SType = StructureType.MappedMemoryRange;
         }
         

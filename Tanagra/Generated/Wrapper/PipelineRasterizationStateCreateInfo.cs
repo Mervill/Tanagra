@@ -81,7 +81,7 @@ namespace Vulkan
         
         public PipelineRasterizationStateCreateInfo()
         {
-            NativePointer = (Interop.PipelineRasterizationStateCreateInfo*)Interop.Structure.Allocate(typeof(Interop.PipelineRasterizationStateCreateInfo));
+            NativePointer = (Interop.PipelineRasterizationStateCreateInfo*)MemoryUtils.Allocate(typeof(Interop.PipelineRasterizationStateCreateInfo));
             NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
         

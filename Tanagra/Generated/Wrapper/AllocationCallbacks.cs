@@ -45,7 +45,7 @@ namespace Vulkan
         
         public AllocationCallbacks()
         {
-            NativePointer = (Interop.AllocationCallbacks*)Interop.Structure.Allocate(typeof(Interop.AllocationCallbacks));
+            NativePointer = (Interop.AllocationCallbacks*)MemoryUtils.Allocate(typeof(Interop.AllocationCallbacks));
         }
         
         public AllocationCallbacks(IntPtr Allocation, IntPtr Reallocation, IntPtr Free) : this()

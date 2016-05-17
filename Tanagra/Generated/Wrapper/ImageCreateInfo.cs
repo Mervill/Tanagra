@@ -132,7 +132,7 @@ namespace Vulkan
         
         public ImageCreateInfo()
         {
-            NativePointer = (Interop.ImageCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ImageCreateInfo));
+            NativePointer = (Interop.ImageCreateInfo*)MemoryUtils.Allocate(typeof(Interop.ImageCreateInfo));
             NativePointer->SType = StructureType.ImageCreateInfo;
         }
         

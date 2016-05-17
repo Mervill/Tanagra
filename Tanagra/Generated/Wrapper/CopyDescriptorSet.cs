@@ -74,7 +74,7 @@ namespace Vulkan
         
         public CopyDescriptorSet()
         {
-            NativePointer = (Interop.CopyDescriptorSet*)Interop.Structure.Allocate(typeof(Interop.CopyDescriptorSet));
+            NativePointer = (Interop.CopyDescriptorSet*)MemoryUtils.Allocate(typeof(Interop.CopyDescriptorSet));
             NativePointer->SType = StructureType.CopyDescriptorSet;
         }
         

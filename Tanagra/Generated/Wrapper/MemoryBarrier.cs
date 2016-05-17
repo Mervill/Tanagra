@@ -27,7 +27,7 @@ namespace Vulkan
         
         public MemoryBarrier()
         {
-            NativePointer = (Interop.MemoryBarrier*)Interop.Structure.Allocate(typeof(Interop.MemoryBarrier));
+            NativePointer = (Interop.MemoryBarrier*)MemoryUtils.Allocate(typeof(Interop.MemoryBarrier));
             NativePointer->SType = StructureType.MemoryBarrier;
         }
     }

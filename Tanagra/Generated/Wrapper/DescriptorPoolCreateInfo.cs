@@ -63,7 +63,7 @@ namespace Vulkan
         
         public DescriptorPoolCreateInfo()
         {
-            NativePointer = (Interop.DescriptorPoolCreateInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorPoolCreateInfo));
+            NativePointer = (Interop.DescriptorPoolCreateInfo*)MemoryUtils.Allocate(typeof(Interop.DescriptorPoolCreateInfo));
             NativePointer->SType = StructureType.DescriptorPoolCreateInfo;
         }
         

@@ -63,7 +63,7 @@ namespace Vulkan
         
         public ShaderModuleCreateInfo()
         {
-            NativePointer = (Interop.ShaderModuleCreateInfo*)Interop.Structure.Allocate(typeof(Interop.ShaderModuleCreateInfo));
+            NativePointer = (Interop.ShaderModuleCreateInfo*)MemoryUtils.Allocate(typeof(Interop.ShaderModuleCreateInfo));
             NativePointer->SType = StructureType.ShaderModuleCreateInfo;
         }
         

@@ -69,10 +69,14 @@ namespace TanagraExample
             CreatePipeline();
             CreateFramebuffers();
 
+            Console.WriteLine("Any key to continue");
+            Console.ReadKey();
             Console.WriteLine("[INFO] Starup OK, Launching...");
             RenderLoop.Run(form, Draw);
 
             Console.WriteLine("[INFO] Render window lost!");
+
+            Destroy();
 
             Console.WriteLine("program complete");
             Console.ReadKey();
@@ -368,7 +372,7 @@ namespace TanagraExample
             Console.WriteLine($"[ OK ] {vertexBufferMemory}");
 
             var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
-            Utils.Copy2DArray(vertices, mapped, createInfo.Size, createInfo.Size);
+            MemoryUtils.Copy2DArray(vertices, mapped, createInfo.Size, createInfo.Size);
             device.UnmapMemory(vertexBufferMemory);
 
             device.BindBufferMemory(vertexBuffer, vertexBufferMemory, 0);
@@ -630,6 +634,34 @@ namespace TanagraExample
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
             //memoryBarrier.Dispose();
+        }
+
+        private void Destroy()
+        {
+            device.WaitIdle();
+            device.FreeMemory(vertexBufferMemory);
+            device.DestroyBuffer(vertexBuffer);
+            foreach(var framebuffer in framebuffers)
+                device.DestroyFramebuffer(framebuffer);
+
+            device.DestroyRenderPass(renderPass);
+            device.DestroyPipeline(pipeline);
+            device.DestroyPipelineLayout(pipelineLayout);
+            device.FreeCommandBuffers(commandPool, commandBuffer);
+            device.DestroyCommandPool(commandPool);
+            foreach(var backBufferView in backBufferViews)
+                device.DestroyImageView(backBufferView);
+
+            device.DestroySwapchainKHR(swapchain);
+            instance.DestroySurfaceKHR(surface);
+
+            device.Destroy();
+
+            DebugUtils.DestroyDebugReportCallback(instance, debugCallback);
+
+            instance.Destroy();
+
+            GC.WaitForPendingFinalizers();
         }
 
         private void PhysicalDeviceProperties()

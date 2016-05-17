@@ -177,7 +177,7 @@ namespace Vulkan
         
         public SubmitInfo()
         {
-            NativePointer = (Interop.SubmitInfo*)Interop.Structure.Allocate(typeof(Interop.SubmitInfo));
+            NativePointer = (Interop.SubmitInfo*)MemoryUtils.Allocate(typeof(Interop.SubmitInfo));
             NativePointer->SType = StructureType.SubmitInfo;
         }
         

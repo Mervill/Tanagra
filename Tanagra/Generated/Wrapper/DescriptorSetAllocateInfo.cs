@@ -58,7 +58,7 @@ namespace Vulkan
         
         public DescriptorSetAllocateInfo()
         {
-            NativePointer = (Interop.DescriptorSetAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.DescriptorSetAllocateInfo));
+            NativePointer = (Interop.DescriptorSetAllocateInfo*)MemoryUtils.Allocate(typeof(Interop.DescriptorSetAllocateInfo));
             NativePointer->SType = StructureType.DescriptorSetAllocateInfo;
         }
         

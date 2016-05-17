@@ -28,7 +28,7 @@ namespace Vulkan
         
         internal ExtensionProperties()
         {
-            NativePointer = (Interop.ExtensionProperties*)Interop.Structure.Allocate(typeof(Interop.ExtensionProperties));
+            NativePointer = (Interop.ExtensionProperties*)MemoryUtils.Allocate(typeof(Interop.ExtensionProperties));
         }
     }
 }

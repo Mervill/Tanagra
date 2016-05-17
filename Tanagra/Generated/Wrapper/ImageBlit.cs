@@ -51,7 +51,7 @@ namespace Vulkan
         
         public ImageBlit()
         {
-            NativePointer = (Interop.ImageBlit*)Interop.Structure.Allocate(typeof(Interop.ImageBlit));
+            NativePointer = (Interop.ImageBlit*)MemoryUtils.Allocate(typeof(Interop.ImageBlit));
         }
         
         public ImageBlit(ImageSubresourceLayers SrcSubresource, Offset3D[] SrcOffsets, ImageSubresourceLayers DstSubresource, Offset3D[] DstOffsets) : this()

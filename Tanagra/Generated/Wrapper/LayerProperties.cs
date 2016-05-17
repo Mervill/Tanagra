@@ -44,7 +44,7 @@ namespace Vulkan
         
         internal LayerProperties()
         {
-            NativePointer = (Interop.LayerProperties*)Interop.Structure.Allocate(typeof(Interop.LayerProperties));
+            NativePointer = (Interop.LayerProperties*)MemoryUtils.Allocate(typeof(Interop.LayerProperties));
         }
     }
 }

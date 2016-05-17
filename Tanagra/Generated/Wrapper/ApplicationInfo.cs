@@ -39,7 +39,7 @@ namespace Vulkan
         
         public ApplicationInfo()
         {
-            NativePointer = (Interop.ApplicationInfo*)Interop.Structure.Allocate(typeof(Interop.ApplicationInfo));
+            NativePointer = (Interop.ApplicationInfo*)MemoryUtils.Allocate(typeof(Interop.ApplicationInfo));
             NativePointer->SType = StructureType.ApplicationInfo;
         }
         

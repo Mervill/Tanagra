@@ -60,7 +60,7 @@ namespace Vulkan
         
         internal PhysicalDeviceProperties()
         {
-            NativePointer = (Interop.PhysicalDeviceProperties*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceProperties));
+            NativePointer = (Interop.PhysicalDeviceProperties*)MemoryUtils.Allocate(typeof(Interop.PhysicalDeviceProperties));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Vulkan
         
         public EventCreateInfo()
         {
-            NativePointer = (Interop.EventCreateInfo*)Interop.Structure.Allocate(typeof(Interop.EventCreateInfo));
+            NativePointer = (Interop.EventCreateInfo*)MemoryUtils.Allocate(typeof(Interop.EventCreateInfo));
             NativePointer->SType = StructureType.EventCreateInfo;
         }
     }

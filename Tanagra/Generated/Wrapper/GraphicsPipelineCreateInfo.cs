@@ -168,7 +168,7 @@ namespace Vulkan
         
         public GraphicsPipelineCreateInfo()
         {
-            NativePointer = (Interop.GraphicsPipelineCreateInfo*)Interop.Structure.Allocate(typeof(Interop.GraphicsPipelineCreateInfo));
+            NativePointer = (Interop.GraphicsPipelineCreateInfo*)MemoryUtils.Allocate(typeof(Interop.GraphicsPipelineCreateInfo));
             NativePointer->SType = StructureType.GraphicsPipelineCreateInfo;
         }
         

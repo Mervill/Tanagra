@@ -61,7 +61,9 @@ namespace Tanagra.Generator
 
         const string NativePointer = "NativePointer";
         const string CallingConvention = "Winapi";
-        const string VulkanCommandException = "VulkanCommandException";
+        const string VulkanResultException = "VulkanCommandException";
+        const string AllocateFnName = "MemoryUtils.Allocate";
+        const string FixedSizeStringFnName = "MemoryUtils.MarshalFixedSizeString";
         const string LineEnding = "\n";
 
         public CSharpCodeGenerator()
@@ -438,7 +440,7 @@ namespace Tanagra.Generator
             var cotorVis = (vkStruct.ReturnedOnly) ? "internal" : "public";
             WriteLine($"{cotorVis} {vkStruct.Name}()");
             WriteBeginBlock();
-            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)Interop.Structure.Allocate(typeof(Interop.{vkStruct.Name}));");
+            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*){AllocateFnName}(typeof(Interop.{vkStruct.Name}));");
             if (generateStructureType)
                 WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             WriteEndBlock();
@@ -596,7 +598,7 @@ namespace Tanagra.Generator
                 WriteBeginBlock();
                 WriteLine($"get {{ return Marshal.PtrToStringAnsi((IntPtr){NativePointer}->{vkMember.Name}); }}");
                 if(!readOnly)
-                    WriteLine($"set {{ Interop.Structure.MarshalFixedSizeString({NativePointer}->{vkMember.Name}, value, {vkMember.FixedSize}); }}");
+                    WriteLine($"set {{ {FixedSizeStringFnName}({NativePointer}->{vkMember.Name}, value, {vkMember.FixedSize}); }}");
                 WriteEndBlock();
             }
             else
@@ -957,7 +959,7 @@ namespace Tanagra.Generator
                     {
                         WriteLine("if(result != Result.Success)");
                         _tabs++;
-                        WriteLine($"throw new {VulkanCommandException}(nameof({vkCommand.SpecName}), result);");
+                        WriteLine($"throw new {VulkanResultException}(nameof({vkCommand.SpecName}), result);");
                         _tabs--;
                     }
                 }
@@ -1015,7 +1017,7 @@ namespace Tanagra.Generator
                     {
                         WriteLine("if(result != Result.Success)");
                         _tabs++;
-                        WriteLine($"throw new {VulkanCommandException}(nameof({vkCommand.SpecName}), result);");
+                        WriteLine($"throw new {VulkanResultException}(nameof({vkCommand.SpecName}), result);");
                         _tabs--;
                     }
                 }

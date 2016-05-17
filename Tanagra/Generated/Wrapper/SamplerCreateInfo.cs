@@ -117,7 +117,7 @@ namespace Vulkan
         
         public SamplerCreateInfo()
         {
-            NativePointer = (Interop.SamplerCreateInfo*)Interop.Structure.Allocate(typeof(Interop.SamplerCreateInfo));
+            NativePointer = (Interop.SamplerCreateInfo*)MemoryUtils.Allocate(typeof(Interop.SamplerCreateInfo));
             NativePointer->SType = StructureType.SamplerCreateInfo;
         }
         

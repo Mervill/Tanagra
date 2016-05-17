@@ -27,7 +27,7 @@ namespace Vulkan
         
         public MemoryAllocateInfo()
         {
-            NativePointer = (Interop.MemoryAllocateInfo*)Interop.Structure.Allocate(typeof(Interop.MemoryAllocateInfo));
+            NativePointer = (Interop.MemoryAllocateInfo*)MemoryUtils.Allocate(typeof(Interop.MemoryAllocateInfo));
             NativePointer->SType = StructureType.MemoryAllocateInfo;
         }
         

@@ -81,7 +81,7 @@ namespace Vulkan
         
         public DescriptorSetLayoutBinding()
         {
-            NativePointer = (Interop.DescriptorSetLayoutBinding*)Interop.Structure.Allocate(typeof(Interop.DescriptorSetLayoutBinding));
+            NativePointer = (Interop.DescriptorSetLayoutBinding*)MemoryUtils.Allocate(typeof(Interop.DescriptorSetLayoutBinding));
         }
         
         public DescriptorSetLayoutBinding(UInt32 Binding, DescriptorType DescriptorType, ShaderStageFlags StageFlags) : this()

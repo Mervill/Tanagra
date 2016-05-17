@@ -189,7 +189,7 @@ namespace Vulkan
         
         public PresentInfoKHR()
         {
-            NativePointer = (Interop.PresentInfoKHR*)Interop.Structure.Allocate(typeof(Interop.PresentInfoKHR));
+            NativePointer = (Interop.PresentInfoKHR*)MemoryUtils.Allocate(typeof(Interop.PresentInfoKHR));
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
         

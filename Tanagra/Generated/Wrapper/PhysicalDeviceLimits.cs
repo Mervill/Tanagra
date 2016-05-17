@@ -878,7 +878,7 @@ namespace Vulkan
         
         internal PhysicalDeviceLimits()
         {
-            NativePointer = (Interop.PhysicalDeviceLimits*)Interop.Structure.Allocate(typeof(Interop.PhysicalDeviceLimits));
+            NativePointer = (Interop.PhysicalDeviceLimits*)MemoryUtils.Allocate(typeof(Interop.PhysicalDeviceLimits));
         }
     }
 }
