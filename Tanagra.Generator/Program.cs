@@ -30,15 +30,7 @@ namespace Tanagra.Generator
         //
         // Im not sure how I'd like to handle vendor suffixes. Most generators remove them, but the whole
         // point of the suffix is to prevent name collision, which while unlikely is still a thing that can
-        // happen. 
-        //
-        // Dispatchable Handle:     "struct object##_T*" -> IntPtr
-        // Non-dispatchable Handle:
-        //     x86: uint64_t -> UInt64
-        //     x64: struct object##_T* -> IntPtr
-        //
-        // Leading to the curious situation where Non-dispatchable handles
-        // have a lager size then dispatchable handles on x86 platforms.
+        // happen.
         //
         static void Main(string[] args)
         {

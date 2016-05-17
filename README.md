@@ -1,11 +1,13 @@
 
 # Tanagra
 
-Tanagra is a (in progress) binding generator and (eventually) support library for Vulkan.
+Tanagra is a binding generator and (eventually) support library for Vulkan.
 
-Currently Tanagra is an `unsafe` library, but this is extremely temporary as I work out
-the details of marshaling. Eventually I'd like to implement a `calli` interop scheme derived 
-from the method used by [OpenTK](https://github.com/opentk/opentk).
+Currently, the generator produces a compiling library that should render the triangle example correctly (at least on a windows machine)
+
+The library uses Net 4.6, I'd like to bring this requirement down significantly. The generator uses C# 6.0 syntax.
+
+The example project has SharpDX as a dependency, this is just to gain access to a well-defined rending window that is then passed to Vulkan. No DirectX is involved
 
 ## License
 ```

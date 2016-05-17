@@ -370,9 +370,6 @@ namespace Tanagra.Generator
 
         void Replace(VkSpec spec, VkType existingType, VkType newType)
         {
-            //if(!spec.AllTypes.Contains(newType))
-                //spec.AllTypes.Add(newType);
-
             var vkStructs = spec.Structs.ToList();
             for(int x = 0; x < vkStructs.Count; x++)
             {
@@ -399,9 +396,6 @@ namespace Tanagra.Generator
                 if(vkCommand.ReturnType == existingType)
                     vkCommand.ReturnType = newType;
             }
-
-            //if(spec.AllTypes.Contains(newType))
-                //spec.AllTypes.Remove(newType);
         }
     }
 }

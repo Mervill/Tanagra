@@ -114,8 +114,7 @@ namespace Tanagra.Generator
                 files.Add($"./Handle/{vkSpec.Name}.cs", GenerateHandle(vkSpec));
 
             // -- struct
-
-            //var needsInteropStruct = spec.Structs.Where(x => x.Members.Any(y => y.IsPointer || y.Type.Name == "Char"));
+            
             var needsInteropStruct = spec.Structs.Where(x => IsInteropStruct(x));
             files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
 
@@ -336,7 +335,6 @@ namespace Tanagra.Generator
                     }
                     else
                     {
-                        //var pointer = new string('*', param.PointerRank);
                         var pointer = (param.IsPointer) ? "*" : string.Empty;
                         Write($"{paramType}{pointer} {param.Name}");
                     }
