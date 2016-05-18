@@ -61,5 +61,11 @@ namespace Vulkan
             this.Size = Size;
             this.MemoryOffset = MemoryOffset;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SparseMemoryBind*)IntPtr.Zero;
+        }
     }
 }

@@ -61,5 +61,11 @@ namespace Vulkan
             this.Components = Components;
             this.SubresourceRange = SubresourceRange;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ImageViewCreateInfo*)IntPtr.Zero;
+        }
     }
 }

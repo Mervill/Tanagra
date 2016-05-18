@@ -188,5 +188,11 @@ namespace Vulkan
             this.CommandBuffers = CommandBuffers;
             this.SignalSemaphores = SignalSemaphores;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SubmitInfo*)IntPtr.Zero;
+        }
     }
 }

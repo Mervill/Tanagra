@@ -88,5 +88,11 @@ namespace Vulkan
             this.DstArrayElement = DstArrayElement;
             this.DescriptorCount = DescriptorCount;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.CopyDescriptorSet*)IntPtr.Zero;
+        }
     }
 }

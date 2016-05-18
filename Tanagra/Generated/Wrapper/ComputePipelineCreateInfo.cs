@@ -63,5 +63,11 @@ namespace Vulkan
             this.Layout = Layout;
             this.BasePipelineIndex = BasePipelineIndex;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ComputePipelineCreateInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -68,5 +68,11 @@ namespace Vulkan
         {
             this.DynamicStates = DynamicStates;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineDynamicStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

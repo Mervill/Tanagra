@@ -107,5 +107,11 @@ namespace Vulkan
             this.MapEntries = MapEntries;
             this.Data = Data;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SpecializationInfo*)IntPtr.Zero;
+        }
     }
 }

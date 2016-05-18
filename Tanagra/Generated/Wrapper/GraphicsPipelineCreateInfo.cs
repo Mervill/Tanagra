@@ -183,5 +183,11 @@ namespace Vulkan
             this.Subpass = Subpass;
             this.BasePipelineIndex = BasePipelineIndex;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.GraphicsPipelineCreateInfo*)IntPtr.Zero;
+        }
     }
 }

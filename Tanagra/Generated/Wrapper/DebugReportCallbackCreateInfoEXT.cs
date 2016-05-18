@@ -45,5 +45,11 @@ namespace Vulkan
             this.Flags = Flags;
             this.Callback = Callback;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DebugReportCallbackCreateInfoEXT*)IntPtr.Zero;
+        }
     }
 }

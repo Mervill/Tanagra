@@ -32,5 +32,11 @@ namespace Vulkan
         {
             this.PatchControlPoints = PatchControlPoints;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineTessellationStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

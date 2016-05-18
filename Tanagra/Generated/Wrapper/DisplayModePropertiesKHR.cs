@@ -36,5 +36,11 @@ namespace Vulkan
             this.DisplayMode = DisplayMode;
             this.Parameters = Parameters;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DisplayModePropertiesKHR*)IntPtr.Zero;
+        }
     }
 }

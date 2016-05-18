@@ -150,5 +150,11 @@ namespace Vulkan
             this.QueueFamilyIndices = QueueFamilyIndices;
             this.InitialLayout = InitialLayout;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ImageCreateInfo*)IntPtr.Zero;
+        }
     }
 }

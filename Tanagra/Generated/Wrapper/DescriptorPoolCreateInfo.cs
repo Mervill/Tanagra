@@ -72,5 +72,11 @@ namespace Vulkan
             this.MaxSets = MaxSets;
             this.PoolSizes = PoolSizes;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DescriptorPoolCreateInfo*)IntPtr.Zero;
+        }
     }
 }

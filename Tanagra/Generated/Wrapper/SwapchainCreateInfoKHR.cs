@@ -202,5 +202,11 @@ namespace Vulkan
             this.PresentMode = PresentMode;
             this.Clipped = Clipped;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SwapchainCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

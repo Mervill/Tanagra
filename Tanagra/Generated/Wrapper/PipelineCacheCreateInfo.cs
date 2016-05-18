@@ -71,5 +71,11 @@ namespace Vulkan
         {
             this.InitialData = InitialData;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineCacheCreateInfo*)IntPtr.Zero;
+        }
     }
 }

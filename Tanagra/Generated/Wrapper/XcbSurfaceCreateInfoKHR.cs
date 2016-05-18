@@ -39,5 +39,11 @@ namespace Vulkan
             this.Connection = Connection;
             this.Window = Window;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.XcbSurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

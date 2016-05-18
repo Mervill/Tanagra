@@ -46,5 +46,11 @@ namespace Vulkan
             this.Object = Object;
             this.ObjectName = ObjectName;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DebugMarkerObjectNameInfoEXT*)IntPtr.Zero;
+        }
     }
 }

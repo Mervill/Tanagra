@@ -5,6 +5,8 @@ namespace Vulkan
 {
 	public unsafe static class MemoryUtils
 	{
+        public static int AllocCount { get; private set; }
+
         public static void Copy2DArray(float[,] source, IntPtr destination, ulong destinationSizeInBytes, ulong sourceBytesToCopy)
         {
             fixed (float* sourcePtr = &source[0, 0])
@@ -18,9 +20,18 @@ namespace Vulkan
 			var bptr = (byte*)ptr;
 			for(var i = 0; i < size; i++)
 				bptr[i] = 0;
-
-			return ptr;
+            
+            AllocCount++;
+            Console.WriteLine($"[SALLOC] Allocated {size} bytes for {type.Name} ({AllocCount})");
+            return ptr;
 		}
+
+        internal static void Free(IntPtr ptr)
+        {
+            AllocCount--;
+            Console.WriteLine($"[SALLOC] Deallocated structure bytes ({AllocCount})");
+            Marshal.FreeHGlobal(ptr);
+        }
 
 		internal static void MarshalFixedSizeString(byte* dst, string src, int size)
 		{

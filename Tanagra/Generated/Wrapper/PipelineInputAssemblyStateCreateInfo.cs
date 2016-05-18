@@ -39,5 +39,11 @@ namespace Vulkan
             this.Topology = Topology;
             this.PrimitiveRestartEnable = PrimitiveRestartEnable;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineInputAssemblyStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

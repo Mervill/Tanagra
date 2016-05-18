@@ -36,5 +36,11 @@ namespace Vulkan
             this.CurrentDisplay = CurrentDisplay;
             this.CurrentStackIndex = CurrentStackIndex;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DisplayPlanePropertiesKHR*)IntPtr.Zero;
+        }
     }
 }

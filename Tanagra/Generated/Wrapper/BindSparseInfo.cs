@@ -231,5 +231,11 @@ namespace Vulkan
             this.ImageBinds = ImageBinds;
             this.SignalSemaphores = SignalSemaphores;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.BindSparseInfo*)IntPtr.Zero;
+        }
     }
 }

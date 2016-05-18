@@ -105,5 +105,11 @@ namespace Vulkan
             NativePointer = (Interop.PipelineViewportStateCreateInfo*)MemoryUtils.Allocate(typeof(Interop.PipelineViewportStateCreateInfo));
             NativePointer->SType = StructureType.PipelineViewportStateCreateInfo;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineViewportStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

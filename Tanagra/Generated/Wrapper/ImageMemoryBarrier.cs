@@ -95,5 +95,11 @@ namespace Vulkan
             this.Image = Image;
             this.SubresourceRange = SubresourceRange;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ImageMemoryBarrier*)IntPtr.Zero;
+        }
     }
 }

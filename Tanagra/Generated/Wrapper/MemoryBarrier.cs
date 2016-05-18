@@ -30,5 +30,11 @@ namespace Vulkan
             NativePointer = (Interop.MemoryBarrier*)MemoryUtils.Allocate(typeof(Interop.MemoryBarrier));
             NativePointer->SType = StructureType.MemoryBarrier;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.MemoryBarrier*)IntPtr.Zero;
+        }
     }
 }

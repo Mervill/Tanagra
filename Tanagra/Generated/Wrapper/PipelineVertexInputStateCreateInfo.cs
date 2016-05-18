@@ -111,5 +111,11 @@ namespace Vulkan
             this.VertexBindingDescriptions = VertexBindingDescriptions;
             this.VertexAttributeDescriptions = VertexAttributeDescriptions;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineVertexInputStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

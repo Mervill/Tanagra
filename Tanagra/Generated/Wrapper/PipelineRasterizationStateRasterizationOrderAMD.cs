@@ -26,5 +26,11 @@ namespace Vulkan
         {
             this.RasterizationOrder = RasterizationOrder;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineRasterizationStateRasterizationOrderAMD*)IntPtr.Zero;
+        }
     }
 }

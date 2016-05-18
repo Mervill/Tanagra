@@ -71,5 +71,11 @@ namespace Vulkan
         {
             this.Code = Code;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ShaderModuleCreateInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -96,5 +96,11 @@ namespace Vulkan
             this.AlphaMode = AlphaMode;
             this.ImageExtent = ImageExtent;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DisplaySurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

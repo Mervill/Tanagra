@@ -67,5 +67,11 @@ namespace Vulkan
             this.DescriptorPool = DescriptorPool;
             this.SetLayouts = SetLayouts;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DescriptorSetAllocateInfo*)IntPtr.Zero;
+        }
     }
 }

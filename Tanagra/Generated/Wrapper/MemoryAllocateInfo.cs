@@ -36,5 +36,11 @@ namespace Vulkan
             this.AllocationSize = AllocationSize;
             this.MemoryTypeIndex = MemoryTypeIndex;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.MemoryAllocateInfo*)IntPtr.Zero;
+        }
     }
 }

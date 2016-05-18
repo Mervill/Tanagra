@@ -91,5 +91,11 @@ namespace Vulkan
             this.MinDepthBounds = MinDepthBounds;
             this.MaxDepthBounds = MaxDepthBounds;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineDepthStencilStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -38,5 +38,11 @@ namespace Vulkan
             this.Level = Level;
             this.CommandBufferCount = CommandBufferCount;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.CommandBufferAllocateInfo*)IntPtr.Zero;
+        }
     }
 }

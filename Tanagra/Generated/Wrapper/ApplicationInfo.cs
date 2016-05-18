@@ -49,5 +49,11 @@ namespace Vulkan
             this.EngineVersion = EngineVersion;
             this.ApiVersion = ApiVersion;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ApplicationInfo*)IntPtr.Zero;
+        }
     }
 }

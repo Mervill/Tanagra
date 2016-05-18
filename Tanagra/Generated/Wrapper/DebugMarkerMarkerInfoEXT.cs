@@ -41,5 +41,11 @@ namespace Vulkan
         {
             this.MarkerName = MarkerName;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DebugMarkerMarkerInfoEXT*)IntPtr.Zero;
+        }
     }
 }

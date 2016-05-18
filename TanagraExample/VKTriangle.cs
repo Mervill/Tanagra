@@ -4,6 +4,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 using SharpDX.Windows;
 
@@ -19,6 +20,8 @@ namespace TanagraExample
     class VKTriangle
     {
         private Form form;
+
+        MemoryAllocator allocator;
 
         // Handles
         private Instance instance;
@@ -69,6 +72,8 @@ namespace TanagraExample
             CreatePipeline();
             CreateFramebuffers();
 
+            Debug.Assert(MemoryUtils.AllocCount == 1);
+            Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
             Console.WriteLine("Any key to continue");
             Console.ReadKey();
             Console.WriteLine("[INFO] Starup OK, Launching...");
@@ -77,9 +82,6 @@ namespace TanagraExample
             Console.WriteLine("[INFO] Render window lost!");
 
             Destroy();
-
-            Console.WriteLine("program complete");
-            Console.ReadKey();
         }
 
         private void CreateInstance()
@@ -109,7 +111,9 @@ namespace TanagraExample
 
             Console.WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
-            instance = VK.CreateInstance(instanceCreateInfo);
+            allocator = new MemoryAllocator();
+
+            instance = VK.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
             Console.WriteLine($"[ OK ] {instance}");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
@@ -121,9 +125,9 @@ namespace TanagraExample
             debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
             Console.WriteLine($"[ OK ] {debugCallback}");
 
-            //appInfo.Dispose();
-            //instanceCreateInfo.Dispose();
-            PhysicalDeviceProperties();
+            appInfo.Free();
+            instanceCreateInfo.Free();
+            //PhysicalDeviceProperties();
         }
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
@@ -131,7 +135,7 @@ namespace TanagraExample
             Console.WriteLine($"[VULK] [{flags}] {message} ([{messageCode}] {layerPrefix})");
             return true;
         }
-
+        
         private void CreateDevice()
         {
             var queueCreateInfo = new DeviceQueueCreateInfo(0, new[] { 0f });
@@ -164,15 +168,19 @@ namespace TanagraExample
 
             queue = device.GetQueue(0, (uint)queueNodeIndex);
             Console.WriteLine($"[ OK ] {queue}");
+
+            deviceCreateInfo.Free();
+            queueCreateInfo.Free();
         }
 
         private void CreateSurface()
         {
-            IntPtr HINSTANCE, HWND;
-            GetProcessHandles(out HINSTANCE, out HWND);
-            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(HINSTANCE, form.Handle);
+            //IntPtr HINSTANCE, HWND;
+            //GetProcessHandles(out HINSTANCE, out HWND);
+            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(Process.GetCurrentProcess().Handle, form.Handle);
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
             Console.WriteLine($"[ OK ] {surface}");
+            surfaceCreateInfo.Free();
         }
 
         private void CreateCommandBuffer()
@@ -191,6 +199,9 @@ namespace TanagraExample
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
             Console.WriteLine($"[ OK ] {commandBuffer[0]}");
+
+            commandBufferAllocationInfo.Free();
+            commandPoolCreateInfo.Free();
         }
 
         private void CreateSwapchain()
@@ -267,6 +278,8 @@ namespace TanagraExample
                 SetImageLayout(image, ImageAspectFlags.Color, ImageLayout.Undefined, ImageLayout.PresentSrcKHR);
             }
             Flush();
+
+            swapchainCreateInfo.Free();
         }
 
         private void SetImageLayout(Image image, ImageAspectFlags imageAspect, ImageLayout oldLayout, ImageLayout newLayout)
@@ -282,6 +295,10 @@ namespace TanagraExample
                 var beginInfo = new CommandBufferBeginInfo { InheritanceInfo = inheritanceInfo };
                 setupCommanBuffer.Begin(beginInfo);
                 Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
+
+                allocateInfo.Free();
+                inheritanceInfo.Free();
+                beginInfo.Free();
             }
             
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, new ImageSubresourceRange(imageAspect, 0, 1, 0, 1));
@@ -307,6 +324,8 @@ namespace TanagraExample
 
             setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { imageMemoryBarrier });
             Console.WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
+
+            imageMemoryBarrier.Free();
         }
 
         private void Flush()
@@ -331,6 +350,8 @@ namespace TanagraExample
             Console.WriteLine("[ OK ] device.FreeCommandBuffers");
 
             setupCommanBuffer = null;
+
+            submitInfo.Free();
         }
 
         private void CreateBackBufferViews()
@@ -341,6 +362,7 @@ namespace TanagraExample
                 var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
                 var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, backBufferFormat, new ComponentMapping(), subresourceRange);
                 backBufferViews.Add(device.CreateImageView(createInfo));
+                createInfo.Free();
             }
             Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
         }
@@ -388,6 +410,9 @@ namespace TanagraExample
             {
                 new VertexInputBindingDescription(0, (uint)(sizeof(float) * vertices.GetLength(1)), VertexInputRate.Vertex)
             };
+
+            createInfo.Free();
+            allocateInfo.Free();
         }
 
         private void CreateRenderPass()
@@ -417,12 +442,15 @@ namespace TanagraExample
 
             Console.WriteLine(createInfo.Attachments[0].Format);
 
-            var subpasses = createInfo.Subpasses;
-            Console.WriteLine(subpasses[0].ColorAttachments[0].Layout);
-            Console.WriteLine(createInfo.Subpasses[0].ColorAttachments[0].Layout);
+            //var subpasses = createInfo.Subpasses;
+            //Console.WriteLine(subpasses[0].ColorAttachments[0].Layout);
+            //Console.WriteLine(createInfo.Subpasses[0].ColorAttachments[0].Layout);
 
             renderPass = device.CreateRenderPass(createInfo);
             Console.WriteLine($"[ OK ] {renderPass}");
+
+            subpass.Free();
+            createInfo.Free();
         }
 
         private void CreatePipelineLayout()
@@ -438,6 +466,9 @@ namespace TanagraExample
 
             // Destroy temporary layout
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
+
+            descriptorSetLayoutCreateInfo.Free();
+            createInfo.Free();
         }
 
         private void CreatePipeline()
@@ -501,6 +532,17 @@ namespace TanagraExample
                 device.DestroyShaderModule(shaderStage.Module);
                 Console.WriteLine("[INFO] device.DestroyShaderModule");
             }
+
+            createInfo.Free();
+            shaderStages[0].Free();
+            shaderStages[1].Free();
+            depthStencilState.Free();
+            blendState.Free();
+            rasterizerState.Free();
+            inputAssemblyState.Free();
+            vertexInputState.Free();
+            viewportState.Free();
+            dynamicState.Free();
         }
 
         private ShaderModule CreateVertexShader()
@@ -518,7 +560,9 @@ namespace TanagraExample
         private ShaderModule CreateShaderModule(byte[] shaderCode)
         {
             var createInfo = new ShaderModuleCreateInfo(shaderCode);
-            return device.CreateShaderModule(createInfo);
+            var module = device.CreateShaderModule(createInfo);
+            createInfo.Free();
+            return module;
         }
 
         private void CreateFramebuffers()
@@ -530,6 +574,7 @@ namespace TanagraExample
                 var createInfo = new FramebufferCreateInfo(renderPass, new[] { attachment }, (uint)form.ClientSize.Width, (uint)form.ClientSize.Height, 1);
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
                 Console.WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
+                createInfo.Free();
             }
         }
 
@@ -537,7 +582,7 @@ namespace TanagraExample
         {
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
-            //semaphoreCreateInfo.Dispose();
+            semaphoreCreateInfo.Free();
             
             try
             {
@@ -553,22 +598,22 @@ namespace TanagraExample
             // Record drawing command buffer
             var beginInfo = new CommandBufferBeginInfo();
             commandBuffer[0].Begin(beginInfo);
+            beginInfo.Free();
             DrawInternal();
             commandBuffer[0].End();
-            //beginInfo.Dispose();
 
             // Submit
             var drawCommandBuffer = commandBuffer[0];
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
             var submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            //submitInfo.Dispose();
+            submitInfo.Free();
 
             // Present
             var currentBackBufferIndexCopy = currentBackBufferIndex;
             var presentInfo = new PresentInfoKHR(new[] { swapchain }, new[] { currentBackBufferIndexCopy });
             queue.PresentKHR(presentInfo);
-            //presentInfo.Dispose();
+            presentInfo.Free();
 
             // Wait
             queue.WaitIdle();
@@ -590,7 +635,7 @@ namespace TanagraExample
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            //memoryBarrier.Dispose();
+            memoryBarrier.Free();
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
@@ -599,7 +644,7 @@ namespace TanagraExample
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
             var renderPassBeginInfo = new RenderPassBeginInfo(renderPass, framebuffers[currentBackBufferIndex], renderArea, null);
             commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
-            //renderPassBeginInfo.Dispose();
+            renderPassBeginInfo.Free();
 
             // Bind pipeline
             commandBuffer[0].CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
@@ -633,7 +678,7 @@ namespace TanagraExample
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            //memoryBarrier.Dispose();
+            memoryBarrier.Free();
         }
 
         private void Destroy()
@@ -658,10 +703,14 @@ namespace TanagraExample
             device.Destroy();
 
             DebugUtils.DestroyDebugReportCallback(instance, debugCallback);
-
+            
             instance.Destroy();
 
+            form.Dispose();
+
             GC.WaitForPendingFinalizers();
+            Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
+            Console.WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
         }
 
         private void PhysicalDeviceProperties()

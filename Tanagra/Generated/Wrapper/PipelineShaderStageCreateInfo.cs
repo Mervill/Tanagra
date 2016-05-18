@@ -63,5 +63,11 @@ namespace Vulkan
             this.Module = Module;
             this.Name = Name;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineShaderStageCreateInfo*)IntPtr.Zero;
+        }
     }
 }

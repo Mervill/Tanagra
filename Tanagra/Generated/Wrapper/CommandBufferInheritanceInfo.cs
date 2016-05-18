@@ -71,5 +71,11 @@ namespace Vulkan
             this.Subpass = Subpass;
             this.OcclusionQueryEnable = OcclusionQueryEnable;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.CommandBufferInheritanceInfo*)IntPtr.Zero;
+        }
     }
 }

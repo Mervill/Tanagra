@@ -47,5 +47,11 @@ namespace Vulkan
             this.ImageView = ImageView;
             this.ImageLayout = ImageLayout;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DescriptorImageInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -39,5 +39,11 @@ namespace Vulkan
             this.Display = Display;
             this.Surface = Surface;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.WaylandSurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

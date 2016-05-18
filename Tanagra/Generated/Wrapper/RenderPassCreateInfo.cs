@@ -154,5 +154,11 @@ namespace Vulkan
             this.Subpasses = Subpasses;
             this.Dependencies = Dependencies;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.RenderPassCreateInfo*)IntPtr.Zero;
+        }
     }
 }

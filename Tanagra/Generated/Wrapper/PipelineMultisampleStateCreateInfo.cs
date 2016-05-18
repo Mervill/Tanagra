@@ -84,5 +84,11 @@ namespace Vulkan
             this.AlphaToCoverageEnable = AlphaToCoverageEnable;
             this.AlphaToOneEnable = AlphaToOneEnable;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineMultisampleStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

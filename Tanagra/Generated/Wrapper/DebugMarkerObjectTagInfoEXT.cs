@@ -92,5 +92,11 @@ namespace Vulkan
             this.TagName = TagName;
             this.Tag = Tag;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DebugMarkerObjectTagInfoEXT*)IntPtr.Zero;
+        }
     }
 }

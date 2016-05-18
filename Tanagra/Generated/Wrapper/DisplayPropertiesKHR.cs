@@ -85,5 +85,11 @@ namespace Vulkan
             this.PlaneReorderPossible = PlaneReorderPossible;
             this.PersistentContent = PersistentContent;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DisplayPropertiesKHR*)IntPtr.Zero;
+        }
     }
 }

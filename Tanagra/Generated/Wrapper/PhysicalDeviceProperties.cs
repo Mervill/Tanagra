@@ -62,5 +62,11 @@ namespace Vulkan
         {
             NativePointer = (Interop.PhysicalDeviceProperties*)MemoryUtils.Allocate(typeof(Interop.PhysicalDeviceProperties));
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PhysicalDeviceProperties*)IntPtr.Zero;
+        }
     }
 }

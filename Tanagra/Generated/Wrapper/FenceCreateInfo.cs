@@ -21,5 +21,11 @@ namespace Vulkan
             NativePointer = (Interop.FenceCreateInfo*)MemoryUtils.Allocate(typeof(Interop.FenceCreateInfo));
             NativePointer->SType = StructureType.FenceCreateInfo;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.FenceCreateInfo*)IntPtr.Zero;
+        }
     }
 }

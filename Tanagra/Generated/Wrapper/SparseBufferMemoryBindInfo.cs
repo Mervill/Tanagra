@@ -66,5 +66,11 @@ namespace Vulkan
             this.Buffer = Buffer;
             this.Binds = Binds;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SparseBufferMemoryBindInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -95,5 +95,11 @@ namespace Vulkan
             this.Attachments = Attachments;
             this.BlendConstants = BlendConstants;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineColorBlendStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

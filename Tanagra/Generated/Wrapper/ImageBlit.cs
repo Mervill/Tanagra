@@ -61,5 +61,11 @@ namespace Vulkan
             this.DstSubresource = DstSubresource;
             this.DstOffsets = DstOffsets;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.ImageBlit*)IntPtr.Zero;
+        }
     }
 }

@@ -124,5 +124,11 @@ namespace Vulkan
             this.EnabledLayerNames = EnabledLayerNames;
             this.EnabledExtensionNames = EnabledExtensionNames;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.InstanceCreateInfo*)IntPtr.Zero;
+        }
     }
 }

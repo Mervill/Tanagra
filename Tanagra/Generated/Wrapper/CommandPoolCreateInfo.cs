@@ -32,5 +32,11 @@ namespace Vulkan
         {
             this.QueueFamilyIndex = QueueFamilyIndex;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.CommandPoolCreateInfo*)IntPtr.Zero;
+        }
     }
 }

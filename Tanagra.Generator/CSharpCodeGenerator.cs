@@ -501,7 +501,31 @@ namespace Tanagra.Generator
                 }
             }
 
+            WriteLine("");
+            WriteLine($"public void Free()");
+            WriteBeginBlock();
+            WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
+            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteEndBlock();
+
             // Implement IDisposable and deconstructor
+            /*WriteLine("");
+            WriteLine($"public void Dispose()");
+            WriteBeginBlock();
+            WriteLine($"Marshal.FreeHGlobal((IntPtr){NativePointer});");
+            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteLine($"GC.SuppressFinalize(this);");
+            WriteEndBlock();*/
+
+            /*WriteLine("");
+            WriteLine($"~{vkStruct.Name}()");
+            WriteBeginBlock();
+            WriteLine($"if({NativePointer} != (Interop.{vkStruct.Name}*)IntPtr.Zero)");
+            WriteBeginBlock();
+            WriteLine($"Marshal.FreeHGlobal((IntPtr){NativePointer});");
+            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteEndBlock();
+            WriteEndBlock();*/
 
             WriteEndBlock();
             WriteEndBlock();

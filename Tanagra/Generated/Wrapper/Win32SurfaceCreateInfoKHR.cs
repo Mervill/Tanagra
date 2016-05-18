@@ -39,5 +39,11 @@ namespace Vulkan
             this.Hinstance = Hinstance;
             this.Hwnd = Hwnd;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.Win32SurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

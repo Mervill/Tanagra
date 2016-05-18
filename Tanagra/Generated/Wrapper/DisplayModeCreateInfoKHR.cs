@@ -35,5 +35,11 @@ namespace Vulkan
         {
             this.Parameters = Parameters;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DisplayModeCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

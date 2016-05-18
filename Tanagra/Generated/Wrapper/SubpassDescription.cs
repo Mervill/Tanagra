@@ -209,5 +209,11 @@ namespace Vulkan
             this.ColorAttachments = ColorAttachments;
             this.PreserveAttachments = PreserveAttachments;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SubpassDescription*)IntPtr.Zero;
+        }
     }
 }

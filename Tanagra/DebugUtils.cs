@@ -37,6 +37,8 @@ namespace Vulkan
                 if(result != Result.Success)
                     throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
             }
+
+            createInfo.Free();
             return debugReportCallbackEXT;
         }
 

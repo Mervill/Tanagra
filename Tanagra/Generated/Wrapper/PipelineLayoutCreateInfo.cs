@@ -117,5 +117,11 @@ namespace Vulkan
             this.SetLayouts = SetLayouts;
             this.PushConstantRanges = PushConstantRanges;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineLayoutCreateInfo*)IntPtr.Zero;
+        }
     }
 }

@@ -139,5 +139,11 @@ namespace Vulkan
             this.BorderColor = BorderColor;
             this.UnnormalizedCoordinates = UnnormalizedCoordinates;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SamplerCreateInfo*)IntPtr.Zero;
+        }
     }
 }

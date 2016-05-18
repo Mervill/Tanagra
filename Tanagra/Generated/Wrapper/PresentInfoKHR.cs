@@ -198,5 +198,11 @@ namespace Vulkan
             this.Swapchains = Swapchains;
             this.ImageIndices = ImageIndices;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PresentInfoKHR*)IntPtr.Zero;
+        }
     }
 }

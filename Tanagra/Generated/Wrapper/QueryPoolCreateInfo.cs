@@ -48,5 +48,11 @@ namespace Vulkan
             this.QueryType = QueryType;
             this.QueryCount = QueryCount;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.QueryPoolCreateInfo*)IntPtr.Zero;
+        }
     }
 }

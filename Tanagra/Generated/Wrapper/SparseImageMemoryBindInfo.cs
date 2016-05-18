@@ -66,5 +66,11 @@ namespace Vulkan
             this.Image = Image;
             this.Binds = Binds;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SparseImageMemoryBindInfo*)IntPtr.Zero;
+        }
     }
 }

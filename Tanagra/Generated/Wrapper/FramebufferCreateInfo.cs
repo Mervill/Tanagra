@@ -97,5 +97,11 @@ namespace Vulkan
             this.Height = Height;
             this.Layers = Layers;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.FramebufferCreateInfo*)IntPtr.Zero;
+        }
     }
 }

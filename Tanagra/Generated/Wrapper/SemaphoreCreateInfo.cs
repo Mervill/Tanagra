@@ -21,5 +21,11 @@ namespace Vulkan
             NativePointer = (Interop.SemaphoreCreateInfo*)MemoryUtils.Allocate(typeof(Interop.SemaphoreCreateInfo));
             NativePointer->SType = StructureType.SemaphoreCreateInfo;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.SemaphoreCreateInfo*)IntPtr.Zero;
+        }
     }
 }

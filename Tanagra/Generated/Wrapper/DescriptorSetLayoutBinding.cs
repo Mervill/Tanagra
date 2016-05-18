@@ -90,5 +90,11 @@ namespace Vulkan
             this.DescriptorType = DescriptorType;
             this.StageFlags = StageFlags;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DescriptorSetLayoutBinding*)IntPtr.Zero;
+        }
     }
 }

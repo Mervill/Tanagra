@@ -39,5 +39,11 @@ namespace Vulkan
             this.Connection = Connection;
             this.MirSurface = MirSurface;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.MirSurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

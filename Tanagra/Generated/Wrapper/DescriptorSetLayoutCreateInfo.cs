@@ -71,5 +71,11 @@ namespace Vulkan
         {
             this.Bindings = Bindings;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.DescriptorSetLayoutCreateInfo*)IntPtr.Zero;
+        }
     }
 }

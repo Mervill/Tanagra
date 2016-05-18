@@ -95,5 +95,11 @@ namespace Vulkan
             this.SharingMode = SharingMode;
             this.QueueFamilyIndices = QueueFamilyIndices;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.BufferCreateInfo*)IntPtr.Zero;
+        }
     }
 }

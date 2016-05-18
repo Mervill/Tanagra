@@ -39,5 +39,11 @@ namespace Vulkan
             this.Dpy = Dpy;
             this.Window = Window;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.XlibSurfaceCreateInfoKHR*)IntPtr.Zero;
+        }
     }
 }

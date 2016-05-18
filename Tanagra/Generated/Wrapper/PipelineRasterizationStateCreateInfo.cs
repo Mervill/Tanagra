@@ -97,5 +97,11 @@ namespace Vulkan
             this.DepthBiasSlopeFactor = DepthBiasSlopeFactor;
             this.LineWidth = LineWidth;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.PipelineRasterizationStateCreateInfo*)IntPtr.Zero;
+        }
     }
 }

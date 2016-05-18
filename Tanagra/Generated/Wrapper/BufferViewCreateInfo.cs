@@ -63,5 +63,11 @@ namespace Vulkan
             this.Offset = Offset;
             this.Range = Range;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.BufferViewCreateInfo*)IntPtr.Zero;
+        }
     }
 }

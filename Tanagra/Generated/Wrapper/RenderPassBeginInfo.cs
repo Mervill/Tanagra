@@ -82,5 +82,11 @@ namespace Vulkan
             this.RenderArea = RenderArea;
             this.ClearValues = ClearValues;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.RenderPassBeginInfo*)IntPtr.Zero;
+        }
     }
 }

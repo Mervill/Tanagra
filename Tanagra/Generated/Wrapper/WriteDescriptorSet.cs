@@ -195,5 +195,11 @@ namespace Vulkan
             this.BufferInfo = BufferInfo;
             this.TexelBufferView = TexelBufferView;
         }
+        
+        public void Free()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = (Interop.WriteDescriptorSet*)IntPtr.Zero;
+        }
     }
 }
