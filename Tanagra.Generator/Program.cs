@@ -13,6 +13,7 @@ namespace Tanagra.Generator
         // todo: merge flag enums
         // todo: there is a common case where a command that takes arrays only takes a single entry
         // todo: API Constants
+        // todo: better optional args in commands
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
         // todo: MemoryPressure in extra areas
@@ -21,7 +22,7 @@ namespace Tanagra.Generator
         // http://stackoverflow.com/questions/641564
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior
-        // http://stackoverflow.com/questions/17562295/if-i-allocate-some-memory-with-allochglobal-do-i-have-to-free-it-with-freehglob
+        // http://stackoverflow.com/questions/17562295
         //
         // Notes
         //
