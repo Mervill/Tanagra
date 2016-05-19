@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Vulkan
@@ -6,6 +7,13 @@ namespace Vulkan
 	public unsafe static class MemoryUtils
 	{
         public static int AllocCount { get; private set; }
+
+        static Dictionary<IntPtr, Int64> pointerMemory;
+
+	    static MemoryUtils()
+	    {
+            pointerMemory = new Dictionary<IntPtr, long>();
+        }
 
         public static void Copy2DArray(float[,] source, IntPtr destination, ulong destinationSizeInBytes, ulong sourceBytesToCopy)
         {
@@ -23,6 +31,8 @@ namespace Vulkan
             
             AllocCount++;
             Console.WriteLine($"[SALLOC] Allocated {size} bytes for {type.Name} ({AllocCount})");
+            pointerMemory.Add(ptr, size);
+            GC.AddMemoryPressure(size);
             return ptr;
 		}
 
@@ -30,6 +40,8 @@ namespace Vulkan
         {
             AllocCount--;
             Console.WriteLine($"[SALLOC] Deallocated structure bytes ({AllocCount})");
+            GC.RemoveMemoryPressure(pointerMemory[ptr]);
+            pointerMemory.Remove(ptr);
             Marshal.FreeHGlobal(ptr);
         }
 

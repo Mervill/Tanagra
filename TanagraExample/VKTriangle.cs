@@ -721,6 +721,7 @@ namespace TanagraExample
             GC.GetTotalMemory(true);
             GC.WaitForPendingFinalizers();
             Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
+            Console.WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
             Console.WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
         }
 

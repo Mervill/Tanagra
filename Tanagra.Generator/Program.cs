@@ -9,17 +9,15 @@ namespace Tanagra.Generator
     {
         // todo: union
         // todo: dealloc unmanaged class memory (IDisposable)
-        // todo: why is Char still a weird edge case
         // todo: generate arrays instead of lists on commands?
         // todo: merge flag enums
-        // todo: VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
-        // todo: VK_STENCIL_FRONT_AND_BACK
-        // todo: AddMemoryPressure / RemoveMemoryPressure
         // todo: there is a common case where a command that takes arrays only takes a single entry
         // todo: API Constants
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
-        // todo: allocation?
+        // todo: MemoryPressure in extra areas
+        // VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
+        // VK_STENCIL_FRONT_AND_BACK
         // http://stackoverflow.com/questions/641564
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior

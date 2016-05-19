@@ -7,19 +7,19 @@ namespace Vulkan
     public class MemoryAllocator
     {
         //[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public unsafe delegate IntPtr AllocationFunctionDelegate(IntPtr userData, UInt32 size, UInt32 alignment, SystemAllocationScope allocationScope);
+        public unsafe delegate IntPtr AllocationFunctionDelegate(IntPtr userData, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope);
 
         //[UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public unsafe delegate void FreeFunctionDelegate(IntPtr userData, IntPtr memory);
 
         //[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public unsafe delegate IntPtr ReallocationFunctionDelegate(IntPtr userData, IntPtr original, UInt32 size, UInt32 alignment, SystemAllocationScope allocationScope);
+        public unsafe delegate IntPtr ReallocationFunctionDelegate(IntPtr userData, IntPtr original, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope);
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public unsafe delegate void InternalAllocationNotificationDelegate(IntPtr userData, UInt32 size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
+        //[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        public unsafe delegate void InternalAllocationNotificationDelegate(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public unsafe delegate void InternalFreeNotificationDelegate(IntPtr userData, UInt32 size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
+        //[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        public unsafe delegate void InternalFreeNotificationDelegate(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
         
         public AllocationCallbacks AllocationCallbacks { get; set; }
         public int CallCount => pointers.Count;
@@ -30,13 +30,18 @@ namespace Vulkan
         FreeFunctionDelegate _freeFunction;
         ReallocationFunctionDelegate _reallocationFunction;
 
+        Dictionary<IntPtr, Int64> pointerMemory;
+        public Int64 TrackedBytes { get; private set; }
+
         public MemoryAllocator()
         {
             pointers = new HashSet<IntPtr>();
 
-            _allocationFunction   = new AllocationFunctionDelegate(AllocationFunction);
-            _freeFunction         = new FreeFunctionDelegate(FreeFunction);
-            _reallocationFunction = new ReallocationFunctionDelegate(ReallocationFunction);
+            _allocationFunction   = AllocationFunction;
+            _freeFunction         = FreeFunction;
+            _reallocationFunction = ReallocationFunction;
+
+            pointerMemory = new Dictionary<IntPtr, long>();
 
             AllocationCallbacks = new AllocationCallbacks 
             {
@@ -46,11 +51,15 @@ namespace Vulkan
             };
         }
 
-        IntPtr AllocationFunction(IntPtr userData, UInt32 size, UInt32 alignment, SystemAllocationScope allocationScope)
+        IntPtr AllocationFunction(IntPtr userData, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope)
         {
             var rawptr = Marshal.AllocHGlobal((int)(size + 8));
-            var aligned = new IntPtr(alignment * (((long)rawptr + (alignment - 1)) / alignment));
+            var longAlignment = (Int64)alignment;
+            var aligned = new IntPtr(longAlignment * (((long)rawptr + (longAlignment - 1)) / longAlignment));
             pointers.Add(aligned);
+            pointerMemory.Add(aligned, (long)rawptr);
+            GC.AddMemoryPressure((long)rawptr);
+            TrackedBytes += (long)rawptr;
             Console.WriteLine($"[MALLOC] {allocationScope} {size} ({CallCount})");
             return aligned;
         }
@@ -60,19 +69,22 @@ namespace Vulkan
             Console.WriteLine($"[MALLOC] Freed pointer {memory.ToString("X8")}");
             if(!pointers.Remove(memory)) throw new InvalidOperationException();
             Marshal.FreeHGlobal(memory);
+            TrackedBytes -= pointerMemory[memory];
+            GC.RemoveMemoryPressure(pointerMemory[memory]);
+            pointerMemory.Remove(memory);
         }
 
-        IntPtr ReallocationFunction(IntPtr userData, IntPtr original, UInt32 size, UInt32 alignment, SystemAllocationScope allocationScope)
+        IntPtr ReallocationFunction(IntPtr userData, IntPtr original, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope)
         {
             return IntPtr.Zero;
         }
 
-        void InternalAllocationNotification(IntPtr userData, UInt32 size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
+        void InternalAllocationNotification(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
         {
             Console.WriteLine($"{userData}, {size}, {allocationType}, {allocationScope}");
         }
 
-        void InternalFreeNotification(IntPtr userData, UInt32 size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
+        void InternalFreeNotification(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
         {
             Console.WriteLine($"{userData}, {size}, {allocationType}, {allocationScope}");
         }
