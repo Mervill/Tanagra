@@ -180,6 +180,8 @@ namespace Tanagra.Generator
         {
             var name = vkHandle.Name;
             var type = (vkHandle.IsDispatchable) ? "IntPtr" : "UInt64";
+            var strDispatch = (vkHandle.IsDispatchable) ? "Dispatchable" : "Nondispatchable";
+            var parent = !string.IsNullOrEmpty(vkHandle.Parent) ? $" Child of <see cref=\"{vkHandle.Parent.Remove(0,2)}\"/>." : string.Empty;
 
             Clear();
 
@@ -188,6 +190,9 @@ namespace Tanagra.Generator
             WriteLine("");
             WriteLine("namespace Vulkan");
             WriteBeginBlock();
+            WriteLine("/// <summary>");
+            WriteLine($"/// Vulkan handle. {strDispatch}.{parent}");
+            WriteLine("/// </summary>");
             WriteLine($"public class {name}");
             WriteBeginBlock();
             WriteLine($"internal {type} {NativePointer};");
@@ -198,115 +203,7 @@ namespace Tanagra.Generator
 
             return _sb.ToString();
         }
-
-        string OldGenerateStructs(IEnumerable<VkStruct> vkStructs, bool isPublic)
-        {
-            Clear();
-
-            var vis = isPublic ? "public" : "internal";
-
-            WriteLine("// ReSharper disable BuiltInTypeReferenceStyle");
-            WriteLine("// ReSharper disable InconsistentNaming");
-            WriteLine("using System;");
-            WriteLine("");
-            WriteLine($"namespace Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}");
-            WriteBeginBlock();
-            foreach (var vkStruct in vkStructs)
-            {
-                if (platformStructTypes.Contains(vkStruct.Name))
-                    continue;
-
-                if(vkStruct.ReturnedOnly)
-                {
-                    WriteLine("/// <summary>");
-                    WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
-                    WriteLine("/// </summary>");
-                }
-
-                WriteLine($"{vis} struct {vkStruct.Name}");
-                WriteBeginBlock();
-
-                if (vkStruct.IsImportedType)
-                    WriteLine("// Imported type");
-
-                foreach (var member in vkStruct.Members)
-                {
-                    WriteMemberComments(member);
-
-                    if (member.IsFixedSize)
-                    {
-                        if (!platformStructTypes.Contains(member.Type.Name))
-                        {
-                            WriteLine($"public {member.Type} {member.Name};");
-                        }
-                        else
-                        {
-                            var fixedType = member.Type.ToString();
-                            if (fixedType == "String")
-                                fixedType = "byte";
-
-                            WriteLine($"public unsafe fixed {fixedType} {member.Name}[{member.FixedSize}];");
-                        }
-                        continue;
-                    }
-
-                    if (member.IsArray || member.IsPointer || member.Type.Name == "String")
-                    {
-                        WriteLine($"public IntPtr {member.Name};");
-                        continue;
-                    }
-
-                    if (member.Type is VkHandle)
-                    {
-                        var vkHandle = (VkHandle)member.Type;
-                        if (!vkHandle.IsDispatchable)
-                        {
-                            // should never be hit when isPublic == true
-                            WriteLine($"public UInt64 {member.Name};");
-                            continue;
-                        }
-                    }
-
-                    WriteLine($"public {member.Type} {member.Name};");
-                }
-
-                // For public structs that are not returned (only) and contain members
-                // marked as 'mandatory' by the spec (the spec actually marks members as optional)
-                // generate a constructor that takes all the mandatory members as arguments. 
-                // This is actually pretty good at generating useful constructors.
-                if(isPublic && !vkStruct.ReturnedOnly && vkStruct.Name != "PhysicalDeviceFeatures")
-                {
-                    var mandatoryMembers = vkStruct.Members.Where(x => x.Optional != "true");
-                    var optionalMembers  = vkStruct.Members.Except(mandatoryMembers);
-                    
-                    if(mandatoryMembers.Count() != 0)
-                    {
-                        mandatoryMembers.Select(x => $"{x.Type} {x.Name}");
-                        var mandatoryMemberString = String.Join(", ", mandatoryMembers);
-
-                        WriteLine("");
-                        WriteLine($"public {vkStruct.Name}({mandatoryMemberString})");
-                        WriteBeginBlock();
-
-                        foreach(var member in mandatoryMembers)
-                            WriteLine($"this.{member.Name} = {member.Name};");
-
-                        // Assign default values to the optional members
-                        foreach(var member in optionalMembers)
-                            WriteLine($"{member.Name} = default({member.Type});");
-
-                        WriteEndBlock();
-                    }
-                }
-                WriteEndBlock();
-                _tabs--;
-                WriteLine("");
-                _tabs++;
-            }
-            WriteEndBlock();
-            return _sb.ToString();
-        }
-
+        
         string GenerateStructs(IEnumerable<VkStruct> vkStructs, bool isPublic)
         {
             var structs = vkStructs

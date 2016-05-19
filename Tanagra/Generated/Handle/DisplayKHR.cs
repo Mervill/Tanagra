@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Nondispatchable.
+    /// </summary>
     public class DisplayKHR
     {
         internal UInt64 NativePointer;

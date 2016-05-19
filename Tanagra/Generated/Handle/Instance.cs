@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Dispatchable.
+    /// </summary>
     public class Instance
     {
         internal IntPtr NativePointer;

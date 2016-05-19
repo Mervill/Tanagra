@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Nondispatchable. Child of <see cref="Instance"/>.
+    /// </summary>
     public class DebugReportCallbackEXT
     {
         internal UInt64 NativePointer;

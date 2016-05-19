@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Dispatchable. Child of <see cref="Device"/>.
+    /// </summary>
     public class Queue
     {
         internal IntPtr NativePointer;

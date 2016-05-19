@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Nondispatchable. Child of <see cref="Device"/>.
+    /// </summary>
     public class Event
     {
         internal UInt64 NativePointer;

@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Nondispatchable. Child of <see cref="DescriptorPool"/>.
+    /// </summary>
     public class DescriptorSet
     {
         internal UInt64 NativePointer;

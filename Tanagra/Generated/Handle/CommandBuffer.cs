@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan handle. Dispatchable. Child of <see cref="CommandPool"/>.
+    /// </summary>
     public class CommandBuffer
     {
         internal IntPtr NativePointer;
