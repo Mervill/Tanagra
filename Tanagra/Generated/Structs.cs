@@ -1,5 +1,3 @@
-// ReSharper disable BuiltInTypeReferenceStyle
-// ReSharper disable InconsistentNaming
 using System;
 
 namespace Vulkan
@@ -7,7 +5,7 @@ namespace Vulkan
     public struct SampleMask
     {
     }
-
+    
     public struct Offset2D
     {
         public Int32 X;
@@ -19,7 +17,7 @@ namespace Vulkan
             this.Y = Y;
         }
     }
-
+    
     public struct Offset3D
     {
         public Int32 X;
@@ -33,7 +31,7 @@ namespace Vulkan
             this.Z = Z;
         }
     }
-
+    
     public struct Extent2D
     {
         public UInt32 Width;
@@ -45,7 +43,7 @@ namespace Vulkan
             this.Height = Height;
         }
     }
-
+    
     public struct Extent3D
     {
         public UInt32 Width;
@@ -59,7 +57,7 @@ namespace Vulkan
             this.Depth = Depth;
         }
     }
-
+    
     public struct Viewport
     {
         public Single X;
@@ -79,7 +77,7 @@ namespace Vulkan
             this.MaxDepth = MaxDepth;
         }
     }
-
+    
     public struct Rect2D
     {
         public Offset2D Offset;
@@ -91,7 +89,7 @@ namespace Vulkan
             this.Extent = Extent;
         }
     }
-
+    
     public struct Rect3D
     {
         public Offset3D Offset;
@@ -103,7 +101,7 @@ namespace Vulkan
             this.Extent = Extent;
         }
     }
-
+    
     public struct ClearRect
     {
         public Rect2D Rect;
@@ -117,7 +115,7 @@ namespace Vulkan
             this.LayerCount = LayerCount;
         }
     }
-
+    
     public struct ComponentMapping
     {
         public ComponentSwizzle R;
@@ -133,7 +131,7 @@ namespace Vulkan
             this.A = A;
         }
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -150,7 +148,7 @@ namespace Vulkan
         /// </summary>
         public Extent3D MinImageTransferGranularity;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -169,7 +167,7 @@ namespace Vulkan
         /// </summary>
         public UInt32 MemoryTypeBits;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -179,7 +177,7 @@ namespace Vulkan
         public Extent3D ImageGranularity;
         public SparseImageFormatFlags Flags;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -200,7 +198,7 @@ namespace Vulkan
         /// </summary>
         public DeviceSize ImageMipTailStride;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -215,7 +213,7 @@ namespace Vulkan
         /// </summary>
         public UInt32 HeapIndex;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -230,7 +228,7 @@ namespace Vulkan
         /// </summary>
         public MemoryHeapFlags Flags;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -249,7 +247,7 @@ namespace Vulkan
         /// </summary>
         public FormatFeatureFlags BufferFeatures;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -276,7 +274,7 @@ namespace Vulkan
         /// </summary>
         public DeviceSize MaxResourceSize;
     }
-
+    
     public struct ImageSubresource
     {
         public ImageAspectFlags AspectMask;
@@ -290,7 +288,7 @@ namespace Vulkan
             this.ArrayLayer = ArrayLayer;
         }
     }
-
+    
     public struct ImageSubresourceLayers
     {
         public ImageAspectFlags AspectMask;
@@ -306,7 +304,7 @@ namespace Vulkan
             this.LayerCount = LayerCount;
         }
     }
-
+    
     public struct ImageSubresourceRange
     {
         public ImageAspectFlags AspectMask;
@@ -324,7 +322,7 @@ namespace Vulkan
             this.LayerCount = LayerCount;
         }
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -351,7 +349,7 @@ namespace Vulkan
         /// </summary>
         public DeviceSize DepthPitch;
     }
-
+    
     public struct BufferCopy
     {
         /// <summary>
@@ -374,7 +372,7 @@ namespace Vulkan
             this.Size = Size;
         }
     }
-
+    
     public struct ImageCopy
     {
         public ImageSubresourceLayers SrcSubresource;
@@ -401,7 +399,7 @@ namespace Vulkan
             this.Extent = Extent;
         }
     }
-
+    
     public struct BufferImageCopy
     {
         /// <summary>
@@ -433,7 +431,7 @@ namespace Vulkan
             this.ImageExtent = ImageExtent;
         }
     }
-
+    
     public struct ImageResolve
     {
         public ImageSubresourceLayers SrcSubresource;
@@ -451,7 +449,7 @@ namespace Vulkan
             this.Extent = Extent;
         }
     }
-
+    
     public struct DescriptorPoolSize
     {
         public DescriptorType Type;
@@ -463,7 +461,7 @@ namespace Vulkan
             this.DescriptorCount = DescriptorCount;
         }
     }
-
+    
     public struct SpecializationMapEntry
     {
         /// <summary>
@@ -486,7 +484,7 @@ namespace Vulkan
             this.Size = Size;
         }
     }
-
+    
     public struct VertexInputBindingDescription
     {
         /// <summary>
@@ -509,7 +507,7 @@ namespace Vulkan
             this.InputRate = InputRate;
         }
     }
-
+    
     public struct VertexInputAttributeDescription
     {
         /// <summary>
@@ -537,7 +535,7 @@ namespace Vulkan
             this.Offset = Offset;
         }
     }
-
+    
     public struct PipelineColorBlendAttachmentState
     {
         public Bool32 BlendEnable;
@@ -561,7 +559,7 @@ namespace Vulkan
             ColorWriteMask = default(ColorComponentFlags);
         }
     }
-
+    
     public struct StencilOpState
     {
         public StencilOp FailOp;
@@ -583,7 +581,7 @@ namespace Vulkan
             this.Reference = Reference;
         }
     }
-
+    
     public struct PushConstantRange
     {
         /// <summary>
@@ -606,7 +604,7 @@ namespace Vulkan
             this.Size = Size;
         }
     }
-
+    
     public struct ClearDepthStencilValue
     {
         public Single Depth;
@@ -618,7 +616,7 @@ namespace Vulkan
             this.Stencil = Stencil;
         }
     }
-
+    
     public struct ClearAttachment
     {
         public ImageAspectFlags AspectMask;
@@ -632,7 +630,7 @@ namespace Vulkan
             this.ClearValue = ClearValue;
         }
     }
-
+    
     public struct AttachmentDescription
     {
         public AttachmentDescriptionFlags Flags;
@@ -670,7 +668,7 @@ namespace Vulkan
             Flags = default(AttachmentDescriptionFlags);
         }
     }
-
+    
     public struct AttachmentReference
     {
         public UInt32 Attachment;
@@ -682,7 +680,7 @@ namespace Vulkan
             this.Layout = Layout;
         }
     }
-
+    
     public struct SubpassDependency
     {
         public UInt32 SrcSubpass;
@@ -710,7 +708,7 @@ namespace Vulkan
             DependencyFlags = default(DependencyFlags);
         }
     }
-
+    
     public struct PhysicalDeviceFeatures
     {
         /// <summary>
@@ -934,7 +932,7 @@ namespace Vulkan
         /// </summary>
         public Bool32 InheritedQueries;
     }
-
+    
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
@@ -961,7 +959,7 @@ namespace Vulkan
         /// </summary>
         public Bool32 ResidencyNonResidentStrict;
     }
-
+    
     public struct DrawIndirectCommand
     {
         public UInt32 VertexCount;
@@ -977,7 +975,7 @@ namespace Vulkan
             this.FirstInstance = FirstInstance;
         }
     }
-
+    
     public struct DrawIndexedIndirectCommand
     {
         public UInt32 IndexCount;
@@ -995,7 +993,7 @@ namespace Vulkan
             this.FirstInstance = FirstInstance;
         }
     }
-
+    
     public struct DispatchIndirectCommand
     {
         public UInt32 X;
@@ -1009,7 +1007,7 @@ namespace Vulkan
             this.Z = Z;
         }
     }
-
+    
     public struct DisplayModeParametersKHR
     {
         /// <summary>
@@ -1027,7 +1025,7 @@ namespace Vulkan
             this.RefreshRate = RefreshRate;
         }
     }
-
+    
     public struct DisplayPlaneCapabilitiesKHR
     {
         /// <summary>
@@ -1059,7 +1057,7 @@ namespace Vulkan
             SupportedAlpha = default(DisplayPlaneAlphaFlagsKHR);
         }
     }
-
+    
     public struct SurfaceCapabilitiesKHR
     {
         /// <summary>
@@ -1117,7 +1115,7 @@ namespace Vulkan
             SupportedUsageFlags = default(ImageUsageFlags);
         }
     }
-
+    
     public struct SurfaceFormatKHR
     {
         /// <summary>
@@ -1135,5 +1133,5 @@ namespace Vulkan
             this.ColorSpace = ColorSpace;
         }
     }
-
+    
 }

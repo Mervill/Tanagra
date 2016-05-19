@@ -40,7 +40,7 @@ namespace Vulkan
                     throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
             }
 
-            createInfo.Free();
+            createInfo.Dispose();
             return debugReportCallbackEXT;
         }
 

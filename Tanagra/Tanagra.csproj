@@ -272,11 +272,11 @@
     <Compile Include="Generated\Managed\Class\WriteDescriptorSet.cs" />
     <Compile Include="Generated\Managed\Class\XcbSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Managed\Class\XlibSurfaceCreateInfoKHR.cs" />
+    <Compile Include="Generated\Managed\ObjectModel.cs" />
     <Compile Include="Generated\Managed\Vk.cs" />
-    <Compile Include="Generated\ObjectModel.cs" />
     <Compile Include="Generated\Structs.cs" />
     <Compile Include="Generated\Unmanaged\Structs.cs" />
-    <Compile Include="Generated\Unmanaged\VK.cs" />
+    <Compile Include="Generated\Unmanaged\VulkanBinding.cs" />
     <Compile Include="MemoryAllocator.cs" />
     <Compile Include="MemoryUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -128,8 +128,8 @@ namespace TanagraExample
             debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
             Console.WriteLine($"[ OK ] {debugCallback}");
 
-            appInfo.Free();
-            instanceCreateInfo.Free();
+            appInfo.Dispose();
+            instanceCreateInfo.Dispose();
             //PhysicalDeviceProperties();
         }
 
@@ -172,8 +172,8 @@ namespace TanagraExample
             queue = device.GetQueue(0, (uint)queueNodeIndex);
             Console.WriteLine($"[ OK ] {queue}");
 
-            deviceCreateInfo.Free();
-            queueCreateInfo.Free();
+            deviceCreateInfo.Dispose();
+            queueCreateInfo.Dispose();
         }
 
         private void CreateSurface()
@@ -183,7 +183,7 @@ namespace TanagraExample
             var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(Process.GetCurrentProcess().Handle, form.Handle);
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
             Console.WriteLine($"[ OK ] {surface}");
-            surfaceCreateInfo.Free();
+            surfaceCreateInfo.Dispose();
         }
 
         private void CreateCommandBuffer()
@@ -203,8 +203,8 @@ namespace TanagraExample
             Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
             Console.WriteLine($"[ OK ] {commandBuffer[0]}");
 
-            commandBufferAllocationInfo.Free();
-            commandPoolCreateInfo.Free();
+            commandBufferAllocationInfo.Dispose();
+            commandPoolCreateInfo.Dispose();
         }
 
         private void CreateSwapchain()
@@ -282,7 +282,7 @@ namespace TanagraExample
             }
             Flush();
 
-            swapchainCreateInfo.Free();
+            swapchainCreateInfo.Dispose();
         }
 
         private void SetImageLayout(Image image, ImageAspectFlags imageAspect, ImageLayout oldLayout, ImageLayout newLayout)
@@ -299,9 +299,9 @@ namespace TanagraExample
                 setupCommanBuffer.Begin(beginInfo);
                 Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
 
-                allocateInfo.Free();
-                inheritanceInfo.Free();
-                beginInfo.Free();
+                allocateInfo.Dispose();
+                inheritanceInfo.Dispose();
+                beginInfo.Dispose();
             }
             
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, new ImageSubresourceRange(imageAspect, 0, 1, 0, 1));
@@ -328,7 +328,7 @@ namespace TanagraExample
             setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { imageMemoryBarrier });
             Console.WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
 
-            imageMemoryBarrier.Free();
+            imageMemoryBarrier.Dispose();
         }
 
         private void Flush()
@@ -350,11 +350,11 @@ namespace TanagraExample
             Console.WriteLine("[ OK ] queue.WaitIdle");
 
             device.FreeCommandBuffers(commandPool, new List<CommandBuffer> { setupCommanBuffer });
-            Console.WriteLine("[ OK ] device.FreeCommandBuffers");
+            Console.WriteLine("[ OK ] device.DisposeCommandBuffers");
 
             setupCommanBuffer = null;
 
-            submitInfo.Free();
+            submitInfo.Dispose();
         }
 
         private void CreateBackBufferViews()
@@ -365,7 +365,7 @@ namespace TanagraExample
                 var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
                 var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, backBufferFormat, new ComponentMapping(), subresourceRange);
                 backBufferViews.Add(device.CreateImageView(createInfo));
-                createInfo.Free();
+                createInfo.Dispose();
             }
             Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
         }
@@ -414,8 +414,8 @@ namespace TanagraExample
                 new VertexInputBindingDescription(0, (uint)(sizeof(float) * vertices.GetLength(1)), VertexInputRate.Vertex)
             };
 
-            createInfo.Free();
-            allocateInfo.Free();
+            createInfo.Dispose();
+            allocateInfo.Dispose();
         }
 
         private void CreateRenderPass()
@@ -452,8 +452,8 @@ namespace TanagraExample
             renderPass = device.CreateRenderPass(createInfo);
             Console.WriteLine($"[ OK ] {renderPass}");
 
-            subpass.Free();
-            createInfo.Free();
+            subpass.Dispose();
+            createInfo.Dispose();
         }
 
         private void CreatePipelineLayout()
@@ -470,8 +470,8 @@ namespace TanagraExample
             // Destroy temporary layout
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
 
-            descriptorSetLayoutCreateInfo.Free();
-            createInfo.Free();
+            descriptorSetLayoutCreateInfo.Dispose();
+            createInfo.Dispose();
         }
 
         private void CreatePipeline()
@@ -536,16 +536,16 @@ namespace TanagraExample
                 Console.WriteLine("[INFO] device.DestroyShaderModule");
             }
 
-            createInfo.Free();
-            shaderStages[0].Free();
-            shaderStages[1].Free();
-            depthStencilState.Free();
-            blendState.Free();
-            rasterizerState.Free();
-            inputAssemblyState.Free();
-            vertexInputState.Free();
-            viewportState.Free();
-            dynamicState.Free();
+            createInfo.Dispose();
+            shaderStages[0].Dispose();
+            shaderStages[1].Dispose();
+            depthStencilState.Dispose();
+            blendState.Dispose();
+            rasterizerState.Dispose();
+            inputAssemblyState.Dispose();
+            vertexInputState.Dispose();
+            viewportState.Dispose();
+            dynamicState.Dispose();
         }
 
         private ShaderModule CreateVertexShader()
@@ -564,7 +564,7 @@ namespace TanagraExample
         {
             var createInfo = new ShaderModuleCreateInfo(shaderCode);
             var module = device.CreateShaderModule(createInfo);
-            createInfo.Free();
+            createInfo.Dispose();
             return module;
         }
 
@@ -577,7 +577,7 @@ namespace TanagraExample
                 var createInfo = new FramebufferCreateInfo(renderPass, new[] { attachment }, (uint)form.ClientSize.Width, (uint)form.ClientSize.Height, 1);
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
                 Console.WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
-                createInfo.Free();
+                createInfo.Dispose();
             }
         }
 
@@ -585,7 +585,7 @@ namespace TanagraExample
         {
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
-            semaphoreCreateInfo.Free();
+            semaphoreCreateInfo.Dispose();
             
             try
             {
@@ -601,7 +601,7 @@ namespace TanagraExample
             // Record drawing command buffer
             var beginInfo = new CommandBufferBeginInfo();
             commandBuffer[0].Begin(beginInfo);
-            beginInfo.Free();
+            beginInfo.Dispose();
             DrawInternal();
             commandBuffer[0].End();
 
@@ -610,13 +610,13 @@ namespace TanagraExample
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
             var submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            submitInfo.Free();
+            submitInfo.Dispose();
 
             // Present
             var currentBackBufferIndexCopy = currentBackBufferIndex;
             var presentInfo = new PresentInfoKHR(new[] { swapchain }, new[] { currentBackBufferIndexCopy });
             queue.PresentKHR(presentInfo);
-            presentInfo.Free();
+            presentInfo.Dispose();
 
             // Wait
             queue.WaitIdle();
@@ -638,7 +638,7 @@ namespace TanagraExample
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            memoryBarrier.Free();
+            memoryBarrier.Dispose();
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
@@ -647,7 +647,7 @@ namespace TanagraExample
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
             var renderPassBeginInfo = new RenderPassBeginInfo(renderPass, framebuffers[currentBackBufferIndex], renderArea, null);
             commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
-            renderPassBeginInfo.Free();
+            renderPassBeginInfo.Dispose();
 
             // Bind pipeline
             commandBuffer[0].CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
@@ -681,7 +681,7 @@ namespace TanagraExample
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
             commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            memoryBarrier.Free();
+            memoryBarrier.Dispose();
         }
 
         private void Destroy()
