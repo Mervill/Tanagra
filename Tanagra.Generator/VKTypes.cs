@@ -92,7 +92,7 @@ namespace Tanagra.Generator
         public bool ReturnedOnly { get; set; }
 
         // readme.tex:
-        //   Each <validity> tag eontains zero or more <usage> tags. Each <usage> tag is intended to 
+        //   Each <validity> tag contains zero or more <usage> tags. Each <usage> tag is intended to 
         //   represent a specific validation requirement for the structure and include arbitrary 
         //   asciidoc text describing  that requirement.
         public string[] Validity { get; set; }
@@ -228,6 +228,17 @@ namespace Tanagra.Generator
         public string[] ImplicitExternSyncParams;
 
         public string[] Validity;
+
+        public VkCommand()
+        {
+            Parameters = new VkParam[0];
+            Queues = new string[0];
+            SuccessCodes = new string[0];
+            ErrorCodes = new string[0];
+            CmdBufferLevel = new string[0];
+            ImplicitExternSyncParams = new string[0];
+            Validity = new string[0];
+        }
 
         public string ToDeclaration()
         {

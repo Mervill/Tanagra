@@ -2,6 +2,9 @@ using System;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Structure type enumerant
+    /// </summary>
     public enum StructureType
     {
         ApplicationInfo = 0,

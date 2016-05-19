@@ -150,6 +150,13 @@ namespace Tanagra.Generator
             WriteLine("");
             WriteLine("namespace Vulkan");
             WriteBeginBlock();
+            if (!string.IsNullOrEmpty(vkEnum.Comment))
+            {
+                //var flags = vkEnum.IsBitmask ? "Flags" : string.Empty;
+                WriteLine("/// <summary>");
+                WriteLine($"/// {vkEnum.Comment}");
+                WriteLine("/// </summary>");
+            }
             if(vkEnum.IsBitmask)
                 WriteLine("[Flags]");
             WriteLine($"public enum {vkEnum.Name}"); // : int
@@ -319,7 +326,7 @@ namespace Tanagra.Generator
             
             return _sb.ToString();
         }
-
+        
         string GenerateCommandBindings(IEnumerable<VkCommand> commands)
         {
             Clear();
@@ -842,11 +849,43 @@ namespace Tanagra.Generator
             foreach(var vkCommand in vkCommands)
             {
                 var commandInfo = commandInfoMap[vkCommand];
-                
+
                 #region Command Header
+                var cmdParams = vkCommand.Parameters.Except(commandInfo.InternalParams).ToList();
+
+                #region Comment Block
+                WriteLine("/// <summary>");
+                WriteTabs();
+                Write("/// ");
+                if (vkCommand.CmdBufferLevel.Length != 0)
+                    Write($"[<see cref=\"CommandBufferLevel\"/>: {string.Join(", ", vkCommand.CmdBufferLevel)}] ");
+                if (vkCommand.Queues.Length != 0)
+                    Write($"[<see cref=\"QueueFlags\"/>: {string.Join(", ", vkCommand.Queues)}] ");
+                if(!string.IsNullOrEmpty(vkCommand.RenderPass))
+                    Write($"[Render Pass: {vkCommand.RenderPass}] ");
+                Write(LineEnding);
+                WriteLine("/// </summary>");
+                foreach (var param in cmdParams)
+                {
+                    if (param.NoAutoValidity)
+                    {
+                        WriteLine($"/// <param name=\"{param.Name}\">No Auto Validity</param>");
+                        continue;
+                    }
+
+                    if (param.ExternSync)
+                    {
+                        WriteLine($"/// <param name=\"{param.Name}\">ExternSync</param>");
+                        continue;
+                    }
+                    
+                    if (param.Optional.Length != 0)
+                        WriteLine($"/// <param name=\"{param.Name}\">Optional</param>");
+                }
+                //WriteLine("/// <returns></returns>");
+                #endregion
                 WriteTabs();
                 Write($"public static {commandInfo.ReturnType} {vkCommand.Name}(");
-                var cmdParams = vkCommand.Parameters.Except(commandInfo.InternalParams).ToList();
                 for(var x = 0; x < cmdParams.Count; x++)
                 {
                     var vkParam = cmdParams[x];

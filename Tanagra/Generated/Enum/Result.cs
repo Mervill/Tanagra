@@ -2,6 +2,9 @@ using System;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Error and return codes
+    /// </summary>
     public enum Result
     {
         /// <summary>

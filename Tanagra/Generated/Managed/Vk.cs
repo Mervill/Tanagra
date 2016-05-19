@@ -8,6 +8,10 @@ namespace Vulkan.Managed
     
     public unsafe static class Vk
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Instance CreateInstance(InstanceCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var instance = new Instance();
@@ -20,11 +24,19 @@ namespace Vulkan.Managed
             return instance;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instance">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyInstance(Instance instance, AllocationCallbacks allocator = null)
         {
             vkDestroyInstance((instance != null) ? instance.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
         {
             UInt32 listLength;
@@ -49,18 +61,28 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static IntPtr GetDeviceProcAddr(Device device, String name)
         {
             var result = vkGetDeviceProcAddr(device.NativePointer, name);
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instance">Optional</param>
         public static IntPtr GetInstanceProcAddr(Instance instance, String name)
         {
             var result = vkGetInstanceProcAddr((instance != null) ? instance.NativePointer : IntPtr.Zero, name);
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)
         {
             var properties = new PhysicalDeviceProperties();
@@ -68,6 +90,9 @@ namespace Vulkan.Managed
             return properties;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<QueueFamilyProperties> GetPhysicalDeviceQueueFamilyProperties(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -86,6 +111,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static PhysicalDeviceMemoryProperties GetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice)
         {
             var memoryProperties = new PhysicalDeviceMemoryProperties();
@@ -93,6 +121,9 @@ namespace Vulkan.Managed
             return memoryProperties;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static PhysicalDeviceFeatures GetPhysicalDeviceFeatures(PhysicalDevice physicalDevice)
         {
             var features = new PhysicalDeviceFeatures();
@@ -100,6 +131,9 @@ namespace Vulkan.Managed
             return features;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static FormatProperties GetPhysicalDeviceFormatProperties(PhysicalDevice physicalDevice, Format format)
         {
             var formatProperties = new FormatProperties();
@@ -107,6 +141,10 @@ namespace Vulkan.Managed
             return formatProperties;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags">Optional</param>
         public static ImageFormatProperties GetPhysicalDeviceImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags)
         {
             var imageFormatProperties = new ImageFormatProperties();
@@ -116,6 +154,10 @@ namespace Vulkan.Managed
             return imageFormatProperties;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Device CreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var device = new Device();
@@ -128,11 +170,19 @@ namespace Vulkan.Managed
             return device;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyDevice(Device device, AllocationCallbacks allocator = null)
         {
             vkDestroyDevice((device != null) ? device.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<LayerProperties> EnumerateInstanceLayerProperties()
         {
             UInt32 listLength;
@@ -158,6 +208,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="layerName">Optional</param>
         public static List<ExtensionProperties> EnumerateInstanceExtensionProperties(String layerName)
         {
             UInt32 listLength;
@@ -183,6 +237,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="physicalDevice">Optional</param>
         public static List<LayerProperties> EnumerateDeviceLayerProperties(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -208,6 +266,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="layerName">Optional</param>
         public static List<ExtensionProperties> EnumerateDeviceExtensionProperties(PhysicalDevice physicalDevice, String layerName)
         {
             UInt32 listLength;
@@ -233,6 +295,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Queue GetDeviceQueue(Device device, UInt32 queueFamilyIndex, UInt32 queueIndex)
         {
             var queue = new Queue();
@@ -243,6 +308,11 @@ namespace Vulkan.Managed
             return queue;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queue">ExternSync</param>
+        /// <param name="fence">ExternSync</param>
         public static void QueueSubmit(Queue queue, List<SubmitInfo> submits, Fence fence)
         {
             var submitCount = (submits != null) ? (UInt32)submits.Count : 0;
@@ -261,6 +331,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_submitsPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void QueueWaitIdle(Queue queue)
         {
             var result = vkQueueWaitIdle(queue.NativePointer);
@@ -268,6 +341,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkQueueWaitIdle), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void DeviceWaitIdle(Device device)
         {
             var result = vkDeviceWaitIdle(device.NativePointer);
@@ -275,6 +351,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkDeviceWaitIdle), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static DeviceMemory AllocateMemory(Device device, MemoryAllocateInfo allocateInfo, AllocationCallbacks allocator = null)
         {
             var memory = new DeviceMemory();
@@ -287,11 +367,21 @@ namespace Vulkan.Managed
             return memory;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="memory">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void FreeMemory(Device device, DeviceMemory memory, AllocationCallbacks allocator = null)
         {
             vkFreeMemory(device.NativePointer, (memory != null) ? memory.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="memory">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static IntPtr MapMemory(Device device, DeviceMemory memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags)
         {
             var data = new IntPtr();
@@ -301,11 +391,18 @@ namespace Vulkan.Managed
             return data;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="memory">ExternSync</param>
         public static void UnmapMemory(Device device, DeviceMemory memory)
         {
             vkUnmapMemory(device.NativePointer, memory.NativePointer);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void FlushMappedMemoryRanges(Device device, List<MappedMemoryRange> memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Count : 0;
@@ -324,6 +421,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void InvalidateMappedMemoryRanges(Device device, List<MappedMemoryRange> memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Count : 0;
@@ -342,6 +442,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static DeviceSize GetDeviceMemoryCommitment(Device device, DeviceMemory memory)
         {
             var committedMemoryInBytes = new DeviceSize();
@@ -349,6 +452,9 @@ namespace Vulkan.Managed
             return committedMemoryInBytes;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static MemoryRequirements GetBufferMemoryRequirements(Device device, Buffer buffer)
         {
             var memoryRequirements = new MemoryRequirements();
@@ -356,6 +462,10 @@ namespace Vulkan.Managed
             return memoryRequirements;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer">ExternSync</param>
         public static void BindBufferMemory(Device device, Buffer buffer, DeviceMemory memory, DeviceSize memoryOffset)
         {
             var result = vkBindBufferMemory(device.NativePointer, buffer.NativePointer, memory.NativePointer, memoryOffset);
@@ -363,6 +473,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBindBufferMemory), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static MemoryRequirements GetImageMemoryRequirements(Device device, Image image)
         {
             var memoryRequirements = new MemoryRequirements();
@@ -370,6 +483,10 @@ namespace Vulkan.Managed
             return memoryRequirements;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image">ExternSync</param>
         public static void BindImageMemory(Device device, Image image, DeviceMemory memory, DeviceSize memoryOffset)
         {
             var result = vkBindImageMemory(device.NativePointer, image.NativePointer, memory.NativePointer, memoryOffset);
@@ -377,6 +494,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBindImageMemory), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<SparseImageMemoryRequirements> GetImageSparseMemoryRequirements(Device device, Image image)
         {
             UInt32 listLength;
@@ -395,6 +515,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<SparseImageFormatProperties> GetPhysicalDeviceSparseImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling)
         {
             UInt32 listLength;
@@ -413,6 +536,11 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// [<see cref="QueueFlags"/>: sparse_binding] 
+        /// </summary>
+        /// <param name="queue">ExternSync</param>
+        /// <param name="fence">ExternSync</param>
         public static void QueueBindSparse(Queue queue, List<BindSparseInfo> bindInfo, Fence fence)
         {
             var bindInfoCount = (bindInfo != null) ? (UInt32)bindInfo.Count : 0;
@@ -431,6 +559,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_bindInfoPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Fence CreateFence(Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var fence = new Fence();
@@ -443,11 +575,20 @@ namespace Vulkan.Managed
             return fence;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fence">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyFence(Device device, Fence fence, AllocationCallbacks allocator = null)
         {
             vkDestroyFence(device.NativePointer, (fence != null) ? fence.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fences">ExternSync</param>
         public static void ResetFences(Device device, List<Fence> fences)
         {
             var fenceCount = (fences != null) ? (UInt32)fences.Count : 0;
@@ -466,6 +607,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void GetFenceStatus(Device device, Fence fence)
         {
             var result = vkGetFenceStatus(device.NativePointer, fence.NativePointer);
@@ -473,6 +617,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkGetFenceStatus), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void WaitForFences(Device device, List<Fence> fences, Bool32 waitAll, UInt64 timeout)
         {
             var fenceCount = (fences != null) ? (UInt32)fences.Count : 0;
@@ -491,6 +638,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Semaphore CreateSemaphore(Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var semaphore = new Semaphore();
@@ -503,11 +654,20 @@ namespace Vulkan.Managed
             return semaphore;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="semaphore">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroySemaphore(Device device, Semaphore semaphore, AllocationCallbacks allocator = null)
         {
             vkDestroySemaphore(device.NativePointer, (semaphore != null) ? semaphore.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Event CreateEvent(Device device, EventCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var @event = new Event();
@@ -520,11 +680,19 @@ namespace Vulkan.Managed
             return @event;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="@event">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyEvent(Device device, Event @event, AllocationCallbacks allocator = null)
         {
             vkDestroyEvent(device.NativePointer, (@event != null) ? @event.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void GetEventStatus(Device device, Event @event)
         {
             var result = vkGetEventStatus(device.NativePointer, @event.NativePointer);
@@ -532,6 +700,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkGetEventStatus), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="@event">ExternSync</param>
         public static void SetEvent(Device device, Event @event)
         {
             var result = vkSetEvent(device.NativePointer, @event.NativePointer);
@@ -539,6 +711,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkSetEvent), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="@event">ExternSync</param>
         public static void ResetEvent(Device device, Event @event)
         {
             var result = vkResetEvent(device.NativePointer, @event.NativePointer);
@@ -546,6 +722,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkResetEvent), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static QueryPool CreateQueryPool(Device device, QueryPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var queryPool = new QueryPool();
@@ -558,11 +738,20 @@ namespace Vulkan.Managed
             return queryPool;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryPool">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyQueryPool(Device device, QueryPool queryPool, AllocationCallbacks allocator = null)
         {
             vkDestroyQueryPool(device.NativePointer, (queryPool != null) ? queryPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags">Optional</param>
         public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
         {
             var dataSize = (data != null) ? (UInt32)data.Count : 0;
@@ -581,6 +770,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Buffer CreateBuffer(Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var buffer = new Buffer();
@@ -593,11 +786,20 @@ namespace Vulkan.Managed
             return buffer;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyBuffer(Device device, Buffer buffer, AllocationCallbacks allocator = null)
         {
             vkDestroyBuffer(device.NativePointer, (buffer != null) ? buffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static BufferView CreateBufferView(Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var view = new BufferView();
@@ -610,11 +812,20 @@ namespace Vulkan.Managed
             return view;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bufferView">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyBufferView(Device device, BufferView bufferView, AllocationCallbacks allocator = null)
         {
             vkDestroyBufferView(device.NativePointer, (bufferView != null) ? bufferView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Image CreateImage(Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var image = new Image();
@@ -627,11 +838,19 @@ namespace Vulkan.Managed
             return image;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyImage(Device device, Image image, AllocationCallbacks allocator = null)
         {
             vkDestroyImage(device.NativePointer, (image != null) ? image.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static SubresourceLayout GetImageSubresourceLayout(Device device, Image image, ImageSubresource subresource)
         {
             var layout = new SubresourceLayout();
@@ -639,6 +858,10 @@ namespace Vulkan.Managed
             return layout;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static ImageView CreateImageView(Device device, ImageViewCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var view = new ImageView();
@@ -651,11 +874,20 @@ namespace Vulkan.Managed
             return view;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="imageView">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyImageView(Device device, ImageView imageView, AllocationCallbacks allocator = null)
         {
             vkDestroyImageView(device.NativePointer, (imageView != null) ? imageView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static ShaderModule CreateShaderModule(Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var shaderModule = new ShaderModule();
@@ -668,11 +900,20 @@ namespace Vulkan.Managed
             return shaderModule;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shaderModule">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyShaderModule(Device device, ShaderModule shaderModule, AllocationCallbacks allocator = null)
         {
             vkDestroyShaderModule(device.NativePointer, (shaderModule != null) ? shaderModule.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static PipelineCache CreatePipelineCache(Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var pipelineCache = new PipelineCache();
@@ -685,11 +926,19 @@ namespace Vulkan.Managed
             return pipelineCache;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipelineCache">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyPipelineCache(Device device, PipelineCache pipelineCache, AllocationCallbacks allocator = null)
         {
             vkDestroyPipelineCache(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
             UInt32 listLength;
@@ -712,6 +961,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dstCache">ExternSync</param>
         public static void MergePipelineCaches(Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
             var srcCacheCount = (srcCaches != null) ? (UInt32)srcCaches.Count : 0;
@@ -730,6 +983,11 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_srcCachesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipelineCache">Optional</param>
+        /// <param name="allocator">Optional</param>
         public static List<Pipeline> CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
@@ -763,6 +1021,11 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipelineCache">Optional</param>
+        /// <param name="allocator">Optional</param>
         public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
@@ -796,11 +1059,20 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipeline">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyPipeline(Device device, Pipeline pipeline, AllocationCallbacks allocator = null)
         {
             vkDestroyPipeline(device.NativePointer, (pipeline != null) ? pipeline.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static PipelineLayout CreatePipelineLayout(Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var pipelineLayout = new PipelineLayout();
@@ -813,11 +1085,20 @@ namespace Vulkan.Managed
             return pipelineLayout;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipelineLayout">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyPipelineLayout(Device device, PipelineLayout pipelineLayout, AllocationCallbacks allocator = null)
         {
             vkDestroyPipelineLayout(device.NativePointer, (pipelineLayout != null) ? pipelineLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Sampler CreateSampler(Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var sampler = new Sampler();
@@ -830,11 +1111,20 @@ namespace Vulkan.Managed
             return sampler;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sampler">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroySampler(Device device, Sampler sampler, AllocationCallbacks allocator = null)
         {
             vkDestroySampler(device.NativePointer, (sampler != null) ? sampler.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static DescriptorSetLayout CreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var setLayout = new DescriptorSetLayout();
@@ -847,11 +1137,20 @@ namespace Vulkan.Managed
             return setLayout;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="descriptorSetLayout">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyDescriptorSetLayout(Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks allocator = null)
         {
             vkDestroyDescriptorSetLayout(device.NativePointer, (descriptorSetLayout != null) ? descriptorSetLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static DescriptorPool CreateDescriptorPool(Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var descriptorPool = new DescriptorPool();
@@ -864,11 +1163,21 @@ namespace Vulkan.Managed
             return descriptorPool;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="descriptorPool">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyDescriptorPool(Device device, DescriptorPool descriptorPool, AllocationCallbacks allocator = null)
         {
             vkDestroyDescriptorPool(device.NativePointer, (descriptorPool != null) ? descriptorPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="descriptorPool">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static void ResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags)
         {
             var result = vkResetDescriptorPool(device.NativePointer, descriptorPool.NativePointer, flags);
@@ -876,6 +1185,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkResetDescriptorPool), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<DescriptorSet> AllocateDescriptorSets(Device device, DescriptorSetAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.NativePointer->DescriptorSetCount;
@@ -898,6 +1210,11 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="descriptorPool">ExternSync</param>
+        /// <param name="descriptorSets">No Auto Validity</param>
         public static void FreeDescriptorSets(Device device, DescriptorPool descriptorPool, List<DescriptorSet> descriptorSets)
         {
             var descriptorSetCount = (descriptorSets != null) ? (UInt32)descriptorSets.Count : 0;
@@ -916,6 +1233,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void UpdateDescriptorSets(Device device, List<WriteDescriptorSet> descriptorWrites, List<CopyDescriptorSet> descriptorCopies)
         {
             var descriptorWriteCount = (descriptorWrites != null) ? (UInt32)descriptorWrites.Count : 0;
@@ -943,6 +1263,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_descriptorCopiesPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static Framebuffer CreateFramebuffer(Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var framebuffer = new Framebuffer();
@@ -955,11 +1279,20 @@ namespace Vulkan.Managed
             return framebuffer;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="framebuffer">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyFramebuffer(Device device, Framebuffer framebuffer, AllocationCallbacks allocator = null)
         {
             vkDestroyFramebuffer(device.NativePointer, (framebuffer != null) ? framebuffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static RenderPass CreateRenderPass(Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var renderPass = new RenderPass();
@@ -972,11 +1305,19 @@ namespace Vulkan.Managed
             return renderPass;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="renderPass">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyRenderPass(Device device, RenderPass renderPass, AllocationCallbacks allocator = null)
         {
             vkDestroyRenderPass(device.NativePointer, (renderPass != null) ? renderPass.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Extent2D GetRenderAreaGranularity(Device device, RenderPass renderPass)
         {
             var granularity = new Extent2D();
@@ -984,6 +1325,10 @@ namespace Vulkan.Managed
             return granularity;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static CommandPool CreateCommandPool(Device device, CommandPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
         {
             var commandPool = new CommandPool();
@@ -996,11 +1341,21 @@ namespace Vulkan.Managed
             return commandPool;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandPool">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyCommandPool(Device device, CommandPool commandPool, AllocationCallbacks allocator = null)
         {
             vkDestroyCommandPool(device.NativePointer, (commandPool != null) ? commandPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandPool">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static void ResetCommandPool(Device device, CommandPool commandPool, CommandPoolResetFlags flags)
         {
             var result = vkResetCommandPool(device.NativePointer, commandPool.NativePointer, flags);
@@ -1008,6 +1363,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkResetCommandPool), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.NativePointer->CommandBufferCount;
@@ -1030,6 +1388,11 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandPool">ExternSync</param>
+        /// <param name="commandBuffers">No Auto Validity</param>
         public static void FreeCommandBuffers(Device device, CommandPool commandPool, List<CommandBuffer> commandBuffers)
         {
             var commandBufferCount = (commandBuffers != null) ? (UInt32)commandBuffers.Count : 0;
@@ -1046,6 +1409,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void BeginCommandBuffer(CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
         {
             var result = vkBeginCommandBuffer(commandBuffer.NativePointer, beginInfo.NativePointer);
@@ -1053,6 +1420,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBeginCommandBuffer), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void EndCommandBuffer(CommandBuffer commandBuffer)
         {
             var result = vkEndCommandBuffer(commandBuffer.NativePointer);
@@ -1060,6 +1431,11 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkEndCommandBuffer), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static void ResetCommandBuffer(CommandBuffer commandBuffer, CommandBufferResetFlags flags)
         {
             var result = vkResetCommandBuffer(commandBuffer.NativePointer, flags);
@@ -1067,11 +1443,19 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkResetCommandBuffer), result);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindPipeline(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, Pipeline pipeline)
         {
             vkCmdBindPipeline(commandBuffer.NativePointer, pipelineBindPoint, pipeline.NativePointer);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetViewport(CommandBuffer commandBuffer, UInt32 firstViewport, List<Viewport> viewports)
         {
             var viewportCount = (viewports != null) ? (UInt32)viewports.Count : 0;
@@ -1088,6 +1472,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_viewportsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetScissor(CommandBuffer commandBuffer, UInt32 firstScissor, List<Rect2D> scissors)
         {
             var scissorCount = (scissors != null) ? (UInt32)scissors.Count : 0;
@@ -1104,41 +1492,73 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_scissorsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetLineWidth(CommandBuffer commandBuffer, Single lineWidth)
         {
             vkCmdSetLineWidth(commandBuffer.NativePointer, lineWidth);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetDepthBias(CommandBuffer commandBuffer, Single depthBiasConstantFactor, Single depthBiasClamp, Single depthBiasSlopeFactor)
         {
             vkCmdSetDepthBias(commandBuffer.NativePointer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetBlendConstants(CommandBuffer commandBuffer, Single blendConstants)
         {
             vkCmdSetBlendConstants(commandBuffer.NativePointer, blendConstants);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetDepthBounds(CommandBuffer commandBuffer, Single minDepthBounds, Single maxDepthBounds)
         {
             vkCmdSetDepthBounds(commandBuffer.NativePointer, minDepthBounds, maxDepthBounds);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetStencilCompareMask(CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 compareMask)
         {
             vkCmdSetStencilCompareMask(commandBuffer.NativePointer, faceMask, compareMask);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetStencilWriteMask(CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 writeMask)
         {
             vkCmdSetStencilWriteMask(commandBuffer.NativePointer, faceMask, writeMask);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetStencilReference(CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 reference)
         {
             vkCmdSetStencilReference(commandBuffer.NativePointer, faceMask, reference);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindDescriptorSets(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, List<DescriptorSet> descriptorSets, List<UInt32> dynamicOffsets)
         {
             var descriptorSetCount = (descriptorSets != null) ? (UInt32)descriptorSets.Count : 0;
@@ -1166,11 +1586,19 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_dynamicOffsetsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindIndexBuffer(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
         {
             vkCmdBindIndexBuffer(commandBuffer.NativePointer, buffer.NativePointer, offset, indexType);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindVertexBuffers(CommandBuffer commandBuffer, UInt32 firstBinding, List<Buffer> buffers, List<DeviceSize> offsets)
         {
             var bindingCount = (buffers != null) ? (UInt32)buffers.Count : 0;
@@ -1197,36 +1625,64 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_offsetsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDraw(CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
         {
             vkCmdDraw(commandBuffer.NativePointer, vertexCount, instanceCount, firstVertex, firstInstance);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDrawIndexed(CommandBuffer commandBuffer, UInt32 indexCount, UInt32 instanceCount, UInt32 firstIndex, Int32 vertexOffset, UInt32 firstInstance)
         {
             vkCmdDrawIndexed(commandBuffer.NativePointer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDrawIndirect(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
         {
             vkCmdDrawIndirect(commandBuffer.NativePointer, buffer.NativePointer, offset, drawCount, stride);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDrawIndexedIndirect(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
         {
             vkCmdDrawIndexedIndirect(commandBuffer.NativePointer, buffer.NativePointer, offset, drawCount, stride);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDispatch(CommandBuffer commandBuffer, UInt32 x, UInt32 y, UInt32 z)
         {
             vkCmdDispatch(commandBuffer.NativePointer, x, y, z);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdDispatchIndirect(CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset)
         {
             vkCmdDispatchIndirect(commandBuffer.NativePointer, buffer.NativePointer, offset);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, List<BufferCopy> regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1243,6 +1699,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageCopy> regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1259,6 +1719,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageBlit> regions, Filter filter)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1275,6 +1739,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, List<BufferImageCopy> regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1291,6 +1759,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyImageToBuffer(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, List<BufferImageCopy> regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1307,6 +1779,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, List<Byte> data)
         {
             var dataSize = (data != null) ? (UInt32)data.Count : 0;
@@ -1323,11 +1799,19 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdFillBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
         {
             vkCmdFillBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, size, data);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
         {
             var rangeCount = (ranges != null) ? (UInt32)ranges.Count : 0;
@@ -1344,6 +1828,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearDepthStencilImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, List<ImageSubresourceRange> ranges)
         {
             var rangeCount = (ranges != null) ? (UInt32)ranges.Count : 0;
@@ -1360,6 +1848,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearAttachments(CommandBuffer commandBuffer, List<ClearAttachment> attachments, List<ClearRect> rects)
         {
             var attachmentCount = (attachments != null) ? (UInt32)attachments.Count : 0;
@@ -1387,6 +1879,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_rectsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdResolveImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageResolve> regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
@@ -1403,16 +1899,28 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetEvent(CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
         {
             vkCmdSetEvent(commandBuffer.NativePointer, @event.NativePointer, stageMask);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdResetEvent(CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
         {
             vkCmdResetEvent(commandBuffer.NativePointer, @event.NativePointer, stageMask);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdWaitEvents(CommandBuffer commandBuffer, List<Event> events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
             var eventCount = (events != null) ? (UInt32)events.Count : 0;
@@ -1462,6 +1970,11 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
+        /// <param name="dependencyFlags">Optional</param>
         public static void CmdPipelineBarrier(CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
             var memoryBarrierCount = (memoryBarriers != null) ? (UInt32)memoryBarriers.Count : 0;
@@ -1500,31 +2013,57 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static void CmdBeginQuery(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags)
         {
             vkCmdBeginQuery(commandBuffer.NativePointer, queryPool.NativePointer, query, flags);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdEndQuery(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query)
         {
             vkCmdEndQuery(commandBuffer.NativePointer, queryPool.NativePointer, query);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdResetQueryPool(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount)
         {
             vkCmdResetQueryPool(commandBuffer.NativePointer, queryPool.NativePointer, firstQuery, queryCount);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdWriteTimestamp(CommandBuffer commandBuffer, PipelineStageFlags pipelineStage, QueryPool queryPool, UInt32 query)
         {
             vkCmdWriteTimestamp(commandBuffer.NativePointer, pipelineStage, queryPool.NativePointer, query);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
+        /// <param name="flags">Optional</param>
         public static void CmdCopyQueryPoolResults(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize stride, QueryResultFlags flags)
         {
             vkCmdCopyQueryPoolResults(commandBuffer.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dstBuffer.NativePointer, dstOffset, stride, flags);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
         {
             var size = (values != null) ? (UInt32)values.Count : 0;
@@ -1541,21 +2080,37 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_valuesPtr);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary] [<see cref="QueueFlags"/>: graphics] [Render Pass: outside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBeginRenderPass(CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
         {
             vkCmdBeginRenderPass(commandBuffer.NativePointer, renderPassBegin.NativePointer, contents);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdNextSubpass(CommandBuffer commandBuffer, SubpassContents contents)
         {
             vkCmdNextSubpass(commandBuffer.NativePointer, contents);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary] [<see cref="QueueFlags"/>: graphics] [Render Pass: inside] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdEndRenderPass(CommandBuffer commandBuffer)
         {
             vkCmdEndRenderPass(commandBuffer.NativePointer);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary] [<see cref="QueueFlags"/>: transfer, graphics, compute] [Render Pass: both] 
+        /// </summary>
+        /// <param name="commandBuffer">ExternSync</param>
         public static void CmdExecuteCommands(CommandBuffer commandBuffer, List<CommandBuffer> commandBuffers)
         {
             var commandBufferCount = (commandBuffers != null) ? (UInt32)commandBuffers.Count : 0;
@@ -1572,6 +2127,10 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateAndroidSurfaceKHR(Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1584,6 +2143,9 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<DisplayPropertiesKHR> GetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -1609,6 +2171,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<DisplayPlanePropertiesKHR> GetPhysicalDeviceDisplayPlanePropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -1634,6 +2199,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<DisplayKHR> GetDisplayPlaneSupportedDisplaysKHR(PhysicalDevice physicalDevice, UInt32 planeIndex)
         {
             UInt32 listLength;
@@ -1658,6 +2226,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<DisplayModePropertiesKHR> GetDisplayModePropertiesKHR(PhysicalDevice physicalDevice, DisplayKHR display)
         {
             UInt32 listLength;
@@ -1683,6 +2254,11 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="display">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static DisplayModeKHR CreateDisplayModeKHR(PhysicalDevice physicalDevice, DisplayKHR display, DisplayModeCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var mode = new DisplayModeKHR();
@@ -1695,6 +2271,10 @@ namespace Vulkan.Managed
             return mode;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mode">ExternSync</param>
         public static DisplayPlaneCapabilitiesKHR GetDisplayPlaneCapabilitiesKHR(PhysicalDevice physicalDevice, DisplayModeKHR mode, UInt32 planeIndex)
         {
             var capabilities = new DisplayPlaneCapabilitiesKHR();
@@ -1704,6 +2284,10 @@ namespace Vulkan.Managed
             return capabilities;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateDisplayPlaneSurfaceKHR(Instance instance, DisplaySurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1716,6 +2300,10 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static List<SwapchainKHR> CreateSharedSwapchainsKHR(Device device, List<SwapchainCreateInfoKHR> createInfos, AllocationCallbacks allocator = null)
         {
             var swapchainCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
@@ -1749,6 +2337,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateMirSurfaceKHR(Instance instance, MirSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1761,6 +2353,9 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static IntPtr GetPhysicalDeviceMirPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var connection = new IntPtr();
@@ -1768,11 +2363,19 @@ namespace Vulkan.Managed
             return connection;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="surface">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroySurfaceKHR(Instance instance, SurfaceKHR surface, AllocationCallbacks allocator = null)
         {
             vkDestroySurfaceKHR(instance.NativePointer, (surface != null) ? surface.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Bool32 GetPhysicalDeviceSurfaceSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, SurfaceKHR surface)
         {
             var supported = new Bool32();
@@ -1782,6 +2385,9 @@ namespace Vulkan.Managed
             return supported;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static SurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilitiesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             var surfaceCapabilities = new SurfaceCapabilitiesKHR();
@@ -1791,6 +2397,9 @@ namespace Vulkan.Managed
             return surfaceCapabilities;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<SurfaceFormatKHR> GetPhysicalDeviceSurfaceFormatsKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
@@ -1813,6 +2422,9 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<PresentModeKHR> GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
@@ -1835,6 +2447,10 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SwapchainKHR CreateSwapchainKHR(Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var swapchain = new SwapchainKHR();
@@ -1847,11 +2463,19 @@ namespace Vulkan.Managed
             return swapchain;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="swapchain">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroySwapchainKHR(Device device, SwapchainKHR swapchain, AllocationCallbacks allocator = null)
         {
             vkDestroySwapchainKHR(device.NativePointer, (swapchain != null) ? swapchain.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<Image> GetSwapchainImagesKHR(Device device, SwapchainKHR swapchain)
         {
             UInt32 listLength;
@@ -1876,6 +2500,12 @@ namespace Vulkan.Managed
             return list;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="swapchain">ExternSync</param>
+        /// <param name="semaphore">ExternSync</param>
+        /// <param name="fence">ExternSync</param>
         public static UInt32 AcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence)
         {
             var imageIndex = new UInt32();
@@ -1885,6 +2515,10 @@ namespace Vulkan.Managed
             return imageIndex;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queue">ExternSync</param>
         public static void QueuePresentKHR(Queue queue, PresentInfoKHR presentInfo)
         {
             var result = vkQueuePresentKHR(queue.NativePointer, presentInfo.NativePointer);
@@ -1892,6 +2526,10 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkQueuePresentKHR), result);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateWaylandSurfaceKHR(Instance instance, WaylandSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1904,6 +2542,9 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static IntPtr GetPhysicalDeviceWaylandPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var display = new IntPtr();
@@ -1911,6 +2552,10 @@ namespace Vulkan.Managed
             return display;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateWin32SurfaceKHR(Instance instance, Win32SurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1923,12 +2568,19 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Bool32 GetPhysicalDeviceWin32PresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var result = vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex);
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateXlibSurfaceKHR(Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1941,12 +2593,19 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Bool32 GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr dpy, IntPtr visualID)
         {
             var result = vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &dpy, visualID);
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static SurfaceKHR CreateXcbSurfaceKHR(Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
         {
             var surface = new SurfaceKHR();
@@ -1959,12 +2618,19 @@ namespace Vulkan.Managed
             return surface;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static Bool32 GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr connection, IntPtr visual_id)
         {
             var result = vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &connection, visual_id);
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="allocator">Optional</param>
         public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator = null)
         {
             var callback = new DebugReportCallbackEXT();
@@ -1977,16 +2643,27 @@ namespace Vulkan.Managed
             return callback;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callback">ExternSync</param>
+        /// <param name="allocator">Optional</param>
         public static void DestroyDebugReportCallbackEXT(Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator = null)
         {
             vkDestroyDebugReportCallbackEXT(instance.NativePointer, callback.NativePointer, (allocator != null) ? allocator.NativePointer : null);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UInt32 location, Int32 messageCode, String layerPrefix, String message)
         {
             vkDebugReportMessageEXT(instance.NativePointer, flags, objectType, @object, location, messageCode, layerPrefix, message);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static DebugMarkerObjectNameInfoEXT DebugMarkerSetObjectNameEXT(Device device)
         {
             var nameInfo = new DebugMarkerObjectNameInfoEXT();
@@ -1996,6 +2673,9 @@ namespace Vulkan.Managed
             return nameInfo;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public static DebugMarkerObjectTagInfoEXT DebugMarkerSetObjectTagEXT(Device device)
         {
             var tagInfo = new DebugMarkerObjectTagInfoEXT();
@@ -2005,6 +2685,9 @@ namespace Vulkan.Managed
             return tagInfo;
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
         public static DebugMarkerMarkerInfoEXT CmdDebugMarkerBeginEXT(CommandBuffer commandBuffer)
         {
             var markerInfo = new DebugMarkerMarkerInfoEXT();
@@ -2012,11 +2695,17 @@ namespace Vulkan.Managed
             return markerInfo;
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
         public static void CmdDebugMarkerEndEXT(CommandBuffer commandBuffer)
         {
             vkCmdDebugMarkerEndEXT(commandBuffer.NativePointer);
         }
         
+        /// <summary>
+        /// [<see cref="CommandBufferLevel"/>: primary, secondary] [<see cref="QueueFlags"/>: graphics, compute] [Render Pass: both] 
+        /// </summary>
         public static DebugMarkerMarkerInfoEXT CmdDebugMarkerInsertEXT(CommandBuffer commandBuffer)
         {
             var markerInfo = new DebugMarkerMarkerInfoEXT();

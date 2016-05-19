@@ -2,6 +2,9 @@ using System;
 
 namespace Vulkan
 {
+    /// <summary>
+    /// Vulkan format definitions
+    /// </summary>
     public enum Format
     {
         Undefined = 0,
