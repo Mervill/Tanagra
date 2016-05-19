@@ -9,8 +9,11 @@ using System.Diagnostics;
 using SharpDX.Windows;
 
 using Tanagra;
-using Vulkan;
-using Vulkan.ObjectModel;
+
+using Vulkan;                     // Core Vulkan classes
+using Vulkan.Managed;             // A managed interface to Vulkan
+using Vulkan.Managed.ObjectModel; // Extentions to object handles
+//using Vulkan.Managed.ObjectModel
 
 using ImageLayout = Vulkan.ImageLayout;
 using Buffer = Vulkan.Buffer;
@@ -113,7 +116,7 @@ namespace TanagraExample
 
             allocator = new MemoryAllocator();
 
-            instance = VK.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
+            instance = Vk.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
             Console.WriteLine($"[ OK ] {instance}");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
@@ -708,6 +711,14 @@ namespace TanagraExample
 
             form.Dispose();
 
+            commandBuffer = null;
+            backBuffers = null;
+            backBufferViews = null;
+            framebuffers = null;
+            vertexAttributes = null;
+            vertexBindings = null;
+
+            GC.GetTotalMemory(true);
             GC.WaitForPendingFinalizers();
             Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
             Console.WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");

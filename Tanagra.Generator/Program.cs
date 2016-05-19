@@ -32,6 +32,15 @@ namespace Tanagra.Generator
         // point of the suffix is to prevent name collision, which while unlikely is still a thing that can
         // happen.
         //
+        // /Generated
+        // /Generated/Enum              -- enums
+        // /Generated/Handle            -- handles
+        // /Generated/Struct            -- structs that don't need management
+        // /Generated/Managed           -- `Vk.cs`
+        // /Generated/Managed/Classes   -- managed wrappers
+        // /Generated/Unmanaged         -- `VulkanBinding.cs`
+        // /Generated/Unmanaged/Structs -- unmanaged structures
+        // /Generated/ObjectModel       -- `ObjectModel.cs`
         static void Main(string[] args)
         {
             var raw = File.ReadAllText("./spec/vk.xml");

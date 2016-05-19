@@ -5,26 +5,24 @@ using System.Text;
 
 namespace Tanagra.Generator
 {
-    // There are a few species of objects we need to handle:
-    //
-    // - Terminal Structs
-    //   - Contain only platform types and other Terminal Structs (also Bool32 and DeviceSize)
-    //   - Cannot contain pointers
-    //   - May contain other Terminal Structs so long as they are refrenced by value and not by pointer
-    //
-    // - Nonterminal Structs
-    //   - May contain pointers to Terminal and Nonterminal structs
-    //   - May refrence Terminal structs either by value or by pointer  
-    //   - Must use pointers to refrence other Nonterminal structs
-    //
     // Notes:
     //  - By default, structures use "copy" behaviour on assignment ie; the struct's data is copied
     //    to a new struct instance and then assigned. So using a simmilar copy method in the interop
     //    layer actually maintains expected functionality
-    //
-    // http://stackoverflow.com/questions/9302236/why-use-a-public-method-in-an-internal-class
     public class CSharpCodeGenerator
     {
+        class GeneratedObjectInfo
+        {
+            public string Name;
+            public string Contents;
+
+            public GeneratedObjectInfo(string name, string contents)
+            {
+                Name = name;
+                Contents = contents;
+            }
+        }
+
         class CommandInfo
         {
             public bool ReturnsList;
@@ -59,12 +57,19 @@ namespace Tanagra.Generator
         
         public Dictionary<string, string> files;
 
-        const string NativePointer = "NativePointer";
-        const string CallingConvention = "Winapi";
-        const string VulkanResultException = "VulkanCommandException";
-        const string AllocateFnName = "MemoryUtils.Allocate";
-        const string FixedSizeStringFnName = "MemoryUtils.MarshalFixedSizeString";
-        const string LineEnding = "\n";
+        const string NativePointer           = "NativePointer";
+        const string CallingConvention       = "Winapi";
+        const string VulkanResultException   = "VulkanCommandException";
+        const string AllocateFnName          = "MemoryUtils.Allocate";
+        const string FixedSizeStringFnName   = "MemoryUtils.MarshalFixedSizeString";
+        const string ManagedNS               = "Managed";
+        const string ManagedFunctionsClass   = "Vk";
+        const string UnmanagedNS             = "Unmanaged";
+        const string UnmanagedFunctionsClass = "VulkanBinding";
+        const string ObjectModelNS           = "ObjectModel";
+        const string LineEnding              = "\n";
+
+        bool CombineFiles;
 
         public CSharpCodeGenerator()
         {
@@ -118,21 +123,23 @@ namespace Tanagra.Generator
             // -- struct
             
             var needsInteropStruct = spec.Structs.Where(x => IsInteropStruct(x));
-            files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
+            //files.Add("./Interop/Structs.cs", GenerateStructs(needsInteropStruct, false));
+            files.Add($"./{UnmanagedNS}/Structs.cs", NewGenerateStructs(needsInteropStruct, false));
 
             var regularStruct = spec.Structs.Except(needsInteropStruct).Where(x => !disabledStructs.Contains(x.Name));
-            files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
+            //files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
+            files.Add("./Structs.cs", NewGenerateStructs(regularStruct, true));
 
             // -- vk
-            files.Add("./Interop/VK.cs", GenerateCommandBindings(commands));
+            files.Add($"./{UnmanagedNS}/VK.cs", GenerateCommandBindings(commands));
 
             var generateWrapper = needsInteropStruct.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
             foreach (var vkStruct in generateWrapper)
-                files.Add($"./Wrapper/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
+                files.Add($"./{ManagedNS}/Class/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
 
-            files.Add("./Wrapper/VK.cs", GenerateCommandWrapper(commands, commandInfoMap));
+            files.Add($"./{ManagedNS}/{ManagedFunctionsClass}.cs", GenerateManagedCommand(commands, commandInfoMap));
 
-            files.Add("./ObjectModel.cs", GenerateHandleExtensions(spec.Handles, commands, commandInfoMap));
+            files.Add("./ObjectModel.cs", GenerateHandleExtensions("HandleExtensions", spec.Handles, commands, commandInfoMap));
             
             return _sb.ToString();
         }
@@ -204,7 +211,7 @@ namespace Tanagra.Generator
             WriteLine("// ReSharper disable InconsistentNaming");
             WriteLine("using System;");
             WriteLine("");
-            WriteLine($"namespace Vulkan{((!isPublic) ? ".Interop" : string.Empty)}");
+            WriteLine($"namespace Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}");
             WriteBeginBlock();
             foreach (var vkStruct in vkStructs)
             {
@@ -302,6 +309,122 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
+        string NewGenerateStructs(IEnumerable<VkStruct> vkStructs, bool isPublic)
+        {
+            var structs = vkStructs
+                .Where(x => !platformStructTypes.Contains(x.Name))
+                .Select(x => new GeneratedObjectInfo(x.Name, GenerateStruct(x, isPublic)))
+                .ToArray();
+            
+            var structNamespace = $"Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}";
+            var structUsing = new[] { "System" };
+
+            if(CombineFiles)
+            {
+
+            }
+            else
+            {
+                var files = structs.Select(x => CreateFile($"{x.Name}.cs", structNamespace, structUsing, x));
+            }
+
+            return CreateFile("Structs.cs", structNamespace, structUsing, structs).Contents;
+        }
+
+        string GenerateStruct(VkStruct vkStruct, bool isPublic)
+        {
+            Clear();
+
+            var vis = isPublic ? "public" : "internal";
+
+            if(vkStruct.ReturnedOnly)
+            {
+                WriteLine("/// <summary>");
+                WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
+                WriteLine("/// </summary>");
+            }
+
+            WriteLine($"{vis} struct {vkStruct.Name}");
+            WriteBeginBlock();
+
+            if(vkStruct.IsImportedType)
+                WriteLine("// Imported type");
+
+            foreach(var member in vkStruct.Members)
+            {
+                WriteMemberComments(member);
+
+                if(member.IsFixedSize)
+                {
+                    if(!platformStructTypes.Contains(member.Type.Name))
+                    {
+                        WriteLine($"public {member.Type} {member.Name};");
+                    }
+                    else
+                    {
+                        var fixedType = member.Type.ToString();
+                        if(fixedType == "String")
+                            fixedType = "byte";
+
+                        WriteLine($"public unsafe fixed {fixedType} {member.Name}[{member.FixedSize}];");
+                    }
+                    continue;
+                }
+
+                if(member.IsArray || member.IsPointer || member.Type.Name == "String")
+                {
+                    WriteLine($"public IntPtr {member.Name};");
+                    continue;
+                }
+
+                if(member.Type is VkHandle)
+                {
+                    var vkHandle = (VkHandle)member.Type;
+                    if(!vkHandle.IsDispatchable)
+                    {
+                        // should never be hit when isPublic == true
+                        WriteLine($"public UInt64 {member.Name};");
+                        continue;
+                    }
+                }
+
+                WriteLine($"public {member.Type} {member.Name};");
+            }
+
+            // For public structs that are not returned (only) and contain members
+            // marked as 'mandatory' by the spec (the spec actually marks members as optional)
+            // generate a constructor that takes all the mandatory members as arguments. 
+            // This is actually pretty good at generating useful constructors.
+            if(isPublic && !vkStruct.ReturnedOnly && vkStruct.Name != "PhysicalDeviceFeatures")
+            {
+                var mandatoryMembers = vkStruct.Members.Where(x => x.Optional != "true");
+                var optionalMembers  = vkStruct.Members.Except(mandatoryMembers);
+
+                if(mandatoryMembers.Count() != 0)
+                {
+                    mandatoryMembers.Select(x => $"{x.Type} {x.Name}");
+                    var mandatoryMemberString = String.Join(", ", mandatoryMembers);
+
+                    WriteLine("");
+                    WriteLine($"public {vkStruct.Name}({mandatoryMemberString})");
+                    WriteBeginBlock();
+
+                    foreach(var member in mandatoryMembers)
+                        WriteLine($"this.{member.Name} = {member.Name};");
+
+                    // Assign default values to the optional members
+                    foreach(var member in optionalMembers)
+                        WriteLine($"{member.Name} = default({member.Type});");
+
+                    WriteEndBlock();
+                }
+            }
+
+            WriteEndBlock();
+            
+            return _sb.ToString();
+        }
+
         string GenerateCommandBindings(IEnumerable<VkCommand> commands)
         {
             Clear();
@@ -309,9 +432,9 @@ namespace Tanagra.Generator
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("");
-            WriteLine("namespace Vulkan.Interop");
+            WriteLine($"namespace Vulkan.{UnmanagedNS}");
             WriteBeginBlock();
-            WriteLine("internal unsafe static class VK");
+            WriteLine($"internal unsafe static class {UnmanagedFunctionsClass}");
             WriteBeginBlock();
             WriteLine($"const string DllName = \"{DllName}\";");
             WriteLine($"const CallingConvention callingConvention = CallingConvention.{CallingConvention};");
@@ -385,7 +508,7 @@ namespace Tanagra.Generator
             }
             WriteLine($"unsafe public class {vkStruct.Name}");
             WriteBeginBlock();
-            WriteLine($"internal Interop.{vkStruct.Name}* {NativePointer};");
+            WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer};");
             WriteLine("");
 
             var generateStructureType = false;
@@ -440,7 +563,7 @@ namespace Tanagra.Generator
             var cotorVis = (vkStruct.ReturnedOnly) ? "internal" : "public";
             WriteLine($"{cotorVis} {vkStruct.Name}()");
             WriteBeginBlock();
-            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*){AllocateFnName}(typeof(Interop.{vkStruct.Name}));");
+            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*){AllocateFnName}(typeof({UnmanagedNS}.{vkStruct.Name}));");
             if (generateStructureType)
                 WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             WriteEndBlock();
@@ -505,7 +628,7 @@ namespace Tanagra.Generator
             WriteLine($"public void Free()");
             WriteBeginBlock();
             WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
             WriteEndBlock();
 
             // Implement IDisposable and deconstructor
@@ -513,17 +636,17 @@ namespace Tanagra.Generator
             WriteLine($"public void Dispose()");
             WriteBeginBlock();
             WriteLine($"Marshal.FreeHGlobal((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
             WriteLine($"GC.SuppressFinalize(this);");
             WriteEndBlock();*/
 
             /*WriteLine("");
             WriteLine($"~{vkStruct.Name}()");
             WriteBeginBlock();
-            WriteLine($"if({NativePointer} != (Interop.{vkStruct.Name}*)IntPtr.Zero)");
+            WriteLine($"if({NativePointer} != ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero)");
             WriteBeginBlock();
             WriteLine($"Marshal.FreeHGlobal((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = (Interop.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
             WriteEndBlock();
             WriteEndBlock();*/
 
@@ -672,7 +795,7 @@ namespace Tanagra.Generator
                     structType = "IntPtr";
 
                 var get = $"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};";
-                var set = "ptr[x] = (IntPtr)value[x].NativePointer;";
+                var set = $"ptr[x] = (IntPtr)value[x].{NativePointer};";
                 WriteArray(vkMember, countName, readOnly, structType, "IntPtr", "IntPtr", get, set);
                 return;
             }
@@ -698,12 +821,12 @@ namespace Tanagra.Generator
                 var vkStruct = vkMember.Type as VkStruct;
                 var structType = vkStruct.Name;
                 if (IsInteropStruct(vkStruct))
-                    structType = "Interop." + structType;
+                    structType = $"{UnmanagedNS}." + structType;
 
                 var getValueCast = IsInteropStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
                 string get = $"valueArray[x] = {getValueCast};";
 
-                var setValueCast = IsInteropStruct(vkStruct) ? "*value[x].NativePointer" : "value[x]";
+                var setValueCast = IsInteropStruct(vkStruct) ? $"*value[x].{NativePointer}" : "value[x]";
                 string set = $"ptr[x] = {setValueCast};";
 
                 WriteArray(vkMember, countName, readOnly, structType, structType, structType, get, set);
@@ -813,7 +936,7 @@ namespace Tanagra.Generator
             }
         }
         
-        string GenerateCommandWrapper(IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
+        string GenerateManagedCommand(IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
         {
             Clear();
 
@@ -821,11 +944,11 @@ namespace Tanagra.Generator
             WriteLine("using System.Collections.Generic;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("");
-            WriteLine("namespace Vulkan");
+            WriteLine($"namespace Vulkan.{ManagedNS}");
             WriteBeginBlock();
-            WriteLine("using static Interop.VK;");
+            WriteLine($"using static {UnmanagedNS}.{UnmanagedFunctionsClass};");
             WriteLine("");
-            WriteLine("public unsafe static class VK");
+            WriteLine($"public unsafe static class {ManagedFunctionsClass}");
             WriteBeginBlock();
 
             foreach(var vkCommand in vkCommands)
@@ -902,7 +1025,7 @@ namespace Tanagra.Generator
                         
                         var sizeType = (paramIsHandle) ? "IntPtr" : paramTypeName;
                         if(paramIsInterop)
-                            sizeType = $"Interop.{sizeType}";
+                            sizeType = $"{UnmanagedNS}.{sizeType}";
                         
                         var pointerRefrence = (paramIsStruct && paramIsInterop) ? "*" : string.Empty;
                         var nativePtr = (paramIsHandle || paramIsInterop) ? $".{NativePointer}" : string.Empty;
@@ -912,7 +1035,7 @@ namespace Tanagra.Generator
                             arrayPointerType = (paramIsDispatchable) ? "IntPtr*" : "UInt64*";
 
                         if(paramIsStruct)
-                            arrayPointerType = (paramIsInterop) ? $"Interop.{paramType}*" : $"{paramType}*";
+                            arrayPointerType = (paramIsInterop) ? $"{UnmanagedNS}.{paramType}*" : $"{paramType}*";
 
                         if(paramIsIntPtr)
                             arrayPointerType = "IntPtr*";
@@ -1012,7 +1135,7 @@ namespace Tanagra.Generator
                         isInteropType = !IsInteropStruct(vkStruct);
                     }
 
-                    var interop = (isInteropType || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : "Interop.";
+                    var interop = (isInteropType || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : $"{UnmanagedNS}.";
                     var sizeType = commandInfo.ReturnParam.Type.Name;
                     if(commandInfo.ReturnParam.Type is VkHandle)
                     {
@@ -1095,7 +1218,7 @@ namespace Tanagra.Generator
                             }
                             else
                             {
-                                WriteLine($"fixed(Interop.{commandInfo.ReturnParam.Type}* itemPtr = &array{commandInfo.ReturnParam.Type}[x])");
+                                WriteLine($"fixed({UnmanagedNS}.{commandInfo.ReturnParam.Type}* itemPtr = &array{commandInfo.ReturnParam.Type}[x])");
                                 _tabs++;
                                 WriteLine($"item.{NativePointer} = itemPtr;");
                                 _tabs--;
@@ -1233,16 +1356,16 @@ namespace Tanagra.Generator
             return String.Join(", ", internalCallParams);
         }
 
-        string GenerateHandleExtensions(IEnumerable<VkHandle> vkHandles, IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
+        string GenerateHandleExtensions(string className, IEnumerable<VkHandle> vkHandles, IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
         {
             Clear();
             WriteLine("using System;");
             WriteLine("using System.Collections.Generic;");
             //WriteLine("using System.Diagnostics;");
             WriteLine("");
-            WriteLine("namespace Vulkan.ObjectModel");
+            WriteLine($"namespace Vulkan.{ManagedNS}.{ObjectModelNS}");
             WriteBeginBlock();
-            WriteLine("public static class HandleExtensions");
+            WriteLine($"public static class {className}");
             WriteBeginBlock();
 
             foreach(var vkHandle in vkHandles)
@@ -1318,7 +1441,7 @@ namespace Tanagra.Generator
                     WriteTabs();
                     if(commandInfo.ReturnParam != null || commandInfo.HasReturnValue)
                         Write("return ");
-                    Write($"VK.{vkCommand.Name}");
+                    Write($"{ManagedFunctionsClass}.{vkCommand.Name}");
                     Write("(");
                     
                     for(var x = 0; x < cmdParams.Count; x++)
@@ -1465,6 +1588,27 @@ namespace Tanagra.Generator
             => vkStruct.HasPointerMembers
             || vkStruct.Members.Any(y => y.Type is VkHandle)
             || vkStruct.Members.Any(y => y.IsFixedSize);
+
+        GeneratedObjectInfo CreateFile(string fileName, string fileNamespace, string[] fileUsing, params GeneratedObjectInfo[] fileObjects)
+        {
+            Clear();
+            
+            foreach(var strUsing in fileUsing)
+                WriteLine($"using {strUsing};");
+
+            WriteLine("");
+            WriteLine($"namespace {fileNamespace}");
+            WriteBeginBlock();
+            foreach(var obj in fileObjects)
+            {
+                var objLines = obj.Contents.Split(new[] { LineEnding }, StringSplitOptions.None);
+                foreach(var line in objLines)
+                    WriteLine(line);
+            }
+            WriteEndBlock();
+
+            return new GeneratedObjectInfo(fileName, _sb.ToString());
+        }
 
         void Clear()
         {
