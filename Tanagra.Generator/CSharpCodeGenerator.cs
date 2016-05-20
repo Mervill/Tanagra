@@ -1431,7 +1431,7 @@ namespace Tanagra.Generator
             commandInfo.ParamListCountMap = new Dictionary<VkParam, VkParam>();
 
             commandInfo.ReturnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
-            commandInfo.InternalReturnsVkResult = commandInfo.ReturnType == "Result";
+            commandInfo.InternalReturnsVkResult = commandInfo.ReturnType == "Result" && vkCommand.SuccessCodes.Length == 1 && vkCommand.SuccessCodes[0] == "VK_SUCCESS";
             if(commandInfo.InternalReturnsVkResult)
                 commandInfo.ReturnType = "void";
 

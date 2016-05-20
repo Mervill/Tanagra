@@ -341,14 +341,14 @@ namespace Vulkan.Managed.ObjectModel
             Vk.ResetFences(device, fences);
         }
         
-        public static void GetFenceStatus(this Device device, Fence fence)
+        public static Result GetFenceStatus(this Device device, Fence fence)
         {
-            Vk.GetFenceStatus(device, fence);
+            return Vk.GetFenceStatus(device, fence);
         }
         
-        public static void WaitForFences(this Device device, List<Fence> fences, Bool32 waitAll, UInt64 timeout)
+        public static Result WaitForFences(this Device device, List<Fence> fences, Bool32 waitAll, UInt64 timeout)
         {
-            Vk.WaitForFences(device, fences, waitAll, timeout);
+            return Vk.WaitForFences(device, fences, waitAll, timeout);
         }
         
         /// <param name="allocator">Optional</param>
@@ -377,9 +377,9 @@ namespace Vulkan.Managed.ObjectModel
             Vk.DestroyEvent(device, @event, allocator);
         }
         
-        public static void GetEventStatus(this Device device, Event @event)
+        public static Result GetEventStatus(this Device device, Event @event)
         {
-            Vk.GetEventStatus(device, @event);
+            return Vk.GetEventStatus(device, @event);
         }
         
         /// <param name="@event">ExternSync</param>
@@ -408,9 +408,9 @@ namespace Vulkan.Managed.ObjectModel
         }
         
         /// <param name="flags">Optional</param>
-        public static void GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+        public static Result GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
-            Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
+            return Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
         }
         
         /// <param name="allocator">Optional</param>
@@ -736,9 +736,9 @@ namespace Vulkan.Managed.ObjectModel
         }
         
         /// <param name="queue">ExternSync</param>
-        public static void PresentKHR(this Queue queue, PresentInfoKHR presentInfo)
+        public static Result PresentKHR(this Queue queue, PresentInfoKHR presentInfo)
         {
-            Vk.QueuePresentKHR(queue, presentInfo);
+            return Vk.QueuePresentKHR(queue, presentInfo);
         }
         
         #endregion

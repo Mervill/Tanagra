@@ -11,7 +11,6 @@ namespace Tanagra.Generator
         // todo: merge flag enums
         // todo: IsFixedSize arrays
         // todo: returned-only structs are not freed properly
-        // todo: GetEventStatus must return true/false based on VkResult
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
         // todo: generate arrays instead of lists on commands?

@@ -229,6 +229,9 @@ namespace Tanagra.Generator
 
         public string[] Validity;
 
+        //public bool ReturnsResult => ReturnType != null && ReturnType.Name == "Result";
+        //public bool StrictlyReturnsSuccess => SuccessCodes.Length == 1 && SuccessCodes[0] == "VK_SUCCESS";
+
         public VkCommand()
         {
             Parameters = new VkParam[0];
