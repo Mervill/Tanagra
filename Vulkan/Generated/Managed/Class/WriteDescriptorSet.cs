@@ -66,7 +66,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.DescriptorImageInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.DescriptorImageInfo)) * valueCount;
                     if(NativePointer->ImageInfo != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ImageInfo, (IntPtr)typeSize);
                     
@@ -111,7 +111,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.DescriptorBufferInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.DescriptorBufferInfo)) * valueCount;
                     if(NativePointer->BufferInfo != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->BufferInfo, (IntPtr)typeSize);
                     
@@ -156,7 +156,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->TexelBufferView != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->TexelBufferView, (IntPtr)typeSize);
                     

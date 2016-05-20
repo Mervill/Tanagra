@@ -41,7 +41,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(AttachmentReference)) * valueCount;
                     if(NativePointer->InputAttachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->InputAttachments, (IntPtr)typeSize);
                     
@@ -83,7 +83,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(AttachmentReference)) * valueCount;
                     if(NativePointer->ColorAttachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ColorAttachments, (IntPtr)typeSize);
                     
@@ -125,7 +125,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<AttachmentReference>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(AttachmentReference)) * valueCount;
                     if(NativePointer->ResolveAttachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ResolveAttachments, (IntPtr)typeSize);
                     
@@ -174,7 +174,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt32)) * valueCount;
                     if(NativePointer->PreserveAttachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->PreserveAttachments, (IntPtr)typeSize);
                     

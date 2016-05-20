@@ -38,7 +38,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.DescriptorSetLayoutBinding>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.DescriptorSetLayoutBinding)) * valueCount;
                     if(NativePointer->Bindings != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Bindings, (IntPtr)typeSize);
                     

@@ -33,7 +33,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.SparseImageMemoryBind>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.SparseImageMemoryBind)) * valueCount;
                     if(NativePointer->Binds != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Binds, (IntPtr)typeSize);
                     

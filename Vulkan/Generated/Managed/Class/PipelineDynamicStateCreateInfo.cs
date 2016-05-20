@@ -35,7 +35,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt32)) * valueCount;
                     if(NativePointer->DynamicStates != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->DynamicStates, (IntPtr)typeSize);
                     

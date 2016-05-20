@@ -38,7 +38,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<DescriptorPoolSize>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(DescriptorPoolSize)) * valueCount;
                     if(NativePointer->PoolSizes != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->PoolSizes, (IntPtr)typeSize);
                     

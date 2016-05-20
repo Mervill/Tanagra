@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<SpecializationMapEntry>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(SpecializationMapEntry)) * valueCount;
                     if(NativePointer->MapEntries != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->MapEntries, (IntPtr)typeSize);
                     
@@ -74,7 +74,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->Data != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Data, (IntPtr)typeSize);
                     

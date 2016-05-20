@@ -17,8 +17,14 @@ namespace Vulkan
 
         public static void Copy2DArray(float[,] source, IntPtr destination, ulong destinationSizeInBytes, ulong sourceBytesToCopy)
         {
+            /*fixed (float* sourcePtr = &source[0, 0])
+                System.Buffer.MemoryCopy(sourcePtr, (void*)destination, destinationSizeInBytes, sourceBytesToCopy);*/
             fixed (float* sourcePtr = &source[0, 0])
-                System.Buffer.MemoryCopy(sourcePtr, (void*)destination, destinationSizeInBytes, sourceBytesToCopy);
+            {
+                byte[] data = new byte[destinationSizeInBytes];
+                Marshal.Copy(new IntPtr(sourcePtr), data, 0, (int)destinationSizeInBytes);
+                Marshal.Copy(data, 0, destination, (int)destinationSizeInBytes);
+            }
         }
 
         internal static IntPtr Allocate(Type type)

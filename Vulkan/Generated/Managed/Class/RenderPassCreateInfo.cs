@@ -35,7 +35,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<AttachmentDescription>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(AttachmentDescription)) * valueCount;
                     if(NativePointer->Attachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
                     
@@ -77,7 +77,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.SubpassDescription>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.SubpassDescription)) * valueCount;
                     if(NativePointer->Subpasses != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Subpasses, (IntPtr)typeSize);
                     
@@ -119,7 +119,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<SubpassDependency>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(SubpassDependency)) * valueCount;
                     if(NativePointer->Dependencies != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Dependencies, (IntPtr)typeSize);
                     

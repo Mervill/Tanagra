@@ -26,7 +26,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->WaitSemaphores != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->WaitSemaphores, (IntPtr)typeSize);
                     
@@ -68,7 +68,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<UInt32>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt32)) * valueCount;
                     if(NativePointer->WaitDstStageMask != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->WaitDstStageMask, (IntPtr)typeSize);
                     
@@ -110,7 +110,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->CommandBuffers != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->CommandBuffers, (IntPtr)typeSize);
                     
@@ -152,7 +152,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->SignalSemaphores != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->SignalSemaphores, (IntPtr)typeSize);
                     

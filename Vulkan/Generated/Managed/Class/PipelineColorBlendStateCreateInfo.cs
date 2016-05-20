@@ -47,7 +47,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<PipelineColorBlendAttachmentState>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(PipelineColorBlendAttachmentState)) * valueCount;
                     if(NativePointer->Attachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
                     

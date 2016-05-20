@@ -35,7 +35,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<VertexInputBindingDescription>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(VertexInputBindingDescription)) * valueCount;
                     if(NativePointer->VertexBindingDescriptions != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->VertexBindingDescriptions, (IntPtr)typeSize);
                     
@@ -77,7 +77,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<VertexInputAttributeDescription>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(VertexInputAttributeDescription)) * valueCount;
                     if(NativePointer->VertexAttributeDescriptions != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->VertexAttributeDescriptions, (IntPtr)typeSize);
                     

@@ -35,7 +35,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Viewport>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Viewport)) * valueCount;
                     if(NativePointer->Viewports != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Viewports, (IntPtr)typeSize);
                     
@@ -77,7 +77,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Rect2D>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Rect2D)) * valueCount;
                     if(NativePointer->Scissors != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Scissors, (IntPtr)typeSize);
                     

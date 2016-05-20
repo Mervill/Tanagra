@@ -798,7 +798,7 @@ namespace Tanagra.Generator
                 WriteLine("if(value != null)");
                 WriteBeginBlock();
                 WriteLine("var valueCount = value.Length;");
-                WriteLine($"var typeSize = Marshal.SizeOf<{sizeType}>() * valueCount;");
+                WriteLine($"var typeSize = Marshal.SizeOf(typeof({sizeType})) * valueCount;");
                 WriteLine($"if({NativePointer}->{vkMember.Name} != IntPtr.Zero)");
                 _tabs++;
                 WriteLine($"Marshal.ReAllocHGlobal({NativePointer}->{vkMember.Name}, (IntPtr)typeSize);");

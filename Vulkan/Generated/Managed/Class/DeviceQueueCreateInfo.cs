@@ -41,7 +41,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Single>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Single)) * valueCount;
                     if(NativePointer->QueuePriorities != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->QueuePriorities, (IntPtr)typeSize);
                     

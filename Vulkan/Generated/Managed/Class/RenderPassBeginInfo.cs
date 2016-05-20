@@ -46,7 +46,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<ClearValue>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(ClearValue)) * valueCount;
                     if(NativePointer->ClearValues != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ClearValues, (IntPtr)typeSize);
                     

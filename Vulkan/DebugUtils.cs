@@ -25,7 +25,7 @@ namespace Vulkan
             if(procAddr == IntPtr.Zero)
                 throw new NullReferenceException($"Didn't find InstanceProcAddr {nameBytes}");
 
-            var createDelegate = Marshal.GetDelegateForFunctionPointer<CreateDebugReportCallbackEXT_Delegate>(procAddr);
+            var createDelegate = (CreateDebugReportCallbackEXT_Delegate)Marshal.GetDelegateForFunctionPointer(procAddr, typeof(CreateDebugReportCallbackEXT_Delegate));
             var createInfo = new DebugReportCallbackCreateInfoEXT
             {
                 Flags    = (DebugReportFlagsEXT)0x1F,//DebugReportFlagsEXT.Error | DebugReportFlagsEXT.Warning | DebugReportFlagsEXT.PerformanceWarning,
@@ -53,7 +53,7 @@ namespace Vulkan
                 if(fnPointer == IntPtr.Zero)
                     throw new NullReferenceException($"Didn't find InstanceProcAddr {name}");
 
-                var destroyDebugReportCallback = Marshal.GetDelegateForFunctionPointer<DestroyDebugReportCallbackDelegate>(fnPointer);
+                var destroyDebugReportCallback = (DestroyDebugReportCallbackDelegate)Marshal.GetDelegateForFunctionPointer(fnPointer, typeof(DestroyDebugReportCallbackDelegate));
                 destroyDebugReportCallback(instance.NativePointer, debugReportCallbackEXT.NativePointer, null);
             }
         }

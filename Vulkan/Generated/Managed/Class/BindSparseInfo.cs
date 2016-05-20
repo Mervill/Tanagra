@@ -26,7 +26,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->WaitSemaphores != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->WaitSemaphores, (IntPtr)typeSize);
                     
@@ -68,7 +68,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.SparseBufferMemoryBindInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.SparseBufferMemoryBindInfo)) * valueCount;
                     if(NativePointer->BufferBinds != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->BufferBinds, (IntPtr)typeSize);
                     
@@ -110,7 +110,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.SparseImageOpaqueMemoryBindInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.SparseImageOpaqueMemoryBindInfo)) * valueCount;
                     if(NativePointer->ImageOpaqueBinds != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ImageOpaqueBinds, (IntPtr)typeSize);
                     
@@ -152,7 +152,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.SparseImageMemoryBindInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.SparseImageMemoryBindInfo)) * valueCount;
                     if(NativePointer->ImageBinds != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ImageBinds, (IntPtr)typeSize);
                     
@@ -194,7 +194,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<IntPtr>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
                     if(NativePointer->SignalSemaphores != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->SignalSemaphores, (IntPtr)typeSize);
                     

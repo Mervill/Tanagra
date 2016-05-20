@@ -38,7 +38,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf<Unmanaged.PipelineShaderStageCreateInfo>() * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Unmanaged.PipelineShaderStageCreateInfo)) * valueCount;
                     if(NativePointer->Stages != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Stages, (IntPtr)typeSize);
                     
