@@ -10,8 +10,6 @@ namespace Tanagra.Generator
         // todo: union
         // todo: merge flag enums
         // todo: IsFixedSize arrays
-        // todo: better optional args in commands
-        // todo: check for disabled extentions
         // todo: returned-only structs are not freed properly
         // todo: GetEventStatus must return true/false based on VkResult
         // todo: typed pointers in structs?
@@ -29,6 +27,9 @@ namespace Tanagra.Generator
         //
         // Notes
         //
+        // In most destroy commands (ie DestroyFence) the handle to be destroyed 
+        // is an optional param ... why?
+        //
         // Dispatchable handles use the platform word length so IntPtr is used to ensure 
         // that they are the correct size in structs on both platforms. Nondispatchable 
         // handles are always 64 bits in length. 
@@ -37,15 +38,6 @@ namespace Tanagra.Generator
         // point of the suffix is to prevent name collision, which while unlikely is still a thing that can
         // happen.
         //
-        // /Generated
-        // /Generated/Enum              -- enums
-        // /Generated/Handle            -- handles
-        // /Generated/Struct            -- structs that don't need management
-        // /Generated/Managed           -- `Vk.cs`
-        // /Generated/Managed/Classes   -- managed wrappers
-        // /Generated/Unmanaged         -- `VulkanBinding.cs`
-        // /Generated/Unmanaged/Structs -- unmanaged structures
-        // /Generated/ObjectModel       -- `ObjectModel.cs`
         static void Main(string[] args)
         {
             var raw = File.ReadAllText("./spec/vk.xml");

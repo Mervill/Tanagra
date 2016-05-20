@@ -8,11 +8,8 @@ namespace Vulkan.Managed
     
     public unsafe static class Vk
     {
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Instance CreateInstance(InstanceCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Instance CreateInstance(InstanceCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var instance = new Instance();
             fixed(IntPtr* ptrInstance = &instance.NativePointer)
@@ -24,19 +21,13 @@ namespace Vulkan.Managed
             return instance;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="instance">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyInstance(Instance instance, AllocationCallbacks allocator = null)
+        public static void DestroyInstance(Instance instance, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyInstance((instance != null) ? instance.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
         {
             UInt32 listLength;
@@ -61,18 +52,12 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static IntPtr GetDeviceProcAddr(Device device, String name)
         {
             var result = vkGetDeviceProcAddr(device.NativePointer, name);
             return result;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="instance">Optional</param>
         public static IntPtr GetInstanceProcAddr(Instance instance, String name)
         {
@@ -80,9 +65,6 @@ namespace Vulkan.Managed
             return result;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static PhysicalDeviceProperties GetPhysicalDeviceProperties(PhysicalDevice physicalDevice)
         {
             var properties = new PhysicalDeviceProperties();
@@ -90,9 +72,6 @@ namespace Vulkan.Managed
             return properties;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<QueueFamilyProperties> GetPhysicalDeviceQueueFamilyProperties(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -111,9 +90,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static PhysicalDeviceMemoryProperties GetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice)
         {
             var memoryProperties = new PhysicalDeviceMemoryProperties();
@@ -121,9 +97,6 @@ namespace Vulkan.Managed
             return memoryProperties;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static PhysicalDeviceFeatures GetPhysicalDeviceFeatures(PhysicalDevice physicalDevice)
         {
             var features = new PhysicalDeviceFeatures();
@@ -131,9 +104,6 @@ namespace Vulkan.Managed
             return features;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static FormatProperties GetPhysicalDeviceFormatProperties(PhysicalDevice physicalDevice, Format format)
         {
             var formatProperties = new FormatProperties();
@@ -141,11 +111,8 @@ namespace Vulkan.Managed
             return formatProperties;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="flags">Optional</param>
-        public static ImageFormatProperties GetPhysicalDeviceImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags)
+        public static ImageFormatProperties GetPhysicalDeviceImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags = default(ImageCreateFlags))
         {
             var imageFormatProperties = new ImageFormatProperties();
             var result = vkGetPhysicalDeviceImageFormatProperties(physicalDevice.NativePointer, format, type, tiling, usage, flags, &imageFormatProperties);
@@ -154,11 +121,8 @@ namespace Vulkan.Managed
             return imageFormatProperties;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Device CreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Device CreateDevice(PhysicalDevice physicalDevice, DeviceCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var device = new Device();
             fixed(IntPtr* ptrDevice = &device.NativePointer)
@@ -170,19 +134,13 @@ namespace Vulkan.Managed
             return device;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="device">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyDevice(Device device, AllocationCallbacks allocator = null)
+        public static void DestroyDevice(Device device, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyDevice((device != null) ? device.NativePointer : IntPtr.Zero, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<LayerProperties> EnumerateInstanceLayerProperties()
         {
             UInt32 listLength;
@@ -208,9 +166,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="layerName">Optional</param>
         public static List<ExtensionProperties> EnumerateInstanceExtensionProperties(String layerName)
         {
@@ -237,9 +192,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="physicalDevice">Optional</param>
         public static List<LayerProperties> EnumerateDeviceLayerProperties(PhysicalDevice physicalDevice)
         {
@@ -266,11 +218,8 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="layerName">Optional</param>
-        public static List<ExtensionProperties> EnumerateDeviceExtensionProperties(PhysicalDevice physicalDevice, String layerName)
+        public static List<ExtensionProperties> EnumerateDeviceExtensionProperties(PhysicalDevice physicalDevice, String layerName = default(String))
         {
             UInt32 listLength;
             var result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, null);
@@ -295,9 +244,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Queue GetDeviceQueue(Device device, UInt32 queueFamilyIndex, UInt32 queueIndex)
         {
             var queue = new Queue();
@@ -308,12 +254,9 @@ namespace Vulkan.Managed
             return queue;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="queue">ExternSync</param>
         /// <param name="fence">ExternSync</param>
-        public static void QueueSubmit(Queue queue, List<SubmitInfo> submits, Fence fence)
+        public static void QueueSubmit(Queue queue, List<SubmitInfo> submits, Fence fence = default(Fence))
         {
             var submitCount = (submits != null) ? (UInt32)submits.Count : 0;
             var _submitsPtr = (Unmanaged.SubmitInfo*)IntPtr.Zero;
@@ -331,9 +274,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_submitsPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void QueueWaitIdle(Queue queue)
         {
             var result = vkQueueWaitIdle(queue.NativePointer);
@@ -341,9 +281,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkQueueWaitIdle), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void DeviceWaitIdle(Device device)
         {
             var result = vkDeviceWaitIdle(device.NativePointer);
@@ -351,11 +288,8 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkDeviceWaitIdle), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static DeviceMemory AllocateMemory(Device device, MemoryAllocateInfo allocateInfo, AllocationCallbacks allocator = null)
+        public static DeviceMemory AllocateMemory(Device device, MemoryAllocateInfo allocateInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var memory = new DeviceMemory();
             fixed(UInt64* ptrDeviceMemory = &memory.NativePointer)
@@ -367,22 +301,16 @@ namespace Vulkan.Managed
             return memory;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="memory">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void FreeMemory(Device device, DeviceMemory memory, AllocationCallbacks allocator = null)
+        public static void FreeMemory(Device device, DeviceMemory memory = default(DeviceMemory), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkFreeMemory(device.NativePointer, (memory != null) ? memory.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="memory">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static IntPtr MapMemory(Device device, DeviceMemory memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags)
+        public static IntPtr MapMemory(Device device, DeviceMemory memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags = default(MemoryMapFlags))
         {
             var data = new IntPtr();
             var result = vkMapMemory(device.NativePointer, memory.NativePointer, offset, size, flags, &data);
@@ -391,18 +319,12 @@ namespace Vulkan.Managed
             return data;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="memory">ExternSync</param>
         public static void UnmapMemory(Device device, DeviceMemory memory)
         {
             vkUnmapMemory(device.NativePointer, memory.NativePointer);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void FlushMappedMemoryRanges(Device device, List<MappedMemoryRange> memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Count : 0;
@@ -421,9 +343,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void InvalidateMappedMemoryRanges(Device device, List<MappedMemoryRange> memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Count : 0;
@@ -442,9 +361,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static DeviceSize GetDeviceMemoryCommitment(Device device, DeviceMemory memory)
         {
             var committedMemoryInBytes = new DeviceSize();
@@ -452,9 +368,6 @@ namespace Vulkan.Managed
             return committedMemoryInBytes;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static MemoryRequirements GetBufferMemoryRequirements(Device device, Buffer buffer)
         {
             var memoryRequirements = new MemoryRequirements();
@@ -462,9 +375,6 @@ namespace Vulkan.Managed
             return memoryRequirements;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="buffer">ExternSync</param>
         public static void BindBufferMemory(Device device, Buffer buffer, DeviceMemory memory, DeviceSize memoryOffset)
         {
@@ -473,9 +383,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBindBufferMemory), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static MemoryRequirements GetImageMemoryRequirements(Device device, Image image)
         {
             var memoryRequirements = new MemoryRequirements();
@@ -483,9 +390,6 @@ namespace Vulkan.Managed
             return memoryRequirements;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="image">ExternSync</param>
         public static void BindImageMemory(Device device, Image image, DeviceMemory memory, DeviceSize memoryOffset)
         {
@@ -494,9 +398,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBindImageMemory), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<SparseImageMemoryRequirements> GetImageSparseMemoryRequirements(Device device, Image image)
         {
             UInt32 listLength;
@@ -515,9 +416,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<SparseImageFormatProperties> GetPhysicalDeviceSparseImageFormatProperties(PhysicalDevice physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling)
         {
             UInt32 listLength;
@@ -541,7 +439,7 @@ namespace Vulkan.Managed
         /// </summary>
         /// <param name="queue">ExternSync</param>
         /// <param name="fence">ExternSync</param>
-        public static void QueueBindSparse(Queue queue, List<BindSparseInfo> bindInfo, Fence fence)
+        public static void QueueBindSparse(Queue queue, List<BindSparseInfo> bindInfo, Fence fence = default(Fence))
         {
             var bindInfoCount = (bindInfo != null) ? (UInt32)bindInfo.Count : 0;
             var _bindInfoPtr = (Unmanaged.BindSparseInfo*)IntPtr.Zero;
@@ -559,11 +457,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_bindInfoPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Fence CreateFence(Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Fence CreateFence(Device device, FenceCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var fence = new Fence();
             fixed(UInt64* ptrFence = &fence.NativePointer)
@@ -575,19 +470,13 @@ namespace Vulkan.Managed
             return fence;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="fence">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyFence(Device device, Fence fence, AllocationCallbacks allocator = null)
+        public static void DestroyFence(Device device, Fence fence = default(Fence), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyFence(device.NativePointer, (fence != null) ? fence.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="fences">ExternSync</param>
         public static void ResetFences(Device device, List<Fence> fences)
         {
@@ -607,9 +496,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void GetFenceStatus(Device device, Fence fence)
         {
             var result = vkGetFenceStatus(device.NativePointer, fence.NativePointer);
@@ -617,9 +503,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkGetFenceStatus), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void WaitForFences(Device device, List<Fence> fences, Bool32 waitAll, UInt64 timeout)
         {
             var fenceCount = (fences != null) ? (UInt32)fences.Count : 0;
@@ -638,11 +521,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Semaphore CreateSemaphore(Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Semaphore CreateSemaphore(Device device, SemaphoreCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var semaphore = new Semaphore();
             fixed(UInt64* ptrSemaphore = &semaphore.NativePointer)
@@ -654,21 +534,15 @@ namespace Vulkan.Managed
             return semaphore;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="semaphore">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroySemaphore(Device device, Semaphore semaphore, AllocationCallbacks allocator = null)
+        public static void DestroySemaphore(Device device, Semaphore semaphore = default(Semaphore), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroySemaphore(device.NativePointer, (semaphore != null) ? semaphore.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Event CreateEvent(Device device, EventCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Event CreateEvent(Device device, EventCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var @event = new Event();
             fixed(UInt64* ptrEvent = &@event.NativePointer)
@@ -680,19 +554,13 @@ namespace Vulkan.Managed
             return @event;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="@event">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyEvent(Device device, Event @event, AllocationCallbacks allocator = null)
+        public static void DestroyEvent(Device device, Event @event = default(Event), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyEvent(device.NativePointer, (@event != null) ? @event.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void GetEventStatus(Device device, Event @event)
         {
             var result = vkGetEventStatus(device.NativePointer, @event.NativePointer);
@@ -700,9 +568,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkGetEventStatus), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="@event">ExternSync</param>
         public static void SetEvent(Device device, Event @event)
         {
@@ -711,9 +576,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkSetEvent), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="@event">ExternSync</param>
         public static void ResetEvent(Device device, Event @event)
         {
@@ -722,11 +584,8 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkResetEvent), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static QueryPool CreateQueryPool(Device device, QueryPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static QueryPool CreateQueryPool(Device device, QueryPoolCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var queryPool = new QueryPool();
             fixed(UInt64* ptrQueryPool = &queryPool.NativePointer)
@@ -738,21 +597,15 @@ namespace Vulkan.Managed
             return queryPool;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="queryPool">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyQueryPool(Device device, QueryPool queryPool, AllocationCallbacks allocator = null)
+        public static void DestroyQueryPool(Device device, QueryPool queryPool = default(QueryPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyQueryPool(device.NativePointer, (queryPool != null) ? queryPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="flags">Optional</param>
-        public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags)
+        public static void GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
             var dataSize = (data != null) ? (UInt32)data.Count : 0;
             var _dataPtr = (IntPtr*)IntPtr.Zero;
@@ -770,11 +623,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Buffer CreateBuffer(Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Buffer CreateBuffer(Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var buffer = new Buffer();
             fixed(UInt64* ptrBuffer = &buffer.NativePointer)
@@ -786,21 +636,15 @@ namespace Vulkan.Managed
             return buffer;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="buffer">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyBuffer(Device device, Buffer buffer, AllocationCallbacks allocator = null)
+        public static void DestroyBuffer(Device device, Buffer buffer = default(Buffer), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyBuffer(device.NativePointer, (buffer != null) ? buffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static BufferView CreateBufferView(Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static BufferView CreateBufferView(Device device, BufferViewCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var view = new BufferView();
             fixed(UInt64* ptrBufferView = &view.NativePointer)
@@ -812,21 +656,15 @@ namespace Vulkan.Managed
             return view;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="bufferView">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyBufferView(Device device, BufferView bufferView, AllocationCallbacks allocator = null)
+        public static void DestroyBufferView(Device device, BufferView bufferView = default(BufferView), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyBufferView(device.NativePointer, (bufferView != null) ? bufferView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Image CreateImage(Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Image CreateImage(Device device, ImageCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var image = new Image();
             fixed(UInt64* ptrImage = &image.NativePointer)
@@ -838,19 +676,13 @@ namespace Vulkan.Managed
             return image;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="image">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyImage(Device device, Image image, AllocationCallbacks allocator = null)
+        public static void DestroyImage(Device device, Image image = default(Image), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyImage(device.NativePointer, (image != null) ? image.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static SubresourceLayout GetImageSubresourceLayout(Device device, Image image, ImageSubresource subresource)
         {
             var layout = new SubresourceLayout();
@@ -858,11 +690,8 @@ namespace Vulkan.Managed
             return layout;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static ImageView CreateImageView(Device device, ImageViewCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static ImageView CreateImageView(Device device, ImageViewCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var view = new ImageView();
             fixed(UInt64* ptrImageView = &view.NativePointer)
@@ -874,21 +703,15 @@ namespace Vulkan.Managed
             return view;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="imageView">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyImageView(Device device, ImageView imageView, AllocationCallbacks allocator = null)
+        public static void DestroyImageView(Device device, ImageView imageView = default(ImageView), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyImageView(device.NativePointer, (imageView != null) ? imageView.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static ShaderModule CreateShaderModule(Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static ShaderModule CreateShaderModule(Device device, ShaderModuleCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var shaderModule = new ShaderModule();
             fixed(UInt64* ptrShaderModule = &shaderModule.NativePointer)
@@ -900,21 +723,15 @@ namespace Vulkan.Managed
             return shaderModule;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="shaderModule">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyShaderModule(Device device, ShaderModule shaderModule, AllocationCallbacks allocator = null)
+        public static void DestroyShaderModule(Device device, ShaderModule shaderModule = default(ShaderModule), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyShaderModule(device.NativePointer, (shaderModule != null) ? shaderModule.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static PipelineCache CreatePipelineCache(Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static PipelineCache CreatePipelineCache(Device device, PipelineCacheCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var pipelineCache = new PipelineCache();
             fixed(UInt64* ptrPipelineCache = &pipelineCache.NativePointer)
@@ -926,19 +743,13 @@ namespace Vulkan.Managed
             return pipelineCache;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="pipelineCache">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyPipelineCache(Device device, PipelineCache pipelineCache, AllocationCallbacks allocator = null)
+        public static void DestroyPipelineCache(Device device, PipelineCache pipelineCache = default(PipelineCache), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyPipelineCache(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<IntPtr> GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
             UInt32 listLength;
@@ -961,9 +772,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="dstCache">ExternSync</param>
         public static void MergePipelineCaches(Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
@@ -983,12 +791,9 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_srcCachesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
-        public static List<Pipeline> CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
+        public static List<Pipeline> CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
             var _createInfosPtr = (Unmanaged.GraphicsPipelineCreateInfo*)IntPtr.Zero;
@@ -1021,12 +826,9 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
-        public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = null)
+        public static List<Pipeline> CreateComputePipelines(Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
             var _createInfosPtr = (Unmanaged.ComputePipelineCreateInfo*)IntPtr.Zero;
@@ -1059,21 +861,15 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="pipeline">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyPipeline(Device device, Pipeline pipeline, AllocationCallbacks allocator = null)
+        public static void DestroyPipeline(Device device, Pipeline pipeline = default(Pipeline), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyPipeline(device.NativePointer, (pipeline != null) ? pipeline.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static PipelineLayout CreatePipelineLayout(Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static PipelineLayout CreatePipelineLayout(Device device, PipelineLayoutCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var pipelineLayout = new PipelineLayout();
             fixed(UInt64* ptrPipelineLayout = &pipelineLayout.NativePointer)
@@ -1085,21 +881,15 @@ namespace Vulkan.Managed
             return pipelineLayout;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="pipelineLayout">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyPipelineLayout(Device device, PipelineLayout pipelineLayout, AllocationCallbacks allocator = null)
+        public static void DestroyPipelineLayout(Device device, PipelineLayout pipelineLayout = default(PipelineLayout), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyPipelineLayout(device.NativePointer, (pipelineLayout != null) ? pipelineLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Sampler CreateSampler(Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Sampler CreateSampler(Device device, SamplerCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var sampler = new Sampler();
             fixed(UInt64* ptrSampler = &sampler.NativePointer)
@@ -1111,21 +901,15 @@ namespace Vulkan.Managed
             return sampler;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="sampler">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroySampler(Device device, Sampler sampler, AllocationCallbacks allocator = null)
+        public static void DestroySampler(Device device, Sampler sampler = default(Sampler), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroySampler(device.NativePointer, (sampler != null) ? sampler.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static DescriptorSetLayout CreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static DescriptorSetLayout CreateDescriptorSetLayout(Device device, DescriptorSetLayoutCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var setLayout = new DescriptorSetLayout();
             fixed(UInt64* ptrDescriptorSetLayout = &setLayout.NativePointer)
@@ -1137,21 +921,15 @@ namespace Vulkan.Managed
             return setLayout;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="descriptorSetLayout">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyDescriptorSetLayout(Device device, DescriptorSetLayout descriptorSetLayout, AllocationCallbacks allocator = null)
+        public static void DestroyDescriptorSetLayout(Device device, DescriptorSetLayout descriptorSetLayout = default(DescriptorSetLayout), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyDescriptorSetLayout(device.NativePointer, (descriptorSetLayout != null) ? descriptorSetLayout.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static DescriptorPool CreateDescriptorPool(Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static DescriptorPool CreateDescriptorPool(Device device, DescriptorPoolCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var descriptorPool = new DescriptorPool();
             fixed(UInt64* ptrDescriptorPool = &descriptorPool.NativePointer)
@@ -1163,31 +941,22 @@ namespace Vulkan.Managed
             return descriptorPool;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="descriptorPool">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyDescriptorPool(Device device, DescriptorPool descriptorPool, AllocationCallbacks allocator = null)
+        public static void DestroyDescriptorPool(Device device, DescriptorPool descriptorPool = default(DescriptorPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyDescriptorPool(device.NativePointer, (descriptorPool != null) ? descriptorPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="descriptorPool">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void ResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags)
+        public static void ResetDescriptorPool(Device device, DescriptorPool descriptorPool, DescriptorPoolResetFlags flags = default(DescriptorPoolResetFlags))
         {
             var result = vkResetDescriptorPool(device.NativePointer, descriptorPool.NativePointer, flags);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetDescriptorPool), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<DescriptorSet> AllocateDescriptorSets(Device device, DescriptorSetAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.NativePointer->DescriptorSetCount;
@@ -1210,9 +979,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="descriptorPool">ExternSync</param>
         /// <param name="descriptorSets">No Auto Validity</param>
         public static void FreeDescriptorSets(Device device, DescriptorPool descriptorPool, List<DescriptorSet> descriptorSets)
@@ -1233,9 +999,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void UpdateDescriptorSets(Device device, List<WriteDescriptorSet> descriptorWrites, List<CopyDescriptorSet> descriptorCopies)
         {
             var descriptorWriteCount = (descriptorWrites != null) ? (UInt32)descriptorWrites.Count : 0;
@@ -1263,11 +1026,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_descriptorCopiesPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static Framebuffer CreateFramebuffer(Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static Framebuffer CreateFramebuffer(Device device, FramebufferCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var framebuffer = new Framebuffer();
             fixed(UInt64* ptrFramebuffer = &framebuffer.NativePointer)
@@ -1279,21 +1039,15 @@ namespace Vulkan.Managed
             return framebuffer;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="framebuffer">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyFramebuffer(Device device, Framebuffer framebuffer, AllocationCallbacks allocator = null)
+        public static void DestroyFramebuffer(Device device, Framebuffer framebuffer = default(Framebuffer), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyFramebuffer(device.NativePointer, (framebuffer != null) ? framebuffer.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static RenderPass CreateRenderPass(Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static RenderPass CreateRenderPass(Device device, RenderPassCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var renderPass = new RenderPass();
             fixed(UInt64* ptrRenderPass = &renderPass.NativePointer)
@@ -1305,19 +1059,13 @@ namespace Vulkan.Managed
             return renderPass;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="renderPass">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyRenderPass(Device device, RenderPass renderPass, AllocationCallbacks allocator = null)
+        public static void DestroyRenderPass(Device device, RenderPass renderPass = default(RenderPass), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyRenderPass(device.NativePointer, (renderPass != null) ? renderPass.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Extent2D GetRenderAreaGranularity(Device device, RenderPass renderPass)
         {
             var granularity = new Extent2D();
@@ -1325,11 +1073,8 @@ namespace Vulkan.Managed
             return granularity;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static CommandPool CreateCommandPool(Device device, CommandPoolCreateInfo createInfo, AllocationCallbacks allocator = null)
+        public static CommandPool CreateCommandPool(Device device, CommandPoolCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var commandPool = new CommandPool();
             fixed(UInt64* ptrCommandPool = &commandPool.NativePointer)
@@ -1341,31 +1086,22 @@ namespace Vulkan.Managed
             return commandPool;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandPool">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyCommandPool(Device device, CommandPool commandPool, AllocationCallbacks allocator = null)
+        public static void DestroyCommandPool(Device device, CommandPool commandPool = default(CommandPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyCommandPool(device.NativePointer, (commandPool != null) ? commandPool.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandPool">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void ResetCommandPool(Device device, CommandPool commandPool, CommandPoolResetFlags flags)
+        public static void ResetCommandPool(Device device, CommandPool commandPool, CommandPoolResetFlags flags = default(CommandPoolResetFlags))
         {
             var result = vkResetCommandPool(device.NativePointer, commandPool.NativePointer, flags);
             if(result != Result.Success)
                 throw new VulkanCommandException(nameof(vkResetCommandPool), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<CommandBuffer> AllocateCommandBuffers(Device device, CommandBufferAllocateInfo allocateInfo)
         {
             var listLength = allocateInfo.NativePointer->CommandBufferCount;
@@ -1388,9 +1124,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandPool">ExternSync</param>
         /// <param name="commandBuffers">No Auto Validity</param>
         public static void FreeCommandBuffers(Device device, CommandPool commandPool, List<CommandBuffer> commandBuffers)
@@ -1409,9 +1142,6 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         public static void BeginCommandBuffer(CommandBuffer commandBuffer, CommandBufferBeginInfo beginInfo)
         {
@@ -1420,9 +1150,6 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkBeginCommandBuffer), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         public static void EndCommandBuffer(CommandBuffer commandBuffer)
         {
@@ -1431,12 +1158,9 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkEndCommandBuffer), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void ResetCommandBuffer(CommandBuffer commandBuffer, CommandBufferResetFlags flags)
+        public static void ResetCommandBuffer(CommandBuffer commandBuffer, CommandBufferResetFlags flags = default(CommandBufferResetFlags))
         {
             var result = vkResetCommandBuffer(commandBuffer.NativePointer, flags);
             if(result != Result.Success)
@@ -2018,7 +1742,7 @@ namespace Vulkan.Managed
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void CmdBeginQuery(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags)
+        public static void CmdBeginQuery(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags = default(QueryControlFlags))
         {
             vkCmdBeginQuery(commandBuffer.NativePointer, queryPool.NativePointer, query, flags);
         }
@@ -2055,7 +1779,7 @@ namespace Vulkan.Managed
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void CmdCopyQueryPoolResults(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize stride, QueryResultFlags flags)
+        public static void CmdCopyQueryPoolResults(CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
             vkCmdCopyQueryPoolResults(commandBuffer.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dstBuffer.NativePointer, dstOffset, stride, flags);
         }
@@ -2127,11 +1851,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateAndroidSurfaceKHR(Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateAndroidSurfaceKHR(Instance instance, AndroidSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2143,9 +1864,6 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<DisplayPropertiesKHR> GetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -2171,9 +1889,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<DisplayPlanePropertiesKHR> GetPhysicalDeviceDisplayPlanePropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
@@ -2199,9 +1914,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<DisplayKHR> GetDisplayPlaneSupportedDisplaysKHR(PhysicalDevice physicalDevice, UInt32 planeIndex)
         {
             UInt32 listLength;
@@ -2226,9 +1938,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<DisplayModePropertiesKHR> GetDisplayModePropertiesKHR(PhysicalDevice physicalDevice, DisplayKHR display)
         {
             UInt32 listLength;
@@ -2254,12 +1963,9 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="display">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static DisplayModeKHR CreateDisplayModeKHR(PhysicalDevice physicalDevice, DisplayKHR display, DisplayModeCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static DisplayModeKHR CreateDisplayModeKHR(PhysicalDevice physicalDevice, DisplayKHR display, DisplayModeCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var mode = new DisplayModeKHR();
             fixed(UInt64* ptrDisplayModeKHR = &mode.NativePointer)
@@ -2271,9 +1977,6 @@ namespace Vulkan.Managed
             return mode;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="mode">ExternSync</param>
         public static DisplayPlaneCapabilitiesKHR GetDisplayPlaneCapabilitiesKHR(PhysicalDevice physicalDevice, DisplayModeKHR mode, UInt32 planeIndex)
         {
@@ -2284,11 +1987,8 @@ namespace Vulkan.Managed
             return capabilities;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateDisplayPlaneSurfaceKHR(Instance instance, DisplaySurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateDisplayPlaneSurfaceKHR(Instance instance, DisplaySurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2300,11 +2000,8 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static List<SwapchainKHR> CreateSharedSwapchainsKHR(Device device, List<SwapchainCreateInfoKHR> createInfos, AllocationCallbacks allocator = null)
+        public static List<SwapchainKHR> CreateSharedSwapchainsKHR(Device device, List<SwapchainCreateInfoKHR> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var swapchainCount = (createInfos != null) ? (UInt32)createInfos.Count : 0;
             var _createInfosPtr = (Unmanaged.SwapchainCreateInfoKHR*)IntPtr.Zero;
@@ -2337,11 +2034,8 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateMirSurfaceKHR(Instance instance, MirSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateMirSurfaceKHR(Instance instance, MirSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2353,9 +2047,6 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static IntPtr GetPhysicalDeviceMirPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var connection = new IntPtr();
@@ -2363,19 +2054,13 @@ namespace Vulkan.Managed
             return connection;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="surface">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroySurfaceKHR(Instance instance, SurfaceKHR surface, AllocationCallbacks allocator = null)
+        public static void DestroySurfaceKHR(Instance instance, SurfaceKHR surface = default(SurfaceKHR), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroySurfaceKHR(instance.NativePointer, (surface != null) ? surface.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Bool32 GetPhysicalDeviceSurfaceSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, SurfaceKHR surface)
         {
             var supported = new Bool32();
@@ -2385,9 +2070,6 @@ namespace Vulkan.Managed
             return supported;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static SurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilitiesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             var surfaceCapabilities = new SurfaceCapabilitiesKHR();
@@ -2397,9 +2079,6 @@ namespace Vulkan.Managed
             return surfaceCapabilities;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<SurfaceFormatKHR> GetPhysicalDeviceSurfaceFormatsKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
@@ -2422,9 +2101,6 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<PresentModeKHR> GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
@@ -2447,11 +2123,8 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SwapchainKHR CreateSwapchainKHR(Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SwapchainKHR CreateSwapchainKHR(Device device, SwapchainCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var swapchain = new SwapchainKHR();
             fixed(UInt64* ptrSwapchainKHR = &swapchain.NativePointer)
@@ -2463,19 +2136,13 @@ namespace Vulkan.Managed
             return swapchain;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="swapchain">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroySwapchainKHR(Device device, SwapchainKHR swapchain, AllocationCallbacks allocator = null)
+        public static void DestroySwapchainKHR(Device device, SwapchainKHR swapchain = default(SwapchainKHR), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroySwapchainKHR(device.NativePointer, (swapchain != null) ? swapchain.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static List<Image> GetSwapchainImagesKHR(Device device, SwapchainKHR swapchain)
         {
             UInt32 listLength;
@@ -2500,13 +2167,10 @@ namespace Vulkan.Managed
             return list;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="swapchain">ExternSync</param>
         /// <param name="semaphore">ExternSync</param>
         /// <param name="fence">ExternSync</param>
-        public static UInt32 AcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore, Fence fence)
+        public static UInt32 AcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore = default(Semaphore), Fence fence = default(Fence))
         {
             var imageIndex = new UInt32();
             var result = vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, (semaphore != null) ? semaphore.NativePointer : 0, (fence != null) ? fence.NativePointer : 0, &imageIndex);
@@ -2515,9 +2179,6 @@ namespace Vulkan.Managed
             return imageIndex;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="queue">ExternSync</param>
         public static void QueuePresentKHR(Queue queue, PresentInfoKHR presentInfo)
         {
@@ -2526,11 +2187,8 @@ namespace Vulkan.Managed
                 throw new VulkanCommandException(nameof(vkQueuePresentKHR), result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateWaylandSurfaceKHR(Instance instance, WaylandSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateWaylandSurfaceKHR(Instance instance, WaylandSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2542,9 +2200,6 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static IntPtr GetPhysicalDeviceWaylandPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var display = new IntPtr();
@@ -2552,11 +2207,8 @@ namespace Vulkan.Managed
             return display;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateWin32SurfaceKHR(Instance instance, Win32SurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateWin32SurfaceKHR(Instance instance, Win32SurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2568,20 +2220,14 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Bool32 GetPhysicalDeviceWin32PresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var result = vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex);
             return result;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateXlibSurfaceKHR(Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateXlibSurfaceKHR(Instance instance, XlibSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2593,20 +2239,14 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Bool32 GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr dpy, IntPtr visualID)
         {
             var result = vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &dpy, visualID);
             return result;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static SurfaceKHR CreateXcbSurfaceKHR(Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = null)
+        public static SurfaceKHR CreateXcbSurfaceKHR(Instance instance, XcbSurfaceCreateInfoKHR createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var surface = new SurfaceKHR();
             fixed(UInt64* ptrSurfaceKHR = &surface.NativePointer)
@@ -2618,20 +2258,14 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static Bool32 GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr connection, IntPtr visual_id)
         {
             var result = vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &connection, visual_id);
             return result;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="allocator">Optional</param>
-        public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator = null)
+        public static DebugReportCallbackEXT CreateDebugReportCallbackEXT(Instance instance, DebugReportCallbackCreateInfoEXT createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var callback = new DebugReportCallbackEXT();
             fixed(UInt64* ptrDebugReportCallbackEXT = &callback.NativePointer)
@@ -2643,27 +2277,18 @@ namespace Vulkan.Managed
             return callback;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="callback">ExternSync</param>
         /// <param name="allocator">Optional</param>
-        public static void DestroyDebugReportCallbackEXT(Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator = null)
+        public static void DestroyDebugReportCallbackEXT(Instance instance, DebugReportCallbackEXT callback, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             vkDestroyDebugReportCallbackEXT(instance.NativePointer, callback.NativePointer, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, UInt32 location, Int32 messageCode, String layerPrefix, String message)
         {
             vkDebugReportMessageEXT(instance.NativePointer, flags, objectType, @object, location, messageCode, layerPrefix, message);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static DebugMarkerObjectNameInfoEXT DebugMarkerSetObjectNameEXT(Device device)
         {
             var nameInfo = new DebugMarkerObjectNameInfoEXT();
@@ -2673,9 +2298,6 @@ namespace Vulkan.Managed
             return nameInfo;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         public static DebugMarkerObjectTagInfoEXT DebugMarkerSetObjectTagEXT(Device device)
         {
             var tagInfo = new DebugMarkerObjectTagInfoEXT();

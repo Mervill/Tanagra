@@ -153,7 +153,6 @@ namespace Tanagra.Generator
             WriteLine("");
             WriteLine("namespace Vulkan");
             WriteBeginBlock();
-
             WriteLine("public static class VulkanConstant");
             WriteBeginBlock();
             foreach(var vkEnumValue in APIConstants.Values.Where(x => x.Name != "True" && x.Name != "False"))
@@ -171,7 +170,6 @@ namespace Tanagra.Generator
                 
             }
             WriteEndBlock();
-
             WriteEndBlock();
 
             return _sb.ToString();
@@ -378,6 +376,7 @@ namespace Tanagra.Generator
             WriteLine("");
             foreach(var cmd in commands)
             {
+                WriteCommandComment(cmd, cmd.Parameters);
                 WriteLine($"[DllImport(DllName, EntryPoint = \"{cmd.SpecName}\", CallingConvention = callingConvention)]");
                 WriteTabs();
                 Write("public static ");
@@ -424,7 +423,6 @@ namespace Tanagra.Generator
                     continue;
 
                 var memberCountName = member.Len[0];
-                memberCountName = char.ToUpper(memberCountName[0]) + memberCountName.Substring(1, memberCountName.Length - 1);
                 var isCountMember = vkStruct.Members.Any(x => x.Name == memberCountName);
                 if(isCountMember && !hiddenMembers.Contains(vkStruct.Name))
                     hiddenMembers.Add(memberCountName);
@@ -718,8 +716,6 @@ namespace Tanagra.Generator
             }
 
             var countName = vkMember.Len[0];
-            countName = char.ToUpper(countName[0]) + countName.Substring(1, countName.Length - 1);
-
             if(countName.StartsWith("Latexmath"))
             {
                 WriteNotImplementedArray(vkMember, "Latexmath", readOnly);
@@ -886,7 +882,7 @@ namespace Tanagra.Generator
                 WriteLine("/// </summary>");
             }
         }
-        
+
         string GenerateManagedCommand(IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
         {
             Clear();
@@ -905,46 +901,21 @@ namespace Tanagra.Generator
             foreach(var vkCommand in vkCommands)
             {
                 var commandInfo = commandInfoMap[vkCommand];
-
-                #region Command Header
+                
                 var cmdParams = vkCommand.Parameters.Except(commandInfo.InternalParams).ToList();
 
-                #region Comment Block
-                WriteLine("/// <summary>");
-                WriteTabs();
-                Write("/// ");
-                // Command Buffer Levels
-                if(vkCommand.CmdBufferLevel.Length != 0)
-                    Write($"[<see cref=\"CommandBufferLevel\"/>: {string.Join(", ", vkCommand.CmdBufferLevel)}] ");
-                // Render Pass Scope
-                if(!string.IsNullOrEmpty(vkCommand.RenderPass))
-                    Write($"[Render Pass: {vkCommand.RenderPass}] ");
-                // Supported Queue Types
-                if(vkCommand.Queues.Length != 0)
-                    Write($"[<see cref=\"QueueFlags\"/>: {string.Join(", ", vkCommand.Queues)}] ");
-                
-                Write(LineEnding);
-                WriteLine("/// </summary>");
-                foreach(var param in cmdParams)
+                var optionalArgs = new List<string>();
+                for(var x = cmdParams.Count - 1; x > 0; x--)
                 {
-                    if(param.NoAutoValidity)
-                    {
-                        WriteLine($"/// <param name=\"{param.Name}\">No Auto Validity</param>");
-                        continue;
-                    }
+                    if(!cmdParams[x].IsOptional)
+                        break;
 
-                    if(param.ExternSync)
-                    {
-                        WriteLine($"/// <param name=\"{param.Name}\">ExternSync</param>");
-                        continue;
-                    }
-                    
-                    if(param.Optional.Length != 0)
-                        WriteLine($"/// <param name=\"{param.Name}\">Optional</param>");
+                    optionalArgs.Add(cmdParams[x].Name);
                 }
-                //WriteLine("/// <returns></returns>");
-                #endregion
 
+                WriteCommandComment(vkCommand, cmdParams.ToArray());
+                
+                #region Declaration
                 WriteTabs();
                 Write($"public static {commandInfo.ReturnType} {vkCommand.Name}(");
                 for(var x = 0; x < cmdParams.Count; x++)
@@ -958,11 +929,9 @@ namespace Tanagra.Generator
                     
                     Write($"{paramType} {paramName}");
 
-                    // if the last argument is a struct and is marked as optional, we 
-                    // can add `= null` to generate an overload without that argument
-                    if((vkParam.Type is VkStruct) && !IsPlatformStruct(vkParam.Type) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true" && x + 1 == cmdParams.Count)
-                        Write(" = null");
-
+                    if(optionalArgs.Contains(paramName))
+                        Write($" = default({paramType})");
+                    
                     if(x + 1 < cmdParams.Count)
                         Write(", ");
                 }
@@ -1367,12 +1336,8 @@ namespace Tanagra.Generator
                 foreach(var vkCommand in handleCommands)
                 {
                     var commandInfo = commandInfoMap[vkCommand];
-
-                    #region Create Wrapper
-                    WriteTabs();
-                    //WriteLine("[DebuggerStepThrough]");
-                    Write("public static ");
-
+                    var cmdParams = vkCommand.Parameters.Except(commandInfo.InternalParams).ToList();
+                    
                     var commandName = vkCommand.Name;
 
                     if(commandName.StartsWith($"Get{vkHandle.Name}"))
@@ -1384,54 +1349,52 @@ namespace Tanagra.Generator
                     if(commandName.EndsWith(vkHandle.Name))
                         commandName = commandName.Replace(vkHandle.Name, string.Empty);
 
-                    Write($"{commandInfo.ReturnType} {commandName}");
-                    Write("(");
+                    var optionalArgs = new List<string>();
+                    for(var x = cmdParams.Count - 1; x > 0; x--)
+                    {
+                        if(!cmdParams[x].IsOptional)
+                            break;
 
-                    var cmdParams = vkCommand.Parameters.Except(commandInfo.InternalParams).ToList();
+                        optionalArgs.Add(cmdParams[x].Name);
+                    }
+
+                    WriteCommandComment(vkCommand, cmdParams.ToArray());
+
+                    //WriteLine("[DebuggerStepThrough]");
+
+                    #region Declaration
+                    WriteTabs();
+                    Write($"public static {commandInfo.ReturnType} {commandName}(");
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var vkParam = cmdParams[x];
+                        var paramName = vkParam.Name;
                         var paramType = vkParam.Type.Name;
 
                         if(x == 0)
-                        {
-                            Write($"this {paramType} {vkParam.Name}");
-                        }
-                        else if(paramType == "String")
-                        {
-                            Write($"String {vkParam.Name}");
-                        }
-                        else if (commandInfo.ParamArrays.Contains(vkParam))
-                        {
-                            Write($"List<{paramType}> {vkParam.Name}");
-                        }
-                        else
-                        {
-                            // if the last argument is a struct and is marked as optional, we can add `= null` to generate an overload without that argument
-                            if((vkParam.Type is VkStruct) && !platformStructTypes.Contains(paramType) && vkParam.Optional.Length != 0 && vkParam.Optional[0] == "true" && x + 1 == cmdParams.Count)
-                            {
-                                Write($"{paramType} {vkParam.Name} = null");
-                            }
-                            else
-                            {
-                                Write($"{paramType} {vkParam.Name}");
-                            }
-                        }
+                            Write($"this ");
+
+                        if (commandInfo.ParamArrays.Contains(vkParam))
+                            paramType = $"List<{paramType}>";
                         
+                        Write($"{paramType} {paramName}");
+
+                        if(optionalArgs.Contains(paramName))
+                            Write($" = default({paramType})");
+
                         if(x + 1 < cmdParams.Count)
                             Write(", ");
                     }
-
                     Write(")");
                     Write(LineEnding);
-
+                    #endregion
                     WriteBeginBlock();
+                    #region Call into Vk
                     WriteTabs();
                     if(commandInfo.ReturnParam != null || commandInfo.HasReturnValue)
                         Write("return ");
                     Write($"{ManagedFunctionsClass}.{vkCommand.Name}");
                     Write("(");
-                    
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var param = cmdParams[x];
@@ -1439,14 +1402,11 @@ namespace Tanagra.Generator
                         if(x + 1 < cmdParams.Count)
                             Write(", ");
                     }
-
                     Write(");");
                     Write(LineEnding);
-                    
-                    WriteEndBlock();
-
-                    WriteLine("");
                     #endregion
+                    WriteEndBlock();
+                    WriteLine("");
                 }
                 WriteLine("#endregion");
                 WriteLine("");
@@ -1567,6 +1527,49 @@ namespace Tanagra.Generator
             #endregion
 
             return commandInfo;
+        }
+
+        void WriteCommandComment(VkCommand vkCommand, VkParam[] vkParams)
+        {
+            var cmdProperties = string.Empty;
+            
+            // Command Buffer Levels
+            if(vkCommand.CmdBufferLevel.Length != 0)
+                cmdProperties += ($"[<see cref=\"CommandBufferLevel\"/>: {string.Join(", ", vkCommand.CmdBufferLevel)}] ");
+
+            // Render Pass Scope
+            if(!string.IsNullOrEmpty(vkCommand.RenderPass))
+                cmdProperties += ($"[Render Pass: {vkCommand.RenderPass}] ");
+
+            // Supported Queue Types
+            if(vkCommand.Queues.Length != 0)
+                cmdProperties += ($"[<see cref=\"QueueFlags\"/>: {string.Join(", ", vkCommand.Queues)}] ");
+            
+            if(!string.IsNullOrEmpty(cmdProperties))
+            {
+                WriteLine("/// <summary>");
+                WriteLine($"/// {cmdProperties}");
+                WriteLine("/// </summary>");
+            }
+            
+            foreach(var param in vkParams)
+            {
+                if(param.NoAutoValidity)
+                {
+                    WriteLine($"/// <param name=\"{param.Name}\">No Auto Validity</param>");
+                    continue;
+                }
+
+                if(param.ExternSync)
+                {
+                    WriteLine($"/// <param name=\"{param.Name}\">ExternSync</param>");
+                    continue;
+                }
+
+                if(param.Optional.Length != 0)
+                    WriteLine($"/// <param name=\"{param.Name}\">Optional</param>");
+            }
+            //WriteLine("/// <returns></returns>");
         }
 
         bool IsPlatformStruct(VkType type)

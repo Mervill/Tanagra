@@ -161,6 +161,7 @@ namespace Tanagra.Generator
                         member.Len[0] = "codeSize";
                         member.Type = allStructs.First(y => y.Name == "Byte");
                     }
+                    member.Len[0] = ToFirstUppercase(member.Len[0]);
                 }
             }
         }
@@ -169,7 +170,7 @@ namespace Tanagra.Generator
         {
             foreach (var specEnum in specEnums)
             {
-                foreach (var ext in extensions)
+                foreach (var ext in extensions.Where(x => x.Supported != "disabled"))
                 {
                     var extNumber = ext.Number - 1;
 
@@ -214,7 +215,7 @@ namespace Tanagra.Generator
         void MergeExtensionConstants(VkEnum apiConstants, VkExtension[] extensions)
         {
             var constantList = apiConstants.Values.ToList();
-            foreach(var ext in extensions)
+            foreach(var ext in extensions.Where(x => x.Supported != "disabled"))
             {
                 var constants = ext.Requirement.Enums.Where(x => x.IsConstant);
                 foreach(var newConstantValue in constants)
@@ -444,5 +445,8 @@ namespace Tanagra.Generator
                     vkCommand.ReturnType = newType;
             }
         }
+
+        string ToFirstUppercase(string str)
+            => char.ToUpper(str[0]) + str.Substring(1, str.Length - 1);
     }
 }
