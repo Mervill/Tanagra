@@ -14,7 +14,6 @@ namespace Tanagra.Generator
         // todo: GetEventStatus must return true/false based on VkResult
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
-        // todo: generate arrays instead of lists on commands?
         // todo: Fix edge cases in VulkanConstant
         // todo: MemoryPressure in extra areas
         // todo: There are still a few corner cases in memory allocation that will leak (pointer to nonmanaged struct)
