@@ -282,12 +282,12 @@ namespace Vulkan.Managed.ObjectModel
         
         public static void FlushMappedMemoryRanges(this Device device, List<MappedMemoryRange> memoryRanges)
         {
-            Vk.FlushMappedMemoryRanges(device, memoryRanges);
+            Vk.FlushMappedMemoryRanges(device, (memoryRanges != null) ? memoryRanges.ToArray() : null);
         }
         
         public static void InvalidateMappedMemoryRanges(this Device device, List<MappedMemoryRange> memoryRanges)
         {
-            Vk.InvalidateMappedMemoryRanges(device, memoryRanges);
+            Vk.InvalidateMappedMemoryRanges(device, (memoryRanges != null) ? memoryRanges.ToArray() : null);
         }
         
         public static DeviceSize GetMemoryCommitment(this Device device, DeviceMemory memory)
@@ -338,7 +338,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="fences">ExternSync</param>
         public static void ResetFences(this Device device, List<Fence> fences)
         {
-            Vk.ResetFences(device, fences);
+            Vk.ResetFences(device, (fences != null) ? fences.ToArray() : null);
         }
         
         public static void GetFenceStatus(this Device device, Fence fence)
@@ -348,7 +348,7 @@ namespace Vulkan.Managed.ObjectModel
         
         public static void WaitForFences(this Device device, List<Fence> fences, Bool32 waitAll, UInt64 timeout)
         {
-            Vk.WaitForFences(device, fences, waitAll, timeout);
+            Vk.WaitForFences(device, (fences != null) ? fences.ToArray() : null, waitAll, timeout);
         }
         
         /// <param name="allocator">Optional</param>
@@ -410,7 +410,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="flags">Optional</param>
         public static void GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, List<IntPtr> data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
-            Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
+            Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, (data != null) ? data.ToArray() : null, stride, flags);
         }
         
         /// <param name="allocator">Optional</param>
@@ -504,21 +504,21 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="dstCache">ExternSync</param>
         public static void MergePipelineCaches(this Device device, PipelineCache dstCache, List<PipelineCache> srcCaches)
         {
-            Vk.MergePipelineCaches(device, dstCache, srcCaches);
+            Vk.MergePipelineCaches(device, dstCache, (srcCaches != null) ? srcCaches.ToArray() : null);
         }
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
         public static List<Pipeline> CreateGraphicsPipelines(this Device device, PipelineCache pipelineCache, List<GraphicsPipelineCreateInfo> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
-            return Vk.CreateGraphicsPipelines(device, pipelineCache, createInfos, allocator);
+            return Vk.CreateGraphicsPipelines(device, pipelineCache, (createInfos != null) ? createInfos.ToArray() : null, allocator);
         }
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
         public static List<Pipeline> CreateComputePipelines(this Device device, PipelineCache pipelineCache, List<ComputePipelineCreateInfo> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
-            return Vk.CreateComputePipelines(device, pipelineCache, createInfos, allocator);
+            return Vk.CreateComputePipelines(device, pipelineCache, (createInfos != null) ? createInfos.ToArray() : null, allocator);
         }
         
         /// <param name="pipeline">ExternSync</param>
@@ -596,12 +596,12 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="descriptorSets">No Auto Validity</param>
         public static void FreeDescriptorSets(this Device device, DescriptorPool descriptorPool, List<DescriptorSet> descriptorSets)
         {
-            Vk.FreeDescriptorSets(device, descriptorPool, descriptorSets);
+            Vk.FreeDescriptorSets(device, descriptorPool, (descriptorSets != null) ? descriptorSets.ToArray() : null);
         }
         
         public static void UpdateDescriptorSets(this Device device, List<WriteDescriptorSet> descriptorWrites, List<CopyDescriptorSet> descriptorCopies)
         {
-            Vk.UpdateDescriptorSets(device, descriptorWrites, descriptorCopies);
+            Vk.UpdateDescriptorSets(device, (descriptorWrites != null) ? descriptorWrites.ToArray() : null, (descriptorCopies != null) ? descriptorCopies.ToArray() : null);
         }
         
         /// <param name="allocator">Optional</param>
@@ -664,13 +664,13 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffers">No Auto Validity</param>
         public static void FreeCommandBuffers(this Device device, CommandPool commandPool, List<CommandBuffer> commandBuffers)
         {
-            Vk.FreeCommandBuffers(device, commandPool, commandBuffers);
+            Vk.FreeCommandBuffers(device, commandPool, (commandBuffers != null) ? commandBuffers.ToArray() : null);
         }
         
         /// <param name="allocator">Optional</param>
         public static List<SwapchainKHR> CreateSharedSwapchainsKHR(this Device device, List<SwapchainCreateInfoKHR> createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
-            return Vk.CreateSharedSwapchainsKHR(device, createInfos, allocator);
+            return Vk.CreateSharedSwapchainsKHR(device, (createInfos != null) ? createInfos.ToArray() : null, allocator);
         }
         
         /// <param name="allocator">Optional</param>
@@ -717,7 +717,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="fence">ExternSync</param>
         public static void Submit(this Queue queue, List<SubmitInfo> submits, Fence fence = default(Fence))
         {
-            Vk.QueueSubmit(queue, submits, fence);
+            Vk.QueueSubmit(queue, (submits != null) ? submits.ToArray() : null, fence);
         }
         
         public static void WaitIdle(this Queue queue)
@@ -732,7 +732,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="fence">ExternSync</param>
         public static void BindSparse(this Queue queue, List<BindSparseInfo> bindInfo, Fence fence = default(Fence))
         {
-            Vk.QueueBindSparse(queue, bindInfo, fence);
+            Vk.QueueBindSparse(queue, (bindInfo != null) ? bindInfo.ToArray() : null, fence);
         }
         
         /// <param name="queue">ExternSync</param>
@@ -779,7 +779,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetViewport(this CommandBuffer commandBuffer, UInt32 firstViewport, List<Viewport> viewports)
         {
-            Vk.CmdSetViewport(commandBuffer, firstViewport, viewports);
+            Vk.CmdSetViewport(commandBuffer, firstViewport, (viewports != null) ? viewports.ToArray() : null);
         }
         
         /// <summary>
@@ -788,7 +788,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdSetScissor(this CommandBuffer commandBuffer, UInt32 firstScissor, List<Rect2D> scissors)
         {
-            Vk.CmdSetScissor(commandBuffer, firstScissor, scissors);
+            Vk.CmdSetScissor(commandBuffer, firstScissor, (scissors != null) ? scissors.ToArray() : null);
         }
         
         /// <summary>
@@ -860,7 +860,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindDescriptorSets(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, List<DescriptorSet> descriptorSets, List<UInt32> dynamicOffsets)
         {
-            Vk.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSets, dynamicOffsets);
+            Vk.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, (descriptorSets != null) ? descriptorSets.ToArray() : null, (dynamicOffsets != null) ? dynamicOffsets.ToArray() : null);
         }
         
         /// <summary>
@@ -878,7 +878,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBindVertexBuffers(this CommandBuffer commandBuffer, UInt32 firstBinding, List<Buffer> buffers, List<DeviceSize> offsets)
         {
-            Vk.CmdBindVertexBuffers(commandBuffer, firstBinding, buffers, offsets);
+            Vk.CmdBindVertexBuffers(commandBuffer, firstBinding, (buffers != null) ? buffers.ToArray() : null, (offsets != null) ? offsets.ToArray() : null);
         }
         
         /// <summary>
@@ -941,7 +941,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyBuffer(this CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, List<BufferCopy> regions)
         {
-            Vk.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regions);
+            Vk.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, (regions != null) ? regions.ToArray() : null);
         }
         
         /// <summary>
@@ -950,7 +950,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageCopy> regions)
         {
-            Vk.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
+            Vk.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, (regions != null) ? regions.ToArray() : null);
         }
         
         /// <summary>
@@ -959,7 +959,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdBlitImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageBlit> regions, Filter filter)
         {
-            Vk.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions, filter);
+            Vk.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, (regions != null) ? regions.ToArray() : null, filter);
         }
         
         /// <summary>
@@ -968,7 +968,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyBufferToImage(this CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, List<BufferImageCopy> regions)
         {
-            Vk.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regions);
+            Vk.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, (regions != null) ? regions.ToArray() : null);
         }
         
         /// <summary>
@@ -977,7 +977,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdCopyImageToBuffer(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, List<BufferImageCopy> regions)
         {
-            Vk.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regions);
+            Vk.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, (regions != null) ? regions.ToArray() : null);
         }
         
         /// <summary>
@@ -986,7 +986,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, List<Byte> data)
         {
-            Vk.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, data);
+            Vk.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, (data != null) ? data.ToArray() : null);
         }
         
         /// <summary>
@@ -1004,7 +1004,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearColorImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, List<ImageSubresourceRange> ranges)
         {
-            Vk.CmdClearColorImage(commandBuffer, image, imageLayout, color, ranges);
+            Vk.CmdClearColorImage(commandBuffer, image, imageLayout, color, (ranges != null) ? ranges.ToArray() : null);
         }
         
         /// <summary>
@@ -1013,7 +1013,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearDepthStencilImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, List<ImageSubresourceRange> ranges)
         {
-            Vk.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, depthStencil, ranges);
+            Vk.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, depthStencil, (ranges != null) ? ranges.ToArray() : null);
         }
         
         /// <summary>
@@ -1022,7 +1022,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdClearAttachments(this CommandBuffer commandBuffer, List<ClearAttachment> attachments, List<ClearRect> rects)
         {
-            Vk.CmdClearAttachments(commandBuffer, attachments, rects);
+            Vk.CmdClearAttachments(commandBuffer, (attachments != null) ? attachments.ToArray() : null, (rects != null) ? rects.ToArray() : null);
         }
         
         /// <summary>
@@ -1031,7 +1031,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdResolveImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageResolve> regions)
         {
-            Vk.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
+            Vk.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, (regions != null) ? regions.ToArray() : null);
         }
         
         /// <summary>
@@ -1058,7 +1058,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdWaitEvents(this CommandBuffer commandBuffer, List<Event> events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
-            Vk.CmdWaitEvents(commandBuffer, events, srcStageMask, dstStageMask, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
+            Vk.CmdWaitEvents(commandBuffer, (events != null) ? events.ToArray() : null, srcStageMask, dstStageMask, (memoryBarriers != null) ? memoryBarriers.ToArray() : null, (bufferMemoryBarriers != null) ? bufferMemoryBarriers.ToArray() : null, (imageMemoryBarriers != null) ? imageMemoryBarriers.ToArray() : null);
         }
         
         /// <summary>
@@ -1068,7 +1068,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="dependencyFlags">Optional</param>
         public static void CmdPipelineBarrier(this CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, List<MemoryBarrier> memoryBarriers, List<BufferMemoryBarrier> bufferMemoryBarriers, List<ImageMemoryBarrier> imageMemoryBarriers)
         {
-            Vk.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
+            Vk.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, (memoryBarriers != null) ? memoryBarriers.ToArray() : null, (bufferMemoryBarriers != null) ? bufferMemoryBarriers.ToArray() : null, (imageMemoryBarriers != null) ? imageMemoryBarriers.ToArray() : null);
         }
         
         /// <summary>
@@ -1124,7 +1124,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdPushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, List<IntPtr> values)
         {
-            Vk.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
+            Vk.CmdPushConstants(commandBuffer, layout, stageFlags, offset, (values != null) ? values.ToArray() : null);
         }
         
         /// <summary>
@@ -1160,7 +1160,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <param name="commandBuffer">ExternSync</param>
         public static void CmdExecuteCommands(this CommandBuffer commandBuffer, List<CommandBuffer> commandBuffers)
         {
-            Vk.CmdExecuteCommands(commandBuffer, commandBuffers);
+            Vk.CmdExecuteCommands(commandBuffer, (commandBuffers != null) ? commandBuffers.ToArray() : null);
         }
         
         /// <summary>

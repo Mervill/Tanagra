@@ -89,7 +89,7 @@ namespace Vulkan.Unmanaged
         /// <param name="submitCount">Optional</param>
         /// <param name="fence">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkQueueSubmit", CallingConvention = callingConvention)]
-        public static extern Result vkQueueSubmit(IntPtr queue, UInt32 submitCount, SubmitInfo* submits, UInt64 fence);
+        public static extern Result vkQueueSubmit(IntPtr queue, UInt32 submitCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SubmitInfo[] submits, UInt64 fence);
         
         [DllImport(DllName, EntryPoint = "vkQueueWaitIdle", CallingConvention = callingConvention)]
         public static extern Result vkQueueWaitIdle(IntPtr queue);
@@ -116,10 +116,10 @@ namespace Vulkan.Unmanaged
         public static extern void vkUnmapMemory(IntPtr device, UInt64 memory);
         
         [DllImport(DllName, EntryPoint = "vkFlushMappedMemoryRanges", CallingConvention = callingConvention)]
-        public static extern Result vkFlushMappedMemoryRanges(IntPtr device, UInt32 memoryRangeCount, MappedMemoryRange* memoryRanges);
+        public static extern Result vkFlushMappedMemoryRanges(IntPtr device, UInt32 memoryRangeCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] MappedMemoryRange[] memoryRanges);
         
         [DllImport(DllName, EntryPoint = "vkInvalidateMappedMemoryRanges", CallingConvention = callingConvention)]
-        public static extern Result vkInvalidateMappedMemoryRanges(IntPtr device, UInt32 memoryRangeCount, MappedMemoryRange* memoryRanges);
+        public static extern Result vkInvalidateMappedMemoryRanges(IntPtr device, UInt32 memoryRangeCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] MappedMemoryRange[] memoryRanges);
         
         [DllImport(DllName, EntryPoint = "vkGetDeviceMemoryCommitment", CallingConvention = callingConvention)]
         public static extern void vkGetDeviceMemoryCommitment(IntPtr device, UInt64 memory, DeviceSize* committedMemoryInBytes);
@@ -155,7 +155,7 @@ namespace Vulkan.Unmanaged
         /// <param name="bindInfoCount">Optional</param>
         /// <param name="fence">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkQueueBindSparse", CallingConvention = callingConvention)]
-        public static extern Result vkQueueBindSparse(IntPtr queue, UInt32 bindInfoCount, BindSparseInfo* bindInfo, UInt64 fence);
+        public static extern Result vkQueueBindSparse(IntPtr queue, UInt32 bindInfoCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] BindSparseInfo[] bindInfo, UInt64 fence);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateFence", CallingConvention = callingConvention)]
@@ -168,13 +168,13 @@ namespace Vulkan.Unmanaged
         
         /// <param name="fences">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkResetFences", CallingConvention = callingConvention)]
-        public static extern Result vkResetFences(IntPtr device, UInt32 fenceCount, UInt64* fences);
+        public static extern Result vkResetFences(IntPtr device, UInt32 fenceCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] UInt64[] fences);
         
         [DllImport(DllName, EntryPoint = "vkGetFenceStatus", CallingConvention = callingConvention)]
         public static extern Result vkGetFenceStatus(IntPtr device, UInt64 fence);
         
         [DllImport(DllName, EntryPoint = "vkWaitForFences", CallingConvention = callingConvention)]
-        public static extern Result vkWaitForFences(IntPtr device, UInt32 fenceCount, UInt64* fences, Bool32 waitAll, UInt64 timeout);
+        public static extern Result vkWaitForFences(IntPtr device, UInt32 fenceCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] UInt64[] fences, Bool32 waitAll, UInt64 timeout);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateSemaphore", CallingConvention = callingConvention)]
@@ -216,7 +216,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="flags">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetQueryPoolResults", CallingConvention = callingConvention)]
-        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, UInt32 dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
+        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, UInt32 dataSize, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] data, DeviceSize stride, QueryResultFlags flags);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
@@ -282,17 +282,17 @@ namespace Vulkan.Unmanaged
         
         /// <param name="dstCache">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
-        public static extern Result vkMergePipelineCaches(IntPtr device, UInt64 dstCache, UInt32 srcCacheCount, UInt64* srcCaches);
+        public static extern Result vkMergePipelineCaches(IntPtr device, UInt64 dstCache, UInt32 srcCacheCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] UInt64[] srcCaches);
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateGraphicsPipelines", CallingConvention = callingConvention)]
-        public static extern Result vkCreateGraphicsPipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
+        public static extern Result vkCreateGraphicsPipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GraphicsPipelineCreateInfo[] createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateComputePipelines", CallingConvention = callingConvention)]
-        public static extern Result vkCreateComputePipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
+        public static extern Result vkCreateComputePipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ComputePipelineCreateInfo[] createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
         
         /// <param name="pipeline">ExternSync</param>
         /// <param name="allocator">Optional</param>
@@ -346,12 +346,12 @@ namespace Vulkan.Unmanaged
         /// <param name="descriptorPool">ExternSync</param>
         /// <param name="descriptorSets">No Auto Validity</param>
         [DllImport(DllName, EntryPoint = "vkFreeDescriptorSets", CallingConvention = callingConvention)]
-        public static extern Result vkFreeDescriptorSets(IntPtr device, UInt64 descriptorPool, UInt32 descriptorSetCount, UInt64* descriptorSets);
+        public static extern Result vkFreeDescriptorSets(IntPtr device, UInt64 descriptorPool, UInt32 descriptorSetCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] UInt64[] descriptorSets);
         
         /// <param name="descriptorWriteCount">Optional</param>
         /// <param name="descriptorCopyCount">Optional</param>
         [DllImport(DllName, EntryPoint = "vkUpdateDescriptorSets", CallingConvention = callingConvention)]
-        public static extern void vkUpdateDescriptorSets(IntPtr device, UInt32 descriptorWriteCount, WriteDescriptorSet* descriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
+        public static extern void vkUpdateDescriptorSets(IntPtr device, UInt32 descriptorWriteCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WriteDescriptorSet[] descriptorWrites, UInt32 descriptorCopyCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CopyDescriptorSet[] descriptorCopies);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateFramebuffer", CallingConvention = callingConvention)]
@@ -394,7 +394,7 @@ namespace Vulkan.Unmanaged
         /// <param name="commandPool">ExternSync</param>
         /// <param name="commandBuffers">No Auto Validity</param>
         [DllImport(DllName, EntryPoint = "vkFreeCommandBuffers", CallingConvention = callingConvention)]
-        public static extern void vkFreeCommandBuffers(IntPtr device, UInt64 commandPool, UInt32 commandBufferCount, IntPtr* commandBuffers);
+        public static extern void vkFreeCommandBuffers(IntPtr device, UInt64 commandPool, UInt32 commandBufferCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] commandBuffers);
         
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkBeginCommandBuffer", CallingConvention = callingConvention)]
@@ -421,14 +421,14 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdSetViewport", CallingConvention = callingConvention)]
-        public static extern void vkCmdSetViewport(IntPtr commandBuffer, UInt32 firstViewport, UInt32 viewportCount, Viewport* viewports);
+        public static extern void vkCmdSetViewport(IntPtr commandBuffer, UInt32 firstViewport, UInt32 viewportCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Viewport[] viewports);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdSetScissor", CallingConvention = callingConvention)]
-        public static extern void vkCmdSetScissor(IntPtr commandBuffer, UInt32 firstScissor, UInt32 scissorCount, Rect2D* scissors);
+        public static extern void vkCmdSetScissor(IntPtr commandBuffer, UInt32 firstScissor, UInt32 scissorCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Rect2D[] scissors);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
@@ -485,7 +485,7 @@ namespace Vulkan.Unmanaged
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="dynamicOffsetCount">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCmdBindDescriptorSets", CallingConvention = callingConvention)]
-        public static extern void vkCmdBindDescriptorSets(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, UInt64 layout, UInt32 firstSet, UInt32 descriptorSetCount, UInt64* descriptorSets, UInt32 dynamicOffsetCount, UInt32* dynamicOffsets);
+        public static extern void vkCmdBindDescriptorSets(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, UInt64 layout, UInt32 firstSet, UInt32 descriptorSetCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] UInt64[] descriptorSets, UInt32 dynamicOffsetCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] UInt32[] dynamicOffsets);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
@@ -499,7 +499,7 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdBindVertexBuffers", CallingConvention = callingConvention)]
-        public static extern void vkCmdBindVertexBuffers(IntPtr commandBuffer, UInt32 firstBinding, UInt32 bindingCount, UInt64* buffers, DeviceSize* offsets);
+        public static extern void vkCmdBindVertexBuffers(IntPtr commandBuffer, UInt32 firstBinding, UInt32 bindingCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] UInt64[] buffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DeviceSize[] offsets);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
@@ -548,42 +548,42 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdCopyBuffer", CallingConvention = callingConvention)]
-        public static extern void vkCmdCopyBuffer(IntPtr commandBuffer, UInt64 srcBuffer, UInt64 dstBuffer, UInt32 regionCount, BufferCopy* regions);
+        public static extern void vkCmdCopyBuffer(IntPtr commandBuffer, UInt64 srcBuffer, UInt64 dstBuffer, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] BufferCopy[] regions);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdCopyImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdCopyImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageCopy* regions);
+        public static extern void vkCmdCopyImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ImageCopy[] regions);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdBlitImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdBlitImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageBlit* regions, Filter filter);
+        public static extern void vkCmdBlitImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ImageBlit[] regions, Filter filter);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdCopyBufferToImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdCopyBufferToImage(IntPtr commandBuffer, UInt64 srcBuffer, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, BufferImageCopy* regions);
+        public static extern void vkCmdCopyBufferToImage(IntPtr commandBuffer, UInt64 srcBuffer, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] BufferImageCopy[] regions);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdCopyImageToBuffer", CallingConvention = callingConvention)]
-        public static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstBuffer, UInt32 regionCount, BufferImageCopy* regions);
+        public static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstBuffer, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] BufferImageCopy[] regions);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdUpdateBuffer", CallingConvention = callingConvention)]
-        public static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, UInt64 dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, Byte* data);
+        public static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, UInt64 dstBuffer, DeviceSize dstOffset, DeviceSize dataSize, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Byte[] data);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
@@ -597,28 +597,28 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdClearColorImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdClearColorImage(IntPtr commandBuffer, UInt64 image, ImageLayout imageLayout, ClearColorValue* color, UInt32 rangeCount, ImageSubresourceRange* ranges);
+        public static extern void vkCmdClearColorImage(IntPtr commandBuffer, UInt64 image, ImageLayout imageLayout, ClearColorValue* color, UInt32 rangeCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ImageSubresourceRange[] ranges);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdClearDepthStencilImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdClearDepthStencilImage(IntPtr commandBuffer, UInt64 image, ImageLayout imageLayout, ClearDepthStencilValue* depthStencil, UInt32 rangeCount, ImageSubresourceRange* ranges);
+        public static extern void vkCmdClearDepthStencilImage(IntPtr commandBuffer, UInt64 image, ImageLayout imageLayout, ClearDepthStencilValue* depthStencil, UInt32 rangeCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ImageSubresourceRange[] ranges);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdClearAttachments", CallingConvention = callingConvention)]
-        public static extern void vkCmdClearAttachments(IntPtr commandBuffer, UInt32 attachmentCount, ClearAttachment* attachments, UInt32 rectCount, ClearRect* rects);
+        public static extern void vkCmdClearAttachments(IntPtr commandBuffer, UInt32 attachmentCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ClearAttachment[] attachments, UInt32 rectCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ClearRect[] rects);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdResolveImage", CallingConvention = callingConvention)]
-        public static extern void vkCmdResolveImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, ImageResolve* regions);
+        public static extern void vkCmdResolveImage(IntPtr commandBuffer, UInt64 srcImage, ImageLayout srcImageLayout, UInt64 dstImage, ImageLayout dstImageLayout, UInt32 regionCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ImageResolve[] regions);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
@@ -642,7 +642,7 @@ namespace Vulkan.Unmanaged
         /// <param name="bufferMemoryBarrierCount">Optional</param>
         /// <param name="imageMemoryBarrierCount">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCmdWaitEvents", CallingConvention = callingConvention)]
-        public static extern void vkCmdWaitEvents(IntPtr commandBuffer, UInt32 eventCount, UInt64* events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, UInt32 memoryBarrierCount, MemoryBarrier* memoryBarriers, UInt32 bufferMemoryBarrierCount, BufferMemoryBarrier* bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
+        public static extern void vkCmdWaitEvents(IntPtr commandBuffer, UInt32 eventCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] UInt64[] events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, UInt32 memoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] MemoryBarrier[] memoryBarriers, UInt32 bufferMemoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] BufferMemoryBarrier[] bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 9)] ImageMemoryBarrier[] imageMemoryBarriers);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
@@ -653,7 +653,7 @@ namespace Vulkan.Unmanaged
         /// <param name="bufferMemoryBarrierCount">Optional</param>
         /// <param name="imageMemoryBarrierCount">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCmdPipelineBarrier", CallingConvention = callingConvention)]
-        public static extern void vkCmdPipelineBarrier(IntPtr commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, UInt32 memoryBarrierCount, MemoryBarrier* memoryBarriers, UInt32 bufferMemoryBarrierCount, BufferMemoryBarrier* bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
+        public static extern void vkCmdPipelineBarrier(IntPtr commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, UInt32 memoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] MemoryBarrier[] memoryBarriers, UInt32 bufferMemoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] BufferMemoryBarrier[] bufferMemoryBarriers, UInt32 imageMemoryBarrierCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 8)] ImageMemoryBarrier[] imageMemoryBarriers);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
@@ -697,7 +697,7 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdPushConstants", CallingConvention = callingConvention)]
-        public static extern void vkCmdPushConstants(IntPtr commandBuffer, UInt64 layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, IntPtr* values);
+        public static extern void vkCmdPushConstants(IntPtr commandBuffer, UInt64 layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] values);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
@@ -725,7 +725,7 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdExecuteCommands", CallingConvention = callingConvention)]
-        public static extern void vkCmdExecuteCommands(IntPtr commandBuffer, UInt32 commandBufferCount, IntPtr* commandBuffers);
+        public static extern void vkCmdExecuteCommands(IntPtr commandBuffer, UInt32 commandBufferCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] commandBuffers);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = callingConvention)]
@@ -766,7 +766,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateSharedSwapchainsKHR", CallingConvention = callingConvention)]
-        public static extern Result vkCreateSharedSwapchainsKHR(IntPtr device, UInt32 swapchainCount, SwapchainCreateInfoKHR* createInfos, AllocationCallbacks* allocator, UInt64* swapchains);
+        public static extern Result vkCreateSharedSwapchainsKHR(IntPtr device, UInt32 swapchainCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SwapchainCreateInfoKHR[] createInfos, AllocationCallbacks* allocator, UInt64* swapchains);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = callingConvention)]
