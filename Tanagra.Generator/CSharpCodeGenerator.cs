@@ -114,6 +114,9 @@ namespace Tanagra.Generator
             foreach(var cmd in commands)
                 commandInfoMap.Add(cmd, CreateCommandInfo(cmd));
 
+            var apiConstants = spec.Enums.First(x => x.Name == "API Constants");
+            files.Add("./VulkanConstant.cs", GenerateConstants(apiConstants));
+
             foreach(var vkEnum in spec.Enums.Where(vkEnum => vkEnum.Name != "API Constants"))
                 files.Add($"./Enum/{vkEnum.Name}.cs", GenerateEnum(vkEnum));
             
@@ -133,12 +136,44 @@ namespace Tanagra.Generator
 
             var generateWrapper = needsInteropStruct.Where(vkStruct => !platformStructTypes.Contains(vkStruct.Name) && !disabledStructs.Contains(vkStruct.Name));
             foreach (var vkStruct in generateWrapper)
-                files.Add($"./{ManagedNS}/Class/{vkStruct.Name}.cs", GenerateWrapperClass(vkStruct));
+                files.Add($"./{ManagedNS}/Class/{vkStruct.Name}.cs", GenerateManagedClass(vkStruct));
 
             files.Add($"./{ManagedNS}/{ManagedFunctionsClass}.cs", GenerateManagedCommand(commands, commandInfoMap));
 
             files.Add($"./{ManagedNS}/ObjectModel.cs", GenerateHandleExtensions("HandleExtensions", spec.Handles, commands, commandInfoMap));
             
+            return _sb.ToString();
+        }
+        
+        string GenerateConstants(VkEnum APIConstants)
+        {
+            Clear();
+
+            WriteLine("using System;");
+            WriteLine("");
+            WriteLine("namespace Vulkan");
+            WriteBeginBlock();
+
+            WriteLine("public static class VulkanConstant");
+            WriteBeginBlock();
+            foreach(var vkEnumValue in APIConstants.Values.Where(x => x.Name != "True" && x.Name != "False"))
+            {
+                var integerValue = 0;
+                var isInteger = Int32.TryParse(vkEnumValue.Value, out integerValue);
+                if(isInteger)
+                {
+                    WriteLine($"public const Int32 {vkEnumValue.Name} = {integerValue};");
+                }
+                else
+                {
+                    WriteLine($"public const String {vkEnumValue.Name} = \"{vkEnumValue.Value}\";");
+                }
+                
+            }
+            WriteEndBlock();
+
+            WriteEndBlock();
+
             return _sb.ToString();
         }
 
@@ -380,7 +415,7 @@ namespace Tanagra.Generator
 
         #region GenerateWrapperClass
 
-        string GenerateWrapperClass(VkStruct vkStruct)
+        string GenerateManagedClass(VkStruct vkStruct)
         {
             var hiddenMembers = new HashSet<string>();
             foreach (var member in vkStruct.Members)
@@ -400,7 +435,7 @@ namespace Tanagra.Generator
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("");
-            WriteLine("namespace Vulkan");
+            WriteLine($"namespace Vulkan.{ManagedNS}");
             WriteBeginBlock();
             if(vkStruct.ReturnedOnly)
             {
@@ -408,7 +443,7 @@ namespace Tanagra.Generator
                 WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
                 WriteLine("/// </summary>");
             }
-            WriteLine($"unsafe public class {vkStruct.Name}");
+            WriteLine($"unsafe public class {vkStruct.Name} : IDisposable");
             WriteBeginBlock();
             WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer};");
             WriteLine("");
@@ -525,30 +560,39 @@ namespace Tanagra.Generator
                     WriteEndBlock();
                 }
             }
-            
-            // Implement IDisposable and deconstructor
+
+            // IDisposable and Finalizer
             WriteLine("");
             WriteLine("public void Dispose()");
             WriteBeginBlock();
-            WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteManagedCleanup(vkStruct);
             WriteLine("GC.SuppressFinalize(this);");
             WriteEndBlock();
 
-            /*WriteLine("");
+            WriteLine("");
             WriteLine($"~{vkStruct.Name}()");
             WriteBeginBlock();
             WriteLine($"if({NativePointer} != ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero)");
             WriteBeginBlock();
-            WriteLine($"Marshal.FreeHGlobal((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteManagedCleanup(vkStruct);
             WriteEndBlock();
-            WriteEndBlock();*/
+            WriteEndBlock();
 
             WriteEndBlock();
             WriteEndBlock();
             
             return _sb.ToString();
+        }
+
+        void WriteManagedCleanup(VkStruct vkStruct)
+        {
+            // TODO: arrays are not the only kind of pointer...
+            foreach(var member in vkStruct.Members)
+                if(member.IsArray && !member.IsFixedSize)
+                    WriteLine($"Marshal.FreeHGlobal({NativePointer}->{member.Name});"); // todo: null check this? Explicitly set to zero?
+
+            WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
+            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
         }
 
         void WriteMember(VkMember vkMember, bool readOnly)
@@ -817,16 +861,28 @@ namespace Tanagra.Generator
 
         void WriteMemberComments(VkMember vkMember)
         {
+            var commentLines = new List<string>();
+
+            /*if((vkMember.IsPointer || vkMember.IsArray) && vkMember.Type.Name != "IntPtr")
+            {
+                var array = vkMember.IsArray ? "[]" : string.Empty;
+                commentLines.Add($"/// <para>Pointer to <see cref=\"{vkMember.Type}\"/>{array}</para>");
+            }*/
+
             if(!string.IsNullOrEmpty(vkMember.XMLComment))
             {
-                WriteLine("/// <summary>");
-                WriteTabs();
-                Write($"/// {vkMember.XMLComment}");
-
+                var desc = $"{vkMember.XMLComment}";
                 if(vkMember.Optional == "true")
-                    Write(" (Optional)");
+                    desc += " (Optional)";
+                commentLines.Add(desc);
+            }
 
-                Write(LineEnding);
+            if(commentLines.Count != 0)
+            {
+                WriteLine("/// <summary>");
+                WriteLine($"/// {commentLines[0]}");
+                for(int x = 1; x < commentLines.Count - 1; x++)
+                    WriteLine($"/// <para>{commentLines[x]}</para>");
                 WriteLine("/// </summary>");
             }
         }
@@ -857,33 +913,38 @@ namespace Tanagra.Generator
                 WriteLine("/// <summary>");
                 WriteTabs();
                 Write("/// ");
-                if (vkCommand.CmdBufferLevel.Length != 0)
+                // Command Buffer Levels
+                if(vkCommand.CmdBufferLevel.Length != 0)
                     Write($"[<see cref=\"CommandBufferLevel\"/>: {string.Join(", ", vkCommand.CmdBufferLevel)}] ");
-                if (vkCommand.Queues.Length != 0)
-                    Write($"[<see cref=\"QueueFlags\"/>: {string.Join(", ", vkCommand.Queues)}] ");
+                // Render Pass Scope
                 if(!string.IsNullOrEmpty(vkCommand.RenderPass))
                     Write($"[Render Pass: {vkCommand.RenderPass}] ");
+                // Supported Queue Types
+                if(vkCommand.Queues.Length != 0)
+                    Write($"[<see cref=\"QueueFlags\"/>: {string.Join(", ", vkCommand.Queues)}] ");
+                
                 Write(LineEnding);
                 WriteLine("/// </summary>");
-                foreach (var param in cmdParams)
+                foreach(var param in cmdParams)
                 {
-                    if (param.NoAutoValidity)
+                    if(param.NoAutoValidity)
                     {
                         WriteLine($"/// <param name=\"{param.Name}\">No Auto Validity</param>");
                         continue;
                     }
 
-                    if (param.ExternSync)
+                    if(param.ExternSync)
                     {
                         WriteLine($"/// <param name=\"{param.Name}\">ExternSync</param>");
                         continue;
                     }
                     
-                    if (param.Optional.Length != 0)
+                    if(param.Optional.Length != 0)
                         WriteLine($"/// <param name=\"{param.Name}\">Optional</param>");
                 }
                 //WriteLine("/// <returns></returns>");
                 #endregion
+
                 WriteTabs();
                 Write($"public static {commandInfo.ReturnType} {vkCommand.Name}(");
                 for(var x = 0; x < cmdParams.Count; x++)

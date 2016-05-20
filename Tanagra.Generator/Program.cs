@@ -8,21 +8,24 @@ namespace Tanagra.Generator
     class Program
     {
         // todo: union
-        // todo: dealloc unmanaged class memory (IDisposable)
-        // todo: generate arrays instead of lists on commands?
         // todo: merge flag enums
-        // todo: there is a common case where a command that takes arrays only takes a single entry
-        // todo: API Constants
+        // todo: IsFixedSize arrays
         // todo: better optional args in commands
+        // todo: check for disabled extentions
+        // todo: returned-only structs are not freed properly
+        // todo: GetEventStatus must return true/false based on VkResult
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
+        // todo: generate arrays instead of lists on commands?
+        // todo: Fix edge cases in VulkanConstant
         // todo: MemoryPressure in extra areas
+        // todo: There are still a few corner cases in memory allocation that will leak (pointer to nonmanaged struct)
+        // todo: there is a common case where a command that takes arrays only takes a single entry
         // VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
         // VK_STENCIL_FRONT_AND_BACK
-        // http://stackoverflow.com/questions/641564
-        // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-errors
-        // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#fundamentals-threadingbehavior
-        // http://stackoverflow.com/questions/17562295
+        //
+        // Vulkan Docs:
+        // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html
         //
         // Notes
         //
@@ -81,7 +84,7 @@ namespace Tanagra.Generator
                 return;
             }
             
-            const string rootPath = "../../../Tanagra";
+            const string rootPath = "../../../Vulkan";
             try { Directory.Delete($"{rootPath}/Generated", true); } catch { }
             Console.WriteLine("Saving to disk...");
             foreach(var kv in gen.files)

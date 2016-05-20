@@ -58,6 +58,9 @@ namespace Tanagra.Generator
 
             MergeExtensionEnums(spec.Enums.ToArray(), spec.Extensions);
 
+            var apiConstants = spec.Enums.First(x => x.Name == "API Constants");
+            MergeExtensionConstants(apiConstants, spec.Extensions);
+
             foreach(var vkEnum in spec.Enums)
                 RewriteEnumDefinition(vkEnum);
 
@@ -185,6 +188,9 @@ namespace Tanagra.Generator
                             }
                             else
                             {
+                                if(!newEnumValue.Offset.HasValue)
+                                    continue;
+
                                 var enumValue = 1000000000;
                                 enumValue += 1000 * extNumber;
                                 enumValue += newEnumValue.Offset.Value;
@@ -203,6 +209,24 @@ namespace Tanagra.Generator
                     }
                 }
             }
+        }
+
+        void MergeExtensionConstants(VkEnum apiConstants, VkExtension[] extensions)
+        {
+            var constantList = apiConstants.Values.ToList();
+            foreach(var ext in extensions)
+            {
+                var constants = ext.Requirement.Enums.Where(x => x.IsConstant);
+                foreach(var newConstantValue in constants)
+                {
+                    constantList.Add(new VkEnumValue {
+                        Name     = newConstantValue.Name,
+                        SpecName = newConstantValue.Name,
+                        Value    = newConstantValue.Value.Replace("\"", string.Empty),
+                    });
+                }
+            }
+            apiConstants.Values = constantList.ToArray();
         }
 
         void RewriteEnumDefinition(VkEnum vkEnum)
@@ -351,6 +375,29 @@ namespace Tanagra.Generator
                     lenName = lenName.TrimStart(new[] { 'p' });
                     lenName = char.ToLower(lenName[0]) + lenName.Substring(1);
                     param.Len = lenName;
+                }
+            }
+
+            if(vkCommand.CmdBufferLevel.Length != 0)
+            {
+                for(int x = 0; x < vkCommand.CmdBufferLevel.Length; x++)
+                {
+                    var str = vkCommand.CmdBufferLevel[x];
+                    str = char.ToUpper(str[0]) + str.Substring(1, str.Length - 1);
+                    vkCommand.CmdBufferLevel[x] = str;
+                }
+            }
+
+            if(!string.IsNullOrEmpty(vkCommand.RenderPass))
+                vkCommand.RenderPass = char.ToUpper(vkCommand.RenderPass[0]) + vkCommand.RenderPass.Substring(1, vkCommand.RenderPass.Length - 1);
+
+            if(vkCommand.Queues.Length != 0)
+            {
+                for(int x = 0; x < vkCommand.Queues.Length; x++)
+                {
+                    var str = vkCommand.Queues[x];
+                    str = char.ToUpper(str[0]) + str.Substring(1, str.Length - 1);
+                    vkCommand.Queues[x] = str;
                 }
             }
         }

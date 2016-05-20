@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra.Generator", "Tanagra.Generator\Tanagra.Generator.csproj", "{17CC873B-C1D3-404B-A3F7-C6D70064AE28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanagra", "Tanagra\Tanagra.csproj", "{907B0145-3C85-4517-AE82-CEBAD3773F4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TanagraExample", "TanagraExample\TanagraExample.csproj", "{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vulkan", "Vulkan\Vulkan.csproj", "{852159E6-F125-4178-A2E9-DF5BCE5FB67A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Release|x64.ActiveCfg = Release|x64
 		{5D6CD4BE-4AC7-4CF9-9CE8-B408F4659386}.Release|x64.Build.0 = Release|x64
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Debug|x64.ActiveCfg = Debug|x64
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Debug|x64.Build.0 = Debug|x64
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Release|x64.ActiveCfg = Release|Any CPU
+		{852159E6-F125-4178-A2E9-DF5BCE5FB67A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

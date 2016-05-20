@@ -390,7 +390,7 @@ namespace Tanagra.Generator
         public string Comment;
 
         public bool IsFlag => Offset == null && BitPos != null && !IsConstant;
-        public bool IsConstant => !string.IsNullOrEmpty(Extends) && !string.IsNullOrEmpty(Value);
+        public bool IsConstant => string.IsNullOrEmpty(Extends) && !string.IsNullOrEmpty(Value) && !Offset.HasValue && !BitPos.HasValue;
     }
 
     public class VkExtensionUsage
