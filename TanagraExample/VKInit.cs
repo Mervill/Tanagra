@@ -9,7 +9,6 @@ using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
-using ImageLayout = Vulkan.ImageLayout;
 using Buffer = Vulkan.Buffer;
 
 namespace TanagraExample
@@ -31,12 +30,8 @@ namespace TanagraExample
         DeviceMemory vertexBufferMemory;
         VertexInputBindingDescription[] vertexBindingDescriptions;
         VertexInputAttributeDescription[] vertexAttributeDescriptions;
-        
-        //RenderPass renderPass;
-        //PipelineLayout pipelineLayout;
 
-        //PhysicalDevice physicalDevice => physicalDevices[0];
-        //CommandBuffer commandBuffer => commandBuffers[0];
+        DebugReportCallbackEXT debugCallback;
 
         public VKInit()
         {
@@ -67,13 +62,13 @@ namespace TanagraExample
             PipelineLayout pipelineLayout;
             List<Pipeline> pipelines;
             Pipeline pipeline;
+            Image image;
+            ImageView imageView;
 
             // This exercise would be pointless if we had nothing to render, so
             // lets first create that data.
             CreateVertexBuffer(device);
 
-            
-            pipelineLayout = CreatePipelineLayout(device);
             renderPass = CreateRenderPass(device);
 
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
@@ -83,8 +78,11 @@ namespace TanagraExample
                 GetShaderStageCreateInfo(device, ShaderStageFlags.Fragment, "frag.spv"),
             };
 
+            pipelineLayout = CreatePipelineLayout(device);
             pipelines = CreatePipeline(device, pipelineLayout, renderPass, shaderStageCreateInfos, vertexBindingDescriptions, vertexAttributeDescriptions);
             pipeline = pipelines[0];
+            image = CreateImage(device);
+            imageView = CreateImageView(device, image);
         }
 
         #region  Primary Initialization
@@ -98,8 +96,15 @@ namespace TanagraExample
             // For this example, we want Vulkan to act in a 'default' fashion, so we don't
             // pass and ApplicationInfo object and we don't request any layers or extensions
 
-            var instanceCreateInfo = new InstanceCreateInfo(null, null);
-            return Vk.CreateInstance(instanceCreateInfo, null);
+            var instanceEnabledExtensions = new[]
+            {
+                VulkanConstant.ExtDebugReportExtensionName,
+            };
+
+            var instanceCreateInfo = new InstanceCreateInfo(null, instanceEnabledExtensions);
+            var instance = Vk.CreateInstance(instanceCreateInfo);
+            debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
+            return instance;
         }
 
         List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
@@ -288,7 +293,7 @@ namespace TanagraExample
         {
             var shaderBytes = File.ReadAllBytes(filename);
             var shaderModule = CreateShaderModule(device, shaderBytes);
-            return new PipelineShaderStageCreateInfo(ShaderStageFlags.Vertex, shaderModule, entrypoint);
+            return new PipelineShaderStageCreateInfo(stage, shaderModule, entrypoint);
         }
 
         ShaderModule CreateShaderModule(Device device, byte[] shaderCode)
@@ -346,6 +351,48 @@ namespace TanagraExample
 
             return device.CreateGraphicsPipelines(null, createInfos.ToList());
         }
+
+        Image CreateImage(Device device)
+        {
+            // Images represent multidimensional - up to 3 - arrays of data which can be used for 
+            // various purposes (e.g. attachments, textures), by binding them to a graphics or 
+            // compute pipeline via descriptor sets, or by directly specifying them as parameters 
+            // to certain commands.
+
+            /*var createImageInfo = new ImageCreateInfo
+            {
+                ImageType     = ImageType.ImageType2d,
+                Format        = Format.B8g8r8a8Unorm,
+                Extent        = new Extent3D(32, 32, 1),
+                Samples       = SampleCountFlags.SampleCountFlags1,
+                Usage         = ImageUsageFlags.ColorAttachment,
+                InitialLayout = ImageLayout.ColorAttachmentOptimal,
+                MipLevels = 1,
+                ArrayLayers = 1,
+            };*/
+            var size = new Extent3D(800, 600, 1);
+            var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, Format.B8g8r8a8Unorm, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, ImageUsageFlags.ColorAttachment, SharingMode.Exclusive, null, ImageLayout.Undefined);
+            return device.CreateImage(createImageInfo);
+        }
+
+        ImageView CreateImageView(Device device, Image image)
+        {
+            // Image objects are not directly accessed by pipeline shaders for reading or writing 
+            // image data. Instead, image views representing contiguous ranges of the image 
+            // subresources and containing additional metadata are used for that purpose. Views must 
+            // be created on images of compatible types, and must represent a valid subset of image 
+            // subresources.
+
+            var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
+            var components = new ComponentMapping(ComponentSwizzle.R, ComponentSwizzle.G, ComponentSwizzle.B, ComponentSwizzle.A);
+            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, Format.B8g8r8a8Unorm, components, subresourceRange);
+            return device.CreateImageView(createInfo);
+        }
         
+        private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
+        {
+            Console.WriteLine($"[VULK] [{flags}] {message} ([{messageCode}] {layerPrefix})");
+            return true;
+        }
     }
 }
