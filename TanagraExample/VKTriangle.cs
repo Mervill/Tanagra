@@ -7,8 +7,7 @@ using System.IO;
 
 using SharpDX.Windows;
 
-//using Tanagra;
-
+using Tanagra;
 using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
@@ -61,6 +60,9 @@ namespace TanagraExample
             form = new RenderForm("Tanagra - Vulkan Sample");
 
             CreateInstance();
+
+            QueueFamilyProperties();
+
             CreateSurface();
             CreateDevice();
             CreateCommandBuffer();
@@ -274,13 +276,13 @@ namespace TanagraExample
             WriteLine($"[ OK ] {swapchain}");
 
             backBuffers = device.GetSwapchainImagesKHR(swapchain);
-            WriteLine($"[INFO] backBuffers {backBuffers.Count}");
+            /*WriteLine($"[INFO] backBuffers {backBuffers.Count}");
             foreach (var image in backBuffers)
             {
                 SetImageLayout(image, ImageAspectFlags.Color, ImageLayout.Undefined, ImageLayout.PresentSrcKHR);
             }
-            Flush();
-
+            Flush();*/
+            
             swapchainCreateInfo.Dispose();
         }
 
@@ -726,6 +728,22 @@ namespace TanagraExample
             WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
         }
 
+        private void QueueFamilyProperties()
+        {
+            var queueFamilyProperties = physicalDevice.GetQueueFamilyProperties();
+            for (int x = 0; x < queueFamilyProperties.Count; x++)
+            {
+                WriteLine($"VkQueueFamilyProperties[{x}]:");
+                WriteLine( "============================");
+                WriteLine(queueFamilyProperties[x].Format());
+            }
+        }
+
+        private void GetPhysicalDeviceFeatures()
+        {
+            var physicalDeviceFeatures = physicalDevice.GetFeatures();
+        }
+        
         private void PhysicalDeviceProperties()
         {
             var props = physicalDevice.GetProperties();
