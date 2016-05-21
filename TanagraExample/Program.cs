@@ -21,6 +21,9 @@ namespace TanagraExample
             GC.GetTotalMemory(true);*/
 
             run();
+
+            //var init = new VKInit();
+
             Console.WriteLine("program complete");
             Console.ReadKey();
         }

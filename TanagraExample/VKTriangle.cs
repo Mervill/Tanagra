@@ -33,6 +33,7 @@ namespace TanagraExample
         private CommandPool commandPool;
         private List<CommandBuffer> commandBuffer;
         private CommandBuffer setupCommanBuffer;
+
         private SwapchainKHR swapchain;
 
         private Format backBufferFormat;
