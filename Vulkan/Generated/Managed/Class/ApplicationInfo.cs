@@ -7,7 +7,7 @@ namespace Vulkan.Managed
     {
         internal Unmanaged.ApplicationInfo* NativePointer;
         
-        public string ApplicationName
+        public String ApplicationName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->ApplicationName); }
             set { NativePointer->ApplicationName = Marshal.StringToHGlobalAnsi(value); }
@@ -19,7 +19,7 @@ namespace Vulkan.Managed
             set { NativePointer->ApplicationVersion = value; }
         }
         
-        public string EngineName
+        public String EngineName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->EngineName); }
             set { NativePointer->EngineName = Marshal.StringToHGlobalAnsi(value); }

@@ -28,7 +28,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Name to apply to the object
         /// </summary>
-        public string ObjectName
+        public String ObjectName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->ObjectName); }
             set { NativePointer->ObjectName = Marshal.StringToHGlobalAnsi(value); }

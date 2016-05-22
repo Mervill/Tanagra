@@ -13,7 +13,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Extension name
         /// </summary>
-        public string ExtensionName
+        public String ExtensionName
         {
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->ExtensionName); }
         }

@@ -10,7 +10,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Name of the debug marker
         /// </summary>
-        public string MarkerName
+        public String MarkerName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->MarkerName); }
             set { NativePointer->MarkerName = Marshal.StringToHGlobalAnsi(value); }

@@ -15,11 +15,30 @@ namespace TanagraExample
 {
     /*
     ## Instance
-    ## └ Physical Device
-    ##   └ Device
-    ##     ├─ Queue
-    ##     ├─ Command Pool
-    ##     └─ Command Buffer
+    ## └─ PhysicalDevice
+    ##    └─ Device
+    ##       ├─ Buffer
+    ##       ├─ BufferView
+    ##       ├─ CommandPool
+    ##       │  └─ CommandBuffer
+    ##       ├─ DescriptorPool
+    ##       │  └─ DescriptorSet
+    ##       ├─ DescriptorSetLayout
+    ##       ├─ DeviceMemory
+    ##       ├─ Event
+    ##       ├─ Fence
+    ##       ├─ Framebuffer
+    ##       ├─ Image
+    ##       ├─ ImageView
+    ##       ├─ Pipeline
+    ##       ├─ PipelineCache
+    ##       ├─ PipelineLayout
+    ##       ├─ QueryPool
+    ##       ├─ Queue
+    ##       ├─ RenderPass
+    ##       ├─ Sampler
+    ##       ├─ Semaphore
+    ##       └─ ShaderModule
     */
     public class VKInit
     {

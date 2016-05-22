@@ -7,7 +7,7 @@ namespace Vulkan.Managed.ObjectModel
     {
         #region Instance
         
-        /// <param name="instance">ExternSync</param>
+        /// <param name="instance">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void Destroy(this Instance instance, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -43,7 +43,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateMirSurfaceKHR(instance, createInfo, allocator);
         }
         
-        /// <param name="surface">ExternSync</param>
+        /// <param name="surface">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroySurfaceKHR(this Instance instance, SurfaceKHR surface = default(SurfaceKHR), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -133,7 +133,6 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateDevice(physicalDevice, createInfo, allocator);
         }
         
-        /// <param name="physicalDevice">Optional</param>
         public static List<LayerProperties> EnumerateDeviceLayerProperties(this PhysicalDevice physicalDevice)
         {
             return Vk.EnumerateDeviceLayerProperties(physicalDevice);
@@ -237,7 +236,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.GetDeviceProcAddr(device, name);
         }
         
-        /// <param name="device">ExternSync</param>
+        /// <param name="device">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void Destroy(this Device device, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -260,7 +259,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.AllocateMemory(device, allocateInfo, allocator);
         }
         
-        /// <param name="memory">ExternSync</param>
+        /// <param name="memory">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void FreeMemory(this Device device, DeviceMemory memory = default(DeviceMemory), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -328,7 +327,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateFence(device, createInfo, allocator);
         }
         
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyFence(this Device device, Fence fence = default(Fence), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -357,7 +356,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateSemaphore(device, createInfo, allocator);
         }
         
-        /// <param name="semaphore">ExternSync</param>
+        /// <param name="semaphore">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroySemaphore(this Device device, Semaphore semaphore = default(Semaphore), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -370,7 +369,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateEvent(device, createInfo, allocator);
         }
         
-        /// <param name="@event">ExternSync</param>
+        /// <param name="@event">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyEvent(this Device device, Event @event = default(Event), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -400,7 +399,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateQueryPool(device, createInfo, allocator);
         }
         
-        /// <param name="queryPool">ExternSync</param>
+        /// <param name="queryPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyQueryPool(this Device device, QueryPool queryPool = default(QueryPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -419,7 +418,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateBuffer(device, createInfo, allocator);
         }
         
-        /// <param name="buffer">ExternSync</param>
+        /// <param name="buffer">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyBuffer(this Device device, Buffer buffer = default(Buffer), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -432,7 +431,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateBufferView(device, createInfo, allocator);
         }
         
-        /// <param name="bufferView">ExternSync</param>
+        /// <param name="bufferView">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyBufferView(this Device device, BufferView bufferView = default(BufferView), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -445,7 +444,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateImage(device, createInfo, allocator);
         }
         
-        /// <param name="image">ExternSync</param>
+        /// <param name="image">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyImage(this Device device, Image image = default(Image), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -463,7 +462,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateImageView(device, createInfo, allocator);
         }
         
-        /// <param name="imageView">ExternSync</param>
+        /// <param name="imageView">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyImageView(this Device device, ImageView imageView = default(ImageView), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -476,7 +475,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateShaderModule(device, createInfo, allocator);
         }
         
-        /// <param name="shaderModule">ExternSync</param>
+        /// <param name="shaderModule">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyShaderModule(this Device device, ShaderModule shaderModule = default(ShaderModule), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -489,7 +488,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreatePipelineCache(device, createInfo, allocator);
         }
         
-        /// <param name="pipelineCache">ExternSync</param>
+        /// <param name="pipelineCache">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyPipelineCache(this Device device, PipelineCache pipelineCache = default(PipelineCache), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -521,7 +520,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateComputePipelines(device, pipelineCache, createInfos, allocator);
         }
         
-        /// <param name="pipeline">ExternSync</param>
+        /// <param name="pipeline">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyPipeline(this Device device, Pipeline pipeline = default(Pipeline), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -534,7 +533,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreatePipelineLayout(device, createInfo, allocator);
         }
         
-        /// <param name="pipelineLayout">ExternSync</param>
+        /// <param name="pipelineLayout">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyPipelineLayout(this Device device, PipelineLayout pipelineLayout = default(PipelineLayout), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -547,7 +546,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateSampler(device, createInfo, allocator);
         }
         
-        /// <param name="sampler">ExternSync</param>
+        /// <param name="sampler">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroySampler(this Device device, Sampler sampler = default(Sampler), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -560,7 +559,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateDescriptorSetLayout(device, createInfo, allocator);
         }
         
-        /// <param name="descriptorSetLayout">ExternSync</param>
+        /// <param name="descriptorSetLayout">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyDescriptorSetLayout(this Device device, DescriptorSetLayout descriptorSetLayout = default(DescriptorSetLayout), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -573,7 +572,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateDescriptorPool(device, createInfo, allocator);
         }
         
-        /// <param name="descriptorPool">ExternSync</param>
+        /// <param name="descriptorPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyDescriptorPool(this Device device, DescriptorPool descriptorPool = default(DescriptorPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -593,7 +592,7 @@ namespace Vulkan.Managed.ObjectModel
         }
         
         /// <param name="descriptorPool">ExternSync</param>
-        /// <param name="descriptorSets">No Auto Validity</param>
+        /// <param name="descriptorSets">ExternSync, No Auto Validity</param>
         public static void FreeDescriptorSets(this Device device, DescriptorPool descriptorPool, List<DescriptorSet> descriptorSets)
         {
             Vk.FreeDescriptorSets(device, descriptorPool, descriptorSets);
@@ -610,7 +609,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateFramebuffer(device, createInfo, allocator);
         }
         
-        /// <param name="framebuffer">ExternSync</param>
+        /// <param name="framebuffer">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyFramebuffer(this Device device, Framebuffer framebuffer = default(Framebuffer), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -623,7 +622,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateRenderPass(device, createInfo, allocator);
         }
         
-        /// <param name="renderPass">ExternSync</param>
+        /// <param name="renderPass">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyRenderPass(this Device device, RenderPass renderPass = default(RenderPass), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -641,7 +640,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateCommandPool(device, createInfo, allocator);
         }
         
-        /// <param name="commandPool">ExternSync</param>
+        /// <param name="commandPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroyCommandPool(this Device device, CommandPool commandPool = default(CommandPool), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -661,7 +660,7 @@ namespace Vulkan.Managed.ObjectModel
         }
         
         /// <param name="commandPool">ExternSync</param>
-        /// <param name="commandBuffers">No Auto Validity</param>
+        /// <param name="commandBuffers">ExternSync, No Auto Validity</param>
         public static void FreeCommandBuffers(this Device device, CommandPool commandPool, List<CommandBuffer> commandBuffers)
         {
             Vk.FreeCommandBuffers(device, commandPool, commandBuffers);
@@ -679,7 +678,7 @@ namespace Vulkan.Managed.ObjectModel
             return Vk.CreateSwapchainKHR(device, createInfo, allocator);
         }
         
-        /// <param name="swapchain">ExternSync</param>
+        /// <param name="swapchain">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         public static void DestroySwapchainKHR(this Device device, SwapchainKHR swapchain = default(SwapchainKHR), AllocationCallbacks allocator = default(AllocationCallbacks))
         {
@@ -692,8 +691,8 @@ namespace Vulkan.Managed.ObjectModel
         }
         
         /// <param name="swapchain">ExternSync</param>
-        /// <param name="semaphore">ExternSync</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="semaphore">ExternSync, Optional</param>
+        /// <param name="fence">ExternSync, Optional</param>
         public static UInt32 AcquireNextImageKHR(this Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore = default(Semaphore), Fence fence = default(Fence))
         {
             return Vk.AcquireNextImageKHR(device, swapchain, timeout, semaphore, fence);
@@ -714,7 +713,7 @@ namespace Vulkan.Managed.ObjectModel
         #region Queue
         
         /// <param name="queue">ExternSync</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         public static void Submit(this Queue queue, List<SubmitInfo> submits, Fence fence = default(Fence))
         {
             Vk.QueueSubmit(queue, submits, fence);
@@ -729,7 +728,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="QueueFlags"/>: Sparse_binding] 
         /// </summary>
         /// <param name="queue">ExternSync</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         public static void BindSparse(this Queue queue, List<BindSparseInfo> bindInfo, Fence fence = default(Fence))
         {
             Vk.QueueBindSparse(queue, bindInfo, fence);

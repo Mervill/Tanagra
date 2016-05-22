@@ -61,7 +61,10 @@ namespace TanagraExample
 
             CreateInstance();
 
+            PhysicalDeviceProperties();
             QueueFamilyProperties();
+            WriteLine("");
+            GetPhysicalDeviceFeatures();
 
             CreateSurface();
             CreateDevice();
@@ -742,6 +745,9 @@ namespace TanagraExample
         private void GetPhysicalDeviceFeatures()
         {
             var physicalDeviceFeatures = physicalDevice.GetFeatures();
+            WriteLine("VkPhysicalDeviceFeatures:");
+            WriteLine("=========================");
+            WriteLine(physicalDeviceFeatures.Format());
         }
         
         private void PhysicalDeviceProperties()

@@ -12,12 +12,11 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateInstance", CallingConvention = callingConvention)]
         public static extern Result vkCreateInstance(InstanceCreateInfo* createInfo, AllocationCallbacks* allocator, IntPtr* instance);
         
-        /// <param name="instance">ExternSync</param>
+        /// <param name="instance">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyInstance", CallingConvention = callingConvention)]
         public static extern void vkDestroyInstance(IntPtr instance, AllocationCallbacks* allocator);
         
-        /// <param name="physicalDeviceCount">Optional</param>
         /// <param name="physicalDevices">Optional</param>
         [DllImport(DllName, EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = callingConvention)]
         public static extern Result vkEnumeratePhysicalDevices(IntPtr instance, UInt32* physicalDeviceCount, IntPtr* physicalDevices);
@@ -32,7 +31,6 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, PhysicalDeviceProperties* properties);
         
-        /// <param name="queueFamilyPropertyCount">Optional</param>
         /// <param name="queueFamilyProperties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceQueueFamilyProperties(IntPtr physicalDevice, UInt32* queueFamilyPropertyCount, QueueFamilyProperties* queueFamilyProperties);
@@ -54,30 +52,25 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateDevice", CallingConvention = callingConvention)]
         public static extern Result vkCreateDevice(IntPtr physicalDevice, DeviceCreateInfo* createInfo, AllocationCallbacks* allocator, IntPtr* device);
         
-        /// <param name="device">ExternSync</param>
+        /// <param name="device">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyDevice", CallingConvention = callingConvention)]
         public static extern void vkDestroyDevice(IntPtr device, AllocationCallbacks* allocator);
         
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateInstanceLayerProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateInstanceLayerProperties(UInt32* propertyCount, LayerProperties* properties);
         
         /// <param name="layerName">Optional</param>
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateInstanceExtensionProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateInstanceExtensionProperties(String layerName, UInt32* propertyCount, ExtensionProperties* properties);
         
-        /// <param name="physicalDevice">Optional</param>
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateDeviceLayerProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateDeviceLayerProperties(IntPtr physicalDevice, UInt32* propertyCount, LayerProperties* properties);
         
         /// <param name="layerName">Optional</param>
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateDeviceExtensionProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateDeviceExtensionProperties(IntPtr physicalDevice, String layerName, UInt32* propertyCount, ExtensionProperties* properties);
@@ -87,7 +80,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="queue">ExternSync</param>
         /// <param name="submitCount">Optional</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         [DllImport(DllName, EntryPoint = "vkQueueSubmit", CallingConvention = callingConvention)]
         public static extern Result vkQueueSubmit(IntPtr queue, UInt32 submitCount, SubmitInfo* submits, UInt64 fence);
         
@@ -101,7 +94,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkAllocateMemory", CallingConvention = callingConvention)]
         public static extern Result vkAllocateMemory(IntPtr device, MemoryAllocateInfo* allocateInfo, AllocationCallbacks* allocator, UInt64* memory);
         
-        /// <param name="memory">ExternSync</param>
+        /// <param name="memory">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkFreeMemory", CallingConvention = callingConvention)]
         public static extern void vkFreeMemory(IntPtr device, UInt64 memory, AllocationCallbacks* allocator);
@@ -138,12 +131,10 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkBindImageMemory", CallingConvention = callingConvention)]
         public static extern Result vkBindImageMemory(IntPtr device, UInt64 image, UInt64 memory, DeviceSize memoryOffset);
         
-        /// <param name="sparseMemoryRequirementCount">Optional</param>
         /// <param name="sparseMemoryRequirements">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetImageSparseMemoryRequirements", CallingConvention = callingConvention)]
         public static extern void vkGetImageSparseMemoryRequirements(IntPtr device, UInt64 image, UInt32* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
         
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceSparseImageFormatProperties(IntPtr physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling, UInt32* propertyCount, SparseImageFormatProperties* properties);
@@ -153,7 +144,7 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="queue">ExternSync</param>
         /// <param name="bindInfoCount">Optional</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         [DllImport(DllName, EntryPoint = "vkQueueBindSparse", CallingConvention = callingConvention)]
         public static extern Result vkQueueBindSparse(IntPtr queue, UInt32 bindInfoCount, BindSparseInfo* bindInfo, UInt64 fence);
         
@@ -161,7 +152,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateFence", CallingConvention = callingConvention)]
         public static extern Result vkCreateFence(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* fence);
         
-        /// <param name="fence">ExternSync</param>
+        /// <param name="fence">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyFence", CallingConvention = callingConvention)]
         public static extern void vkDestroyFence(IntPtr device, UInt64 fence, AllocationCallbacks* allocator);
@@ -180,7 +171,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateSemaphore", CallingConvention = callingConvention)]
         public static extern Result vkCreateSemaphore(IntPtr device, SemaphoreCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* semaphore);
         
-        /// <param name="semaphore">ExternSync</param>
+        /// <param name="semaphore">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroySemaphore", CallingConvention = callingConvention)]
         public static extern void vkDestroySemaphore(IntPtr device, UInt64 semaphore, AllocationCallbacks* allocator);
@@ -189,7 +180,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateEvent", CallingConvention = callingConvention)]
         public static extern Result vkCreateEvent(IntPtr device, EventCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* @event);
         
-        /// <param name="@event">ExternSync</param>
+        /// <param name="@event">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyEvent", CallingConvention = callingConvention)]
         public static extern void vkDestroyEvent(IntPtr device, UInt64 @event, AllocationCallbacks* allocator);
@@ -209,7 +200,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateQueryPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateQueryPool(IntPtr device, QueryPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* queryPool);
         
-        /// <param name="queryPool">ExternSync</param>
+        /// <param name="queryPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyQueryPool", CallingConvention = callingConvention)]
         public static extern void vkDestroyQueryPool(IntPtr device, UInt64 queryPool, AllocationCallbacks* allocator);
@@ -222,7 +213,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
         public static extern Result vkCreateBuffer(IntPtr device, BufferCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* buffer);
         
-        /// <param name="buffer">ExternSync</param>
+        /// <param name="buffer">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyBuffer", CallingConvention = callingConvention)]
         public static extern void vkDestroyBuffer(IntPtr device, UInt64 buffer, AllocationCallbacks* allocator);
@@ -231,7 +222,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateBufferView", CallingConvention = callingConvention)]
         public static extern Result vkCreateBufferView(IntPtr device, BufferViewCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* view);
         
-        /// <param name="bufferView">ExternSync</param>
+        /// <param name="bufferView">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyBufferView", CallingConvention = callingConvention)]
         public static extern void vkDestroyBufferView(IntPtr device, UInt64 bufferView, AllocationCallbacks* allocator);
@@ -240,7 +231,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateImage", CallingConvention = callingConvention)]
         public static extern Result vkCreateImage(IntPtr device, ImageCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* image);
         
-        /// <param name="image">ExternSync</param>
+        /// <param name="image">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyImage", CallingConvention = callingConvention)]
         public static extern void vkDestroyImage(IntPtr device, UInt64 image, AllocationCallbacks* allocator);
@@ -252,7 +243,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateImageView", CallingConvention = callingConvention)]
         public static extern Result vkCreateImageView(IntPtr device, ImageViewCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* view);
         
-        /// <param name="imageView">ExternSync</param>
+        /// <param name="imageView">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyImageView", CallingConvention = callingConvention)]
         public static extern void vkDestroyImageView(IntPtr device, UInt64 imageView, AllocationCallbacks* allocator);
@@ -261,7 +252,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateShaderModule", CallingConvention = callingConvention)]
         public static extern Result vkCreateShaderModule(IntPtr device, ShaderModuleCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* shaderModule);
         
-        /// <param name="shaderModule">ExternSync</param>
+        /// <param name="shaderModule">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyShaderModule", CallingConvention = callingConvention)]
         public static extern void vkDestroyShaderModule(IntPtr device, UInt64 shaderModule, AllocationCallbacks* allocator);
@@ -270,12 +261,11 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreatePipelineCache", CallingConvention = callingConvention)]
         public static extern Result vkCreatePipelineCache(IntPtr device, PipelineCacheCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* pipelineCache);
         
-        /// <param name="pipelineCache">ExternSync</param>
+        /// <param name="pipelineCache">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyPipelineCache", CallingConvention = callingConvention)]
         public static extern void vkDestroyPipelineCache(IntPtr device, UInt64 pipelineCache, AllocationCallbacks* allocator);
         
-        /// <param name="dataSize">Optional</param>
         /// <param name="data">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
         public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, UInt32* dataSize, IntPtr* data);
@@ -294,7 +284,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateComputePipelines", CallingConvention = callingConvention)]
         public static extern Result vkCreateComputePipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
         
-        /// <param name="pipeline">ExternSync</param>
+        /// <param name="pipeline">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyPipeline", CallingConvention = callingConvention)]
         public static extern void vkDestroyPipeline(IntPtr device, UInt64 pipeline, AllocationCallbacks* allocator);
@@ -303,7 +293,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreatePipelineLayout", CallingConvention = callingConvention)]
         public static extern Result vkCreatePipelineLayout(IntPtr device, PipelineLayoutCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* pipelineLayout);
         
-        /// <param name="pipelineLayout">ExternSync</param>
+        /// <param name="pipelineLayout">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyPipelineLayout", CallingConvention = callingConvention)]
         public static extern void vkDestroyPipelineLayout(IntPtr device, UInt64 pipelineLayout, AllocationCallbacks* allocator);
@@ -312,7 +302,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateSampler", CallingConvention = callingConvention)]
         public static extern Result vkCreateSampler(IntPtr device, SamplerCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* sampler);
         
-        /// <param name="sampler">ExternSync</param>
+        /// <param name="sampler">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroySampler", CallingConvention = callingConvention)]
         public static extern void vkDestroySampler(IntPtr device, UInt64 sampler, AllocationCallbacks* allocator);
@@ -321,7 +311,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateDescriptorSetLayout", CallingConvention = callingConvention)]
         public static extern Result vkCreateDescriptorSetLayout(IntPtr device, DescriptorSetLayoutCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* setLayout);
         
-        /// <param name="descriptorSetLayout">ExternSync</param>
+        /// <param name="descriptorSetLayout">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyDescriptorSetLayout", CallingConvention = callingConvention)]
         public static extern void vkDestroyDescriptorSetLayout(IntPtr device, UInt64 descriptorSetLayout, AllocationCallbacks* allocator);
@@ -330,7 +320,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateDescriptorPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateDescriptorPool(IntPtr device, DescriptorPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* descriptorPool);
         
-        /// <param name="descriptorPool">ExternSync</param>
+        /// <param name="descriptorPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyDescriptorPool", CallingConvention = callingConvention)]
         public static extern void vkDestroyDescriptorPool(IntPtr device, UInt64 descriptorPool, AllocationCallbacks* allocator);
@@ -344,7 +334,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkAllocateDescriptorSets(IntPtr device, DescriptorSetAllocateInfo* allocateInfo, UInt64* descriptorSets);
         
         /// <param name="descriptorPool">ExternSync</param>
-        /// <param name="descriptorSets">No Auto Validity</param>
+        /// <param name="descriptorSets">ExternSync, No Auto Validity</param>
         [DllImport(DllName, EntryPoint = "vkFreeDescriptorSets", CallingConvention = callingConvention)]
         public static extern Result vkFreeDescriptorSets(IntPtr device, UInt64 descriptorPool, UInt32 descriptorSetCount, UInt64* descriptorSets);
         
@@ -357,7 +347,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateFramebuffer", CallingConvention = callingConvention)]
         public static extern Result vkCreateFramebuffer(IntPtr device, FramebufferCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* framebuffer);
         
-        /// <param name="framebuffer">ExternSync</param>
+        /// <param name="framebuffer">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyFramebuffer", CallingConvention = callingConvention)]
         public static extern void vkDestroyFramebuffer(IntPtr device, UInt64 framebuffer, AllocationCallbacks* allocator);
@@ -366,7 +356,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateRenderPass", CallingConvention = callingConvention)]
         public static extern Result vkCreateRenderPass(IntPtr device, RenderPassCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* renderPass);
         
-        /// <param name="renderPass">ExternSync</param>
+        /// <param name="renderPass">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyRenderPass", CallingConvention = callingConvention)]
         public static extern void vkDestroyRenderPass(IntPtr device, UInt64 renderPass, AllocationCallbacks* allocator);
@@ -378,7 +368,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateCommandPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateCommandPool(IntPtr device, CommandPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* commandPool);
         
-        /// <param name="commandPool">ExternSync</param>
+        /// <param name="commandPool">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroyCommandPool", CallingConvention = callingConvention)]
         public static extern void vkDestroyCommandPool(IntPtr device, UInt64 commandPool, AllocationCallbacks* allocator);
@@ -392,7 +382,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkAllocateCommandBuffers(IntPtr device, CommandBufferAllocateInfo* allocateInfo, IntPtr* commandBuffers);
         
         /// <param name="commandPool">ExternSync</param>
-        /// <param name="commandBuffers">No Auto Validity</param>
+        /// <param name="commandBuffers">ExternSync, No Auto Validity</param>
         [DllImport(DllName, EntryPoint = "vkFreeCommandBuffers", CallingConvention = callingConvention)]
         public static extern void vkFreeCommandBuffers(IntPtr device, UInt64 commandPool, UInt32 commandBufferCount, IntPtr* commandBuffers);
         
@@ -731,22 +721,18 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateAndroidSurfaceKHR(IntPtr instance, AndroidSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceDisplayPropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(IntPtr physicalDevice, UInt32* propertyCount, DisplayPropertiesKHR* properties);
         
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceDisplayPlanePropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR(IntPtr physicalDevice, UInt32* propertyCount, DisplayPlanePropertiesKHR* properties);
         
-        /// <param name="displayCount">Optional</param>
         /// <param name="displays">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetDisplayPlaneSupportedDisplaysKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetDisplayPlaneSupportedDisplaysKHR(IntPtr physicalDevice, UInt32 planeIndex, UInt32* displayCount, UInt64* displays);
         
-        /// <param name="propertyCount">Optional</param>
         /// <param name="properties">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetDisplayModePropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetDisplayModePropertiesKHR(IntPtr physicalDevice, UInt64 display, UInt32* propertyCount, DisplayModePropertiesKHR* properties);
@@ -775,7 +761,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceMirPresentationSupportKHR", CallingConvention = callingConvention)]
         public static extern Bool32 vkGetPhysicalDeviceMirPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, IntPtr* connection);
         
-        /// <param name="surface">ExternSync</param>
+        /// <param name="surface">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroySurfaceKHR", CallingConvention = callingConvention)]
         public static extern void vkDestroySurfaceKHR(IntPtr instance, UInt64 surface, AllocationCallbacks* allocator);
@@ -786,12 +772,10 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceCapabilitiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfaceCapabilitiesKHR(IntPtr physicalDevice, UInt64 surface, SurfaceCapabilitiesKHR* surfaceCapabilities);
         
-        /// <param name="surfaceFormatCount">Optional</param>
         /// <param name="surfaceFormats">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceFormatsKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, UInt64 surface, UInt32* surfaceFormatCount, SurfaceFormatKHR* surfaceFormats);
         
-        /// <param name="presentModeCount">Optional</param>
         /// <param name="presentModes">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, UInt64 surface, UInt32* presentModeCount, PresentModeKHR* presentModes);
@@ -800,19 +784,18 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* swapchain);
         
-        /// <param name="swapchain">ExternSync</param>
+        /// <param name="swapchain">ExternSync, Optional</param>
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkDestroySwapchainKHR", CallingConvention = callingConvention)]
         public static extern void vkDestroySwapchainKHR(IntPtr device, UInt64 swapchain, AllocationCallbacks* allocator);
         
-        /// <param name="swapchainImageCount">Optional</param>
         /// <param name="swapchainImages">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetSwapchainImagesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetSwapchainImagesKHR(IntPtr device, UInt64 swapchain, UInt32* swapchainImageCount, UInt64* swapchainImages);
         
         /// <param name="swapchain">ExternSync</param>
-        /// <param name="semaphore">ExternSync</param>
-        /// <param name="fence">ExternSync</param>
+        /// <param name="semaphore">ExternSync, Optional</param>
+        /// <param name="fence">ExternSync, Optional</param>
         [DllImport(DllName, EntryPoint = "vkAcquireNextImageKHR", CallingConvention = callingConvention)]
         public static extern Result vkAcquireNextImageKHR(IntPtr device, UInt64 swapchain, UInt64 timeout, UInt64 semaphore, UInt64 fence, UInt32* imageIndex);
         

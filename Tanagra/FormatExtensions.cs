@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 using Vulkan;
 using Vulkan.Managed;
@@ -13,6 +14,8 @@ namespace Tanagra
     {
         public static string Format(this Extent3D extent3D)
             => $"({extent3D.Width}, {extent3D.Height}, {extent3D.Depth})";
+        
+        // PhysicalDeviceProperties
 
         public static string Format(this QueueFamilyProperties queueFamilyProperties)
         {
@@ -30,5 +33,38 @@ namespace Tanagra
 
             return sb.ToString();
         }
+
+        // PhysicalDeviceMemoryProperties
+
+        public static string Format(this PhysicalDeviceFeatures physicalDeviceFeatures)
+        {
+            var sb = new StringBuilder();
+
+            var type = physicalDeviceFeatures.GetType();
+            var members = type.GetFields();
+
+            foreach (var member in members)
+                sb.AppendLine($"{member.Name,-39} = {member.GetValue(physicalDeviceFeatures)}");
+
+            return sb.ToString();
+        }
+
+        // FormatProperties--
+
+        // ImageFormatProperties--
+
+        // LayerProperties
+
+        // ExtensionProperties
+
+        // SparseImageFormatProperties--
+
+        // DisplayPropertiesKHR
+
+        // DisplayPlanePropertiesKHR
+
+        // DisplayModePropertiesKHR
+
+        //DisplayPlaneCapabilitiesKHR--
     }
 }

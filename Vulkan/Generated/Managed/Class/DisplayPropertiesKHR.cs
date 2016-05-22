@@ -20,7 +20,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Name of the display
         /// </summary>
-        public string DisplayName
+        public String DisplayName
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->DisplayName); }
             set { NativePointer->DisplayName = Marshal.StringToHGlobalAnsi(value); }

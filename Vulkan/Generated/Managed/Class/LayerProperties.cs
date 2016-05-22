@@ -13,7 +13,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Layer name
         /// </summary>
-        public string LayerName
+        public String LayerName
         {
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->LayerName); }
         }
@@ -37,7 +37,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Free-form description of the layer
         /// </summary>
-        public string Description
+        public String Description
         {
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->Description); }
         }

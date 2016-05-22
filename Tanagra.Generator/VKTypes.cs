@@ -97,7 +97,7 @@ namespace Tanagra.Generator
         //   asciidoc text describing  that requirement.
         public string[] Validity { get; set; }
         
-        public bool HasPointerMembers => Members.Any(x => x.IsPointer || x.Type.Name == "Char");
+        public bool ContainsPointers => Members.Any(x => x.IsPointer);
 
         /// <summary>
         /// https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#extensions-interactions

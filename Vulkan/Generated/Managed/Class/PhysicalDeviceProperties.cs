@@ -35,7 +35,7 @@ namespace Vulkan.Managed
             get { return NativePointer->DeviceType; }
         }
         
-        public string DeviceName
+        public String DeviceName
         {
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->DeviceName); }
         }

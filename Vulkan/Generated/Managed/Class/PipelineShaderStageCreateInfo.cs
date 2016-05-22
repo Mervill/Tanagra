@@ -38,7 +38,7 @@ namespace Vulkan.Managed
         /// <summary>
         /// Null-terminated entry point name
         /// </summary>
-        public string Name
+        public String Name
         {
             get { return Marshal.PtrToStringAnsi(NativePointer->Name); }
             set { NativePointer->Name = Marshal.StringToHGlobalAnsi(value); }
