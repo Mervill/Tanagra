@@ -58,7 +58,7 @@ namespace Tanagra
             _tabs = 0;
             WriteLine("PhysicalDeviceMemoryProperties");
             WriteLine("==============================");
-            //var physicalDeviceMemoryProperties = physicalDevice.GetMemoryProperties();
+            var physicalDeviceMemoryProperties = physicalDevice.GetMemoryProperties();
             //PhysicalDeviceMemoryProperties(physicalDeviceMemoryProperties);
             WriteLine("");
 

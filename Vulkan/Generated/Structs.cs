@@ -156,6 +156,8 @@ namespace Vulkan
     {
         public struct MemoryTypesInfo
         {
+            public const UInt32 Length = 32;
+            
             public MemoryType Value0;
             public MemoryType Value1;
             public MemoryType Value2;
@@ -188,9 +190,54 @@ namespace Vulkan
             public MemoryType Value29;
             public MemoryType Value30;
             public MemoryType Value31;
+            
+            public MemoryType this[uint key]
+            {
+                get
+                {
+                    switch(key)
+                    {
+                        default: throw new IndexOutOfRangeException();
+                        case 0: return Value0;
+                        case 1: return Value1;
+                        case 2: return Value2;
+                        case 3: return Value3;
+                        case 4: return Value4;
+                        case 5: return Value5;
+                        case 6: return Value6;
+                        case 7: return Value7;
+                        case 8: return Value8;
+                        case 9: return Value9;
+                        case 10: return Value10;
+                        case 11: return Value11;
+                        case 12: return Value12;
+                        case 13: return Value13;
+                        case 14: return Value14;
+                        case 15: return Value15;
+                        case 16: return Value16;
+                        case 17: return Value17;
+                        case 18: return Value18;
+                        case 19: return Value19;
+                        case 20: return Value20;
+                        case 21: return Value21;
+                        case 22: return Value22;
+                        case 23: return Value23;
+                        case 24: return Value24;
+                        case 25: return Value25;
+                        case 26: return Value26;
+                        case 27: return Value27;
+                        case 28: return Value28;
+                        case 29: return Value29;
+                        case 30: return Value30;
+                        case 31: return Value31;
+                    }
+                }
+            }
         }
         public struct MemoryHeapsInfo
         {
+            public const UInt32 Length = 16;
+            
             public MemoryHeap Value0;
             public MemoryHeap Value1;
             public MemoryHeap Value2;
@@ -207,6 +254,33 @@ namespace Vulkan
             public MemoryHeap Value13;
             public MemoryHeap Value14;
             public MemoryHeap Value15;
+            
+            public MemoryHeap this[uint key]
+            {
+                get
+                {
+                    switch(key)
+                    {
+                        default: throw new IndexOutOfRangeException();
+                        case 0: return Value0;
+                        case 1: return Value1;
+                        case 2: return Value2;
+                        case 3: return Value3;
+                        case 4: return Value4;
+                        case 5: return Value5;
+                        case 6: return Value6;
+                        case 7: return Value7;
+                        case 8: return Value8;
+                        case 9: return Value9;
+                        case 10: return Value10;
+                        case 11: return Value11;
+                        case 12: return Value12;
+                        case 13: return Value13;
+                        case 14: return Value14;
+                        case 15: return Value15;
+                    }
+                }
+            }
         }
         public UInt32 MemoryTypeCount;
         public MemoryTypesInfo MemoryTypes;
@@ -469,13 +543,43 @@ namespace Vulkan
     {
         public struct SrcOffsetsInfo
         {
+            public const UInt32 Length = 2;
+            
             public Offset3D Value0;
             public Offset3D Value1;
+            
+            public Offset3D this[uint key]
+            {
+                get
+                {
+                    switch(key)
+                    {
+                        default: throw new IndexOutOfRangeException();
+                        case 0: return Value0;
+                        case 1: return Value1;
+                    }
+                }
+            }
         }
         public struct DstOffsetsInfo
         {
+            public const UInt32 Length = 2;
+            
             public Offset3D Value0;
             public Offset3D Value1;
+            
+            public Offset3D this[uint key]
+            {
+                get
+                {
+                    switch(key)
+                    {
+                        default: throw new IndexOutOfRangeException();
+                        case 0: return Value0;
+                        case 1: return Value1;
+                    }
+                }
+            }
         }
         public ImageSubresourceLayers SrcSubresource;
         /// <summary>

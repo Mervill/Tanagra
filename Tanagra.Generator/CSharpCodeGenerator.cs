@@ -301,10 +301,8 @@ namespace Tanagra.Generator
 
             WriteLine($"{vis} struct {vkStruct.Name}");
             WriteBeginBlock();
-
-            //if(vkStruct.IsImportedType)
-            //WriteLine("// Imported type");
-
+            
+            // Is this really the best workaround? ...
             var fixedTypes = vkStruct.Members.Where(x => x.IsFixedSize);
             if (fixedTypes.Any())
             {
@@ -337,10 +335,25 @@ namespace Tanagra.Generator
                     else
                     {
                         var fixedSize = int.Parse(vkFixedMember.FixedSize);
+                        WriteLine($"public const UInt32 Length = {fixedSize};");
+                        WriteLine("");
                         for (var x = 0; x < fixedSize; x++)
-                        {
                             WriteLine($"public {vkFixedMember.Type} Value{x};");
-                        }
+                        
+                        WriteLine("");
+                        WriteLine($"public {vkFixedMember.Type} this[uint key]");
+                        WriteBeginBlock();
+                        WriteLine("get");
+                        WriteBeginBlock();
+                        WriteLine("switch(key)");
+                        WriteBeginBlock();
+                        WriteLine("default: throw new IndexOutOfRangeException();");
+                        for(var x = 0; x < fixedSize; x++)
+                            WriteLine($"case {x}: return Value{x};");
+                        
+                        WriteEndBlock();
+                        WriteEndBlock();
+                        WriteEndBlock();
                     }
                     WriteEndBlock();
                 }

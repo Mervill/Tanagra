@@ -10,11 +10,11 @@ namespace Tanagra
 {
     public class Texture
     {
-        Sampler sampler;
-        Image image;
-        ImageLayout imageLayout;
-        DeviceMemory deviceMemory;
-        ImageView view;
+        public Sampler sampler;
+        public Image image;
+        public ImageLayout imageLayout;
+        public DeviceMemory deviceMemory;
+        public ImageView view;
         public uint Width { get; private set; }
         public uint Height { get; private set; }
         public uint MipLevels { get; private set; }

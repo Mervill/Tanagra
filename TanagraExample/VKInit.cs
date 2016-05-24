@@ -98,7 +98,7 @@ namespace TanagraExample
             };
 
             pipelineLayout = CreatePipelineLayout(device);
-            pipelines = CreatePipeline(device, pipelineLayout, renderPass, shaderStageCreateInfos, vertexBindingDescriptions, vertexAttributeDescriptions);
+            pipelines = CreatePipelines(device, pipelineLayout, renderPass, shaderStageCreateInfos, vertexBindingDescriptions, vertexAttributeDescriptions);
             pipeline = pipelines[0];
             image = CreateImage(device);
             imageView = CreateImageView(device, image);
@@ -334,7 +334,7 @@ namespace TanagraExample
             return device.CreatePipelineLayout(createInfo);
         }
 
-        List<Pipeline> CreatePipeline(Device device, PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexInputBindingDescription[] vertexBindingDescriptions, VertexInputAttributeDescription[] vertexAttributeDescriptions)
+        List<Pipeline> CreatePipelines(Device device, PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexInputBindingDescription[] vertexBindingDescriptions, VertexInputAttributeDescription[] vertexAttributeDescriptions)
         {
             // Some Vulkan commands specify geometric objects to be drawn or computational work to be 
             // performed, while others specify state controlling how objects are handled by the various 
@@ -358,10 +358,7 @@ namespace TanagraExample
             // values using a two-dimensional description of a point, line segment, or triangle. Each 
             // fragment so produced is fed to the next stage (Fragment Shader) that performs operations 
             // on individual fragments before they finally alter the framebuffer.
-            var rasterizationState = new PipelineRasterizationStateCreateInfo
-            {
-                FrontFace   = FrontFace.Clockwise,
-            };
+            var rasterizationState = new PipelineRasterizationStateCreateInfo();
 
             var createInfos = new[]
             {

@@ -9,6 +9,8 @@ namespace Vulkan.Unmanaged
     {
         public struct PipelineCacheUUIDInfo
         {
+            public const UInt32 Length = 16;
+            
             public Byte Value0;
             public Byte Value1;
             public Byte Value2;
@@ -25,6 +27,33 @@ namespace Vulkan.Unmanaged
             public Byte Value13;
             public Byte Value14;
             public Byte Value15;
+            
+            public Byte this[uint key]
+            {
+                get
+                {
+                    switch(key)
+                    {
+                        default: throw new IndexOutOfRangeException();
+                        case 0: return Value0;
+                        case 1: return Value1;
+                        case 2: return Value2;
+                        case 3: return Value3;
+                        case 4: return Value4;
+                        case 5: return Value5;
+                        case 6: return Value6;
+                        case 7: return Value7;
+                        case 8: return Value8;
+                        case 9: return Value9;
+                        case 10: return Value10;
+                        case 11: return Value11;
+                        case 12: return Value12;
+                        case 13: return Value13;
+                        case 14: return Value14;
+                        case 15: return Value15;
+                    }
+                }
+            }
         }
         public UInt32 ApiVersion;
         public UInt32 DriverVersion;
