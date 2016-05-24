@@ -66,11 +66,6 @@
     <Compile Include="Allocation\Delegates.cs" />
     <Compile Include="Allocation\IAllocator.cs" />
     <Compile Include="Allocation\IAllocatorNotification.cs" />
-    <Compile Include="Struct\Bool32.cs" />
-    <Compile Include="Union\ClearColorValue.cs" />
-    <Compile Include="Union\ClearValue.cs" />
-    <Compile Include="DebugUtils.cs" />
-    <Compile Include="Struct\DeviceSize.cs" />
     <Compile Include="Generated\Enum\AccessFlags.cs" />
     <Compile Include="Generated\Enum\AndroidSurfaceCreateFlagsKHR.cs" />
     <Compile Include="Generated\Enum\AttachmentDescriptionFlags.cs" />
@@ -248,7 +243,6 @@
     <Compile Include="Generated\Managed\Class\FenceCreateInfo.cs" />
     <Compile Include="Generated\Managed\Class\FramebufferCreateInfo.cs" />
     <Compile Include="Generated\Managed\Class\GraphicsPipelineCreateInfo.cs" />
-    <Compile Include="Generated\Managed\Class\ImageBlit.cs" />
     <Compile Include="Generated\Managed\Class\ImageCreateInfo.cs" />
     <Compile Include="Generated\Managed\Class\ImageMemoryBarrier.cs" />
     <Compile Include="Generated\Managed\Class\ImageViewCreateInfo.cs" />
@@ -258,8 +252,6 @@
     <Compile Include="Generated\Managed\Class\MemoryAllocateInfo.cs" />
     <Compile Include="Generated\Managed\Class\MemoryBarrier.cs" />
     <Compile Include="Generated\Managed\Class\MirSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Managed\Class\PhysicalDeviceLimits.cs" />
-    <Compile Include="Generated\Managed\Class\PhysicalDeviceMemoryProperties.cs" />
     <Compile Include="Generated\Managed\Class\PhysicalDeviceProperties.cs" />
     <Compile Include="Generated\Managed\Class\PipelineCacheCreateInfo.cs" />
     <Compile Include="Generated\Managed\Class\PipelineColorBlendStateCreateInfo.cs" />
@@ -301,6 +293,11 @@
     <Compile Include="Generated\Unmanaged\Structs.cs" />
     <Compile Include="Generated\Unmanaged\VulkanBinding.cs" />
     <Compile Include="Generated\VulkanConstant.cs" />
+    <Compile Include="Struct\Bool32.cs" />
+    <Compile Include="Union\ClearColorValue.cs" />
+    <Compile Include="Union\ClearValue.cs" />
+    <Compile Include="DebugUtils.cs" />
+    <Compile Include="Struct\DeviceSize.cs" />
     <Compile Include="Allocation\Allocator.cs" />
     <Compile Include="MemoryUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

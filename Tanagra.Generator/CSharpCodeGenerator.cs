@@ -54,7 +54,10 @@ namespace Tanagra.Generator
         readonly List<string> platformStructTypes;
         readonly List<string> disabledStructs;
         readonly List<string> disabledCommands;
-        
+        readonly List<string> isFixedRange;
+        readonly List<string> isFixedVector;
+        readonly List<string> isFixedColor;
+
         public Dictionary<string, string> files;
 
         const string NativePointer           = "NativePointer";
@@ -99,6 +102,26 @@ namespace Tanagra.Generator
 
             disabledCommands = new List<string>
             {
+            };
+
+            isFixedRange = new List<string>
+            {
+                "ViewportBoundsRange",
+                "PointSizeRange",
+                "LineWidthRange",
+            };
+
+            isFixedVector = new List<string>
+            {
+                "MaxComputeWorkGroupCount",
+                "MaxComputeWorkGroupSize",
+                "MaxViewportDimensions" // vec2
+            };
+
+            isFixedColor = new List<string>
+            {
+                "BlendConstants",
+                "Color",
             };
         }
 
@@ -279,8 +302,49 @@ namespace Tanagra.Generator
             WriteLine($"{vis} struct {vkStruct.Name}");
             WriteBeginBlock();
 
-            if(vkStruct.IsImportedType)
-                WriteLine("// Imported type");
+            //if(vkStruct.IsImportedType)
+            //WriteLine("// Imported type");
+
+            var fixedTypes = vkStruct.Members.Where(x => x.IsFixedSize);
+            if (fixedTypes.Any())
+            {
+                foreach (var vkFixedMember in fixedTypes)
+                {
+                    if (vkFixedMember.Type.Name == "String")
+                        continue;
+                    
+                    WriteLine($"public struct {vkFixedMember.Name}Info");
+                    WriteBeginBlock();
+                    if (isFixedRange.Contains(vkFixedMember.Name))
+                    {
+                        WriteLine($"public {vkFixedMember.Type} Min;");
+                        WriteLine($"public {vkFixedMember.Type} Max;");
+                    }
+                    else if (isFixedVector.Contains(vkFixedMember.Name))
+                    {
+                        WriteLine($"public {vkFixedMember.Type} X;");
+                        WriteLine($"public {vkFixedMember.Type} Y;");
+                        if (vkFixedMember.Name != "MaxViewportDimensions")
+                            WriteLine($"public {vkFixedMember.Type} Z;");
+                    }
+                    else if (isFixedColor.Contains(vkFixedMember.Name))
+                    {
+                        WriteLine($"public {vkFixedMember.Type} R;");
+                        WriteLine($"public {vkFixedMember.Type} G;");
+                        WriteLine($"public {vkFixedMember.Type} B;");
+                        WriteLine($"public {vkFixedMember.Type} A;");
+                    }
+                    else
+                    {
+                        var fixedSize = int.Parse(vkFixedMember.FixedSize);
+                        for (var x = 0; x < fixedSize; x++)
+                        {
+                            WriteLine($"public {vkFixedMember.Type} Value{x};");
+                        }
+                    }
+                    WriteEndBlock();
+                }
+            }
 
             foreach(var vkMember in vkStruct.Members)
             {
@@ -288,17 +352,17 @@ namespace Tanagra.Generator
 
                 if(vkMember.IsFixedSize)
                 {
-                    if(!IsPlatformStruct(vkMember.Type))
+                    if (vkMember.Type.Name == "String")
                     {
-                        WriteLine($"public {vkMember.Type} {vkMember.Name};");
+                        var fixedType = vkMember.Type.ToString();
+                        if (fixedType == "String")
+                            fixedType = "Byte";
+
+                        WriteLine($"public unsafe fixed {fixedType} {vkMember.Name}[{vkMember.FixedSize}];");
                     }
                     else
                     {
-                        var fixedType = vkMember.Type.ToString();
-                        if(fixedType == "String")
-                            fixedType = "byte";
-
-                        WriteLine($"public unsafe fixed {fixedType} {vkMember.Name}[{vkMember.FixedSize}];");
+                        WriteLine($"public {vkMember.Name}Info {vkMember.Name};");
                     }
                     continue;
                 }
@@ -329,10 +393,20 @@ namespace Tanagra.Generator
 
                 if(mandatoryMembers.Any())
                 {
-                    var mandatoryMemberString = String.Join(", ", mandatoryMembers);
+                    //var mandatoryMemberString = String.Join(", ", mandatoryMembers);
+                    var mandatoryMemberStrings = new List<string>();
+                    foreach (var member in mandatoryMembers)
+                    {
+                        if (member.IsFixedSize)
+                        {
+                            mandatoryMemberStrings.Add($"{member.Name}Info {member.Name}");
+                            continue;
+                        }
+                        mandatoryMemberStrings.Add($"{member.Type} {member.Name}");
+                    }
 
                     WriteLine("");
-                    WriteLine($"public {vkStruct.Name}({mandatoryMemberString})");
+                    WriteLine($"public {vkStruct.Name}({string.Join(", ", mandatoryMemberStrings)})");
                     WriteBeginBlock();
 
                     foreach(var vkMember in mandatoryMembers)
@@ -431,7 +505,8 @@ namespace Tanagra.Generator
                 WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
                 WriteLine("/// </summary>");
             }
-            WriteLine($"unsafe public class {vkStruct.Name} : IDisposable");
+            string idisposable = (!vkStruct.ReturnedOnly) ? " : IDisposable" : string.Empty;
+            WriteLine($"unsafe public class {vkStruct.Name}{idisposable}");
             WriteBeginBlock();
             WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer};");
             WriteLine("");
@@ -454,6 +529,22 @@ namespace Tanagra.Generator
 
                 if(vkMember.IsArray)
                 {
+                    if (vkMember.IsFixedSize)
+                    {
+                        WriteMemberComments(vkMember);
+                        var prefix = string.Empty;
+                        if (IsInteropStruct(vkStruct))
+                            prefix = $"{UnmanagedNS}.{vkStruct.Name}.";
+                        WriteLine($"public {prefix}{vkMember.Name}Info {vkMember.Name}");
+                        WriteBeginBlock();
+                        WriteLine($"get {{ return {NativePointer}->{vkMember.Name}; }}");
+                        if (!vkStruct.ReturnedOnly)
+                            WriteLine($"set {{ {NativePointer}->{vkMember.Name} = value; }}");
+                        WriteEndBlock();
+                        WriteLine("");
+                        continue;
+                    }
+
                     WriteMemeberArray(vkMember, vkStruct.ReturnedOnly);
                     WriteLine("");
                     continue;
@@ -501,13 +592,23 @@ namespace Tanagra.Generator
                         continue;
                     }
 
+                    if (vkMember.IsFixedSize)
+                    {
+                        var prefix = string.Empty;
+                        if (IsInteropStruct(vkStruct))
+                            prefix = $"{UnmanagedNS}.{vkStruct.Name}.";
+                        memberTypeName = $"{prefix}{memberName}Info";
+                        cotorParams.Add(memberName, memberTypeName);
+                        continue;
+                    }
+
                     if (vkMember.IsArray)
                     {
                         memberTypeName += "[]";
                         cotorParams.Add(memberName, memberTypeName);
                         continue;
                     }
-
+                    
                     cotorParams.Add(memberName, memberTypeName);
                 }
 
@@ -522,26 +623,26 @@ namespace Tanagra.Generator
 
                     WriteEndBlock();
                 }
-            }
 
-            // IDisposable and Finalizer
-            WriteLine("");
-            WriteLine("public void Dispose()");
-            WriteBeginBlock();
-            WriteManagedCleanup(vkStruct);
-            WriteLine("GC.SuppressFinalize(this);");
+                // IDisposable and Finalizer
+                WriteLine("");
+                WriteLine("public void Dispose()");
+                WriteBeginBlock();
+                WriteManagedCleanup(vkStruct);
+                WriteLine("GC.SuppressFinalize(this);");
+                WriteEndBlock();
+                WriteLine("");
+                WriteLine($"~{vkStruct.Name}()");
+                WriteBeginBlock();
+                WriteLine($"if({NativePointer} != ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero)");
+                WriteBeginBlock();
+                WriteManagedCleanup(vkStruct);
+                WriteEndBlock();
+                WriteEndBlock();
+            }
             WriteEndBlock();
-            WriteLine("");
-            WriteLine($"~{vkStruct.Name}()");
-            WriteBeginBlock();
-            WriteLine($"if({NativePointer} != ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero)");
-            WriteBeginBlock();
-            WriteManagedCleanup(vkStruct);
             WriteEndBlock();
-            WriteEndBlock();
-            WriteEndBlock();
-            WriteEndBlock();
-            
+
             return _sb.ToString();
         }
 
@@ -672,12 +773,6 @@ namespace Tanagra.Generator
 
         void WriteMemeberArray(VkMember vkMember, bool readOnly)
         {
-            if (vkMember.IsFixedSize)
-            {
-                WriteNotImplementedArray(vkMember, "IsFixedSize", readOnly);
-                return;
-            }
-
             var countName = vkMember.Len[0];
             if(countName.StartsWith("Latexmath"))
             {
@@ -1536,7 +1631,7 @@ namespace Tanagra.Generator
         bool IsInteropStruct(VkStruct vkStruct)
             => vkStruct.ContainsPointers
             || vkStruct.Members.Any(y => y.Type is VkHandle)
-            || vkStruct.Members.Any(y => y.IsFixedSize);
+            || vkStruct.Members.Any(y => y.IsFixedSize && (y.Type.Name == "String")); // 
 
         GeneratedObjectInfo CreateFile(string fileName, string fileNamespace, string[] fileUsing, params GeneratedObjectInfo[] fileObjects)
         {

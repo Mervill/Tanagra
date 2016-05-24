@@ -23,9 +23,12 @@ namespace Vulkan
         {
             value = versionCode;
         }
-
+        
         public static implicit operator uint(Version version)
             => version.value;
+
+        public static implicit operator Version(uint version)
+            => new Version(version);
 
         public override string ToString()
             => $"{Major}.{Minor}.{Patch}";

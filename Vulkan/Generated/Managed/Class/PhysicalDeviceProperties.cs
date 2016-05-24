@@ -6,7 +6,7 @@ namespace Vulkan.Managed
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
-    unsafe public class PhysicalDeviceProperties : IDisposable
+    unsafe public class PhysicalDeviceProperties
     {
         internal Unmanaged.PhysicalDeviceProperties* NativePointer;
         
@@ -40,17 +40,14 @@ namespace Vulkan.Managed
             get { return Marshal.PtrToStringAnsi((IntPtr)NativePointer->DeviceName); }
         }
         
-        public Byte[] PipelineCacheUUID
+        public Unmanaged.PhysicalDeviceProperties.PipelineCacheUUIDInfo PipelineCacheUUID
         {
-            get
-            {
-                throw new System.NotImplementedException("IsFixedSize");
-            }
+            get { return NativePointer->PipelineCacheUUID; }
         }
         
         public PhysicalDeviceLimits Limits
         {
-            get { return new PhysicalDeviceLimits { NativePointer = &NativePointer->Limits }; }
+            get { return NativePointer->Limits; }
         }
         
         public PhysicalDeviceSparseProperties SparseProperties
@@ -61,22 +58,6 @@ namespace Vulkan.Managed
         internal PhysicalDeviceProperties()
         {
             NativePointer = (Unmanaged.PhysicalDeviceProperties*)MemoryUtils.Allocate(typeof(Unmanaged.PhysicalDeviceProperties));
-        }
-        
-        public void Dispose()
-        {
-            MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PhysicalDeviceProperties*)IntPtr.Zero;
-            GC.SuppressFinalize(this);
-        }
-        
-        ~PhysicalDeviceProperties()
-        {
-            if(NativePointer != (Unmanaged.PhysicalDeviceProperties*)IntPtr.Zero)
-            {
-                MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PhysicalDeviceProperties*)IntPtr.Zero;
-            }
         }
     }
 }

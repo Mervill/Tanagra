@@ -63,7 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormatExtensions.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="TextureLoader.cs" />
+    <Compile Include="Vector32.cs" />
+    <Compile Include="VulkanInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

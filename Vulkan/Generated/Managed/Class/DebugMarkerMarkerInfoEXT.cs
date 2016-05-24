@@ -19,16 +19,10 @@ namespace Vulkan.Managed
         /// <summary>
         /// Optional color for debug marker (Optional)
         /// </summary>
-        public Single[] Color
+        public Unmanaged.DebugMarkerMarkerInfoEXT.ColorInfo Color
         {
-            get
-            {
-                throw new System.NotImplementedException("IsFixedSize");
-            }
-            set
-            {
-                throw new System.NotImplementedException("IsFixedSize");
-            }
+            get { return NativePointer->Color; }
+            set { NativePointer->Color = value; }
         }
         
         public DebugMarkerMarkerInfoEXT()

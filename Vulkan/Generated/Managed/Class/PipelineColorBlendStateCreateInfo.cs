@@ -70,16 +70,10 @@ namespace Vulkan.Managed
             }
         }
         
-        public Single[] BlendConstants
+        public Unmanaged.PipelineColorBlendStateCreateInfo.BlendConstantsInfo BlendConstants
         {
-            get
-            {
-                throw new System.NotImplementedException("IsFixedSize");
-            }
-            set
-            {
-                throw new System.NotImplementedException("IsFixedSize");
-            }
+            get { return NativePointer->BlendConstants; }
+            set { NativePointer->BlendConstants = value; }
         }
         
         public PipelineColorBlendStateCreateInfo()
@@ -88,7 +82,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
         
-        public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Single[] BlendConstants) : this()
+        public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Unmanaged.PipelineColorBlendStateCreateInfo.BlendConstantsInfo BlendConstants) : this()
         {
             this.LogicOpEnable = LogicOpEnable;
             this.LogicOp = LogicOp;

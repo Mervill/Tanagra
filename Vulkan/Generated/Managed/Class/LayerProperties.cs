@@ -6,7 +6,7 @@ namespace Vulkan.Managed
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
-    unsafe public class LayerProperties : IDisposable
+    unsafe public class LayerProperties
     {
         internal Unmanaged.LayerProperties* NativePointer;
         
@@ -45,22 +45,6 @@ namespace Vulkan.Managed
         internal LayerProperties()
         {
             NativePointer = (Unmanaged.LayerProperties*)MemoryUtils.Allocate(typeof(Unmanaged.LayerProperties));
-        }
-        
-        public void Dispose()
-        {
-            MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.LayerProperties*)IntPtr.Zero;
-            GC.SuppressFinalize(this);
-        }
-        
-        ~LayerProperties()
-        {
-            if(NativePointer != (Unmanaged.LayerProperties*)IntPtr.Zero)
-            {
-                MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.LayerProperties*)IntPtr.Zero;
-            }
         }
     }
 }

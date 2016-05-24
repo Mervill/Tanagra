@@ -61,10 +61,21 @@ namespace TanagraExample
 
             CreateInstance();
 
-            PhysicalDeviceProperties();
-            QueueFamilyProperties();
-            WriteLine("");
-            GetPhysicalDeviceFeatures();
+            //PhysicalDeviceProperties();
+            //QueueFamilyProperties();
+            //WriteLine("");
+            //GetPhysicalDeviceFeatures();
+
+            var vkInfo = new VulkanInfo();
+            vkInfo.Write(physicalDevice);
+
+            //var physicalDevices = instance.EnumeratePhysicalDevices();
+            //WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
+
+            //physicalDevice = physicalDevices[0];
+            //WriteLine($"[ OK ] {physicalDevice}");
+
+            //PhysicalDeviceProperties();
 
             CreateSurface();
             CreateDevice();
@@ -731,7 +742,7 @@ namespace TanagraExample
             WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
         }
 
-        private void QueueFamilyProperties()
+        /*private void QueueFamilyProperties()
         {
             var queueFamilyProperties = physicalDevice.GetQueueFamilyProperties();
             for (int x = 0; x < queueFamilyProperties.Count; x++)
@@ -748,7 +759,7 @@ namespace TanagraExample
             WriteLine("VkPhysicalDeviceFeatures:");
             WriteLine("=========================");
             WriteLine(physicalDeviceFeatures.Format());
-        }
+        }*/
         
         private void PhysicalDeviceProperties()
         {

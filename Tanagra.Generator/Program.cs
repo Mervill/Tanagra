@@ -10,10 +10,10 @@ namespace Tanagra.Generator
         // todo: union
         // todo: merge flag enums
         // todo: IsFixedSize arrays
-        // todo: returned-only structs are not freed properly
         // todo: port member comments to constructor
         // todo: tanagra: handle wrapper, parent notify on destroy
         // todo: tanagra: nondispatchable extentions
+        // todo: study more closely the lifecycle of vulkan objects, esp returned-only objects - when are they freed?
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
         // todo: generate arrays instead of lists on commands?

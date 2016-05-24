@@ -89,7 +89,7 @@ namespace Vulkan.Managed
         public static PhysicalDeviceMemoryProperties GetPhysicalDeviceMemoryProperties(PhysicalDevice physicalDevice)
         {
             var memoryProperties = new PhysicalDeviceMemoryProperties();
-            vkGetPhysicalDeviceMemoryProperties(physicalDevice.NativePointer, memoryProperties.NativePointer);
+            vkGetPhysicalDeviceMemoryProperties(physicalDevice.NativePointer, &memoryProperties);
             return memoryProperties;
         }
         
@@ -1425,13 +1425,13 @@ namespace Vulkan.Managed
         public static void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, List<ImageBlit> regions, Filter filter)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Count : 0;
-            var _regionsPtr = (Unmanaged.ImageBlit*)IntPtr.Zero;
+            var _regionsPtr = (ImageBlit*)IntPtr.Zero;
             if(regionCount != 0)
             {
-                var _regionsSize = Marshal.SizeOf(typeof(Unmanaged.ImageBlit));
-                _regionsPtr = (Unmanaged.ImageBlit*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+                var _regionsSize = Marshal.SizeOf(typeof(ImageBlit));
+                _regionsPtr = (ImageBlit*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
                 for(var x = 0; x < regionCount; x++)
-                    _regionsPtr[x] = *regions[x].NativePointer;
+                    _regionsPtr[x] = regions[x];
             }
             
             vkCmdBlitImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr, filter);
