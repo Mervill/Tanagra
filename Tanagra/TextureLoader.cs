@@ -226,13 +226,7 @@ namespace Tanagra
         {
             device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
         }
-
-        static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout)
-        {
-            var subresourceRange = new ImageSubresourceRange(aspectMask, 0, 1, 0, 1);
-            setImageLayout(cmdBuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
-        }
-
+        
         uint getMemoryType(uint typeBits, MemoryPropertyFlags propertyFlags)
         {
             for(uint x = 0; x < 32; x++)
@@ -248,6 +242,12 @@ namespace Tanagra
             }
 
             throw new InvalidOperationException();
+        }
+
+        static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout)
+        {
+            var subresourceRange = new ImageSubresourceRange(aspectMask, 0, 1, 0, 1);
+            setImageLayout(cmdBuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
         }
 
         static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout, ImageSubresourceRange subRange)
