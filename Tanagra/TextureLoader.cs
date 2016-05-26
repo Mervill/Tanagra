@@ -244,13 +244,13 @@ namespace Tanagra
             throw new InvalidOperationException();
         }
 
-        static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout)
+        public static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout)
         {
             var subresourceRange = new ImageSubresourceRange(aspectMask, 0, 1, 0, 1);
             setImageLayout(cmdBuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
         }
 
-        static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout, ImageSubresourceRange subRange)
+        public static void setImageLayout(CommandBuffer cmdBuffer, Image image, ImageAspectFlags aspectMask, ImageLayout oldLayout, ImageLayout newLayout, ImageSubresourceRange subRange)
         {
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, subRange);
 

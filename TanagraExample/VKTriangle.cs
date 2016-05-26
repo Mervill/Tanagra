@@ -66,8 +66,8 @@ namespace TanagraExample
             //WriteLine("");
             //GetPhysicalDeviceFeatures();
 
-            var vkInfo = new VulkanInfo();
-            vkInfo.Write(physicalDevice);
+            //var vkInfo = new VulkanInfo();
+            //vkInfo.Write(physicalDevice);
 
             //var physicalDevices = instance.EnumeratePhysicalDevices();
             //WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
@@ -89,9 +89,11 @@ namespace TanagraExample
             CreatePipelineLayout();
             CreatePipeline();
             CreateFramebuffers();
-
-            //Debug.Assert(MemoryUtils.AllocCount == 1);
+            
             WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
+            WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
+            WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
+
             WriteLine("Any key to continue");
             WriteLine("[INFO] Starup OK, Launching...");
             Console.ReadKey();
@@ -130,6 +132,7 @@ namespace TanagraExample
             //WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
             allocator = new Vulkan.Allocation.Allocator();
+            //allocator.DebugLog = true;
 
             instance = Vk.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
             WriteLine($"[ OK ] {instance}");
@@ -706,6 +709,8 @@ namespace TanagraExample
             
             instance.Destroy();
 
+            allocator.AllocationCallbacks.Dispose();
+
             form.Dispose();
 
             commandBuffer = null;
@@ -734,5 +739,9 @@ namespace TanagraExample
             Console.WriteLine(str);
         }
 
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
     }
 }

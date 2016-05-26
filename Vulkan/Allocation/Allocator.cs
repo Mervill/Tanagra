@@ -36,17 +36,17 @@ namespace Vulkan.Allocation
                 Reallocation = Marshal.GetFunctionPointerForDelegate(_reallocationFunction),
             };
         }
-
+        
         public virtual IntPtr Allocation(IntPtr userData, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope)
         {
             var rawptr = Marshal.AllocHGlobal((int)(size + 8));
             var longAlignment = (Int64)alignment;
             var aligned = new IntPtr(longAlignment * (((long)rawptr + (longAlignment - 1)) / longAlignment));
             pointers.Add(aligned);
-            pointerMemory.Add(aligned, (long)rawptr);
-            GC.AddMemoryPressure((long)rawptr);
-            TrackedBytes += (long)rawptr;
-            if(DebugLog) Console.WriteLine($"[MALLOC] {allocationScope} {size} ({CallCount})");
+            pointerMemory.Add(aligned, (long)size);
+            GC.AddMemoryPressure((long)size);
+            TrackedBytes += (long)size;
+            if(DebugLog) Console.WriteLine($"[MALLOC] Allocated {size,4} bytes [SystemAllocationScope.{allocationScope}] ({CallCount})");
             return aligned;
         }
 
@@ -54,7 +54,7 @@ namespace Vulkan.Allocation
         {
             if(!pointers.Remove(memory)) throw new InvalidOperationException();
             Marshal.FreeHGlobal(memory);
-            if(DebugLog) Console.WriteLine($"[MALLOC] Freed pointer {memory.ToString("X8")}");
+            if(DebugLog) Console.WriteLine($"[MALLOC] Freed {pointerMemory[memory],4} bytes ({memory.ToString("X8")})");
             TrackedBytes -= pointerMemory[memory];
             GC.RemoveMemoryPressure(pointerMemory[memory]);
             pointerMemory.Remove(memory);
@@ -64,7 +64,7 @@ namespace Vulkan.Allocation
         {
             throw new NotImplementedException();
         }
-
+        
         /*public void InternalAllocationNotification(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
         {
             throw new NotImplementedException();

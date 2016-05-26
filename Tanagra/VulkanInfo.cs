@@ -25,21 +25,21 @@ namespace Tanagra
         {
             WriteLine("PhysicalDeviceProperties:");
             WriteLine("=========================");
-            _tabs++;
             var properties = physicalDevice.GetProperties();
+            _tabs++;
             PhysicalDeviceProperties(properties);
-
+            
             WriteLine("PhysicalDeviceLimits:");
             WriteLine("---------------------");
-            _tabs++;
             var limits = properties.Limits;
+            _tabs++;
             PhysicalDeviceLimits(limits);
 
             _tabs--;
             WriteLine("PhysicalDeviceSparseProperties:");
             WriteLine("-------------------------------");
-            _tabs++;
             var sparse = properties.SparseProperties;
+            _tabs++;
             PhysicalDeviceSparseProperties(sparse);
 
             _tabs = 0;
@@ -59,14 +59,15 @@ namespace Tanagra
             WriteLine("PhysicalDeviceMemoryProperties");
             WriteLine("==============================");
             var physicalDeviceMemoryProperties = physicalDevice.GetMemoryProperties();
-            //PhysicalDeviceMemoryProperties(physicalDeviceMemoryProperties);
+            _tabs++;
+            PhysicalDeviceMemoryProperties(physicalDeviceMemoryProperties);
             WriteLine("");
 
             _tabs = 0;
             WriteLine("PhysicalDeviceFeatures:");
             WriteLine("=======================");
-            _tabs++;
             var features = physicalDevice.GetFeatures();
+            _tabs++;
             PhysicalDeviceFeatures(features);
             
             Console.WriteLine(_sb.ToString());

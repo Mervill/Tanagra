@@ -1,5 +1,7 @@
 ﻿using System;
 
+using SharpDX.Windows;
+
 using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
@@ -20,7 +22,8 @@ namespace TanagraExample
 
             GC.GetTotalMemory(true);*/
 
-            run();
+            //run();
+            ExampleBaseTest();
 
             //var init = new VKInit();
 
@@ -32,6 +35,18 @@ namespace TanagraExample
         {
             var tri = new VKTriangle();
             tri.Main(null);
+        }
+
+        static RenderForm form;
+
+        static void ExampleBaseTest()
+        {
+            form = new RenderForm("Tanagra - Vulkan Sample");
+
+            var ex = new ExampleBase();
+            ex.initVulkan();
+            ex.initSwapchain(form);
+            ex.prepare();
         }
     }
 }

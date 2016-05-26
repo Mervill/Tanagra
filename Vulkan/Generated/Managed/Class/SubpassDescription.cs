@@ -147,14 +147,23 @@ namespace Vulkan.Managed
                 }
             }
         }
-        
+
         AttachmentReference _DepthStencilAttachment;
         public AttachmentReference DepthStencilAttachment
         {
-            get { return _DepthStencilAttachment; }
-            set { _DepthStencilAttachment = value; NativePointer->DepthStencilAttachment = (IntPtr)(&value); }
+            get
+            {
+                var obj = new AttachmentReference();
+                Marshal.PtrToStructure(NativePointer->DepthStencilAttachment, obj);
+                return obj;
+            }
+            set
+            {
+                NativePointer->DepthStencilAttachment = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(AttachmentReference)));
+                Marshal.StructureToPtr(value, NativePointer->DepthStencilAttachment, false);
+            }
         }
-        
+
         public UInt32[] PreserveAttachments
         {
             get
