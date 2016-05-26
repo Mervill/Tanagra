@@ -64,6 +64,7 @@ namespace Tanagra.Generator
         const string CallingConvention       = "Winapi";
         const string VulkanResultException   = "VulkanCommandException";
         const string AllocateFnName          = "MemUtil.Alloc";
+        const string FreeFnName              = "MemUtil.Free";
         const string FixedSizeStringFnName   = "MemUtil.MarshalFixedSizeString";
         const string ManagedNS               = "Managed";
         const string ManagedFunctionsClass   = "Vk";
@@ -132,10 +133,8 @@ namespace Tanagra.Generator
             // should only transform data if doing so in the rewrite step is awkward or impossible.
             //
 
-            var commands = spec.Commands.Where(x => !disabledCommands.Contains(x.Name));
-            var commandInfoMap = new Dictionary<VkCommand, CommandInfo>();
-            foreach(var vkCommand in commands)
-                commandInfoMap.Add(vkCommand, CreateCommandInfo(vkCommand));
+            var commands = spec.Commands.Where(x => !disabledCommands.Contains(x.Name)).ToList();
+            var commandInfoMap = commands.ToDictionary(vkCommand => vkCommand, CreateCommandInfo);
 
             var apiConstants = spec.Enums.First(x => x.Name == "API Constants");
             files.Add("./VulkanConstant.cs", GenerateConstants(apiConstants));
@@ -241,7 +240,7 @@ namespace Tanagra.Generator
         string GenerateHandle(VkHandle vkHandle)
         {
             var name = vkHandle.Name;
-            var type = (vkHandle.IsDispatchable) ? "IntPtr" : "UInt64";
+            var type = GetHandleType(vkHandle);
             var strDispatch = (vkHandle.IsDispatchable) ? "Dispatchable" : "Nondispatchable";
             var parent = !string.IsNullOrEmpty(vkHandle.Parent) ? $" Child of <see cref=\"{vkHandle.Parent.Remove(0,2)}\"/>." : string.Empty;
 
@@ -369,14 +368,9 @@ namespace Tanagra.Generator
 
                 if(vkMember.IsFixedSize)
                 {
-                    if (vkMember.Type.Name == "String")
-                    {
-                        WriteLine($"public unsafe fixed Byte {vkMember.Name}[{vkMember.FixedSize}];");
-                    }
-                    else
-                    {
-                        WriteLine($"public {vkMember.Name}Info {vkMember.Name};");
-                    }
+                    WriteLine(vkMember.Type.Name == "String"
+                        ? $"public unsafe fixed Byte {vkMember.Name}[{vkMember.FixedSize}];"
+                        : $"public {vkMember.Name}Info {vkMember.Name};");
                     continue;
                 }
 
@@ -401,8 +395,8 @@ namespace Tanagra.Generator
             // This is actually pretty good at generating useful constructors.
             if(isPublic && !vkStruct.ReturnedOnly && vkStruct.Name != "PhysicalDeviceFeatures")
             {
-                var mandatoryMembers = vkStruct.Members.Where(x => x.Optional != "true");
-                var optionalMembers  = vkStruct.Members.Except(mandatoryMembers);
+                var mandatoryMembers = vkStruct.Members.Where(x => x.Optional != "true").ToArray();
+                var optionalMembers  = vkStruct.Members.Except(mandatoryMembers).ToArray();
 
                 if(mandatoryMembers.Any())
                 {
@@ -453,19 +447,20 @@ namespace Tanagra.Generator
             WriteLine("");
             foreach(var vkCommand in commands)
             {
+                var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
+
                 WriteCommandComment(vkCommand, vkCommand.Parameters);
                 WriteLine($"[DllImport(DllName, EntryPoint = \"{vkCommand.SpecName}\", CallingConvention = callingConvention)]");
                 WriteTabs();
                 Write("public static ");
-                var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
                 Write($"extern {returnType} {vkCommand.SpecName}");
                 Write("(");
                 for(var x = 0; x < vkCommand.Parameters.Length; x++)
                 {
                     var param = vkCommand.Parameters[x];
                     var paramType = param.Type.Name;
-                    if(param.Type is VkHandle)
-                        paramType = ((VkHandle)param.Type).IsDispatchable ? "IntPtr" : "UInt64";
+                    if (param.Type is VkHandle)
+                        paramType = GetHandleType((VkHandle)param.Type);
                     
                     var pointer = (param.IsPointer && paramType != "String") ? "*" : string.Empty;
                     Write($"{paramType}{pointer} {param.Name}");
@@ -479,10 +474,11 @@ namespace Tanagra.Generator
             }
             WriteEndBlock();
             WriteEndBlock();
+
             return _sb.ToString();
         }
 
-        #region GenerateWrapperClass
+        #region Generate Managed Class
 
         string GenerateManagedClass(VkStruct vkStruct)
         {
@@ -673,11 +669,10 @@ namespace Tanagra.Generator
         void WriteManagedCleanup(VkStruct vkStruct)
         {
             // TODO: arrays are not the only kind of pointer...
-            foreach(var vkMember in vkStruct.Members)
-                if(vkMember.IsArray && !vkMember.IsFixedSize)
-                    WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
+            foreach (var vkMember in vkStruct.Members.Where(vkMember => vkMember.IsArray && !vkMember.IsFixedSize))
+                WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
 
-            WriteLine($"MemUtil.Free((IntPtr){NativePointer});");
+            WriteLine($"{FreeFnName}((IntPtr){NativePointer});");
             WriteLine($"{NativePointer} = null;");
         }
 
@@ -740,13 +735,9 @@ namespace Tanagra.Generator
             else
             {
                 var castTo = "(IntPtr)";
-                if(vkMember.Type is VkHandle)
-                {
-                    var vkHandle = (VkHandle)vkMember.Type;
-                    if(!vkHandle.IsDispatchable)
-                        castTo = string.Empty;
-                }
-
+                if (IsNondispatchableHandle(vkMember.Type))
+                    castTo = string.Empty;
+                
                 WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                 WriteMemberComments(vkMember);
                 WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
@@ -786,8 +777,8 @@ namespace Tanagra.Generator
         void WriteMemberStringArray(VkMember vkMember, bool readOnly)
         {
             var countName = vkMember.Name.Substring(0, vkMember.Name.Length - 5) + "Count";
-            string get = "valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);";
-            string set = "ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);";
+            var get = "valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);";
+            var set = "ptr[x] = (void*)Marshal.StringToHGlobalAnsi(value[x]);";
             WriteArray(vkMember, countName, readOnly, "void*", "IntPtr", "void*", get, set);
         }
 
@@ -802,11 +793,7 @@ namespace Tanagra.Generator
 
             if(vkMember.Type is VkHandle)
             {
-                var structType = "UInt64";
-                var vkHandle = vkMember.Type as VkHandle;
-                if (vkHandle.IsDispatchable)
-                    structType = "IntPtr";
-
+                var structType = GetHandleType((VkHandle)vkMember.Type);
                 var get = $"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};";
                 var set = $"ptr[x] = (IntPtr)value[x].{NativePointer};";
                 WriteArray(vkMember, countName, readOnly, structType, "IntPtr", "IntPtr", get, set);
@@ -815,19 +802,19 @@ namespace Tanagra.Generator
 
             if(vkMember.Type is VkEnum)
             {
-                string get = $"valueArray[x] = ({vkMember.Type})ptr[x];";
-                string set = "ptr[x] = (UInt32)value[x];";
+                var get = $"valueArray[x] = ({vkMember.Type})ptr[x];";
+                var set = "ptr[x] = (UInt32)value[x];";
                 var typeName = "UInt32";
-                WriteArray(vkMember, countName, readOnly, typeName, typeName, typeName, get, set);
+                WriteArray(vkMember, countName, readOnly, typeName, get, set);
                 return;
             }
 
             if(IsPlatformStruct(vkMember.Type))
             {
-                string get = "valueArray[x] = ptr[x];";
-                string set = "ptr[x] = value[x];";
+                var get = "valueArray[x] = ptr[x];";
+                var set = "ptr[x] = value[x];";
                 var typeName = vkMember.Type.Name;
-                WriteArray(vkMember, countName, readOnly, typeName, typeName, typeName, get, set);
+                WriteArray(vkMember, countName, readOnly, typeName, get, set);
                 return;
             }
 
@@ -839,16 +826,21 @@ namespace Tanagra.Generator
                     structType = $"{UnmanagedNS}." + structType;
 
                 var getValueCast = IsManagedStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
-                string get = $"valueArray[x] = {getValueCast};";
+                var get = $"valueArray[x] = {getValueCast};";
 
                 var setValueCast = IsManagedStruct(vkStruct) ? $"*value[x].{NativePointer}" : "value[x]";
-                string set = $"ptr[x] = {setValueCast};";
+                var set = $"ptr[x] = {setValueCast};";
 
                 var typeName = structType;
-                WriteArray(vkMember, countName, readOnly, typeName, typeName, typeName, get, set);
+                WriteArray(vkMember, countName, readOnly, typeName, get, set);
             }
         }
-        
+
+        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string get, string set)
+        {
+            WriteArray(vkMember, countName, readOnly, structType, structType, structType, get, set);
+        }
+
         void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string sizeType, string pointerType, string get, string set)
         {
             WriteMemberComments(vkMember);
@@ -1031,7 +1023,7 @@ namespace Tanagra.Generator
                     {
                         var type = IsPlatformStruct(commandInfo.ReturnParam.Type) ? $"{commandInfo.ReturnParam.Type}" : "IntPtr";
                         if (commandInfo.ReturnParam.Type is VkHandle)
-                            type = ((VkHandle)commandInfo.ReturnParam.Type).IsDispatchable ? "IntPtr" : "UInt64";
+                            type = GetHandleType((VkHandle)commandInfo.ReturnParam.Type);
 
                         var handle = (commandInfo.ReturnParam.Type is VkHandle) ? $".{NativePointer}" : string.Empty;
                         WriteLine($"fixed({type}* ptr{commandInfo.ReturnParam.Type} = &{commandInfo.ReturnParam.Name}{handle})");
@@ -1106,25 +1098,15 @@ namespace Tanagra.Generator
                 {
                     if(!commandInfo.ReturnListHasKnownLength)
                     {
-                        if(commandInfo.ReturnListCountMember == null)
-                        {
-                            WriteLine($"{commandInfo.ReturnListCountParam.Type} {returnListLength};");
-                        }
-                        else
-                        {
-                            WriteLine($"var {returnListLength} = {commandInfo.ReturnListCountParam.Name}.{commandInfo.ReturnListCountMember.Name};");
-                        }
+                        WriteLine(commandInfo.ReturnListCountMember == null
+                            ? $"{commandInfo.ReturnListCountParam.Type} {returnListLength};"
+                            : $"var {returnListLength} = {commandInfo.ReturnListCountParam.Name}.{commandInfo.ReturnListCountMember.Name};");
                     }
                     else
                     {
-                        if(commandInfo.ReturnListCountMember == null)
-                        {
-                            WriteLine($"var {returnListLength} = {commandInfo.ReturnListCountParam.Name};");
-                        }
-                        else
-                        {
-                            WriteLine($"var {returnListLength} = {commandInfo.ReturnListCountParam.Name}.{NativePointer}->{commandInfo.ReturnListCountMember.Name};");
-                        }
+                        WriteLine(commandInfo.ReturnListCountMember == null
+                            ? $"var {returnListLength} = {commandInfo.ReturnListCountParam.Name};"
+                            : $"var {returnListLength} = {commandInfo.ReturnListCountParam.Name}.{NativePointer}->{commandInfo.ReturnListCountMember.Name};");
                     }
                 }
                 #endregion
@@ -1156,9 +1138,7 @@ namespace Tanagra.Generator
 
                 #region Single Return Epilogue
                 if(commandInfo.ReturnParam != null && commandInfo.ReturnParam.IsFixed && !commandInfo.ReturnsList)
-                {
                     WriteEndBlock();
-                }
                 #endregion
 
                 #region List Return 2nd Function Call
@@ -1166,22 +1146,11 @@ namespace Tanagra.Generator
                 {
                     WriteLine("");
 
-                    var isInteropType = false;
-                    if(commandInfo.ReturnParam.Type is VkStruct)
-                    {
-                        var vkStruct = commandInfo.ReturnParam.Type as VkStruct;
-                        isInteropType = !IsManagedStruct(vkStruct);
-                    }
-
-                    var interop = (isInteropType || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : $"{UnmanagedNS}.";
+                    var isNotManaged = !IsManagedStruct(commandInfo.ReturnParam.Type);
+                    var interop = (isNotManaged || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : $"{UnmanagedNS}.";
                     var sizeType = commandInfo.ReturnParam.Type.Name;
                     if(commandInfo.ReturnParam.Type is VkHandle)
-                    {
-                        sizeType = "IntPtr";
-                        var vkHandle = commandInfo.ReturnParam.Type as VkHandle;
-                        if(!vkHandle.IsDispatchable)
-                            sizeType = "UInt64";
-                    }
+                        sizeType = GetHandleType((VkHandle)commandInfo.ReturnParam.Type);
                     
                     WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}];");
                     WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
@@ -1211,8 +1180,6 @@ namespace Tanagra.Generator
                 #region Array Parameters Prologue
                 if (commandInfo.HasArrayParams)
                 {
-                    List<string> existingCounts = new List<string>();
-
                     // Emit a prologue block for each array param
                     foreach (var kv in commandInfo.ParamListCountMap)
                     {
@@ -1264,7 +1231,6 @@ namespace Tanagra.Generator
 
                             WriteLine($"{returnListName}.Add(item);");
                         }
-                        
                         WriteEndBlock();
                         WriteLine("");
                         WriteLine($"return {returnListName};");
@@ -1310,14 +1276,7 @@ namespace Tanagra.Generator
                 {
                     // if the return value is a list and this is the kind of
                     // function we need to call twice (todo)
-                    if(isSecondArrayCall)
-                    {
-                        internalCallParams.Add("resultPtr");
-                    }
-                    else
-                    {
-                        internalCallParams.Add("null");
-                    }
+                    internalCallParams.Add(isSecondArrayCall ? "resultPtr" : "null");
                     continue;
                 }
 
@@ -1370,14 +1329,7 @@ namespace Tanagra.Generator
                 if(paramType is VkStruct)
                 {
                     var vkStruct = paramType as VkStruct;
-                    if(IsManagedStruct(vkStruct))
-                    {
-                        internalCallParams.Add($"{paramName}.{NativePointer}");
-                    }
-                    else
-                    {
-                        internalCallParams.Add($"&{paramName}");
-                    }
+                    internalCallParams.Add(IsManagedStruct(vkStruct) ? $"{paramName}.{NativePointer}" : $"&{paramName}");
                     continue;
                 }
 
@@ -1407,7 +1359,7 @@ namespace Tanagra.Generator
 
             foreach(var vkHandle in vkHandles)
             {
-                var handleCommands = vkCommands.Where(x => x.Parameters.FirstOrDefault()?.Type.Name == vkHandle.Name);
+                var handleCommands = vkCommands.Where(x => x.Parameters.FirstOrDefault()?.Type.Name == vkHandle.Name).ToArray();
                 if(!handleCommands.Any())
                     continue;
 
@@ -1501,9 +1453,6 @@ namespace Tanagra.Generator
         CommandInfo CreateCommandInfo(VkCommand vkCommand)
         {
             var commandInfo = new CommandInfo();
-            
-            commandInfo.InternalParams = new List<VkParam>();
-            commandInfo.ParamListCountMap = new Dictionary<VkParam, VkParam>();
 
             commandInfo.ReturnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
             commandInfo.InternalReturnsVkResult = commandInfo.ReturnType == "Result" && vkCommand.SuccessCodes.Length == 1 && vkCommand.SuccessCodes[0] == "VK_SUCCESS";
@@ -1631,6 +1580,9 @@ namespace Tanagra.Generator
             }
             //WriteLine("/// <returns></returns>");
         }
+
+        string GetHandleType(VkHandle handle)
+            => handle.IsDispatchable ? "IntPtr" : "UInt64";
 
         bool IsPlatformStruct(VkType type)
             => platformStructTypes.Contains(type.Name);
