@@ -17,6 +17,9 @@ namespace Vulkan
         ## https://msdn.microsoft.com/en-us/library/s69bkh17(v=vs.100).aspx
         */
 
+        // Hmm, we need `PointerMemory` for Add/RemoveMemoryPressure to work ...
+        // also: concurrency?
+
 #if DEBUG
         static readonly Dictionary<IntPtr, Int64> PointerMemory;
         public static int AllocCount => PointerMemory.Count;

@@ -3,11 +3,79 @@
 
 Tanagra is a binding generator and (eventually) support library for Vulkan.
 
-Currently, the generator produces a compiling library that should render the triangle example correctly (at least on a windows machine)
+The generator produces a compiling library that should render the triangle example correctly (at least on a windows machine)
 
-The library uses Net 4.6, I'd like to bring this requirement down significantly. The generator uses C# 6.0 syntax.
+The example project contains (eventually) C#'ified versions of [Sascha Willems fantastic C example project](https://github.com/SaschaWillems/Vulkan). Be sure to check it out.
 
 The example project has SharpDX as a dependency, this is just to gain access to a well-defined rending window that is then passed to Vulkan. No DirectX is involved
+
+## How To Play
+
+### Tanagra
+
+Coming soon!
+
+### Managed
+
+```C#
+using Vulkan;                     // Core Vulkan classes
+using Vulkan.Managed;             // Interface to unmanaged interop
+using Vulkan.Managed.ObjectModel; // Extensions to vulkan handle objects
+
+// Create a Vulkan instance
+var instanceCreateInfo = new InstanceCreateInfo();
+Instance vulkanInstance = Vk.CreateInstance(instanceCreateInfo);
+
+// Enumerate Physical Devices
+var physicalDevices = instance.EnumeratePhysicalDevices();
+
+// Create a Vulkan device
+var deviceCreateInfo = new DeviceCreateInfo(...);
+Device vulkanDevice = physicalDevices[0].CreateDevice(deviceCreateInfo);
+```
+
+### Unmanaged
+
+The managed layer is reccomended in almost all cases. If you'd rather work with the interop layer directly (if you want total control over memory, for example) you can do that as well. You will need to compile with `unsafe` in order to work with memory directly.
+
+## Project Directory
+
+```
+./Vulkan/            - Generated Vulkan API as a standalone DLL
+./Tanagra.Generator/ - Generates the Vulkan API from vk.xml
+./Tanagra/           - Extended managed support for Vulkan
+./TanagraExample/    - Example code
+```
+
+```C#
+using Vulkan;           // Core Vulkan classes
+using Vulkan.Unmanaged; // Unmanaged structs and callbacks
+
+// The vulkan functions are in the `VulkanBinding` class. It's designed to be used
+// with C# 6.0's 'using static' feature to replicate the vulkan C api.
+using static Unmanaged.VulkanBinding;
+
+/* Allocate pointers to objects */
+
+// `vkCreateInstance` is a member of `VulkanBinding`. We can call it like this
+// because of the 'using static' statement above.
+var result = vkCreateInstance(...)
+if(result != Result.Success)
+	throw new VulkanCommandException(nameof(vkCreateInstance), result);
+
+// Commands that return an array use the C 'call twice' convention:
+
+// First call determines the length of the array to be retrieved
+UInt32 listLength;
+vkEnumeratePhysicalDevices(instancePtr, &listLength, null);
+
+// Second call actually retrives the array
+var arrayPhysicalDevice = new IntPtr[listLength];
+fixed(IntPtr* resultPtr = &arrayPhysicalDevice[0])
+	vkEnumeratePhysicalDevices(instancePtr, &listLength, resultPtr);
+
+vkCreateDevice(...);
+```
 
 ## License
 ```
