@@ -126,7 +126,7 @@ namespace Tanagra.Generator
             };
         }
 
-        public string Generate(VkSpec spec)
+        public void Generate(VkSpec spec)
         {
             //
             // Ideally `CSharpCodeGenerator` transforms the data as little as possible. It
@@ -163,8 +163,6 @@ namespace Tanagra.Generator
             files.Add($"./{ManagedNS}/{ManagedFunctionsClass}.cs", GenerateManagedCommand(commands, commandInfoMap));
 
             files.Add($"./{ManagedNS}/ObjectModel.cs", GenerateHandleExtensions("HandleExtensions", spec.Handles, commands, commandInfoMap));
-            
-            return _sb.ToString();
         }
         
         string GenerateConstants(VkEnum apiConstants)
