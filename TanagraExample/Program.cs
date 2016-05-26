@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.IO;
-using System.Runtime.InteropServices;
+
 using SharpDX.Windows;
 
-using Tanagra;
-using Vulkan;
-using Vulkan.ObjectModel;
-
-using ImageLayout = Vulkan.ImageLayout;
-using Buffer = Vulkan.Buffer;
+using Vulkan;                     // Core Vulkan classes
+using Vulkan.Managed;             // A managed interface to Vulkan
+using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
 namespace TanagraExample
 {
@@ -20,8 +12,21 @@ namespace TanagraExample
     {
         static void Main(string[] args)
         {
-            Console.ReadKey();
-            run();
+            /*for(int x = 0; x < 100000; x++)
+            {
+                var info = new SwapchainCreateInfoKHR();
+                info.Surface = new SurfaceKHR();
+                //info.QueueFamilyIndices = new UInt32[1000];
+                info.Dispose();
+            }
+
+            GC.GetTotalMemory(true);*/
+
+            //run();
+            ExampleBaseTest();
+
+            //var init = new VKInit();
+
             Console.WriteLine("program complete");
             Console.ReadKey();
         }
@@ -30,6 +35,18 @@ namespace TanagraExample
         {
             var tri = new VKTriangle();
             tri.Main(null);
+        }
+
+        static RenderForm form;
+
+        static void ExampleBaseTest()
+        {
+            form = new RenderForm("Tanagra - Vulkan Sample");
+
+            var ex = new ExampleBase();
+            ex.initVulkan();
+            ex.initSwapchain(form);
+            ex.prepare();
         }
     }
 }

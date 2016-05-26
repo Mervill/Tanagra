@@ -92,12 +92,12 @@ namespace Tanagra.Generator
         public bool ReturnedOnly { get; set; }
 
         // readme.tex:
-        //   Each <validity> tag eontains zero or more <usage> tags. Each <usage> tag is intended to 
+        //   Each <validity> tag contains zero or more <usage> tags. Each <usage> tag is intended to 
         //   represent a specific validation requirement for the structure and include arbitrary 
         //   asciidoc text describing  that requirement.
         public string[] Validity { get; set; }
         
-        public bool HasPointerMembers => Members.Any(x => x.IsPointer || x.Type.Name == "Char");
+        public bool ContainsPointers => Members.Any(x => x.IsPointer);
 
         /// <summary>
         /// https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html#extensions-interactions
@@ -229,6 +229,20 @@ namespace Tanagra.Generator
 
         public string[] Validity;
 
+        //public bool ReturnsResult => ReturnType != null && ReturnType.Name == "Result";
+        //public bool StrictlyReturnsSuccess => SuccessCodes.Length == 1 && SuccessCodes[0] == "VK_SUCCESS";
+
+        public VkCommand()
+        {
+            Parameters = new VkParam[0];
+            Queues = new string[0];
+            SuccessCodes = new string[0];
+            ErrorCodes = new string[0];
+            CmdBufferLevel = new string[0];
+            ImplicitExternSyncParams = new string[0];
+            Validity = new string[0];
+        }
+
         public string ToDeclaration()
         {
             StringBuilder sb = new StringBuilder();
@@ -287,6 +301,7 @@ namespace Tanagra.Generator
         public bool IsPointer => PointerRank > 0;
         public bool IsOut => IsPointer && !IsConst;
         public bool IsFixed => Type is VkHandle && !IsConst;
+        public bool IsOptional => Optional.Length != 0 && Optional[0] == "true";
 
         public VkParam()
         {
@@ -379,7 +394,7 @@ namespace Tanagra.Generator
         public string Comment;
 
         public bool IsFlag => Offset == null && BitPos != null && !IsConstant;
-        public bool IsConstant => !string.IsNullOrEmpty(Extends) && !string.IsNullOrEmpty(Value);
+        public bool IsConstant => string.IsNullOrEmpty(Extends) && !string.IsNullOrEmpty(Value) && !Offset.HasValue && !BitPos.HasValue;
     }
 
     public class VkExtensionUsage

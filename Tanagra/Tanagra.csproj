@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tanagra</RootNamespace>
     <AssemblyName>Tanagra</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -32,6 +32,26 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,245 +63,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bool32.cs" />
-    <Compile Include="ClearColorValue.cs" />
-    <Compile Include="ClearValue.cs" />
-    <Compile Include="DebugUtils.cs" />
-    <Compile Include="DeviceSize.cs" />
-    <Compile Include="Generated\Enum\AccessFlags.cs" />
-    <Compile Include="Generated\Enum\AndroidSurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\AttachmentDescriptionFlags.cs" />
-    <Compile Include="Generated\Enum\AttachmentLoadOp.cs" />
-    <Compile Include="Generated\Enum\AttachmentStoreOp.cs" />
-    <Compile Include="Generated\Enum\BlendFactor.cs" />
-    <Compile Include="Generated\Enum\BlendOp.cs" />
-    <Compile Include="Generated\Enum\BorderColor.cs" />
-    <Compile Include="Generated\Enum\BufferCreateFlags.cs" />
-    <Compile Include="Generated\Enum\BufferUsageFlags.cs" />
-    <Compile Include="Generated\Enum\BufferViewCreateFlags.cs" />
-    <Compile Include="Generated\Enum\ColorComponentFlags.cs" />
-    <Compile Include="Generated\Enum\ColorSpaceKHR.cs" />
-    <Compile Include="Generated\Enum\CommandBufferLevel.cs" />
-    <Compile Include="Generated\Enum\CommandBufferResetFlags.cs" />
-    <Compile Include="Generated\Enum\CommandBufferUsageFlags.cs" />
-    <Compile Include="Generated\Enum\CommandPoolCreateFlags.cs" />
-    <Compile Include="Generated\Enum\CommandPoolResetFlags.cs" />
-    <Compile Include="Generated\Enum\CompareOp.cs" />
-    <Compile Include="Generated\Enum\ComponentSwizzle.cs" />
-    <Compile Include="Generated\Enum\CompositeAlphaFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\CullModeFlags.cs" />
-    <Compile Include="Generated\Enum\DebugReportErrorEXT.cs" />
-    <Compile Include="Generated\Enum\DebugReportFlagsEXT.cs" />
-    <Compile Include="Generated\Enum\DebugReportObjectTypeEXT.cs" />
-    <Compile Include="Generated\Enum\DependencyFlags.cs" />
-    <Compile Include="Generated\Enum\DescriptorPoolCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DescriptorPoolResetFlags.cs" />
-    <Compile Include="Generated\Enum\DescriptorSetLayoutCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DescriptorType.cs" />
-    <Compile Include="Generated\Enum\DeviceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DeviceQueueCreateFlags.cs" />
-    <Compile Include="Generated\Enum\DisplayModeCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\DisplayPlaneAlphaFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\DisplaySurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\DynamicState.cs" />
-    <Compile Include="Generated\Enum\EventCreateFlags.cs" />
-    <Compile Include="Generated\Enum\FenceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\Filter.cs" />
-    <Compile Include="Generated\Enum\Format.cs" />
-    <Compile Include="Generated\Enum\FormatFeatureFlags.cs" />
-    <Compile Include="Generated\Enum\FramebufferCreateFlags.cs" />
-    <Compile Include="Generated\Enum\FrontFace.cs" />
-    <Compile Include="Generated\Enum\ImageAspectFlags.cs" />
-    <Compile Include="Generated\Enum\ImageCreateFlags.cs" />
-    <Compile Include="Generated\Enum\ImageLayout.cs" />
-    <Compile Include="Generated\Enum\ImageTiling.cs" />
-    <Compile Include="Generated\Enum\ImageType.cs" />
-    <Compile Include="Generated\Enum\ImageUsageFlags.cs" />
-    <Compile Include="Generated\Enum\ImageViewCreateFlags.cs" />
-    <Compile Include="Generated\Enum\ImageViewType.cs" />
-    <Compile Include="Generated\Enum\IndexType.cs" />
-    <Compile Include="Generated\Enum\InstanceCreateFlags.cs" />
-    <Compile Include="Generated\Enum\InternalAllocationType.cs" />
-    <Compile Include="Generated\Enum\LogicOp.cs" />
-    <Compile Include="Generated\Enum\MemoryHeapFlags.cs" />
-    <Compile Include="Generated\Enum\MemoryMapFlags.cs" />
-    <Compile Include="Generated\Enum\MemoryPropertyFlags.cs" />
-    <Compile Include="Generated\Enum\MirSurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\PhysicalDeviceType.cs" />
-    <Compile Include="Generated\Enum\PipelineBindPoint.cs" />
-    <Compile Include="Generated\Enum\PipelineCacheCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineCacheHeaderVersion.cs" />
-    <Compile Include="Generated\Enum\PipelineColorBlendStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineDepthStencilStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineDynamicStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineInputAssemblyStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineLayoutCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineMultisampleStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineRasterizationStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineShaderStageCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineStageFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineTessellationStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineVertexInputStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PipelineViewportStateCreateFlags.cs" />
-    <Compile Include="Generated\Enum\PolygonMode.cs" />
-    <Compile Include="Generated\Enum\PresentModeKHR.cs" />
-    <Compile Include="Generated\Enum\PrimitiveTopology.cs" />
-    <Compile Include="Generated\Enum\QueryControlFlags.cs" />
-    <Compile Include="Generated\Enum\QueryPipelineStatisticFlags.cs" />
-    <Compile Include="Generated\Enum\QueryPoolCreateFlags.cs" />
-    <Compile Include="Generated\Enum\QueryResultFlags.cs" />
-    <Compile Include="Generated\Enum\QueryType.cs" />
-    <Compile Include="Generated\Enum\QueueFlags.cs" />
-    <Compile Include="Generated\Enum\RasterizationOrderAMD.cs" />
-    <Compile Include="Generated\Enum\RenderPassCreateFlags.cs" />
-    <Compile Include="Generated\Enum\Result.cs" />
-    <Compile Include="Generated\Enum\SampleCountFlags.cs" />
-    <Compile Include="Generated\Enum\SamplerAddressMode.cs" />
-    <Compile Include="Generated\Enum\SamplerCreateFlags.cs" />
-    <Compile Include="Generated\Enum\SamplerMipmapMode.cs" />
-    <Compile Include="Generated\Enum\SemaphoreCreateFlags.cs" />
-    <Compile Include="Generated\Enum\ShaderModuleCreateFlags.cs" />
-    <Compile Include="Generated\Enum\ShaderStageFlags.cs" />
-    <Compile Include="Generated\Enum\SharingMode.cs" />
-    <Compile Include="Generated\Enum\SparseImageFormatFlags.cs" />
-    <Compile Include="Generated\Enum\SparseMemoryBindFlags.cs" />
-    <Compile Include="Generated\Enum\StencilFaceFlags.cs" />
-    <Compile Include="Generated\Enum\StencilOp.cs" />
-    <Compile Include="Generated\Enum\StructureType.cs" />
-    <Compile Include="Generated\Enum\SubpassContents.cs" />
-    <Compile Include="Generated\Enum\SubpassDescriptionFlags.cs" />
-    <Compile Include="Generated\Enum\SurfaceTransformFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\SwapchainCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\SystemAllocationScope.cs" />
-    <Compile Include="Generated\Enum\VertexInputRate.cs" />
-    <Compile Include="Generated\Enum\WaylandSurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\Win32SurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\XcbSurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Enum\XlibSurfaceCreateFlagsKHR.cs" />
-    <Compile Include="Generated\Handle\Buffer.cs" />
-    <Compile Include="Generated\Handle\BufferView.cs" />
-    <Compile Include="Generated\Handle\CommandBuffer.cs" />
-    <Compile Include="Generated\Handle\CommandPool.cs" />
-    <Compile Include="Generated\Handle\DebugReportCallbackEXT.cs" />
-    <Compile Include="Generated\Handle\DescriptorPool.cs" />
-    <Compile Include="Generated\Handle\DescriptorSet.cs" />
-    <Compile Include="Generated\Handle\DescriptorSetLayout.cs" />
-    <Compile Include="Generated\Handle\Device.cs" />
-    <Compile Include="Generated\Handle\DeviceMemory.cs" />
-    <Compile Include="Generated\Handle\DisplayKHR.cs" />
-    <Compile Include="Generated\Handle\DisplayModeKHR.cs" />
-    <Compile Include="Generated\Handle\Event.cs" />
-    <Compile Include="Generated\Handle\Fence.cs" />
-    <Compile Include="Generated\Handle\Framebuffer.cs" />
-    <Compile Include="Generated\Handle\Image.cs" />
-    <Compile Include="Generated\Handle\ImageView.cs" />
-    <Compile Include="Generated\Handle\Instance.cs" />
-    <Compile Include="Generated\Handle\PhysicalDevice.cs" />
-    <Compile Include="Generated\Handle\Pipeline.cs" />
-    <Compile Include="Generated\Handle\PipelineCache.cs" />
-    <Compile Include="Generated\Handle\PipelineLayout.cs" />
-    <Compile Include="Generated\Handle\QueryPool.cs" />
-    <Compile Include="Generated\Handle\Queue.cs" />
-    <Compile Include="Generated\Handle\RenderPass.cs" />
-    <Compile Include="Generated\Handle\Sampler.cs" />
-    <Compile Include="Generated\Handle\Semaphore.cs" />
-    <Compile Include="Generated\Handle\ShaderModule.cs" />
-    <Compile Include="Generated\Handle\SurfaceKHR.cs" />
-    <Compile Include="Generated\Handle\SwapchainKHR.cs" />
-    <Compile Include="Generated\Interop\Structs.cs" />
-    <Compile Include="Generated\Interop\VK.cs" />
-    <Compile Include="Generated\ObjectModel.cs" />
-    <Compile Include="Generated\Structs.cs" />
-    <Compile Include="Generated\Wrapper\AllocationCallbacks.cs" />
-    <Compile Include="Generated\Wrapper\AndroidSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\ApplicationInfo.cs" />
-    <Compile Include="Generated\Wrapper\BindSparseInfo.cs" />
-    <Compile Include="Generated\Wrapper\BufferCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\BufferMemoryBarrier.cs" />
-    <Compile Include="Generated\Wrapper\BufferViewCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\CommandBufferAllocateInfo.cs" />
-    <Compile Include="Generated\Wrapper\CommandBufferBeginInfo.cs" />
-    <Compile Include="Generated\Wrapper\CommandBufferInheritanceInfo.cs" />
-    <Compile Include="Generated\Wrapper\CommandPoolCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\ComputePipelineCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\CopyDescriptorSet.cs" />
-    <Compile Include="Generated\Wrapper\DebugMarkerMarkerInfoEXT.cs" />
-    <Compile Include="Generated\Wrapper\DebugMarkerObjectNameInfoEXT.cs" />
-    <Compile Include="Generated\Wrapper\DebugMarkerObjectTagInfoEXT.cs" />
-    <Compile Include="Generated\Wrapper\DebugReportCallbackCreateInfoEXT.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorBufferInfo.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorImageInfo.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorPoolCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorSetAllocateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorSetLayoutBinding.cs" />
-    <Compile Include="Generated\Wrapper\DescriptorSetLayoutCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DeviceCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DeviceQueueCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\DisplayModeCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\DisplayModePropertiesKHR.cs" />
-    <Compile Include="Generated\Wrapper\DisplayPlanePropertiesKHR.cs" />
-    <Compile Include="Generated\Wrapper\DisplayPresentInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\DisplayPropertiesKHR.cs" />
-    <Compile Include="Generated\Wrapper\DisplaySurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\EventCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\ExtensionProperties.cs" />
-    <Compile Include="Generated\Wrapper\FenceCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\FramebufferCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\GraphicsPipelineCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\ImageBlit.cs" />
-    <Compile Include="Generated\Wrapper\ImageCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\ImageMemoryBarrier.cs" />
-    <Compile Include="Generated\Wrapper\ImageViewCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\InstanceCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\LayerProperties.cs" />
-    <Compile Include="Generated\Wrapper\MappedMemoryRange.cs" />
-    <Compile Include="Generated\Wrapper\MemoryAllocateInfo.cs" />
-    <Compile Include="Generated\Wrapper\MemoryBarrier.cs" />
-    <Compile Include="Generated\Wrapper\MirSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\PhysicalDeviceLimits.cs" />
-    <Compile Include="Generated\Wrapper\PhysicalDeviceMemoryProperties.cs" />
-    <Compile Include="Generated\Wrapper\PhysicalDeviceProperties.cs" />
-    <Compile Include="Generated\Wrapper\PipelineCacheCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineColorBlendStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineDepthStencilStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineDynamicStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineInputAssemblyStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineLayoutCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineMultisampleStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineRasterizationStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineRasterizationStateRasterizationOrderAMD.cs" />
-    <Compile Include="Generated\Wrapper\PipelineShaderStageCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineTessellationStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineVertexInputStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PipelineViewportStateCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\PresentInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\QueryPoolCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\RenderPassBeginInfo.cs" />
-    <Compile Include="Generated\Wrapper\RenderPassCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\SamplerCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\SemaphoreCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\ShaderModuleCreateInfo.cs" />
-    <Compile Include="Generated\Wrapper\SparseBufferMemoryBindInfo.cs" />
-    <Compile Include="Generated\Wrapper\SparseImageMemoryBind.cs" />
-    <Compile Include="Generated\Wrapper\SparseImageMemoryBindInfo.cs" />
-    <Compile Include="Generated\Wrapper\SparseImageOpaqueMemoryBindInfo.cs" />
-    <Compile Include="Generated\Wrapper\SparseMemoryBind.cs" />
-    <Compile Include="Generated\Wrapper\SpecializationInfo.cs" />
-    <Compile Include="Generated\Wrapper\SubmitInfo.cs" />
-    <Compile Include="Generated\Wrapper\SubpassDescription.cs" />
-    <Compile Include="Generated\Wrapper\SwapchainCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\VK.cs" />
-    <Compile Include="Generated\Wrapper\WaylandSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\Win32SurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\WriteDescriptorSet.cs" />
-    <Compile Include="Generated\Wrapper\XcbSurfaceCreateInfoKHR.cs" />
-    <Compile Include="Generated\Wrapper\XlibSurfaceCreateInfoKHR.cs" />
-    <Compile Include="MemoryAllocator.cs" />
-    <Compile Include="MemoryUtils.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="Vector32.cs" />
+    <Compile Include="VulkanInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Version.cs" />
-    <Compile Include="VulkanCommandException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vulkan\Vulkan.csproj">
+      <Project>{852159e6-f125-4178-a2e9-df5bce5fb67a}</Project>
+      <Name>Vulkan</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

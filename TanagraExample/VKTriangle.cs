@@ -4,13 +4,13 @@ using System.Linq;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
-using System.Diagnostics;
 
 using SharpDX.Windows;
 
 using Tanagra;
-using Vulkan;
-using Vulkan.ObjectModel;
+using Vulkan;                     // Core Vulkan classes
+using Vulkan.Managed;             // A managed interface to Vulkan
+using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
 using ImageLayout = Vulkan.ImageLayout;
 using Buffer = Vulkan.Buffer;
@@ -21,7 +21,7 @@ namespace TanagraExample
     {
         private Form form;
 
-        MemoryAllocator allocator;
+        Vulkan.Allocation.Allocator allocator;
 
         // Handles
         private Instance instance;
@@ -32,6 +32,7 @@ namespace TanagraExample
         private CommandPool commandPool;
         private List<CommandBuffer> commandBuffer;
         private CommandBuffer setupCommanBuffer;
+
         private SwapchainKHR swapchain;
 
         private Format backBufferFormat;
@@ -54,11 +55,28 @@ namespace TanagraExample
         public void Main(string[] args)
         {
             var ptrSize = IntPtr.Size;
-            Console.WriteLine($"[INFO] Running in {((ptrSize == 4) ? "x86" : "x64")} mode, IntPtr.Size = {ptrSize}");
+            WriteLine($"[INFO] Running in {((ptrSize == 4) ? "x86" : "x64")} mode, IntPtr.Size = {ptrSize}");
 
             form = new RenderForm("Tanagra - Vulkan Sample");
 
             CreateInstance();
+
+            //PhysicalDeviceProperties();
+            //QueueFamilyProperties();
+            //WriteLine("");
+            //GetPhysicalDeviceFeatures();
+
+            //var vkInfo = new VulkanInfo();
+            //vkInfo.Write(physicalDevice);
+
+            //var physicalDevices = instance.EnumeratePhysicalDevices();
+            //WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
+
+            //physicalDevice = physicalDevices[0];
+            //WriteLine($"[ OK ] {physicalDevice}");
+
+            //PhysicalDeviceProperties();
+
             CreateSurface();
             CreateDevice();
             CreateCommandBuffer();
@@ -71,106 +89,72 @@ namespace TanagraExample
             CreatePipelineLayout();
             CreatePipeline();
             CreateFramebuffers();
+            
+            WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
+            WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
+            WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
 
-            Debug.Assert(MemoryUtils.AllocCount == 1);
-            Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
-            Console.WriteLine("Any key to continue");
+            WriteLine("Any key to continue");
+            WriteLine("[INFO] Starup OK, Launching...");
             Console.ReadKey();
-            Console.WriteLine("[INFO] Starup OK, Launching...");
             RenderLoop.Run(form, Draw);
 
-            Console.WriteLine("[INFO] Render window lost!");
+            WriteLine("[INFO] Render window lost!");
 
             Destroy();
         }
 
         private void CreateInstance()
         {
-            var ver = new Tanagra.Version(1, 0, 8);
-            Console.WriteLine($"version {ver.ToString(true)}");
+            var ver = new Vulkan.Version(1, 0, 8);
+            WriteLine($"version {ver.ToString(true)}");
 
-            var appInfo = new ApplicationInfo
+            /*var appInfo = new ApplicationInfo
             {
-                ApplicationName = "vulkanExample",
-                EngineName      = "vulkanExample",
-                ApiVersion      = ver
-            };
+                //ApplicationName = "vulkanExample",
+                //EngineName      = "vulkanExample",
+                //ApiVersion      = ver
+            };*/
 
             var instanceEnabledExtensions = new[]
             {
-                "VK_KHR_surface",       // VK_KHR_SURFACE_EXTENSION_NAME
-                "VK_KHR_win32_surface", // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
-                "VK_EXT_debug_report",  // VK_EXT_DEBUG_REPORT_EXTENSION_NAME
+                VulkanConstant.KhrSurfaceExtensionName,
+                VulkanConstant.KhrWin32SurfaceExtensionName,
+                VulkanConstant.ExtDebugReportExtensionName,
             };
 
             var instanceCreateInfo = new InstanceCreateInfo
             {
-                ApplicationInfo = appInfo,
+                //ApplicationInfo = appInfo,
                 EnabledExtensionNames = instanceEnabledExtensions,
             };
 
-            Console.WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
+            //WriteLine(instanceCreateInfo.ApplicationInfo.ApplicationName);
 
-            allocator = new MemoryAllocator();
+            allocator = new Vulkan.Allocation.Allocator();
+            //allocator.DebugLog = true;
 
-            instance = VK.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
-            Console.WriteLine($"[ OK ] {instance}");
+            instance = Vk.CreateInstance(instanceCreateInfo, allocator.AllocationCallbacks);
+            WriteLine($"[ OK ] {instance}");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
-            Console.WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
+            WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
 
             physicalDevice = physicalDevices[0];
-            Console.WriteLine($"[ OK ] {physicalDevice}");
+            WriteLine($"[ OK ] {physicalDevice}");
 
             debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
-            Console.WriteLine($"[ OK ] {debugCallback}");
+            WriteLine($"[ OK ] {debugCallback}");
 
-            appInfo.Free();
-            instanceCreateInfo.Free();
+            //appInfo.Dispose();
+            instanceCreateInfo.Dispose();
             //PhysicalDeviceProperties();
         }
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
-            Console.WriteLine($"[VULK] [{flags}] {message} ([{messageCode}] {layerPrefix})");
+            WriteLine($"[VULK] [{flags}] {message} ([{messageCode}] {layerPrefix})");
             return true;
-        }
-        
-        private void CreateDevice()
-        {
-            var queueCreateInfo = new DeviceQueueCreateInfo(0, new[] { 0f });
-
-            var deviceEnabledExtensions = new[]
-            {
-                "VK_KHR_swapchain",
-            };
-
-            var enabledFeatures = new PhysicalDeviceFeatures
-            {
-                ShaderClipDistance = true,
-            };
-
-            var deviceCreateInfo = new DeviceCreateInfo
-            {
-                QueueCreateInfos = new[] { queueCreateInfo },
-                EnabledExtensionNames = deviceEnabledExtensions,
-                EnabledFeatures = enabledFeatures,
-            };
-
-            device = physicalDevice.CreateDevice(deviceCreateInfo);
-            Console.WriteLine($"[ OK ] {device}");
-
-            Console.WriteLine($"[INFO] Begin GetQueueFamilyProperties");
-            var queueNodeIndex = physicalDevice.GetQueueFamilyProperties()
-                .Where((properties, index) => (properties.QueueFlags & QueueFlags.Graphics) != 0 && physicalDevice.GetSurfaceSupportKHR((uint)index, surface))
-                .Select((properties, index) => index)
-                .First();
-
-            queue = device.GetQueue(0, (uint)queueNodeIndex);
-            Console.WriteLine($"[ OK ] {queue}");
-
-            deviceCreateInfo.Free();
-            queueCreateInfo.Free();
         }
 
         private void CreateSurface()
@@ -179,10 +163,42 @@ namespace TanagraExample
             //GetProcessHandles(out HINSTANCE, out HWND);
             var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(Process.GetCurrentProcess().Handle, form.Handle);
             surface = instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
-            Console.WriteLine($"[ OK ] {surface}");
-            surfaceCreateInfo.Free();
+            WriteLine($"[ OK ] {surface}");
+            surfaceCreateInfo.Dispose();
         }
 
+        private void CreateDevice()
+        {
+            var queueCreateInfo = new DeviceQueueCreateInfo(0, new[] { 0f });
+
+            var deviceEnabledExtensions = new[]
+            {
+                VulkanConstant.KhrSwapchainExtensionName,
+            };
+
+            var enabledFeatures = new PhysicalDeviceFeatures();
+            
+            var deviceCreateInfo = new DeviceCreateInfo
+            {
+                QueueCreateInfos = new[] { queueCreateInfo },
+                EnabledExtensionNames = deviceEnabledExtensions,
+                EnabledFeatures = enabledFeatures,
+            };
+            device = physicalDevice.CreateDevice(deviceCreateInfo);
+            queueCreateInfo.Dispose();
+            deviceCreateInfo.Dispose();
+            WriteLine($"[ OK ] {device}");
+
+            WriteLine($"[INFO] Begin GetQueueFamilyProperties");
+            var queueNodeIndex = physicalDevice.GetQueueFamilyProperties()
+                .Where((properties, index) => (properties.QueueFlags & QueueFlags.Graphics) != 0 && physicalDevice.GetSurfaceSupportKHR((uint)index, surface))
+                .Select((properties, index) => index)
+                .First();
+
+            queue = device.GetQueue(0, (uint)queueNodeIndex);
+            WriteLine($"[ OK ] {queue}");
+        }
+        
         private void CreateCommandBuffer()
         {
             // Command pool
@@ -192,16 +208,15 @@ namespace TanagraExample
                 Flags = CommandPoolCreateFlags.ResetCommandBuffer,
             };
             commandPool = device.CreateCommandPool(commandPoolCreateInfo);
-            Console.WriteLine($"[ OK ] {commandPool}");
+            commandPoolCreateInfo.Dispose();
+            WriteLine($"[ OK ] {commandPool}");
 
             // Command Buffer
             var commandBufferAllocationInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
-            Console.WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
-            Console.WriteLine($"[ OK ] {commandBuffer[0]}");
-
-            commandBufferAllocationInfo.Free();
-            commandPoolCreateInfo.Free();
+            commandBufferAllocationInfo.Dispose();
+            WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
+            WriteLine($"[ OK ] {commandBuffer[0]}");
         }
 
         private void CreateSwapchain()
@@ -211,12 +226,12 @@ namespace TanagraExample
             if (surfaceFormats.Count == 1 && surfaceFormats[0].Format == Format.Undefined)
             {
                 backBufferFormat = Format.B8g8r8a8Unorm;
-                Console.WriteLine($"using default backBufferFormat {backBufferFormat}");
+                WriteLine($"using default backBufferFormat {backBufferFormat}");
             }
             else
             {
                 backBufferFormat = surfaceFormats[0].Format;
-                Console.WriteLine($"backBufferFormat {backBufferFormat}");
+                WriteLine($"backBufferFormat {backBufferFormat}");
             }
 
             var surfaceCapabilities = physicalDevice.GetSurfaceCapabilitiesKHR(surface);
@@ -248,7 +263,7 @@ namespace TanagraExample
             else if (presentModes.Contains(PresentModeKHR.Immediate))
                 swapChainPresentMode = PresentModeKHR.Immediate;
 
-            Console.WriteLine($"swapChainPresentMode {swapChainPresentMode}");
+            WriteLine($"swapChainPresentMode {swapChainPresentMode}");
 
             var imageExtent = new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height);
             // Create swapchain
@@ -257,11 +272,11 @@ namespace TanagraExample
                 Surface            = surface,
                 MinImageCount      = desiredImageCount,
                 ImageFormat        = backBufferFormat,
-                ImageColorSpace    = ColorSpaceKHR.SrgbNonlinear,
+                //ImageColorSpace    = ColorSpaceKHR.SrgbNonlinear,
                 ImageExtent        = imageExtent,
                 ImageArrayLayers   = 1,
                 ImageUsage         = ImageUsageFlags.ColorAttachment,
-                ImageSharingMode   = SharingMode.Exclusive,
+                //ImageSharingMode   = SharingMode.Exclusive,
                 QueueFamilyIndices = null,
                 PreTransform       = preTransform,
                 CompositeAlpha     = CompositeAlphaFlagsKHR.Opaque,
@@ -269,17 +284,16 @@ namespace TanagraExample
                 Clipped            = true,
             };
             swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
-            Console.WriteLine($"[ OK ] {swapchain}");
+            swapchainCreateInfo.Dispose();
+            WriteLine($"[ OK ] {swapchain}");
 
             backBuffers = device.GetSwapchainImagesKHR(swapchain);
-            Console.WriteLine($"[INFO] backBuffers {backBuffers.Count}");
+            /*WriteLine($"[INFO] backBuffers {backBuffers.Count}");
             foreach (var image in backBuffers)
             {
                 SetImageLayout(image, ImageAspectFlags.Color, ImageLayout.Undefined, ImageLayout.PresentSrcKHR);
             }
-            Flush();
-
-            swapchainCreateInfo.Free();
+            Flush();*/
         }
 
         private void SetImageLayout(Image image, ImageAspectFlags imageAspect, ImageLayout oldLayout, ImageLayout newLayout)
@@ -289,16 +303,16 @@ namespace TanagraExample
                 var allocateInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
                 var setupBuffer = device.AllocateCommandBuffers(allocateInfo)[0];
                 setupCommanBuffer = setupBuffer;
-                Console.WriteLine($"[ OK ] {setupCommanBuffer}");
+                WriteLine($"[ OK ] {setupCommanBuffer}");
 
                 var inheritanceInfo = new CommandBufferInheritanceInfo();
                 var beginInfo = new CommandBufferBeginInfo { InheritanceInfo = inheritanceInfo };
                 setupCommanBuffer.Begin(beginInfo);
-                Console.WriteLine("[ OK ] setupCommanBuffer.Begin");
+                WriteLine("[ OK ] setupCommanBuffer.Begin");
 
-                allocateInfo.Free();
-                inheritanceInfo.Free();
-                beginInfo.Free();
+                allocateInfo.Dispose();
+                inheritanceInfo.Dispose();
+                beginInfo.Dispose();
             }
             
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, new ImageSubresourceRange(imageAspect, 0, 1, 0, 1));
@@ -323,9 +337,9 @@ namespace TanagraExample
             var destinationStages = PipelineStageFlags.TopOfPipe;
 
             setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { imageMemoryBarrier });
-            Console.WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
+            WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
 
-            imageMemoryBarrier.Free();
+            imageMemoryBarrier.Dispose();
         }
 
         private void Flush()
@@ -334,24 +348,24 @@ namespace TanagraExample
                 return;
 
             setupCommanBuffer.End();
-            Console.WriteLine("[ OK ] setupCommanBuffer.End");
+            WriteLine("[ OK ] setupCommanBuffer.End");
             
             var submitInfo = new SubmitInfo(null, null, new[] { setupCommanBuffer }, null);
 
-            Console.WriteLine($"[ OK ] {setupCommanBuffer} / {submitInfo.CommandBuffers[0]}");
+            WriteLine($"[ OK ] {setupCommanBuffer} / {submitInfo.CommandBuffers[0]}");
 
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            Console.WriteLine("[ OK ] queue.Submit");
+            WriteLine("[ OK ] queue.Submit");
 
             queue.WaitIdle();
-            Console.WriteLine("[ OK ] queue.WaitIdle");
+            WriteLine("[ OK ] queue.WaitIdle");
 
             device.FreeCommandBuffers(commandPool, new List<CommandBuffer> { setupCommanBuffer });
-            Console.WriteLine("[ OK ] device.FreeCommandBuffers");
+            WriteLine("[ OK ] device.DisposeCommandBuffers");
 
             setupCommanBuffer = null;
 
-            submitInfo.Free();
+            submitInfo.Dispose();
         }
 
         private void CreateBackBufferViews()
@@ -362,9 +376,9 @@ namespace TanagraExample
                 var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
                 var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, backBufferFormat, new ComponentMapping(), subresourceRange);
                 backBufferViews.Add(device.CreateImageView(createInfo));
-                createInfo.Free();
+                createInfo.Dispose();
             }
-            Console.WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
+            WriteLine($"[INFO] backBufferViews {backBufferViews.Count}");
         }
 
         private void CreateVertexBuffer()
@@ -376,29 +390,32 @@ namespace TanagraExample
                 { -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 1.0f },
             };
 
+            var bufferSize = (ulong)(sizeof(float) * vertices.Length);
             var createInfo = new BufferCreateInfo
             {
                 Usage = BufferUsageFlags.VertexBuffer,
-                Size  = (ulong)(sizeof(float) * vertices.Length),
+                Size  = bufferSize,
             };
             vertexBuffer = device.CreateBuffer(createInfo);
-            Console.WriteLine($"[ OK ] {vertexBuffer}");
+            createInfo.Dispose();
+            WriteLine($"[ OK ] {vertexBuffer}");
 
             var memoryRequirements = device.GetBufferMemoryRequirements(vertexBuffer);
 
             if (memoryRequirements.Size == 0) return;
-            Console.WriteLine($"[ OK ] memoryRequirements {memoryRequirements.Size}");
+            WriteLine($"[ OK ] memoryRequirements {memoryRequirements.Size}");
 
             var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, 2); // MemoryTypeIndex = 2, TODO
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
-            Console.WriteLine($"[ OK ] {vertexBufferMemory}");
+            allocateInfo.Dispose();
+            WriteLine($"[ OK ] {vertexBufferMemory}");
 
-            var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
-            MemoryUtils.Copy2DArray(vertices, mapped, createInfo.Size, createInfo.Size);
+            var mapped = device.MapMemory(vertexBufferMemory, 0, bufferSize, MemoryMapFlags.None);
+            MemUtil.Copy2DArray(vertices, mapped, bufferSize, bufferSize);
             device.UnmapMemory(vertexBufferMemory);
 
             device.BindBufferMemory(vertexBuffer, vertexBufferMemory, 0);
-            Console.WriteLine($"[ OK ] device.BindBufferMemory");
+            WriteLine($"[ OK ] device.BindBufferMemory");
 
             vertexAttributes = new[]
             {
@@ -410,9 +427,6 @@ namespace TanagraExample
             {
                 new VertexInputBindingDescription(0, (uint)(sizeof(float) * vertices.GetLength(1)), VertexInputRate.Vertex)
             };
-
-            createInfo.Free();
-            allocateInfo.Free();
         }
 
         private void CreateRenderPass()
@@ -428,29 +442,22 @@ namespace TanagraExample
                 {
                     Format         = backBufferFormat,
                     Samples        = SampleCountFlags.SampleCountFlags1,
-                    LoadOp         = AttachmentLoadOp.Load,
-                    StoreOp        = AttachmentStoreOp.Store,
+                    //LoadOp         = AttachmentLoadOp.Load,
+                    //StoreOp        = AttachmentStoreOp.Store,
                     StencilLoadOp  = AttachmentLoadOp.DontCare,
                     StencilStoreOp = AttachmentStoreOp.DontCare,
                     InitialLayout  = ImageLayout.ColorAttachmentOptimal,
                     FinalLayout    = ImageLayout.ColorAttachmentOptimal
                 },
-                //new AttachmentDescription(backBufferFormat, SampleCountFlags.SampleCountFlags1, AttachmentLoadOp.Load, AttachmentStoreOp.Store, AttachmentLoadOp.DontCare, AttachmentStoreOp.DontCare, ImageLayout.ColorAttachmentOptimal, ImageLayout.ColorAttachmentOptimal)
             };
             
             var createInfo = new RenderPassCreateInfo(attachments, new[] { subpass }, null);
-
-            Console.WriteLine(createInfo.Attachments[0].Format);
-
-            //var subpasses = createInfo.Subpasses;
-            //Console.WriteLine(subpasses[0].ColorAttachments[0].Layout);
-            //Console.WriteLine(createInfo.Subpasses[0].ColorAttachments[0].Layout);
-
+            
             renderPass = device.CreateRenderPass(createInfo);
-            Console.WriteLine($"[ OK ] {renderPass}");
+            WriteLine($"[ OK ] {renderPass}");
 
-            subpass.Free();
-            createInfo.Free();
+            subpass.Dispose();
+            createInfo.Dispose();
         }
 
         private void CreatePipelineLayout()
@@ -458,17 +465,16 @@ namespace TanagraExample
             // We don't need any descriptors, since we don't use any resources/uniforms
             var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo();
             var descriptorSetLayout = device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo);
-            Console.WriteLine($"[ OK ] {descriptorSetLayout}");
+            descriptorSetLayoutCreateInfo.Dispose();
+            WriteLine($"[ OK ] {descriptorSetLayout}");
 
             var createInfo = new PipelineLayoutCreateInfo();
             pipelineLayout = device.CreatePipelineLayout(createInfo);
-            Console.WriteLine($"[ OK ] {pipelineLayout}");
+            createInfo.Dispose();
+            WriteLine($"[ OK ] {pipelineLayout}");
 
             // Destroy temporary layout
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
-
-            descriptorSetLayoutCreateInfo.Free();
-            createInfo.Free();
         }
 
         private void CreatePipeline()
@@ -479,12 +485,7 @@ namespace TanagraExample
             var vertexInputState = new PipelineVertexInputStateCreateInfo(vertexBindings, vertexAttributes);
             var inputAssemblyState = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList, false);
 
-            var rasterizerState = new PipelineRasterizationStateCreateInfo
-            {
-                PolygonMode = PolygonMode.Fill,
-                CullMode    = CullModeFlags.None,
-                FrontFace   = FrontFace.Clockwise,
-            };
+            var rasterizerState = new PipelineRasterizationStateCreateInfo();
 
             var colorBlendAttachment = new PipelineColorBlendAttachmentState { ColorWriteMask = ColorComponentFlags.R | ColorComponentFlags.G | ColorComponentFlags.B | ColorComponentFlags.A };
             var blendState = new PipelineColorBlendStateCreateInfo
@@ -515,8 +516,8 @@ namespace TanagraExample
                 RasterizationState = rasterizerState,
                 Layout = pipelineLayout,
                 RenderPass = renderPass,
-                Subpass = 0,
-                BasePipelineIndex = 0,
+                //Subpass = 0,
+                //BasePipelineIndex = 0,
 
                 DynamicState = dynamicState,
                 ViewportState = viewportState,
@@ -525,24 +526,24 @@ namespace TanagraExample
             };
             var pipelines = device.CreateGraphicsPipelines(null, new List<GraphicsPipelineCreateInfo> { createInfo });
             pipeline = pipelines[0];
-            Console.WriteLine($"[ OK ] {pipeline}");
+            WriteLine($"[ OK ] {pipeline}");
 
             foreach (var shaderStage in shaderStages)
             {
                 device.DestroyShaderModule(shaderStage.Module);
-                Console.WriteLine("[INFO] device.DestroyShaderModule");
+                WriteLine("[INFO] device.DestroyShaderModule");
             }
 
-            createInfo.Free();
-            shaderStages[0].Free();
-            shaderStages[1].Free();
-            depthStencilState.Free();
-            blendState.Free();
-            rasterizerState.Free();
-            inputAssemblyState.Free();
-            vertexInputState.Free();
-            viewportState.Free();
-            dynamicState.Free();
+            createInfo.Dispose();
+            shaderStages[0].Dispose();
+            shaderStages[1].Dispose();
+            depthStencilState.Dispose();
+            blendState.Dispose();
+            rasterizerState.Dispose();
+            inputAssemblyState.Dispose();
+            vertexInputState.Dispose();
+            viewportState.Dispose();
+            dynamicState.Dispose();
         }
 
         private ShaderModule CreateVertexShader()
@@ -561,7 +562,7 @@ namespace TanagraExample
         {
             var createInfo = new ShaderModuleCreateInfo(shaderCode);
             var module = device.CreateShaderModule(createInfo);
-            createInfo.Free();
+            createInfo.Dispose();
             return module;
         }
 
@@ -573,8 +574,8 @@ namespace TanagraExample
                 var attachment = backBufferViews[i];
                 var createInfo = new FramebufferCreateInfo(renderPass, new[] { attachment }, (uint)form.ClientSize.Width, (uint)form.ClientSize.Height, 1);
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
-                Console.WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
-                createInfo.Free();
+                createInfo.Dispose();
+                WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
             }
         }
 
@@ -582,7 +583,7 @@ namespace TanagraExample
         {
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
             var presentCompleteSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
-            semaphoreCreateInfo.Free();
+            semaphoreCreateInfo.Dispose();
             
             try
             {
@@ -598,7 +599,7 @@ namespace TanagraExample
             // Record drawing command buffer
             var beginInfo = new CommandBufferBeginInfo();
             commandBuffer[0].Begin(beginInfo);
-            beginInfo.Free();
+            beginInfo.Dispose();
             DrawInternal();
             commandBuffer[0].End();
 
@@ -607,13 +608,13 @@ namespace TanagraExample
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
             var submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo }, null);
-            submitInfo.Free();
+            submitInfo.Dispose();
 
             // Present
             var currentBackBufferIndexCopy = currentBackBufferIndex;
             var presentInfo = new PresentInfoKHR(new[] { swapchain }, new[] { currentBackBufferIndexCopy });
             queue.PresentKHR(presentInfo);
-            presentInfo.Free();
+            presentInfo.Dispose();
 
             // Wait
             queue.WaitIdle();
@@ -624,6 +625,7 @@ namespace TanagraExample
 
         private void DrawInternal()
         {
+            var cmdBuffer = commandBuffer[0];
             // Post-present transition
             var memoryBarrier = new ImageMemoryBarrier
             {
@@ -634,38 +636,39 @@ namespace TanagraExample
                 Image            = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
-            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            memoryBarrier.Free();
+            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            memoryBarrier.Dispose();
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            commandBuffer[0].CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
+            cmdBuffer.CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
             
             // Begin render pass
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
             var renderPassBeginInfo = new RenderPassBeginInfo(renderPass, framebuffers[currentBackBufferIndex], renderArea, null);
-            commandBuffer[0].CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
-            renderPassBeginInfo.Free();
+            cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo, SubpassContents.Inline);
+            renderPassBeginInfo.Dispose();
 
             // Bind pipeline
-            commandBuffer[0].CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
 
-            // Set viewport and scissor
+            // Set viewport 
             var viewport = new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0, 0);
-            commandBuffer[0].CmdSetViewport(0, new List<Viewport> { viewport });
-            
+            cmdBuffer.CmdSetViewport(0, new List<Viewport> { viewport });
+
+            // Set scissor
             var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
-            commandBuffer[0].CmdSetScissor(0, new List<Rect2D> { scissor });
+            cmdBuffer.CmdSetScissor(0, new List<Rect2D> { scissor });
 
             // Bind vertex buffer
             var vertexBufferCopy = vertexBuffer; // todo!
             ulong offset = 0;
-            commandBuffer[0].CmdBindVertexBuffers(0, new List<Buffer> { vertexBufferCopy }, new List<DeviceSize> { offset });
+            cmdBuffer.CmdBindVertexBuffers(0, new List<Buffer> { vertexBufferCopy }, new List<DeviceSize> { offset });
 
             // Draw vertices
-            commandBuffer[0].CmdDraw(3, 1, 0, 0);
+            cmdBuffer.CmdDraw(3, 1, 0, 0);
 
             // End render pass
-            commandBuffer[0].CmdEndRenderPass();
+            cmdBuffer.CmdEndRenderPass();
 
             // Pre-present transition
             memoryBarrier = new ImageMemoryBarrier
@@ -677,8 +680,8 @@ namespace TanagraExample
                 DstAccessMask    = AccessFlags.MemoryRead,
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
-            commandBuffer[0].CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
-            memoryBarrier.Free();
+            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            memoryBarrier.Dispose();
         }
 
         private void Destroy()
@@ -706,96 +709,24 @@ namespace TanagraExample
             
             instance.Destroy();
 
+            allocator.AllocationCallbacks.Dispose();
+
             form.Dispose();
 
+            commandBuffer = null;
+            backBuffers = null;
+            backBufferViews = null;
+            framebuffers = null;
+            vertexAttributes = null;
+            vertexBindings = null;
+
+            GC.GetTotalMemory(true);
             GC.WaitForPendingFinalizers();
-            Console.WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
-            Console.WriteLine($"[INFO] MemoryUtils: {MemoryUtils.AllocCount} allocated pointers");
+            WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
+            WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
+            WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
         }
-
-        private void PhysicalDeviceProperties()
-        {
-            var props = physicalDevice.GetProperties();
-            var ver = new Tanagra.Version(props.ApiVersion);
-
-            Console.WriteLine($"ApiVersion        {ver}");
-            Console.WriteLine($"DriverVersion     {props.DriverVersion}");
-            Console.WriteLine($"VendorID          {props.VendorID.ToString("X4")}");
-            Console.WriteLine($"DeviceID          {props.DeviceID.ToString("X4")}");
-            Console.WriteLine($"DeviceType        {props.DeviceType}");
-            Console.WriteLine($"DeviceName        {props.DeviceName}");
-            //Console.WriteLine($"PipelineCacheUUID {props.PipelineCacheUUID}");
-
-            Console.WriteLine();
-
-            var limits = props.Limits;
-            Console.WriteLine("Limits");
-            Console.WriteLine("----------");
-            Console.WriteLine($"MaxImageDimension1D                   {limits.MaxImageDimension1D.ToString("X")}");
-            Console.WriteLine($"MaxImageDimension2D                   {limits.MaxImageDimension2D.ToString("X")}");
-            Console.WriteLine($"MaxImageDimension3D                   {limits.MaxImageDimension3D.ToString("X")}");
-            Console.WriteLine($"MaxImageDimensionCube                 {limits.MaxImageDimensionCube.ToString("X")}");
-            Console.WriteLine($"MaxImageArrayLayers                   {limits.MaxImageArrayLayers.ToString("X")}");
-            Console.WriteLine($"MaxTexelBufferElements                {limits.MaxTexelBufferElements.ToString("X")}");
-            Console.WriteLine($"MaxUniformBufferRange                 {limits.MaxUniformBufferRange.ToString("X")}");
-            Console.WriteLine($"MaxStorageBufferRange                 {limits.MaxStorageBufferRange.ToString("X")}");
-            Console.WriteLine($"MaxPushConstantsSize                  {limits.MaxPushConstantsSize.ToString("X")}");
-            Console.WriteLine($"MaxMemoryAllocationCount              {limits.MaxMemoryAllocationCount.ToString("X")}");
-            Console.WriteLine($"MaxSamplerAllocationCount             {limits.MaxSamplerAllocationCount.ToString("X")}");
-            Console.WriteLine($"BufferImageGranularity                {limits.BufferImageGranularity.ToString("X")}"); // DeviceSize
-            Console.WriteLine($"SparseAddressSpaceSize                {limits.SparseAddressSpaceSize.ToString("X")}"); // DeviceSize
-            Console.WriteLine($"MaxBoundDescriptorSets                {limits.MaxBoundDescriptorSets.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorSamplers         {limits.MaxPerStageDescriptorSamplers.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorUniformBuffers   {limits.MaxPerStageDescriptorUniformBuffers.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorStorageBuffers   {limits.MaxPerStageDescriptorStorageBuffers.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorSampledImages    {limits.MaxPerStageDescriptorSampledImages.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorStorageImages    {limits.MaxPerStageDescriptorStorageImages.ToString("X")}");
-            Console.WriteLine($"MaxPerStageDescriptorInputAttachments {limits.MaxPerStageDescriptorInputAttachments.ToString("X")}");
-            Console.WriteLine($"MaxPerStageResources                  {limits.MaxPerStageResources.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetSamplers              {limits.MaxDescriptorSetSamplers.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetUniformBuffers        {limits.MaxDescriptorSetUniformBuffers.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetUniformBuffersDynamic {limits.MaxDescriptorSetUniformBuffersDynamic.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetStorageBuffers        {limits.MaxDescriptorSetStorageBuffers.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetStorageBuffersDynamic {limits.MaxDescriptorSetStorageBuffersDynamic.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetSampledImages         {limits.MaxDescriptorSetSampledImages.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetStorageImages         {limits.MaxDescriptorSetStorageImages.ToString("X")}");
-            Console.WriteLine($"MaxDescriptorSetInputAttachments      {limits.MaxDescriptorSetInputAttachments.ToString("X")}");
-            Console.WriteLine($"MaxVertexInputAttributes              {limits.MaxVertexInputAttributes.ToString("X")}");
-            Console.WriteLine($"MaxVertexInputBindings                {limits.MaxVertexInputBindings.ToString("X")}");
-            Console.WriteLine($"MaxVertexInputAttributeOffset         {limits.MaxVertexInputAttributeOffset.ToString("X")}");
-            Console.WriteLine($"MaxVertexInputBindingStride           {limits.MaxVertexInputBindingStride.ToString("X")}");
-            Console.WriteLine($"MaxVertexOutputComponents             {limits.MaxVertexOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationGenerationLevel                  {limits.MaxTessellationGenerationLevel.ToString("X")}");
-            Console.WriteLine($"MaxTessellationPatchSize                        {limits.MaxTessellationPatchSize.ToString("X")}");
-            Console.WriteLine($"MaxTessellationControlPerVertexInputComponents  {limits.MaxTessellationControlPerVertexInputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationControlPerVertexOutputComponents {limits.MaxTessellationControlPerVertexOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationControlPerPatchOutputComponents  {limits.MaxTessellationControlPerPatchOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationControlTotalOutputComponents     {limits.MaxTessellationControlTotalOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationEvaluationInputComponents        {limits.MaxTessellationEvaluationInputComponents.ToString("X")}");
-            Console.WriteLine($"MaxTessellationEvaluationOutputComponents       {limits.MaxTessellationEvaluationOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxGeometryShaderInvocations          {limits.MaxGeometryShaderInvocations.ToString("X")}");
-            Console.WriteLine($"MaxGeometryInputComponents            {limits.MaxGeometryInputComponents.ToString("X")}");
-            Console.WriteLine($"MaxGeometryOutputComponents           {limits.MaxGeometryOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxGeometryOutputVertices             {limits.MaxGeometryOutputVertices.ToString("X")}");
-            Console.WriteLine($"MaxGeometryTotalOutputComponents      {limits.MaxGeometryTotalOutputComponents.ToString("X")}");
-            Console.WriteLine($"MaxFragmentInputComponents            {limits.MaxFragmentInputComponents.ToString("X")}");
-            Console.WriteLine($"MaxFragmentOutputAttachments          {limits.MaxFragmentOutputAttachments.ToString("X")}");
-            Console.WriteLine($"MaxFragmentDualSrcAttachments         {limits.MaxFragmentDualSrcAttachments.ToString("X")}");
-            Console.WriteLine($"MaxFragmentCombinedOutputResources    {limits.MaxFragmentCombinedOutputResources.ToString("X")}");
-            Console.WriteLine($"MaxComputeSharedMemorySize            {limits.MaxComputeSharedMemorySize.ToString("X")}");
-
-            Console.WriteLine();
-
-            var sparse = props.SparseProperties;
-            Console.WriteLine("SparseProperties");
-            Console.WriteLine("----------");
-            Console.WriteLine($"  ResidencyStandard2DBlockShape            {sparse.ResidencyStandard2DBlockShape}");
-            Console.WriteLine($"  ResidencyStandard2DMultisampleBlockShape {sparse.ResidencyStandard2DMultisampleBlockShape}");
-            Console.WriteLine($"  ResidencyStandard3DBlockShape            {sparse.ResidencyStandard3DBlockShape}");
-            Console.WriteLine($"  ResidencyAlignedMipSize                  {sparse.ResidencyAlignedMipSize}");
-            Console.WriteLine($"  ResidencyNonResidentStrict               {sparse.ResidencyNonResidentStrict}");
-        }
-
+        
         private void GetProcessHandles(out IntPtr HINSTANCE, out IntPtr HWND)
         {
             var process = Process.GetCurrentProcess();
@@ -803,5 +734,14 @@ namespace TanagraExample
             HWND = process.MainWindowHandle;
         }
 
+        private void WriteLine(string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
     }
 }
