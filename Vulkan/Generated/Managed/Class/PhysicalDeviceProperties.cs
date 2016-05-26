@@ -57,12 +57,12 @@ namespace Vulkan.Managed
         
         internal PhysicalDeviceProperties()
         {
-            NativePointer = (Unmanaged.PhysicalDeviceProperties*)MemoryUtils.Allocate(typeof(Unmanaged.PhysicalDeviceProperties));
+            NativePointer = (Unmanaged.PhysicalDeviceProperties*)MemUtil.Alloc(typeof(Unmanaged.PhysicalDeviceProperties));
         }
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -71,7 +71,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

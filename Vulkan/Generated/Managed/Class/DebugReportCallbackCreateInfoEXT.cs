@@ -36,7 +36,7 @@ namespace Vulkan.Managed
         
         public DebugReportCallbackCreateInfoEXT()
         {
-            NativePointer = (Unmanaged.DebugReportCallbackCreateInfoEXT*)MemoryUtils.Allocate(typeof(Unmanaged.DebugReportCallbackCreateInfoEXT));
+            NativePointer = (Unmanaged.DebugReportCallbackCreateInfoEXT*)MemUtil.Alloc(typeof(Unmanaged.DebugReportCallbackCreateInfoEXT));
             NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
         
@@ -48,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -57,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

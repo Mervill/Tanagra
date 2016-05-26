@@ -66,7 +66,7 @@ namespace Vulkan.Managed
         
         public DeviceQueueCreateInfo()
         {
-            NativePointer = (Unmanaged.DeviceQueueCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.DeviceQueueCreateInfo));
+            NativePointer = (Unmanaged.DeviceQueueCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.DeviceQueueCreateInfo));
             NativePointer->SType = StructureType.DeviceQueueCreateInfo;
         }
         
@@ -79,7 +79,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueuePriorities);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -89,7 +89,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueuePriorities);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

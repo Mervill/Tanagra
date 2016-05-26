@@ -168,7 +168,7 @@ namespace Vulkan.Managed
         
         public GraphicsPipelineCreateInfo()
         {
-            NativePointer = (Unmanaged.GraphicsPipelineCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.GraphicsPipelineCreateInfo));
+            NativePointer = (Unmanaged.GraphicsPipelineCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.GraphicsPipelineCreateInfo));
             NativePointer->SType = StructureType.GraphicsPipelineCreateInfo;
         }
         
@@ -187,7 +187,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Stages);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -197,7 +197,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Stages);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

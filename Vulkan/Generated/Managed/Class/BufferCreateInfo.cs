@@ -84,7 +84,7 @@ namespace Vulkan.Managed
         
         public BufferCreateInfo()
         {
-            NativePointer = (Unmanaged.BufferCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.BufferCreateInfo));
+            NativePointer = (Unmanaged.BufferCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.BufferCreateInfo));
             NativePointer->SType = StructureType.BufferCreateInfo;
         }
         
@@ -99,7 +99,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -109,7 +109,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

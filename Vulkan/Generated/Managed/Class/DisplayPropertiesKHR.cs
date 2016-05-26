@@ -73,7 +73,7 @@ namespace Vulkan.Managed
         
         public DisplayPropertiesKHR()
         {
-            NativePointer = (Unmanaged.DisplayPropertiesKHR*)MemoryUtils.Allocate(typeof(Unmanaged.DisplayPropertiesKHR));
+            NativePointer = (Unmanaged.DisplayPropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPropertiesKHR));
         }
         
         public DisplayPropertiesKHR(DisplayKHR Display, String DisplayName, Extent2D PhysicalDimensions, Extent2D PhysicalResolution, Bool32 PlaneReorderPossible, Bool32 PersistentContent) : this()
@@ -89,7 +89,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->DisplayName);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -99,7 +99,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DisplayName);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

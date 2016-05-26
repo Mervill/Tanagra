@@ -81,7 +81,7 @@ namespace Vulkan.Managed
         
         public DescriptorSetLayoutBinding()
         {
-            NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)MemoryUtils.Allocate(typeof(Unmanaged.DescriptorSetLayoutBinding));
+            NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)MemUtil.Alloc(typeof(Unmanaged.DescriptorSetLayoutBinding));
         }
         
         public DescriptorSetLayoutBinding(UInt32 Binding, DescriptorType DescriptorType, ShaderStageFlags StageFlags) : this()
@@ -94,7 +94,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -104,7 +104,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

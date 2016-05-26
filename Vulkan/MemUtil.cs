@@ -4,16 +4,28 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
-	public unsafe static class MemoryUtils
-	{
-        public static int AllocCount { get; private set; }
+	public unsafe static class MemUtil
+    {
+        /*
+        ## Marshal.AllocHGlobal
+        ##
+        ## This method exposes the Win32 LocalAlloc function from Kernel32.dll (on Windows).
+        ##
+        ## When AllocHGlobal calls LocalAlloc, it passes a LMEM_FIXED flag, which causes the 
+        ## allocated memory to be locked in place. Also, the allocated memory is not zero-filled.
+        ## 
+        ## https://msdn.microsoft.com/en-us/library/s69bkh17(v=vs.100).aspx
+        */
 
-        static Dictionary<IntPtr, Int64> pointerMemory;
+#if DEBUG
+        static readonly Dictionary<IntPtr, Int64> PointerMemory;
+        public static int AllocCount => PointerMemory.Count;
 
-	    static MemoryUtils()
+        static MemUtil()
 	    {
-            pointerMemory = new Dictionary<IntPtr, long>();
+            PointerMemory = new Dictionary<IntPtr, long>();
         }
+#endif
 
         public static void Copy2DArray(float[,] source, IntPtr destination, ulong destinationSizeInBytes, ulong sourceBytesToCopy)
         {
@@ -27,27 +39,28 @@ namespace Vulkan
             }
         }
 
-        internal static IntPtr Allocate(Type type)
+        internal static IntPtr Alloc(Type type)
 		{
 			var size = Marshal.SizeOf(type);
 			var ptr = Marshal.AllocHGlobal(size);
 			var bptr = (byte*)ptr;
 			for(var i = 0; i < size; i++)
 				bptr[i] = 0;
-            
-            AllocCount++;
+#if DEBUG
             //Console.WriteLine($"[SALLOC] Allocated {size} bytes for {type.Name} ({AllocCount})");
-            pointerMemory.Add(ptr, size);
             GC.AddMemoryPressure(size);
+            PointerMemory.Add(ptr, size);
+#endif
             return ptr;
 		}
 
         internal static void Free(IntPtr ptr)
         {
-            AllocCount--;
+#if DEBUG
             //Console.WriteLine($"[SALLOC] Deallocated structure bytes ({AllocCount})");
-            GC.RemoveMemoryPressure(pointerMemory[ptr]);
-            pointerMemory.Remove(ptr);
+            GC.RemoveMemoryPressure(PointerMemory[ptr]);
+            PointerMemory.Remove(ptr);
+#endif
             Marshal.FreeHGlobal(ptr);
         }
 
@@ -60,5 +73,12 @@ namespace Vulkan
 				dst[i] = bytes[i];
 			dst[i] = 0;
 		}
+
+	    /*internal static void ClearMemory(IntPtr ptr, ulong size)
+	    {
+            var bptr = (byte*)ptr;
+            for (ulong i = 0; i < size; i++)
+                bptr[i] = 0;
+        }*/
 	}
 }

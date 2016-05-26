@@ -182,7 +182,7 @@ namespace Vulkan.Managed
         
         public SwapchainCreateInfoKHR()
         {
-            NativePointer = (Unmanaged.SwapchainCreateInfoKHR*)MemoryUtils.Allocate(typeof(Unmanaged.SwapchainCreateInfoKHR));
+            NativePointer = (Unmanaged.SwapchainCreateInfoKHR*)MemUtil.Alloc(typeof(Unmanaged.SwapchainCreateInfoKHR));
             NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
         
@@ -206,7 +206,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -216,7 +216,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

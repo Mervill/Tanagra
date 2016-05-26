@@ -99,7 +99,7 @@ namespace Vulkan.Managed
         
         public SpecializationInfo()
         {
-            NativePointer = (Unmanaged.SpecializationInfo*)MemoryUtils.Allocate(typeof(Unmanaged.SpecializationInfo));
+            NativePointer = (Unmanaged.SpecializationInfo*)MemUtil.Alloc(typeof(Unmanaged.SpecializationInfo));
         }
         
         public SpecializationInfo(SpecializationMapEntry[] MapEntries, IntPtr[] Data) : this()
@@ -112,7 +112,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->MapEntries);
             Marshal.FreeHGlobal(NativePointer->Data);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -123,7 +123,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->MapEntries);
                 Marshal.FreeHGlobal(NativePointer->Data);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

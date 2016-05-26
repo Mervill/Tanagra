@@ -44,12 +44,12 @@ namespace Vulkan.Managed
         
         internal LayerProperties()
         {
-            NativePointer = (Unmanaged.LayerProperties*)MemoryUtils.Allocate(typeof(Unmanaged.LayerProperties));
+            NativePointer = (Unmanaged.LayerProperties*)MemUtil.Alloc(typeof(Unmanaged.LayerProperties));
         }
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -58,7 +58,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

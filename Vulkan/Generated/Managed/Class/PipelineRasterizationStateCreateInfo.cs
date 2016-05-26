@@ -81,7 +81,7 @@ namespace Vulkan.Managed
         
         public PipelineRasterizationStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineRasterizationStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineRasterizationStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineRasterizationStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineRasterizationStateCreateInfo));
             NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
         
@@ -100,7 +100,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -109,7 +109,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

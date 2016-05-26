@@ -74,7 +74,7 @@ namespace Vulkan.Managed
         
         public CopyDescriptorSet()
         {
-            NativePointer = (Unmanaged.CopyDescriptorSet*)MemoryUtils.Allocate(typeof(Unmanaged.CopyDescriptorSet));
+            NativePointer = (Unmanaged.CopyDescriptorSet*)MemUtil.Alloc(typeof(Unmanaged.CopyDescriptorSet));
             NativePointer->SType = StructureType.CopyDescriptorSet;
         }
         
@@ -91,7 +91,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -100,7 +100,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

@@ -144,7 +144,7 @@ namespace Vulkan.Managed
         
         public RenderPassCreateInfo()
         {
-            NativePointer = (Unmanaged.RenderPassCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.RenderPassCreateInfo));
+            NativePointer = (Unmanaged.RenderPassCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.RenderPassCreateInfo));
             NativePointer->SType = StructureType.RenderPassCreateInfo;
         }
         
@@ -160,7 +160,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->Attachments);
             Marshal.FreeHGlobal(NativePointer->Subpasses);
             Marshal.FreeHGlobal(NativePointer->Dependencies);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -172,7 +172,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->Attachments);
                 Marshal.FreeHGlobal(NativePointer->Subpasses);
                 Marshal.FreeHGlobal(NativePointer->Dependencies);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

@@ -219,7 +219,7 @@ namespace Vulkan.Managed
         
         public BindSparseInfo()
         {
-            NativePointer = (Unmanaged.BindSparseInfo*)MemoryUtils.Allocate(typeof(Unmanaged.BindSparseInfo));
+            NativePointer = (Unmanaged.BindSparseInfo*)MemUtil.Alloc(typeof(Unmanaged.BindSparseInfo));
             NativePointer->SType = StructureType.BindSparseInfo;
         }
         
@@ -239,7 +239,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageOpaqueBinds);
             Marshal.FreeHGlobal(NativePointer->ImageBinds);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -253,7 +253,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ImageOpaqueBinds);
                 Marshal.FreeHGlobal(NativePointer->ImageBinds);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

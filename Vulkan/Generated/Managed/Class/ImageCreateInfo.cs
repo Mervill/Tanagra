@@ -132,7 +132,7 @@ namespace Vulkan.Managed
         
         public ImageCreateInfo()
         {
-            NativePointer = (Unmanaged.ImageCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.ImageCreateInfo));
+            NativePointer = (Unmanaged.ImageCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.ImageCreateInfo));
             NativePointer->SType = StructureType.ImageCreateInfo;
         }
         
@@ -154,7 +154,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -164,7 +164,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

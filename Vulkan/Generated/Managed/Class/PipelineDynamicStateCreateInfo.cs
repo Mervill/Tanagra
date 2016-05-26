@@ -60,7 +60,7 @@ namespace Vulkan.Managed
         
         public PipelineDynamicStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineDynamicStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineDynamicStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineDynamicStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineDynamicStateCreateInfo));
             NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
         }
         
@@ -72,7 +72,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->DynamicStates);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -82,7 +82,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DynamicStates);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

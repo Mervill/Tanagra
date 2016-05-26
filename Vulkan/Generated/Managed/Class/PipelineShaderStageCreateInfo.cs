@@ -53,7 +53,7 @@ namespace Vulkan.Managed
         
         public PipelineShaderStageCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineShaderStageCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineShaderStageCreateInfo));
+            NativePointer = (Unmanaged.PipelineShaderStageCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineShaderStageCreateInfo));
             NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
         }
         
@@ -67,7 +67,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Name);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -77,7 +77,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Name);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

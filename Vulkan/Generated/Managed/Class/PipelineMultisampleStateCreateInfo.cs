@@ -72,7 +72,7 @@ namespace Vulkan.Managed
         
         public PipelineMultisampleStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineMultisampleStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineMultisampleStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineMultisampleStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineMultisampleStateCreateInfo));
             NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
         
@@ -88,7 +88,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->SampleMask);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -98,7 +98,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->SampleMask);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

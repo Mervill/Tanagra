@@ -154,7 +154,7 @@ namespace Vulkan.Managed
         
         public DeviceCreateInfo()
         {
-            NativePointer = (Unmanaged.DeviceCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.DeviceCreateInfo));
+            NativePointer = (Unmanaged.DeviceCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.DeviceCreateInfo));
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
         
@@ -170,7 +170,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
             Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
             Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -182,7 +182,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
                 Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
                 Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

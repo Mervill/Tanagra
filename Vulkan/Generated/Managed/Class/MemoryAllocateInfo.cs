@@ -27,7 +27,7 @@ namespace Vulkan.Managed
         
         public MemoryAllocateInfo()
         {
-            NativePointer = (Unmanaged.MemoryAllocateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.MemoryAllocateInfo));
+            NativePointer = (Unmanaged.MemoryAllocateInfo*)MemUtil.Alloc(typeof(Unmanaged.MemoryAllocateInfo));
             NativePointer->SType = StructureType.MemoryAllocateInfo;
         }
         
@@ -39,7 +39,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -48,7 +48,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

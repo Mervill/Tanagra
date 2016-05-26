@@ -102,7 +102,7 @@ namespace Vulkan.Managed
         
         public PipelineVertexInputStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineVertexInputStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineVertexInputStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineVertexInputStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineVertexInputStateCreateInfo));
             NativePointer->SType = StructureType.PipelineVertexInputStateCreateInfo;
         }
         
@@ -116,7 +116,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
             Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -127,7 +127,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
                 Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

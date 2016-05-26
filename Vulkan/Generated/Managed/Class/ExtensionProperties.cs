@@ -28,12 +28,12 @@ namespace Vulkan.Managed
         
         internal ExtensionProperties()
         {
-            NativePointer = (Unmanaged.ExtensionProperties*)MemoryUtils.Allocate(typeof(Unmanaged.ExtensionProperties));
+            NativePointer = (Unmanaged.ExtensionProperties*)MemUtil.Alloc(typeof(Unmanaged.ExtensionProperties));
         }
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -42,7 +42,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

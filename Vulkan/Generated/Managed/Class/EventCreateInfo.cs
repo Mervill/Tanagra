@@ -18,13 +18,13 @@ namespace Vulkan.Managed
         
         public EventCreateInfo()
         {
-            NativePointer = (Unmanaged.EventCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.EventCreateInfo));
+            NativePointer = (Unmanaged.EventCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.EventCreateInfo));
             NativePointer->SType = StructureType.EventCreateInfo;
         }
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -33,7 +33,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

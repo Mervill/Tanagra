@@ -78,7 +78,7 @@ namespace Vulkan.Managed
         
         public PipelineColorBlendStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineColorBlendStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineColorBlendStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineColorBlendStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineColorBlendStateCreateInfo));
             NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
         
@@ -93,7 +93,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Attachments);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -103,7 +103,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

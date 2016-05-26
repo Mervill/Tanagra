@@ -45,7 +45,7 @@ namespace Vulkan.Managed
         
         public AllocationCallbacks()
         {
-            NativePointer = (Unmanaged.AllocationCallbacks*)MemoryUtils.Allocate(typeof(Unmanaged.AllocationCallbacks));
+            NativePointer = (Unmanaged.AllocationCallbacks*)MemUtil.Alloc(typeof(Unmanaged.AllocationCallbacks));
         }
         
         public AllocationCallbacks(IntPtr Allocation, IntPtr Reallocation, IntPtr Free) : this()
@@ -57,7 +57,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -66,7 +66,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

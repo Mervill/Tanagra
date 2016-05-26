@@ -37,7 +37,7 @@ namespace Vulkan.Managed
         
         public MappedMemoryRange()
         {
-            NativePointer = (Unmanaged.MappedMemoryRange*)MemoryUtils.Allocate(typeof(Unmanaged.MappedMemoryRange));
+            NativePointer = (Unmanaged.MappedMemoryRange*)MemUtil.Alloc(typeof(Unmanaged.MappedMemoryRange));
             NativePointer->SType = StructureType.MappedMemoryRange;
         }
         
@@ -50,7 +50,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -59,7 +59,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

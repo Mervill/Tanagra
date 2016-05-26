@@ -63,7 +63,7 @@ namespace Vulkan.Managed
         
         public DescriptorSetLayoutCreateInfo()
         {
-            NativePointer = (Unmanaged.DescriptorSetLayoutCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.DescriptorSetLayoutCreateInfo));
+            NativePointer = (Unmanaged.DescriptorSetLayoutCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorSetLayoutCreateInfo));
             NativePointer->SType = StructureType.DescriptorSetLayoutCreateInfo;
         }
         
@@ -75,7 +75,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Bindings);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -85,7 +85,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Bindings);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

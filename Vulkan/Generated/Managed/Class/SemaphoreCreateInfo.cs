@@ -18,13 +18,13 @@ namespace Vulkan.Managed
         
         public SemaphoreCreateInfo()
         {
-            NativePointer = (Unmanaged.SemaphoreCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.SemaphoreCreateInfo));
+            NativePointer = (Unmanaged.SemaphoreCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.SemaphoreCreateInfo));
             NativePointer->SType = StructureType.SemaphoreCreateInfo;
         }
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -33,7 +33,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

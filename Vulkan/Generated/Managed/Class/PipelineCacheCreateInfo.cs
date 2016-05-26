@@ -63,7 +63,7 @@ namespace Vulkan.Managed
         
         public PipelineCacheCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineCacheCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineCacheCreateInfo));
+            NativePointer = (Unmanaged.PipelineCacheCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineCacheCreateInfo));
             NativePointer->SType = StructureType.PipelineCacheCreateInfo;
         }
         
@@ -75,7 +75,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->InitialData);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -85,7 +85,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->InitialData);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

@@ -30,7 +30,7 @@ namespace Vulkan.Managed
         
         public PipelineInputAssemblyStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineInputAssemblyStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineInputAssemblyStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineInputAssemblyStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineInputAssemblyStateCreateInfo));
             NativePointer->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
         }
         
@@ -42,7 +42,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +51,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

@@ -30,7 +30,7 @@ namespace Vulkan.Managed
         
         public WaylandSurfaceCreateInfoKHR()
         {
-            NativePointer = (Unmanaged.WaylandSurfaceCreateInfoKHR*)MemoryUtils.Allocate(typeof(Unmanaged.WaylandSurfaceCreateInfoKHR));
+            NativePointer = (Unmanaged.WaylandSurfaceCreateInfoKHR*)MemUtil.Alloc(typeof(Unmanaged.WaylandSurfaceCreateInfoKHR));
             NativePointer->SType = StructureType.WaylandSurfaceCreateInfoKHR;
         }
         
@@ -42,7 +42,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +51,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

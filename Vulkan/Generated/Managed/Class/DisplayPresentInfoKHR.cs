@@ -36,7 +36,7 @@ namespace Vulkan.Managed
         
         public DisplayPresentInfoKHR()
         {
-            NativePointer = (Unmanaged.DisplayPresentInfoKHR*)MemoryUtils.Allocate(typeof(Unmanaged.DisplayPresentInfoKHR));
+            NativePointer = (Unmanaged.DisplayPresentInfoKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPresentInfoKHR));
             NativePointer->SType = StructureType.DisplayPresentInfoKHR;
         }
         
@@ -49,7 +49,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -58,7 +58,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

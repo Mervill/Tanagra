@@ -181,7 +181,7 @@ namespace Vulkan.Managed
         
         public WriteDescriptorSet()
         {
-            NativePointer = (Unmanaged.WriteDescriptorSet*)MemoryUtils.Allocate(typeof(Unmanaged.WriteDescriptorSet));
+            NativePointer = (Unmanaged.WriteDescriptorSet*)MemUtil.Alloc(typeof(Unmanaged.WriteDescriptorSet));
             NativePointer->SType = StructureType.WriteDescriptorSet;
         }
         
@@ -201,7 +201,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageInfo);
             Marshal.FreeHGlobal(NativePointer->BufferInfo);
             Marshal.FreeHGlobal(NativePointer->TexelBufferView);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -213,7 +213,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ImageInfo);
                 Marshal.FreeHGlobal(NativePointer->BufferInfo);
                 Marshal.FreeHGlobal(NativePointer->TexelBufferView);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

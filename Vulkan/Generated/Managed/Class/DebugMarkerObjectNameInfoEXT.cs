@@ -36,7 +36,7 @@ namespace Vulkan.Managed
         
         public DebugMarkerObjectNameInfoEXT()
         {
-            NativePointer = (Unmanaged.DebugMarkerObjectNameInfoEXT*)MemoryUtils.Allocate(typeof(Unmanaged.DebugMarkerObjectNameInfoEXT));
+            NativePointer = (Unmanaged.DebugMarkerObjectNameInfoEXT*)MemUtil.Alloc(typeof(Unmanaged.DebugMarkerObjectNameInfoEXT));
             NativePointer->SType = StructureType.DebugMarkerObjectNameInfoEXT;
         }
         
@@ -50,7 +50,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->ObjectName);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -60,7 +60,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ObjectName);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

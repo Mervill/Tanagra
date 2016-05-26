@@ -299,7 +299,7 @@
     <Compile Include="DebugUtils.cs" />
     <Compile Include="Struct\DeviceSize.cs" />
     <Compile Include="Allocation\Allocator.cs" />
-    <Compile Include="MemoryUtils.cs" />
+    <Compile Include="MemUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="VulkanCommandException.cs" />

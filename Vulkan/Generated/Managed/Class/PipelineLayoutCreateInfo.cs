@@ -108,7 +108,7 @@ namespace Vulkan.Managed
         
         public PipelineLayoutCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineLayoutCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineLayoutCreateInfo));
+            NativePointer = (Unmanaged.PipelineLayoutCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineLayoutCreateInfo));
             NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
         
@@ -122,7 +122,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->SetLayouts);
             Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -133,7 +133,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->SetLayouts);
                 Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

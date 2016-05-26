@@ -24,7 +24,7 @@ namespace Vulkan.Managed
         
         public CommandPoolCreateInfo()
         {
-            NativePointer = (Unmanaged.CommandPoolCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.CommandPoolCreateInfo));
+            NativePointer = (Unmanaged.CommandPoolCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.CommandPoolCreateInfo));
             NativePointer->SType = StructureType.CommandPoolCreateInfo;
         }
         
@@ -35,7 +35,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -44,7 +44,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

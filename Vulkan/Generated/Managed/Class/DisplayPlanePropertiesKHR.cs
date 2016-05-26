@@ -28,7 +28,7 @@ namespace Vulkan.Managed
         
         public DisplayPlanePropertiesKHR()
         {
-            NativePointer = (Unmanaged.DisplayPlanePropertiesKHR*)MemoryUtils.Allocate(typeof(Unmanaged.DisplayPlanePropertiesKHR));
+            NativePointer = (Unmanaged.DisplayPlanePropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPlanePropertiesKHR));
         }
         
         public DisplayPlanePropertiesKHR(DisplayKHR CurrentDisplay, UInt32 CurrentStackIndex) : this()
@@ -39,7 +39,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -48,7 +48,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

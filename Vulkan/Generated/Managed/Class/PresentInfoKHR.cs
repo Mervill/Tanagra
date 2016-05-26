@@ -189,7 +189,7 @@ namespace Vulkan.Managed
         
         public PresentInfoKHR()
         {
-            NativePointer = (Unmanaged.PresentInfoKHR*)MemoryUtils.Allocate(typeof(Unmanaged.PresentInfoKHR));
+            NativePointer = (Unmanaged.PresentInfoKHR*)MemUtil.Alloc(typeof(Unmanaged.PresentInfoKHR));
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
         
@@ -205,7 +205,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->Swapchains);
             Marshal.FreeHGlobal(NativePointer->ImageIndices);
             Marshal.FreeHGlobal(NativePointer->Results);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -218,7 +218,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->Swapchains);
                 Marshal.FreeHGlobal(NativePointer->ImageIndices);
                 Marshal.FreeHGlobal(NativePointer->Results);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

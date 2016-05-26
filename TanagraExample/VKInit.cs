@@ -234,7 +234,7 @@ namespace TanagraExample
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
 
             var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
-            MemoryUtils.Copy2DArray(triangleVertices, mapped, createInfo.Size, createInfo.Size);
+            MemUtil.Copy2DArray(triangleVertices, mapped, createInfo.Size, createInfo.Size);
             device.UnmapMemory(vertexBufferMemory);
 
             device.BindBufferMemory(vertexBuffer, vertexBufferMemory, 0);

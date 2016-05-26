@@ -208,7 +208,7 @@ namespace Vulkan.Managed
         
         public SubpassDescription()
         {
-            NativePointer = (Unmanaged.SubpassDescription*)MemoryUtils.Allocate(typeof(Unmanaged.SubpassDescription));
+            NativePointer = (Unmanaged.SubpassDescription*)MemUtil.Alloc(typeof(Unmanaged.SubpassDescription));
         }
         
         public SubpassDescription(PipelineBindPoint PipelineBindPoint, AttachmentReference[] InputAttachments, AttachmentReference[] ColorAttachments, UInt32[] PreserveAttachments) : this()
@@ -225,7 +225,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ColorAttachments);
             Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
             Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -238,7 +238,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ColorAttachments);
                 Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
                 Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

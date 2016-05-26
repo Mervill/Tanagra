@@ -38,7 +38,7 @@ namespace Vulkan.Managed
         
         public DescriptorImageInfo()
         {
-            NativePointer = (Unmanaged.DescriptorImageInfo*)MemoryUtils.Allocate(typeof(Unmanaged.DescriptorImageInfo));
+            NativePointer = (Unmanaged.DescriptorImageInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorImageInfo));
         }
         
         public DescriptorImageInfo(Sampler Sampler, ImageView ImageView, ImageLayout ImageLayout) : this()
@@ -50,7 +50,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -59,7 +59,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

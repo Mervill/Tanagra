@@ -75,7 +75,7 @@ namespace Vulkan.Managed
         
         public PipelineDepthStencilStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineDepthStencilStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineDepthStencilStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineDepthStencilStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineDepthStencilStateCreateInfo));
             NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
         
@@ -94,7 +94,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -103,7 +103,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

@@ -63,8 +63,8 @@ namespace Tanagra.Generator
         const string NativePointer           = "NativePointer";
         const string CallingConvention       = "Winapi";
         const string VulkanResultException   = "VulkanCommandException";
-        const string AllocateFnName          = "MemoryUtils.Allocate";
-        const string FixedSizeStringFnName   = "MemoryUtils.MarshalFixedSizeString";
+        const string AllocateFnName          = "MemUtil.Alloc";
+        const string FixedSizeStringFnName   = "MemUtil.MarshalFixedSizeString";
         const string ManagedNS               = "Managed";
         const string ManagedFunctionsClass   = "Vk";
         const string UnmanagedNS             = "Unmanaged";
@@ -210,8 +210,10 @@ namespace Tanagra.Generator
                 WriteLine($"/// {vkEnum.Comment}");
                 WriteLine("/// </summary>");
             }
-            if(vkEnum.IsBitmask)
+
+            if (vkEnum.IsBitmask)
                 WriteLine("[Flags]");
+
             WriteLine($"public enum {vkEnum.Name}"); // : int
             WriteBeginBlock();
 
@@ -675,7 +677,7 @@ namespace Tanagra.Generator
                 if(vkMember.IsArray && !vkMember.IsFixedSize)
                     WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
 
-            WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
+            WriteLine($"MemUtil.Free((IntPtr){NativePointer});");
             WriteLine($"{NativePointer} = null;");
         }
 

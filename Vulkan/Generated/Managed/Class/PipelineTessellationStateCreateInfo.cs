@@ -24,7 +24,7 @@ namespace Vulkan.Managed
         
         public PipelineTessellationStateCreateInfo()
         {
-            NativePointer = (Unmanaged.PipelineTessellationStateCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.PipelineTessellationStateCreateInfo));
+            NativePointer = (Unmanaged.PipelineTessellationStateCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.PipelineTessellationStateCreateInfo));
             NativePointer->SType = StructureType.PipelineTessellationStateCreateInfo;
         }
         
@@ -35,7 +35,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -44,7 +44,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

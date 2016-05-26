@@ -177,7 +177,7 @@ namespace Vulkan.Managed
         
         public SubmitInfo()
         {
-            NativePointer = (Unmanaged.SubmitInfo*)MemoryUtils.Allocate(typeof(Unmanaged.SubmitInfo));
+            NativePointer = (Unmanaged.SubmitInfo*)MemUtil.Alloc(typeof(Unmanaged.SubmitInfo));
             NativePointer->SType = StructureType.SubmitInfo;
         }
         
@@ -195,7 +195,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->WaitDstStageMask);
             Marshal.FreeHGlobal(NativePointer->CommandBuffers);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -208,7 +208,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->WaitDstStageMask);
                 Marshal.FreeHGlobal(NativePointer->CommandBuffers);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }

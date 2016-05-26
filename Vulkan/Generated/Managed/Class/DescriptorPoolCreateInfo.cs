@@ -63,7 +63,7 @@ namespace Vulkan.Managed
         
         public DescriptorPoolCreateInfo()
         {
-            NativePointer = (Unmanaged.DescriptorPoolCreateInfo*)MemoryUtils.Allocate(typeof(Unmanaged.DescriptorPoolCreateInfo));
+            NativePointer = (Unmanaged.DescriptorPoolCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorPoolCreateInfo));
             NativePointer->SType = StructureType.DescriptorPoolCreateInfo;
         }
         
@@ -76,7 +76,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->PoolSizes);
-            MemoryUtils.Free((IntPtr)NativePointer);
+            MemUtil.Free((IntPtr)NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -86,7 +86,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->PoolSizes);
-                MemoryUtils.Free((IntPtr)NativePointer);
+                MemUtil.Free((IntPtr)NativePointer);
                 NativePointer = null;
             }
         }
