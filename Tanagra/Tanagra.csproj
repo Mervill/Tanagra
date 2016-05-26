@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Texture.cs" />
-    <Compile Include="TextureLoader.cs" />
     <Compile Include="Vector32.cs" />
     <Compile Include="VulkanInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

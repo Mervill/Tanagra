@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Tanagra;
+
 using Vulkan;
 using Vulkan.Managed;
 using Vulkan.Managed.ObjectModel;
 
 using Buffer = Vulkan.Buffer;
 
-namespace Tanagra
+namespace TanagraExample
 {
     public class TextureLoader : IDisposable
     {
