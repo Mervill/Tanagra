@@ -95,7 +95,7 @@ namespace TanagraExample
             deviceMemoryProperties = physicalDevice.GetMemoryProperties();
 
             // Get the graphics queue
-            var queue = device.GetQueue(queueNodeIndex, 0);
+            queue = device.GetQueue(queueNodeIndex, 0);
             depthFormat = Utils.getSupportedDepthFormat(physicalDevice);
 
             swapchain = new Swapchain(instance, physicalDevice, device);
@@ -142,7 +142,7 @@ namespace TanagraExample
             deviceCreateInfo.Dispose();
         }
 
-        public void prepare()
+        public virtual void prepare()
         {
             CreateCommandPool();
             createSetupCommandBuffer();
@@ -150,6 +150,10 @@ namespace TanagraExample
             createCommandBuffers();
             setupDepthStencil();
             setupRenderPass();
+            createPipelineCache();
+            setupFrameBuffer();
+            flushSetupCommandBuffer();
+            createSetupCommandBuffer();
         }
 
         void CreateCommandPool()
@@ -269,6 +273,53 @@ namespace TanagraExample
             createInfo.Dispose();
         }
 
+        void createPipelineCache()
+        {
+            var createInfo = new PipelineCacheCreateInfo();
+            pipelineCache = device.CreatePipelineCache(createInfo);
+            createInfo.Dispose();
+        }
+
+        void setupFrameBuffer()
+        {
+            var attachments = new ImageView[2];
+            attachments[1] = depthStencil.view;
+            
+            var createInfo = new FramebufferCreateInfo();
+            createInfo.RenderPass = renderPass;
+            createInfo.Width = width;
+            createInfo.Height = height;
+            createInfo.Layers = 1;
+
+            frameBuffers = new List<Framebuffer>();
+            for (var x = 0; x < swapchain.images.Count; x++)
+            {
+                attachments[0] = swapchain.buffers[x].view;
+                createInfo.Attachments = null; // todo: realloc is broken
+                createInfo.Attachments = attachments;
+                frameBuffers.Add(device.CreateFramebuffer(createInfo));
+            }
+            createInfo.Dispose();
+        }
+
+        void flushSetupCommandBuffer()
+        {
+            if(setupCmdBuffer == null)
+                return;
+
+            setupCmdBuffer.End();
+
+            var subInfo = new SubmitInfo();
+            subInfo.CommandBuffers = new[] { setupCmdBuffer };
+            queue.Submit(new List<SubmitInfo> { subInfo });
+            subInfo.Dispose();
+
+            queue.WaitIdle();
+
+            device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { setupCmdBuffer });
+            setupCmdBuffer = null;
+        }
+        
         public void initSwapchain(Form form)
         {
             width = (uint)form.ClientSize.Width;

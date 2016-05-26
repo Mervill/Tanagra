@@ -7,9 +7,9 @@ namespace Tanagra.Generator
 {
     class Program
     {
+        // todo: realloc is broken
         // todo: union
         // todo: merge flag enums
-        // todo: IsFixedSize arrays
         // todo: port member comments to constructor
         // todo: tanagra: handle wrapper, parent notify on destroy
         // todo: tanagra: nondispatchable extentions

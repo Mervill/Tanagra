@@ -173,7 +173,7 @@ namespace Tanagra
                 var subresource = new ImageSubresource(ImageAspectFlags.Color, 0, 0);
                 var subresourceLayout = device.GetImageSubresourceLayout(mappableImage, subresource);
 
-                var data = device.MapMemory(mappableMemory, 0, memReqs.Size, MemoryMapFlags.None);
+                var data = device.MapMemory(mappableMemory, 0, memReqs.Size);
                 // todo: copy
                 device.UnmapMemory(mappableMemory);
 

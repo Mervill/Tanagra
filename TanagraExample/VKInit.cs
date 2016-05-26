@@ -100,7 +100,7 @@ namespace TanagraExample
             pipelineLayout = CreatePipelineLayout(device);
             pipelines = CreatePipelines(device, pipelineLayout, renderPass, shaderStageCreateInfos, vertexBindingDescriptions, vertexAttributeDescriptions);
             pipeline = pipelines[0];
-            image = CreateImage(device);
+            image = CreateImage(device, 800, 600);
             imageView = CreateImageView(device, image);
         }
 
@@ -368,25 +368,14 @@ namespace TanagraExample
             return device.CreateGraphicsPipelines(null, createInfos.ToList());
         }
 
-        Image CreateImage(Device device)
+        Image CreateImage(Device device, uint width, uint height)
         {
             // Images represent multidimensional - up to 3 - arrays of data which can be used for 
             // various purposes (e.g. attachments, textures), by binding them to a graphics or 
             // compute pipeline via descriptor sets, or by directly specifying them as parameters 
             // to certain commands.
 
-            /*var createImageInfo = new ImageCreateInfo
-            {
-                ImageType     = ImageType.ImageType2d,
-                Format        = Format.B8g8r8a8Unorm,
-                Extent        = new Extent3D(32, 32, 1),
-                Samples       = SampleCountFlags.SampleCountFlags1,
-                Usage         = ImageUsageFlags.ColorAttachment,
-                InitialLayout = ImageLayout.ColorAttachmentOptimal,
-                MipLevels = 1,
-                ArrayLayers = 1,
-            };*/
-            var size = new Extent3D(800, 600, 1);
+            var size = new Extent3D(width, height, 1);
             var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, Format.B8g8r8a8Unorm, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, ImageUsageFlags.ColorAttachment, SharingMode.Exclusive, null, ImageLayout.Undefined);
             return device.CreateImage(createImageInfo);
         }
