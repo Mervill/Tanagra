@@ -148,7 +148,7 @@ namespace Tanagra.Generator
 
             // -- struct
             
-            var needsInteropStruct = spec.Structs.Where(IsInteropStruct);
+            var needsInteropStruct = spec.Structs.Where(IsManagedStruct);
             files.Add($"./{UnmanagedNS}/Structs.cs", GenerateStructs(needsInteropStruct, false));
 
             var regularStruct = spec.Structs.Except(needsInteropStruct).Where(x => !disabledStructs.Contains(x.Name));
@@ -515,13 +515,13 @@ namespace Tanagra.Generator
                 WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
                 WriteLine("/// </summary>");
             }
-            //string idisposable = (!vkStruct.ReturnedOnly) ? " : IDisposable" : string.Empty;
             WriteLine($"unsafe public class {vkStruct.Name} : IDisposable");
             WriteBeginBlock();
             WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer};");
             WriteLine("");
-            
-            foreach (var vkMember in vkStruct.Members.Where(x => !hiddenMembers.Contains(x.Name)))
+
+            #region Write Members
+            foreach(var vkMember in vkStruct.Members.Where(x => !hiddenMembers.Contains(x.Name)))
             {
                 if (vkMember.Type.Name == "String")
                 {
@@ -543,7 +543,7 @@ namespace Tanagra.Generator
                     {
                         WriteMemberComments(vkMember);
                         var prefix = string.Empty;
-                        if (IsInteropStruct(vkStruct))
+                        if (IsManagedStruct(vkStruct))
                             prefix = $"{UnmanagedNS}.{vkStruct.Name}.";
                         WriteLine($"public {prefix}{vkMember.Name}Info {vkMember.Name}");
                         WriteBeginBlock();
@@ -560,6 +560,7 @@ namespace Tanagra.Generator
                     continue;
                 }
 
+                // If the member is a value type or an enum
                 if (IsPlatformStruct(vkMember.Type) || vkMember.Type is VkEnum)
                 {
                     WriteMember(vkMember, vkStruct.ReturnedOnly);
@@ -570,7 +571,9 @@ namespace Tanagra.Generator
                 WriteMemberStruct(vkMember, vkStruct.ReturnedOnly);
                 WriteLine("");
             }
+            #endregion
 
+            #region Write constructors
             // Give returned-only wrapper classes an internal constructor, meaning that
             // only internal assembly can create new instances of it (neat!)
             var cotorVis = (vkStruct.ReturnedOnly) ? "internal" : "public";
@@ -581,7 +584,6 @@ namespace Tanagra.Generator
                 WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             WriteEndBlock();
             
-
             // internal constructor for clone operation
             /*WriteLine("");
             WriteLine($"internal {vkStruct.Name}({UnmanagedNS}.{vkStruct.Name}* ptr)");
@@ -613,7 +615,7 @@ namespace Tanagra.Generator
                     if (vkMember.IsFixedSize)
                     {
                         var prefix = string.Empty;
-                        if (IsInteropStruct(vkStruct))
+                        if (IsManagedStruct(vkStruct))
                             prefix = $"{UnmanagedNS}.{vkStruct.Name}.";
                         memberTypeName = $"{prefix}{memberName}Info";
                         cotorParams.Add(memberName, memberTypeName);
@@ -658,6 +660,7 @@ namespace Tanagra.Generator
             WriteManagedCleanup(vkStruct);
             WriteEndBlock();
             WriteEndBlock();
+            #endregion
 
             WriteEndBlock();
             WriteEndBlock();
@@ -678,6 +681,7 @@ namespace Tanagra.Generator
 
         void WriteMember(VkMember vkMember, bool readOnly)
         {
+            // Value types are simply passed to/from the underlying struct
             WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
             WriteBeginBlock();
@@ -691,12 +695,15 @@ namespace Tanagra.Generator
         {
             if(vkMember.Type is VkStruct)
             {
-                var vkStruct = (VkStruct)vkMember.Type;
-                if(vkMember.IsPointer || IsInteropStruct(vkStruct))
+                var isPointer = vkMember.IsPointer;
+                var isManaged = IsManagedStruct(vkMember.Type);
+                // If this is a managed struct or if 
+                // the member itself is a pointer...
+                if(isManaged || isPointer)
                 {
-                    // If this is a pointer to a struct that wont have a wrapper class generated 
-                    // for it, take the address of the struct directily instead of the NativePointer
-                    var valueCast = (vkMember.IsPointer && !IsInteropStruct(vkStruct)) ? "(&value)" : $"value.{NativePointer}";
+                    // If this is a pointer to a struct that is unmanaged (no wrapper is generated), take
+                    // the address of the struct directily
+                    var valueCast = (isPointer && !isManaged) ? "(&value)" : $"value.{NativePointer}";
 
                     WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                     WriteMemberComments(vkMember);
@@ -705,7 +712,7 @@ namespace Tanagra.Generator
                     // get
                     WriteLine($"get {{ return _{vkMember.Name}; }}");
                     // set
-                    if(vkMember.IsPointer)
+                    if(isPointer)
                     {
                         if(!readOnly)
                             WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
@@ -826,13 +833,13 @@ namespace Tanagra.Generator
             {
                 var vkStruct = vkMember.Type as VkStruct;
                 var structType = vkStruct.Name;
-                if (IsInteropStruct(vkStruct))
+                if (IsManagedStruct(vkStruct))
                     structType = $"{UnmanagedNS}." + structType;
 
-                var getValueCast = IsInteropStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
+                var getValueCast = IsManagedStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
                 string get = $"valueArray[x] = {getValueCast};";
 
-                var setValueCast = IsInteropStruct(vkStruct) ? $"*value[x].{NativePointer}" : "value[x]";
+                var setValueCast = IsManagedStruct(vkStruct) ? $"*value[x].{NativePointer}" : "value[x]";
                 string set = $"ptr[x] = {setValueCast};";
 
                 var typeName = structType;
@@ -1050,7 +1057,7 @@ namespace Tanagra.Generator
                         var paramIsHandle       = paramType is VkHandle;
                         var paramIsDispatchable = (paramIsHandle) && (paramType as VkHandle).IsDispatchable;
                         var paramIsStruct       = paramType is VkStruct;
-                        var paramIsInterop      = paramIsStruct && IsInteropStruct((VkStruct)paramType);
+                        var paramIsInterop      = paramIsStruct && IsManagedStruct(paramType);
                         
                         var sizeType = (paramIsHandle) ? "IntPtr" : paramTypeName;
                         if(paramIsInterop)
@@ -1161,7 +1168,7 @@ namespace Tanagra.Generator
                     if(commandInfo.ReturnParam.Type is VkStruct)
                     {
                         var vkStruct = commandInfo.ReturnParam.Type as VkStruct;
-                        isInteropType = !IsInteropStruct(vkStruct);
+                        isInteropType = !IsManagedStruct(vkStruct);
                     }
 
                     var interop = (isInteropType || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : $"{UnmanagedNS}.";
@@ -1230,7 +1237,7 @@ namespace Tanagra.Generator
                         if(commandInfo.ReturnParam.Type is VkStruct)
                         {
                             var vkStruct = commandInfo.ReturnParam.Type as VkStruct;
-                            isInteropType = !IsInteropStruct(vkStruct);
+                            isInteropType = !IsManagedStruct(vkStruct);
                         }
 
                         if(isInteropType || commandInfo.ReturnParam.Type is VkEnum)
@@ -1361,7 +1368,7 @@ namespace Tanagra.Generator
                 if(paramType is VkStruct)
                 {
                     var vkStruct = paramType as VkStruct;
-                    if(IsInteropStruct(vkStruct))
+                    if(IsManagedStruct(vkStruct))
                     {
                         internalCallParams.Add($"{paramName}.{NativePointer}");
                     }
@@ -1632,10 +1639,16 @@ namespace Tanagra.Generator
         bool IsNondispatchableHandle(VkType vkType)
             => vkType is VkHandle && !((VkHandle)vkType).IsDispatchable;
 
-        bool IsInteropStruct(VkStruct vkStruct)
+        /// <summary>
+        /// True if the struct contains any poiners, handles or special string objects
+        /// </summary>
+        bool IsManagedStruct(VkStruct vkStruct)
             => vkStruct.ContainsPointers
             || vkStruct.Members.Any(y => y.Type is VkHandle)
-            || vkStruct.Members.Any(y => y.IsFixedSize && (y.Type.Name == "String")); // 
+            || vkStruct.Members.Any(y => y.IsFixedSize && (y.Type.Name == "String"));
+
+        bool IsManagedStruct(VkType vkType)
+            => (vkType is VkStruct) && IsManagedStruct(vkType as VkStruct);
 
         GeneratedObjectInfo CreateFile(string fileName, string fileNamespace, string[] fileUsing, params GeneratedObjectInfo[] fileObjects)
         {
