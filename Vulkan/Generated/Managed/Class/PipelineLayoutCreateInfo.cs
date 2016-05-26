@@ -123,18 +123,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->SetLayouts);
             Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineLayoutCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineLayoutCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineLayoutCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->SetLayouts);
                 Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineLayoutCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

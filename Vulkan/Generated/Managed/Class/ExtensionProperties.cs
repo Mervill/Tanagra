@@ -6,7 +6,7 @@ namespace Vulkan.Managed
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
-    unsafe public class ExtensionProperties
+    unsafe public class ExtensionProperties : IDisposable
     {
         internal Unmanaged.ExtensionProperties* NativePointer;
         
@@ -29,6 +29,22 @@ namespace Vulkan.Managed
         internal ExtensionProperties()
         {
             NativePointer = (Unmanaged.ExtensionProperties*)MemoryUtils.Allocate(typeof(Unmanaged.ExtensionProperties));
+        }
+        
+        public void Dispose()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = null;
+            GC.SuppressFinalize(this);
+        }
+        
+        ~ExtensionProperties()
+        {
+            if(NativePointer != null)
+            {
+                MemoryUtils.Free((IntPtr)NativePointer);
+                NativePointer = null;
+            }
         }
     }
 }

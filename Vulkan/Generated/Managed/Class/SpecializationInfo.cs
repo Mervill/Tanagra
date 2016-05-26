@@ -113,18 +113,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->MapEntries);
             Marshal.FreeHGlobal(NativePointer->Data);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SpecializationInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SpecializationInfo()
         {
-            if(NativePointer != (Unmanaged.SpecializationInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->MapEntries);
                 Marshal.FreeHGlobal(NativePointer->Data);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SpecializationInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

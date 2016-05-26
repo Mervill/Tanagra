@@ -58,16 +58,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.AllocationCallbacks*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~AllocationCallbacks()
         {
-            if(NativePointer != (Unmanaged.AllocationCallbacks*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.AllocationCallbacks*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -71,17 +71,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->Binds);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SparseImageOpaqueMemoryBindInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SparseImageOpaqueMemoryBindInfo()
         {
-            if(NativePointer != (Unmanaged.SparseImageOpaqueMemoryBindInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Binds);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SparseImageOpaqueMemoryBindInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

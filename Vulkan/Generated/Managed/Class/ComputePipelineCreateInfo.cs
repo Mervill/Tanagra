@@ -16,10 +16,11 @@ namespace Vulkan.Managed
             set { NativePointer->Flags = value; }
         }
         
+        PipelineShaderStageCreateInfo _Stage;
         public PipelineShaderStageCreateInfo Stage
         {
-            get { return new PipelineShaderStageCreateInfo { NativePointer = &NativePointer->Stage }; }
-            set { NativePointer->Stage = *value.NativePointer; }
+            get { return _Stage; }
+            set { _Stage = value; NativePointer->Stage = *value.NativePointer; }
         }
         
         PipelineLayout _Layout;
@@ -67,16 +68,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.ComputePipelineCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~ComputePipelineCreateInfo()
         {
-            if(NativePointer != (Unmanaged.ComputePipelineCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.ComputePipelineCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

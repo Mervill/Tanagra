@@ -52,16 +52,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.QueryPoolCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~QueryPoolCreateInfo()
         {
-            if(NativePointer != (Unmanaged.QueryPoolCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.QueryPoolCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -196,20 +196,20 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->CommandBuffers);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SubmitInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SubmitInfo()
         {
-            if(NativePointer != (Unmanaged.SubmitInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->WaitSemaphores);
                 Marshal.FreeHGlobal(NativePointer->WaitDstStageMask);
                 Marshal.FreeHGlobal(NativePointer->CommandBuffers);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SubmitInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -99,16 +99,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.ImageMemoryBarrier*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~ImageMemoryBarrier()
         {
-            if(NativePointer != (Unmanaged.ImageMemoryBarrier*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.ImageMemoryBarrier*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

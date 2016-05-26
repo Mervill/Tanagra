@@ -161,19 +161,19 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->Subpasses);
             Marshal.FreeHGlobal(NativePointer->Dependencies);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.RenderPassCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~RenderPassCreateInfo()
         {
-            if(NativePointer != (Unmanaged.RenderPassCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
                 Marshal.FreeHGlobal(NativePointer->Subpasses);
                 Marshal.FreeHGlobal(NativePointer->Dependencies);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.RenderPassCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

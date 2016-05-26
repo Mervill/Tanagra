@@ -301,8 +301,9 @@ namespace Tanagra.Generator
 
             WriteLine($"{vis} struct {vkStruct.Name}");
             WriteBeginBlock();
-            
+
             // Is this really the best workaround? ...
+            #region Fixed
             var fixedTypes = vkStruct.Members.Where(x => x.IsFixedSize);
             if (fixedTypes.Any())
             {
@@ -358,6 +359,7 @@ namespace Tanagra.Generator
                     WriteEndBlock();
                 }
             }
+            #endregion
 
             foreach(var vkMember in vkStruct.Members)
             {
@@ -367,11 +369,7 @@ namespace Tanagra.Generator
                 {
                     if (vkMember.Type.Name == "String")
                     {
-                        var fixedType = vkMember.Type.ToString();
-                        if (fixedType == "String")
-                            fixedType = "Byte";
-
-                        WriteLine($"public unsafe fixed {fixedType} {vkMember.Name}[{vkMember.FixedSize}];");
+                        WriteLine($"public unsafe fixed Byte {vkMember.Name}[{vkMember.FixedSize}];");
                     }
                     else
                     {
@@ -406,7 +404,6 @@ namespace Tanagra.Generator
 
                 if(mandatoryMembers.Any())
                 {
-                    //var mandatoryMemberString = String.Join(", ", mandatoryMembers);
                     var mandatoryMemberStrings = new List<string>();
                     foreach (var member in mandatoryMembers)
                     {
@@ -518,8 +515,8 @@ namespace Tanagra.Generator
                 WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
                 WriteLine("/// </summary>");
             }
-            string idisposable = (!vkStruct.ReturnedOnly) ? " : IDisposable" : string.Empty;
-            WriteLine($"unsafe public class {vkStruct.Name}{idisposable}");
+            //string idisposable = (!vkStruct.ReturnedOnly) ? " : IDisposable" : string.Empty;
+            WriteLine($"unsafe public class {vkStruct.Name} : IDisposable");
             WriteBeginBlock();
             WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer};");
             WriteLine("");
@@ -583,6 +580,14 @@ namespace Tanagra.Generator
             if (vkStruct.IsExtensible)
                 WriteLine($"{NativePointer}->SType = StructureType.{vkStruct.Name};");
             WriteEndBlock();
+            
+
+            // internal constructor for clone operation
+            /*WriteLine("");
+            WriteLine($"internal {vkStruct.Name}({UnmanagedNS}.{vkStruct.Name}* ptr)");
+            WriteBeginBlock();
+            WriteLine($"{NativePointer} = ptr;");
+            WriteEndBlock();*/
 
             // Unless the underlying struct is returned-only, generate
             // a constructor by omitting any members that are marked as
@@ -590,7 +595,7 @@ namespace Tanagra.Generator
             // members as the constructor arguments. These generated
             // constructors arent as good as the ones generated for the
             // simpler public strcuts.
-            if (!vkStruct.ReturnedOnly)
+            if(!vkStruct.ReturnedOnly)
             {
                 var cotorParams = new Dictionary<string, string>();
                 foreach (var vkMember in vkStruct.Members.Where(x => !hiddenMembers.Contains(x.Name) && x.Optional != "true"))
@@ -636,23 +641,24 @@ namespace Tanagra.Generator
 
                     WriteEndBlock();
                 }
-
-                // IDisposable and Finalizer
-                WriteLine("");
-                WriteLine("public void Dispose()");
-                WriteBeginBlock();
-                WriteManagedCleanup(vkStruct);
-                WriteLine("GC.SuppressFinalize(this);");
-                WriteEndBlock();
-                WriteLine("");
-                WriteLine($"~{vkStruct.Name}()");
-                WriteBeginBlock();
-                WriteLine($"if({NativePointer} != ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero)");
-                WriteBeginBlock();
-                WriteManagedCleanup(vkStruct);
-                WriteEndBlock();
-                WriteEndBlock();
             }
+
+            // IDisposable and Finalizer
+            WriteLine("");
+            WriteLine("public void Dispose()");
+            WriteBeginBlock();
+            WriteManagedCleanup(vkStruct);
+            WriteLine("GC.SuppressFinalize(this);");
+            WriteEndBlock();
+            WriteLine("");
+            WriteLine($"~{vkStruct.Name}()");
+            WriteBeginBlock();
+            WriteLine($"if({NativePointer} != null)");
+            WriteBeginBlock();
+            WriteManagedCleanup(vkStruct);
+            WriteEndBlock();
+            WriteEndBlock();
+
             WriteEndBlock();
             WriteEndBlock();
 
@@ -664,10 +670,10 @@ namespace Tanagra.Generator
             // TODO: arrays are not the only kind of pointer...
             foreach(var vkMember in vkStruct.Members)
                 if(vkMember.IsArray && !vkMember.IsFixedSize)
-                    WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});"); // todo: null check this? Explicitly set to zero?
+                    WriteLine($"Marshal.FreeHGlobal({NativePointer}->{vkMember.Name});");
 
             WriteLine($"MemoryUtils.Free((IntPtr){NativePointer});");
-            WriteLine($"{NativePointer} = ({UnmanagedNS}.{vkStruct.Name}*)IntPtr.Zero;");
+            WriteLine($"{NativePointer} = null;");
         }
 
         void WriteMember(VkMember vkMember, bool readOnly)
@@ -691,21 +697,13 @@ namespace Tanagra.Generator
                     // If this is a pointer to a struct that wont have a wrapper class generated 
                     // for it, take the address of the struct directily instead of the NativePointer
                     var valueCast = (vkMember.IsPointer && !IsInteropStruct(vkStruct)) ? "(&value)" : $"value.{NativePointer}";
-                    if(vkMember.IsPointer)
-                        WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
 
+                    WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
                     WriteMemberComments(vkMember);
                     WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                     WriteBeginBlock();
                     // get
-                    if(vkMember.IsPointer)
-                    {
-                        WriteLine($"get {{ return _{vkMember.Name}; }}");
-                    }
-                    else
-                    {
-                        WriteLine($"get {{ return new {vkMember.Type.Name} {{ {NativePointer} = &{NativePointer}->{vkMember.Name} }}; }}");
-                    }
+                    WriteLine($"get {{ return _{vkMember.Name}; }}");
                     // set
                     if(vkMember.IsPointer)
                     {
@@ -715,7 +713,7 @@ namespace Tanagra.Generator
                     else
                     {
                         if(!readOnly)
-                            WriteLine($"set {{ {NativePointer}->{vkMember.Name} = *value.{NativePointer}; }}");
+                            WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = *value.{NativePointer}; }}");
                     }
                     WriteEndBlock();
                 }
@@ -1616,17 +1614,10 @@ namespace Tanagra.Generator
             foreach(var vkParam in vkParams)
             {
                 var comments = new List<string>();
-                
-                if(vkParam.ExternSync)
-                    comments.Add($"ExternSync");
-
-                if(vkParam.IsOptional)
-                    comments.Add($"Optional");
-
-                if (vkParam.NoAutoValidity)
-                    comments.Add("No Auto Validity");
-
-                if (comments.Any())
+                if(vkParam.ExternSync) comments.Add($"ExternSync");
+                if(vkParam.IsOptional) comments.Add($"Optional");
+                if(vkParam.NoAutoValidity) comments.Add("No Auto Validity");
+                if(comments.Any())
                     WriteLine($"/// <param name=\"{vkParam.Name}\">{string.Join(", ", comments)}</param>");
             }
             //WriteLine("/// <returns></returns>");

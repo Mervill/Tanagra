@@ -73,17 +73,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->DynamicStates);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineDynamicStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineDynamicStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineDynamicStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DynamicStates);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineDynamicStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

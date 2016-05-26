@@ -40,16 +40,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DisplayModePropertiesKHR()
         {
-            if(NativePointer != (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -42,16 +42,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.CommandBufferAllocateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~CommandBufferAllocateInfo()
         {
-            if(NativePointer != (Unmanaged.CommandBufferAllocateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.CommandBufferAllocateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

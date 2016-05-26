@@ -25,16 +25,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SemaphoreCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SemaphoreCreateInfo()
         {
-            if(NativePointer != (Unmanaged.SemaphoreCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SemaphoreCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

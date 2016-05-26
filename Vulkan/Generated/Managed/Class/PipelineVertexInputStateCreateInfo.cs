@@ -117,18 +117,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
             Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineVertexInputStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineVertexInputStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineVertexInputStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
                 Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineVertexInputStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

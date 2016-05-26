@@ -49,16 +49,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DebugReportCallbackCreateInfoEXT*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DebugReportCallbackCreateInfoEXT()
         {
-            if(NativePointer != (Unmanaged.DebugReportCallbackCreateInfoEXT*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DebugReportCallbackCreateInfoEXT*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

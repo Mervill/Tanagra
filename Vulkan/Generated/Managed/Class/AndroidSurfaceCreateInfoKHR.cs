@@ -36,16 +36,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.AndroidSurfaceCreateInfoKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~AndroidSurfaceCreateInfoKHR()
         {
-            if(NativePointer != (Unmanaged.AndroidSurfaceCreateInfoKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.AndroidSurfaceCreateInfoKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

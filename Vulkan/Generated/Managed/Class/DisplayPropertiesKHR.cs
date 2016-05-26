@@ -90,17 +90,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->DisplayName);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DisplayPropertiesKHR()
         {
-            if(NativePointer != (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DisplayName);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -130,18 +130,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
             Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.InstanceCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~InstanceCreateInfo()
         {
-            if(NativePointer != (Unmanaged.InstanceCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
                 Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.InstanceCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

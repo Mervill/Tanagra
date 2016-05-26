@@ -95,17 +95,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DescriptorSetLayoutBinding()
         {
-            if(NativePointer != (Unmanaged.DescriptorSetLayoutBinding*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -202,19 +202,19 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->BufferInfo);
             Marshal.FreeHGlobal(NativePointer->TexelBufferView);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.WriteDescriptorSet*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~WriteDescriptorSet()
         {
-            if(NativePointer != (Unmanaged.WriteDescriptorSet*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ImageInfo);
                 Marshal.FreeHGlobal(NativePointer->BufferInfo);
                 Marshal.FreeHGlobal(NativePointer->TexelBufferView);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.WriteDescriptorSet*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

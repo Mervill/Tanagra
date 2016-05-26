@@ -40,17 +40,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->MarkerName);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DebugMarkerMarkerInfoEXT*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DebugMarkerMarkerInfoEXT()
         {
-            if(NativePointer != (Unmanaged.DebugMarkerMarkerInfoEXT*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->MarkerName);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DebugMarkerMarkerInfoEXT*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

@@ -89,16 +89,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.BufferMemoryBarrier*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~BufferMemoryBarrier()
         {
-            if(NativePointer != (Unmanaged.BufferMemoryBarrier*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.BufferMemoryBarrier*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

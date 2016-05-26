@@ -240,13 +240,13 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageBinds);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.BindSparseInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~BindSparseInfo()
         {
-            if(NativePointer != (Unmanaged.BindSparseInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->WaitSemaphores);
                 Marshal.FreeHGlobal(NativePointer->BufferBinds);
@@ -254,7 +254,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ImageBinds);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.BindSparseInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

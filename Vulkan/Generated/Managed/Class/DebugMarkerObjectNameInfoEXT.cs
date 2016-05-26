@@ -51,17 +51,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->ObjectName);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DebugMarkerObjectNameInfoEXT*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DebugMarkerObjectNameInfoEXT()
         {
-            if(NativePointer != (Unmanaged.DebugMarkerObjectNameInfoEXT*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ObjectName);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DebugMarkerObjectNameInfoEXT*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

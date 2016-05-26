@@ -92,16 +92,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.CopyDescriptorSet*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~CopyDescriptorSet()
         {
-            if(NativePointer != (Unmanaged.CopyDescriptorSet*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.CopyDescriptorSet*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

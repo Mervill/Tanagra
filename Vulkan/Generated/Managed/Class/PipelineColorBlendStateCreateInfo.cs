@@ -94,17 +94,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->Attachments);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineColorBlendStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineColorBlendStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineColorBlendStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineColorBlendStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

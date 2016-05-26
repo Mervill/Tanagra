@@ -80,17 +80,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->QueuePriorities);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DeviceQueueCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DeviceQueueCreateInfo()
         {
-            if(NativePointer != (Unmanaged.DeviceQueueCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueuePriorities);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DeviceQueueCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

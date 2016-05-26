@@ -77,17 +77,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->PoolSizes);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DescriptorPoolCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DescriptorPoolCreateInfo()
         {
-            if(NativePointer != (Unmanaged.DescriptorPoolCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->PoolSizes);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DescriptorPoolCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

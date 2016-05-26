@@ -188,17 +188,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->Stages);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.GraphicsPipelineCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~GraphicsPipelineCreateInfo()
         {
-            if(NativePointer != (Unmanaged.GraphicsPipelineCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Stages);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.GraphicsPipelineCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

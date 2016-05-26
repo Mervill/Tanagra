@@ -171,19 +171,19 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
             Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.DeviceCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~DeviceCreateInfo()
         {
-            if(NativePointer != (Unmanaged.DeviceCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
                 Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
                 Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.DeviceCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

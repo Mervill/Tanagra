@@ -207,17 +207,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SwapchainCreateInfoKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SwapchainCreateInfoKHR()
         {
-            if(NativePointer != (Unmanaged.SwapchainCreateInfoKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SwapchainCreateInfoKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

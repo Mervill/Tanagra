@@ -55,18 +55,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ApplicationName);
             Marshal.FreeHGlobal(NativePointer->EngineName);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.ApplicationInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~ApplicationInfo()
         {
-            if(NativePointer != (Unmanaged.ApplicationInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ApplicationName);
                 Marshal.FreeHGlobal(NativePointer->EngineName);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.ApplicationInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

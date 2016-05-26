@@ -155,17 +155,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.ImageCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~ImageCreateInfo()
         {
-            if(NativePointer != (Unmanaged.ImageCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.ImageCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

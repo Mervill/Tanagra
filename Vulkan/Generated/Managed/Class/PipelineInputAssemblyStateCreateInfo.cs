@@ -43,16 +43,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineInputAssemblyStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineInputAssemblyStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineInputAssemblyStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineInputAssemblyStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

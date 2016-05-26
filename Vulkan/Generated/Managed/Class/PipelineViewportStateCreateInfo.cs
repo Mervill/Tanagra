@@ -111,18 +111,18 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->Viewports);
             Marshal.FreeHGlobal(NativePointer->Scissors);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineViewportStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineViewportStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineViewportStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Viewports);
                 Marshal.FreeHGlobal(NativePointer->Scissors);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineViewportStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

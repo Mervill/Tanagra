@@ -30,16 +30,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineRasterizationStateRasterizationOrderAMD*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineRasterizationStateRasterizationOrderAMD()
         {
-            if(NativePointer != (Unmanaged.PipelineRasterizationStateRasterizationOrderAMD*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineRasterizationStateRasterizationOrderAMD*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

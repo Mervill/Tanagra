@@ -89,17 +89,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->SampleMask);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineMultisampleStateCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineMultisampleStateCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineMultisampleStateCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->SampleMask);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineMultisampleStateCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

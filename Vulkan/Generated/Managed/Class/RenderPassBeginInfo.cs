@@ -87,17 +87,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->ClearValues);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.RenderPassBeginInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~RenderPassBeginInfo()
         {
-            if(NativePointer != (Unmanaged.RenderPassBeginInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ClearValues);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.RenderPassBeginInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

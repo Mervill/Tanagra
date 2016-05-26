@@ -6,7 +6,7 @@ namespace Vulkan.Managed
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
-    unsafe public class PhysicalDeviceProperties
+    unsafe public class PhysicalDeviceProperties : IDisposable
     {
         internal Unmanaged.PhysicalDeviceProperties* NativePointer;
         
@@ -58,6 +58,22 @@ namespace Vulkan.Managed
         internal PhysicalDeviceProperties()
         {
             NativePointer = (Unmanaged.PhysicalDeviceProperties*)MemoryUtils.Allocate(typeof(Unmanaged.PhysicalDeviceProperties));
+        }
+        
+        public void Dispose()
+        {
+            MemoryUtils.Free((IntPtr)NativePointer);
+            NativePointer = null;
+            GC.SuppressFinalize(this);
+        }
+        
+        ~PhysicalDeviceProperties()
+        {
+            if(NativePointer != null)
+            {
+                MemoryUtils.Free((IntPtr)NativePointer);
+                NativePointer = null;
+            }
         }
     }
 }

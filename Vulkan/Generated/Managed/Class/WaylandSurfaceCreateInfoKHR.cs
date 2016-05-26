@@ -43,16 +43,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.WaylandSurfaceCreateInfoKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~WaylandSurfaceCreateInfoKHR()
         {
-            if(NativePointer != (Unmanaged.WaylandSurfaceCreateInfoKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.WaylandSurfaceCreateInfoKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

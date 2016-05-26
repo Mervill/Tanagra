@@ -76,17 +76,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->InitialData);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PipelineCacheCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PipelineCacheCreateInfo()
         {
-            if(NativePointer != (Unmanaged.PipelineCacheCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->InitialData);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PipelineCacheCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

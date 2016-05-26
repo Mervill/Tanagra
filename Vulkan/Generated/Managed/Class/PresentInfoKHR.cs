@@ -206,20 +206,20 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageIndices);
             Marshal.FreeHGlobal(NativePointer->Results);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.PresentInfoKHR*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~PresentInfoKHR()
         {
-            if(NativePointer != (Unmanaged.PresentInfoKHR*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->WaitSemaphores);
                 Marshal.FreeHGlobal(NativePointer->Swapchains);
                 Marshal.FreeHGlobal(NativePointer->ImageIndices);
                 Marshal.FreeHGlobal(NativePointer->Results);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.PresentInfoKHR*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

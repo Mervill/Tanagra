@@ -217,20 +217,20 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
             Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.SubpassDescription*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~SubpassDescription()
         {
-            if(NativePointer != (Unmanaged.SubpassDescription*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->InputAttachments);
                 Marshal.FreeHGlobal(NativePointer->ColorAttachments);
                 Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
                 Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.SubpassDescription*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

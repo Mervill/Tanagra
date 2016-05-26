@@ -76,17 +76,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->Code);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.ShaderModuleCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~ShaderModuleCreateInfo()
         {
-            if(NativePointer != (Unmanaged.ShaderModuleCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Code);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.ShaderModuleCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

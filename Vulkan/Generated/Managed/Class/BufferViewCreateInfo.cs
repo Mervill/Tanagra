@@ -67,16 +67,16 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.BufferViewCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~BufferViewCreateInfo()
         {
-            if(NativePointer != (Unmanaged.BufferViewCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.BufferViewCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }

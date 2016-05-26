@@ -102,17 +102,17 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->Attachments);
             MemoryUtils.Free((IntPtr)NativePointer);
-            NativePointer = (Unmanaged.FramebufferCreateInfo*)IntPtr.Zero;
+            NativePointer = null;
             GC.SuppressFinalize(this);
         }
         
         ~FramebufferCreateInfo()
         {
-            if(NativePointer != (Unmanaged.FramebufferCreateInfo*)IntPtr.Zero)
+            if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
                 MemoryUtils.Free((IntPtr)NativePointer);
-                NativePointer = (Unmanaged.FramebufferCreateInfo*)IntPtr.Zero;
+                NativePointer = null;
             }
         }
     }
