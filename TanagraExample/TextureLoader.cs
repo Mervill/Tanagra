@@ -105,28 +105,28 @@ namespace TanagraExample
                 var extent = new Extent3D(texWidth, texHeight, 1);
                 var usage = ImageUsageFlags.Sampled | ImageUsageFlags.TransferDst;
                 var imageCreate = new ImageCreateInfo(ImageType.ImageType2d, format, extent, mipLevels, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, usage, SharingMode.Exclusive, null, ImageLayout.Preinitialized);
-                texture.image = device.CreateImage(imageCreate);
+                texture.Image = device.CreateImage(imageCreate);
                 imageCreate.Dispose();
 
-                memReqs = device.GetImageMemoryRequirements(texture.image);
+                memReqs = device.GetImageMemoryRequirements(texture.Image);
                 memAlloc.AllocationSize = memReqs.Size;
                 memAlloc.MemoryTypeIndex = getMemoryType(memReqs.MemoryTypeBits, MemoryPropertyFlags.DeviceLocal);
 
-                texture.deviceMemory = device.AllocateMemory(memAlloc);
-                device.BindImageMemory(texture.image, texture.deviceMemory, 0);
+                texture.DeviceMemory = device.AllocateMemory(memAlloc);
+                device.BindImageMemory(texture.Image, texture.DeviceMemory, 0);
 
                 var subRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, mipLevels, 0, 1);
 
                 // Image barrier for optimal image (target)
                 // Optimal image will be used as destination for the copy
-                setImageLayout(cmdBuffer, texture.image, ImageAspectFlags.Color, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, subRange);
+                setImageLayout(cmdBuffer, texture.Image, ImageAspectFlags.Color, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, subRange);
 
                 // Copy mip levels from staging buffer
-                cmdBuffer.CmdCopyBufferToImage(stagingBuffer, texture.image, ImageLayout.TransferDstOptimal, bufferCopy);
+                cmdBuffer.CmdCopyBufferToImage(stagingBuffer, texture.Image, ImageLayout.TransferDstOptimal, bufferCopy);
 
                 // Change texture image layout to shader read after all mip levels have been copied
-                texture.imageLayout = ImageLayout.ShaderReadOnlyOptimal;
-                setImageLayout(cmdBuffer, texture.image, ImageAspectFlags.Color, ImageLayout.TransferDstOptimal, texture.imageLayout, subRange);
+                texture.ImageLayout = ImageLayout.ShaderReadOnlyOptimal;
+                setImageLayout(cmdBuffer, texture.Image, ImageAspectFlags.Color, ImageLayout.TransferDstOptimal, texture.ImageLayout, subRange);
 
                 // Submit command buffer containing copy and image layout commands
                 cmdBuffer.End();
@@ -181,12 +181,12 @@ namespace TanagraExample
 
                 // Linear tiled images don't need to be staged
                 // and can be directly used as textures
-                texture.image = mappableImage;
-                texture.deviceMemory = mappableMemory;
-                texture.imageLayout = ImageLayout.ShaderReadOnlyOptimal;
+                texture.Image = mappableImage;
+                texture.DeviceMemory = mappableMemory;
+                texture.ImageLayout = ImageLayout.ShaderReadOnlyOptimal;
 
                 // Setup image memory barrier
-                setImageLayout(cmdBuffer, texture.image, ImageAspectFlags.Color, ImageLayout.Preinitialized, texture.imageLayout);
+                setImageLayout(cmdBuffer, texture.Image, ImageAspectFlags.Color, ImageLayout.Preinitialized, texture.ImageLayout);
 
                 cmdBuffer.End();
 
@@ -214,13 +214,13 @@ namespace TanagraExample
             samplerCreate.MaxAnisotropy = 8;
             samplerCreate.AnisotropyEnable = true;
             samplerCreate.BorderColor = BorderColor.FloatOpaqueWhite;
-            texture.sampler = device.CreateSampler(samplerCreate);
+            texture.Sampler = device.CreateSampler(samplerCreate);
             samplerCreate.Dispose();
 
             var components = new ComponentMapping(ComponentSwizzle.R, ComponentSwizzle.G, ComponentSwizzle.B, ComponentSwizzle.A);
             var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, (useStaging) ? mipLevels : 1, 0, 1);
-            var imageViewCreate = new ImageViewCreateInfo(texture.image, ImageViewType.ImageViewType2d, format, components, subresourceRange);
-            texture.view = device.CreateImageView(imageViewCreate);
+            var imageViewCreate = new ImageViewCreateInfo(texture.Image, ImageViewType.ImageViewType2d, format, components, subresourceRange);
+            texture.View = device.CreateImageView(imageViewCreate);
             imageViewCreate.Dispose();
         }
         

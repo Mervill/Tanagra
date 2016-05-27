@@ -191,15 +191,15 @@ namespace Tanagra
                 WriteLine($"{member.Name,-39} = {member.GetValue(physicalDeviceFeatures)}");
         }
 
-        // FormatProperties
+        // GetFormatProperties / FormatProperties
 
-        // ImageFormatProperties
+        // GetImageFormatProperties / ImageFormatProperties
 
-        // LayerProperties
+        // EnumerateDeviceLayerProperties / LayerProperties
 
-        // ExtensionProperties
+        // EnumerateDeviceExtensionProperties / ExtensionProperties
 
-        // SparseImageFormatProperties
+        // GetSparseImageFormatProperties / SparseImageFormatProperties
 
         void WriteLine(string str)
         {
