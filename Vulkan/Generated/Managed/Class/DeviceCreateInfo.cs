@@ -145,11 +145,19 @@ namespace Vulkan.Managed
             }
         }
         
-        PhysicalDeviceFeatures _EnabledFeatures;
         public PhysicalDeviceFeatures EnabledFeatures
         {
-            get { return _EnabledFeatures; }
-            set { _EnabledFeatures = value; NativePointer->EnabledFeatures = (IntPtr)(&value); }
+            get
+            {
+                var val = new PhysicalDeviceFeatures();
+                Marshal.PtrToStructure(NativePointer->EnabledFeatures, val);
+                return val;
+            }
+            set
+            {
+                NativePointer->EnabledFeatures = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(PhysicalDeviceFeatures)));
+                Marshal.StructureToPtr(value, NativePointer->EnabledFeatures, false);
+            }
         }
         
         public DeviceCreateInfo()

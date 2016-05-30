@@ -147,15 +147,14 @@ namespace Vulkan.Managed
                 }
             }
         }
-
-        AttachmentReference _DepthStencilAttachment;
+        
         public AttachmentReference DepthStencilAttachment
         {
             get
             {
-                var obj = new AttachmentReference();
-                Marshal.PtrToStructure(NativePointer->DepthStencilAttachment, obj);
-                return obj;
+                var val = new AttachmentReference();
+                Marshal.PtrToStructure(NativePointer->DepthStencilAttachment, val);
+                return val;
             }
             set
             {
@@ -163,7 +162,7 @@ namespace Vulkan.Managed
                 Marshal.StructureToPtr(value, NativePointer->DepthStencilAttachment, false);
             }
         }
-
+        
         public UInt32[] PreserveAttachments
         {
             get
