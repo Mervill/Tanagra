@@ -696,25 +696,22 @@ namespace Tanagra.Generator
                 // the member itself is a pointer...
                 if(isManaged || isPointer)
                 {
-                    // todo: this will leak memory :(
                     if(isPointer && !isManaged)
                     {
                         WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
                         WriteBeginBlock();
-
                         WriteLine("get");
                         WriteBeginBlock();
                         WriteLine($"var val = new {vkMember.Type.Name}();");
                         WriteLine($"Marshal.PtrToStructure({NativePointer}->{vkMember.Name}, val);");
                         WriteLine("return val;");
                         WriteEndBlock();
-
                         WriteLine("set");
                         WriteBeginBlock();
+                        // todo: this will leak memory :(
                         WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({vkMember.Type.Name})));");
                         WriteLine($"Marshal.StructureToPtr(value, {NativePointer}->{vkMember.Name}, false);");
                         WriteEndBlock();
-
                         WriteEndBlock();
                     }
                     else
