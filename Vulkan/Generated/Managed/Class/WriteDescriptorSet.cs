@@ -156,7 +156,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->TexelBufferView != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->TexelBufferView, (IntPtr)typeSize);
                     
@@ -164,9 +164,9 @@ namespace Vulkan.Managed
                         NativePointer->TexelBufferView = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->DescriptorCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->TexelBufferView;
+                    var ptr = (UInt64*)NativePointer->TexelBufferView;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {

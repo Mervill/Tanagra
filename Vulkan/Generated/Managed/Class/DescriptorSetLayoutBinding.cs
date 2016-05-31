@@ -56,7 +56,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->ImmutableSamplers != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->ImmutableSamplers, (IntPtr)typeSize);
                     
@@ -64,9 +64,9 @@ namespace Vulkan.Managed
                         NativePointer->ImmutableSamplers = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->DescriptorCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->ImmutableSamplers;
+                    var ptr = (UInt64*)NativePointer->ImmutableSamplers;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {

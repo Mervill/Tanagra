@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->WaitSemaphores != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->WaitSemaphores, (IntPtr)typeSize);
                     
@@ -37,9 +37,9 @@ namespace Vulkan.Managed
                         NativePointer->WaitSemaphores = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->WaitSemaphoreCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->WaitSemaphores;
+                    var ptr = (UInt64*)NativePointer->WaitSemaphores;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->Swapchains != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Swapchains, (IntPtr)typeSize);
                     
@@ -82,9 +82,9 @@ namespace Vulkan.Managed
                         NativePointer->Swapchains = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->SwapchainCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->Swapchains;
+                    var ptr = (UInt64*)NativePointer->Swapchains;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {

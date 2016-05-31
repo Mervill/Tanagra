@@ -42,7 +42,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->Attachments != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Attachments, (IntPtr)typeSize);
                     
@@ -50,9 +50,9 @@ namespace Vulkan.Managed
                         NativePointer->Attachments = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->AttachmentCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->Attachments;
+                    var ptr = (UInt64*)NativePointer->Attachments;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {

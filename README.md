@@ -9,6 +9,8 @@ The example project contains (eventually) C#'ified versions of [Sascha Willems f
 
 The example project has SharpDX as a dependency, this is just to gain access to a well-defined rending window that is then passed to Vulkan. No DirectX is involved
 
+If you're looking for the LUNARG validation layer (`VK_LAYER_LUNARG_standard_validation`) you can downloaded it from lunarG [here](https://lunarg.com/vulkan-sdk/)
+
 ## How To Play
 
 ### Tanagra

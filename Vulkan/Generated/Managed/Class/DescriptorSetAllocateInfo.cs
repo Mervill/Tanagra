@@ -33,7 +33,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(UInt64)) * valueCount;
                     if(NativePointer->SetLayouts != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->SetLayouts, (IntPtr)typeSize);
                     
@@ -41,9 +41,9 @@ namespace Vulkan.Managed
                         NativePointer->SetLayouts = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->DescriptorSetCount = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->SetLayouts;
+                    var ptr = (UInt64*)NativePointer->SetLayouts;
                     for(var x = 0; x < valueCount; x++)
-                        ptr[x] = (IntPtr)value[x].NativePointer;
+                        ptr[x] = value[x].NativePointer;
                 }
                 else
                 {

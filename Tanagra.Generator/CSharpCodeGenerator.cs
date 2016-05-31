@@ -814,8 +814,8 @@ namespace Tanagra.Generator
             {
                 var structType = GetHandleType((VkHandle)vkMember.Type);
                 var get = $"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};";
-                var set = $"ptr[x] = (IntPtr)value[x].{NativePointer};";
-                WriteArray(vkMember, countName, readOnly, structType, "IntPtr", "IntPtr", get, set);
+                var set = $"ptr[x] = value[x].{NativePointer};";
+                WriteArray(vkMember, countName, readOnly, structType, get, set);
                 return;
             }
 
