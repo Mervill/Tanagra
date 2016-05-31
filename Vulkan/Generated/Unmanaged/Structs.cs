@@ -11,16 +11,16 @@ namespace Vulkan.Unmanaged
         {
             public const UInt32 Length = 16;
             
-            public Byte Value0;
-            public Byte Value1;
-            public Byte Value2;
-            public Byte Value3;
-            public Byte Value4;
-            public Byte Value5;
-            public Byte Value6;
-            public Byte Value7;
-            public Byte Value8;
-            public Byte Value9;
+            public Byte Value00;
+            public Byte Value01;
+            public Byte Value02;
+            public Byte Value03;
+            public Byte Value04;
+            public Byte Value05;
+            public Byte Value06;
+            public Byte Value07;
+            public Byte Value08;
+            public Byte Value09;
             public Byte Value10;
             public Byte Value11;
             public Byte Value12;
@@ -35,16 +35,16 @@ namespace Vulkan.Unmanaged
                     switch(key)
                     {
                         default: throw new IndexOutOfRangeException();
-                        case 0: return Value0;
-                        case 1: return Value1;
-                        case 2: return Value2;
-                        case 3: return Value3;
-                        case 4: return Value4;
-                        case 5: return Value5;
-                        case 6: return Value6;
-                        case 7: return Value7;
-                        case 8: return Value8;
-                        case 9: return Value9;
+                        case 0: return Value00;
+                        case 1: return Value01;
+                        case 2: return Value02;
+                        case 3: return Value03;
+                        case 4: return Value04;
+                        case 5: return Value05;
+                        case 6: return Value06;
+                        case 7: return Value07;
+                        case 8: return Value08;
+                        case 9: return Value09;
                         case 10: return Value10;
                         case 11: return Value11;
                         case 12: return Value12;

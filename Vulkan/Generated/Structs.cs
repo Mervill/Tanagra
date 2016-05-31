@@ -158,16 +158,16 @@ namespace Vulkan
         {
             public const UInt32 Length = 32;
             
-            public MemoryType Value0;
-            public MemoryType Value1;
-            public MemoryType Value2;
-            public MemoryType Value3;
-            public MemoryType Value4;
-            public MemoryType Value5;
-            public MemoryType Value6;
-            public MemoryType Value7;
-            public MemoryType Value8;
-            public MemoryType Value9;
+            public MemoryType Value00;
+            public MemoryType Value01;
+            public MemoryType Value02;
+            public MemoryType Value03;
+            public MemoryType Value04;
+            public MemoryType Value05;
+            public MemoryType Value06;
+            public MemoryType Value07;
+            public MemoryType Value08;
+            public MemoryType Value09;
             public MemoryType Value10;
             public MemoryType Value11;
             public MemoryType Value12;
@@ -198,16 +198,16 @@ namespace Vulkan
                     switch(key)
                     {
                         default: throw new IndexOutOfRangeException();
-                        case 0: return Value0;
-                        case 1: return Value1;
-                        case 2: return Value2;
-                        case 3: return Value3;
-                        case 4: return Value4;
-                        case 5: return Value5;
-                        case 6: return Value6;
-                        case 7: return Value7;
-                        case 8: return Value8;
-                        case 9: return Value9;
+                        case 0: return Value00;
+                        case 1: return Value01;
+                        case 2: return Value02;
+                        case 3: return Value03;
+                        case 4: return Value04;
+                        case 5: return Value05;
+                        case 6: return Value06;
+                        case 7: return Value07;
+                        case 8: return Value08;
+                        case 9: return Value09;
                         case 10: return Value10;
                         case 11: return Value11;
                         case 12: return Value12;
@@ -238,16 +238,16 @@ namespace Vulkan
         {
             public const UInt32 Length = 16;
             
-            public MemoryHeap Value0;
-            public MemoryHeap Value1;
-            public MemoryHeap Value2;
-            public MemoryHeap Value3;
-            public MemoryHeap Value4;
-            public MemoryHeap Value5;
-            public MemoryHeap Value6;
-            public MemoryHeap Value7;
-            public MemoryHeap Value8;
-            public MemoryHeap Value9;
+            public MemoryHeap Value00;
+            public MemoryHeap Value01;
+            public MemoryHeap Value02;
+            public MemoryHeap Value03;
+            public MemoryHeap Value04;
+            public MemoryHeap Value05;
+            public MemoryHeap Value06;
+            public MemoryHeap Value07;
+            public MemoryHeap Value08;
+            public MemoryHeap Value09;
             public MemoryHeap Value10;
             public MemoryHeap Value11;
             public MemoryHeap Value12;
@@ -262,16 +262,16 @@ namespace Vulkan
                     switch(key)
                     {
                         default: throw new IndexOutOfRangeException();
-                        case 0: return Value0;
-                        case 1: return Value1;
-                        case 2: return Value2;
-                        case 3: return Value3;
-                        case 4: return Value4;
-                        case 5: return Value5;
-                        case 6: return Value6;
-                        case 7: return Value7;
-                        case 8: return Value8;
-                        case 9: return Value9;
+                        case 0: return Value00;
+                        case 1: return Value01;
+                        case 2: return Value02;
+                        case 3: return Value03;
+                        case 4: return Value04;
+                        case 5: return Value05;
+                        case 6: return Value06;
+                        case 7: return Value07;
+                        case 8: return Value08;
+                        case 9: return Value09;
                         case 10: return Value10;
                         case 11: return Value11;
                         case 12: return Value12;
@@ -545,8 +545,8 @@ namespace Vulkan
         {
             public const UInt32 Length = 2;
             
-            public Offset3D Value0;
-            public Offset3D Value1;
+            public Offset3D Value00;
+            public Offset3D Value01;
             
             public Offset3D this[uint key]
             {
@@ -555,8 +555,8 @@ namespace Vulkan
                     switch(key)
                     {
                         default: throw new IndexOutOfRangeException();
-                        case 0: return Value0;
-                        case 1: return Value1;
+                        case 0: return Value00;
+                        case 1: return Value01;
                     }
                 }
             }
@@ -565,8 +565,8 @@ namespace Vulkan
         {
             public const UInt32 Length = 2;
             
-            public Offset3D Value0;
-            public Offset3D Value1;
+            public Offset3D Value00;
+            public Offset3D Value01;
             
             public Offset3D this[uint key]
             {
@@ -575,8 +575,8 @@ namespace Vulkan
                     switch(key)
                     {
                         default: throw new IndexOutOfRangeException();
-                        case 0: return Value0;
-                        case 1: return Value1;
+                        case 0: return Value00;
+                        case 1: return Value01;
                     }
                 }
             }

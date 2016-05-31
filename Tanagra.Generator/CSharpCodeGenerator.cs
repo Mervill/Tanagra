@@ -338,7 +338,7 @@ namespace Tanagra.Generator
                         WriteLine($"public const UInt32 Length = {fixedSize};");
                         WriteLine("");
                         for (var x = 0; x < fixedSize; x++)
-                            WriteLine($"public {vkFixedMember.Type} Value{x};");
+                            WriteLine($"public {vkFixedMember.Type} Value{x.ToString("D2")};");
                         
                         WriteLine("");
                         WriteLine($"public {vkFixedMember.Type} this[uint key]");
@@ -349,7 +349,7 @@ namespace Tanagra.Generator
                         WriteBeginBlock();
                         WriteLine("default: throw new IndexOutOfRangeException();");
                         for(var x = 0; x < fixedSize; x++)
-                            WriteLine($"case {x}: return Value{x};");
+                            WriteLine($"case {x}: return Value{x.ToString("D2")};");
                         
                         WriteEndBlock();
                         WriteEndBlock();
