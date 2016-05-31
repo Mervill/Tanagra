@@ -696,28 +696,49 @@ namespace Tanagra.Generator
                 // the member itself is a pointer...
                 if(isManaged || isPointer)
                 {
-                    // If this is a pointer to a struct that is unmanaged (no wrapper is generated), take
-                    // the address of the struct directily
-                    var valueCast = (isPointer && !isManaged) ? "(&value)" : $"value.{NativePointer}";
-
-                    WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
-                    WriteMemberComments(vkMember);
-                    WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
-                    WriteBeginBlock();
-                    // get
-                    WriteLine($"get {{ return _{vkMember.Name}; }}");
-                    // set
-                    if(isPointer)
+                    if(isPointer && !isManaged)
                     {
-                        if(!readOnly)
-                            WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
+                        WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                        WriteBeginBlock();
+                        WriteLine("get");
+                        WriteBeginBlock();
+                        WriteLine($"var val = new {vkMember.Type.Name}();");
+                        WriteLine($"Marshal.PtrToStructure({NativePointer}->{vkMember.Name}, val);");
+                        WriteLine("return val;");
+                        WriteEndBlock();
+                        WriteLine("set");
+                        WriteBeginBlock();
+                        // todo: this will leak memory :(
+                        WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(Marshal.SizeOf(typeof({vkMember.Type.Name})));");
+                        WriteLine($"Marshal.StructureToPtr(value, {NativePointer}->{vkMember.Name}, false);");
+                        WriteEndBlock();
+                        WriteEndBlock();
                     }
                     else
                     {
-                        if(!readOnly)
-                            WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = *value.{NativePointer}; }}");
+                        // If this is a pointer to a struct that is unmanaged (no wrapper is generated), take
+                        // the address of the struct directily
+                        var valueCast = (isPointer && !isManaged) ? "(&value)" : $"value.{NativePointer}";
+
+                        WriteLine($"{vkMember.Type.Name} _{vkMember.Name};");
+                        WriteMemberComments(vkMember);
+                        WriteLine($"public {vkMember.Type.Name} {vkMember.Name}");
+                        WriteBeginBlock();
+                        // get
+                        WriteLine($"get {{ return _{vkMember.Name}; }}");
+                        // set
+                        if(isPointer)
+                        {
+                            if(!readOnly)
+                                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = (IntPtr){valueCast}; }}");
+                        }
+                        else
+                        {
+                            if(!readOnly)
+                                WriteLine($"set {{ _{vkMember.Name} = value; {NativePointer}->{vkMember.Name} = *value.{NativePointer}; }}");
+                        }
+                        WriteEndBlock();
                     }
-                    WriteEndBlock();
                 }
                 else
                 {

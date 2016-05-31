@@ -675,9 +675,9 @@ namespace TanagraExample
             {
                 OldLayout        = ImageLayout.ColorAttachmentOptimal,
                 NewLayout        = ImageLayout.PresentSrcKHR,
-                Image            = backBuffers[(int)currentBackBufferIndex],
                 SrcAccessMask    = AccessFlags.ColorAttachmentWrite,
                 DstAccessMask    = AccessFlags.MemoryRead,
+                Image            = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
             cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
