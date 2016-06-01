@@ -931,14 +931,14 @@ namespace Tanagra.Generator
             // get
             WriteLine("get");
             WriteBeginBlock();
-            WriteLine($"throw new System.NotImplementedException(\"{why}\");");
+            WriteLine($"throw new NotImplementedException(\"{why}\");");
             WriteEndBlock();
             if (!readOnly)
             {
                 // set
                 WriteLine("set");
                 WriteBeginBlock();
-                WriteLine($"throw new System.NotImplementedException(\"{why}\");");
+                WriteLine($"throw new NotImplementedException(\"{why}\");");
                 WriteEndBlock();
             }
             WriteEndBlock();

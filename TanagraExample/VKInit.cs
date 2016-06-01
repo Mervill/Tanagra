@@ -35,6 +35,7 @@ namespace TanagraExample
             public ImageView View;
         }
 
+        const string OutputFilename = "./out.bmp";
         const Format ImageFormat = Format.R8g8b8a8Unorm;
 
         // Device is held as a class member because its used in
@@ -131,9 +132,11 @@ namespace TanagraExample
             Render(queue, cmdPool, vertexData, imageData, imageBuffer, renderPass, pipeline, framebuffer);
 
             var renderData = CopyBufferToArray(bufferMem, memRequirements);
-            WriteBitmap(renderData, "./out.bmp");
-            
+            WriteBitmap(renderData, OutputFilename);
+
             #region Shutdown
+            // Destroy Vulkan handles in reverse order of creation (roughly)
+
             device.DestroyBuffer(imageBuffer);
             device.DestroyFramebuffer(framebuffer);
             device.DestroyPipeline(pipeline);
@@ -604,7 +607,7 @@ namespace TanagraExample
             var final = headerBytes.ToList();
             final.AddRange(imageBytes);
 
-            File.WriteAllBytes("./out.bmp", final.ToArray());
+            File.WriteAllBytes(filename, final.ToArray());
         }
 
         void CmdPipelineBarrier(CommandBuffer cmdBuffer, Image image, ImageLayout oldLayout, ImageLayout newLayout, AccessFlags srcMask, AccessFlags dstMask)

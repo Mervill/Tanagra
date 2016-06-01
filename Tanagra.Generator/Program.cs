@@ -13,6 +13,8 @@ namespace Tanagra.Generator
         // todo: port member comments to constructor
         // todo: tanagra: handle wrapper, parent notify on destroy
         // todo: tanagra: nondispatchable extentions
+        // todo: Depreciate DeviceSize?
+        // todo: `==` operator generation for Handles? DeviceSize?
         // todo: study more closely the lifecycle of vulkan objects, esp returned-only objects - when are they freed?
         // todo: typed pointers in structs?
         // todo: typed non-dispatchable?
