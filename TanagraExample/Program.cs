@@ -43,7 +43,7 @@ namespace TanagraExample
 
         static void run()
         {
-            var tri = new VKTriangle();
+            var tri = new VKTriangle2();
             tri.Main(null);
         }
 

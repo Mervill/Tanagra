@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +12,7 @@ using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
 using Buffer = Vulkan.Buffer;
+using Image = Vulkan.Image;
 
 namespace TanagraExample
 {
@@ -131,15 +134,11 @@ namespace TanagraExample
             // memory and have Vulkan use that as the render target instead
             image       = CreateImage(imageWidth, imageHeight);
             imageMem    = BindImage(image);
-
-            //var memRequirements = device.GetImageMemoryRequirements(image);
-            //device.MapMemory(imageMem, 0, memRequirements.Size);
-            //device.UnmapMemory(imageMem);
-
+            
             //--
 
             var memRequirements = device.GetImageMemoryRequirements(image);
-            var memTypeIndex = 2u;//getMemoryType(memRequirements.MemoryTypeBits, 2);
+            var memTypeIndex = 2u; // todo!
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memTypeIndex);
             var bufferCreateInfo = new BufferCreateInfo(memRequirements.Size, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst, SharingMode.Exclusive, null);
             var buffer = device.CreateBuffer(bufferCreateInfo);
@@ -147,32 +146,25 @@ namespace TanagraExample
             device.BindBufferMemory(buffer, bufferMem, 0);
 
             var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
+            var data = new byte[memRequirements.Size];
+            for (ulong x = 0; x < memRequirements.Size; x++) data[x] = 0x00;
+            Marshal.Copy(data, 0, map, (int)((ulong)memRequirements.Size));
             device.UnmapMemory(bufferMem);
 
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);
 
-            //CmdPipelineBarrier(cmdBuffer, image, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, AccessFlags.HostWrite | AccessFlags.TransferWrite, AccessFlags.TransferWrite);
-
-            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 1, 0, 1);
+            CmdPipelineBarrier(cmdBuffer, image, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, AccessFlags.HostWrite, AccessFlags.TransferWrite);
+            
+            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageWidth, imageHeight, 1));
-            cmdBuffer.CmdCopyBufferToImage(buffer, image, ImageLayout.Preinitialized, new List<BufferImageCopy> { imageCopy });
+            cmdBuffer.CmdCopyBufferToImage(buffer, image, ImageLayout.TransferDstOptimal, new List<BufferImageCopy> { imageCopy });
 
-            CmdPipelineBarrier(cmdBuffer, image, ImageLayout.Preinitialized, ImageLayout.ColorAttachmentOptimal, AccessFlags.HostWrite | AccessFlags.TransferWrite, AccessFlags.ColorAttachmentWrite);
-
-            //-- a
-            /*var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            var imageMemoryBarrier = new ImageMemoryBarrier(ImageLayout.Preinitialized, ImageLayout.ColorAttachmentOptimal, 0, 0, image, subresourceRange);
-            imageMemoryBarrier.SrcAccessMask = AccessFlags.TransferRead | AccessFlags.HostWrite;
-            imageMemoryBarrier.DstAccessMask = AccessFlags.ColorAttachmentWrite;
-            var imageMemoryBarriers = new List<ImageMemoryBarrier> { imageMemoryBarrier };
-            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, imageMemoryBarriers);*/
-            // -- a
-
+            CmdPipelineBarrier(cmdBuffer, image, ImageLayout.TransferDstOptimal, ImageLayout.ColorAttachmentOptimal, AccessFlags.TransferWrite, AccessFlags.ColorAttachmentWrite);
+            
             cmdBuffer.End();
-
-            var submitInfo = new SubmitInfo();
-            submitInfo.CommandBuffers = new[] { cmdBuffer };
+            
+            var submitInfo = new SubmitInfo(null, null, new[] { cmdBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo });
             submitInfo.Dispose();
             queue.WaitIdle();
@@ -181,17 +173,13 @@ namespace TanagraExample
 
             cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             cmdBuffer = cmdBuffers[0];
+            
             //--
 
             imageView   = CreateImageView(image);
             framebuffer = CreateFramebuffer(renderPass, imageView, imageWidth, imageHeight);
             
-            Render(cmdBuffer, image, imageMem, renderPass, framebuffer, pipeline, queue, imageWidth, imageHeight);
-            
-            //var memRequirements = device.GetImageMemoryRequirements(image);
-            //var map = device.MapMemory(imageMem, 0, memRequirements.Size);
-            //var bytes = MemUtil.CopyBytes(map, memRequirements.Size);
-            //Console.WriteLine(bytes.Length);
+            Render(cmdBuffer, image, renderPass, framebuffer, pipeline, queue, imageWidth, imageHeight);
         }
 
         #region  Primary Initialization
@@ -212,7 +200,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                "VK_LAYER_LUNARG_standard_validation"
+                //"VK_LAYER_LUNARG_standard_validation"
             };
 
             var instanceCreateInfo = new InstanceCreateInfo(enabledLayers, enabledExtensions);
@@ -254,7 +242,7 @@ namespace TanagraExample
             
             String[] enabledLayers = new string[]
             {
-                "VK_LAYER_LUNARG_standard_validation"
+                //"VK_LAYER_LUNARG_standard_validation"
             };
 
             var features = new PhysicalDeviceFeatures();
@@ -339,7 +327,7 @@ namespace TanagraExample
             var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, 2); // MemoryTypeIndex = 2, TODO
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
 
-            var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size, MemoryMapFlags.None);
+            var mapped = device.MapMemory(vertexBufferMemory, 0, createInfo.Size);
             MemUtil.Copy2DArray(triangleVertices, mapped, createInfo.Size, createInfo.Size);
             device.UnmapMemory(vertexBufferMemory);
 
@@ -465,8 +453,8 @@ namespace TanagraExample
             // fragment so produced is fed to the next stage (Fragment Shader) that performs operations 
             // on individual fragments before they finally alter the framebuffer.
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
-            rasterizationState.RasterizerDiscardEnable = true;
-            rasterizationState.LineWidth = 1;
+            //rasterizationState.RasterizerDiscardEnable = true;
+            //rasterizationState.LineWidth = 1;
 
             var createInfos = new[]
             {
@@ -521,27 +509,21 @@ namespace TanagraExample
 
         #endregion
 
-        void Render(CommandBuffer cmdBuffer, Image renderImage, DeviceMemory mem, RenderPass renderPass, Framebuffer framebuffer, Pipeline pipeline, Queue queue,  uint width, uint height)
+        void Render(CommandBuffer cmdBuffer, Image renderImage, RenderPass renderPass, Framebuffer framebuffer, Pipeline pipeline, Queue queue,  uint width, uint height)
         {
             var memRequirements = device.GetImageMemoryRequirements(renderImage);
-            var memTypeIndex = getMemoryType(memRequirements.MemoryTypeBits, MemoryPropertyFlags.DeviceLocal);
+            var memTypeIndex = 2u; // todo!
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memTypeIndex);
             var bufferCreateInfo = new BufferCreateInfo(memRequirements.Size, BufferUsageFlags.TransferDst, SharingMode.Exclusive, null);
             var buffer = device.CreateBuffer(bufferCreateInfo);
             var bufferMem = device.AllocateMemory(memAlloc);
             device.BindBufferMemory(buffer, bufferMem, 0);
-
-            var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-
+            
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
 
-            //var memBarrier = new ImageMemoryBarrier(ImageLayout.General, ImageLayout.ColorAttachmentOptimal, 0, 0, renderImage, subresourceRange);
-            //memBarrier.SrcAccessMask = AccessFlags.MemoryRead;
-            //memBarrier.DstAccessMask = AccessFlags.ColorAttachmentWrite;
-            //cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memBarrier });
-
-            //cmdBuffer.CmdClearColorImage(renderImage, ImageLayout.ColorAttachmentOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { subresourceRange });
+            //var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
+            //cmdBuffer.CmdClearColorImage(renderImage, ImageLayout.ColorAttachmentOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange });
 
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
             var renderPassBegin = new RenderPassBeginInfo(renderPass, framebuffer, renderArea, null);
@@ -550,43 +532,54 @@ namespace TanagraExample
             var viewport = new Viewport(0, 0, width, height, 0, 0);
             cmdBuffer.CmdSetViewport(0, new List<Viewport> { viewport });
 
+            // Set scissor
+            var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
+            cmdBuffer.CmdSetScissor(0, new List<Rect2D> { scissor });
+
             cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
             cmdBuffer.CmdBindVertexBuffers(0, new List<Buffer> { vertexBuffer }, new List<DeviceSize> { 0 });
             cmdBuffer.CmdDraw(3, 1, 0, 0);
             cmdBuffer.CmdEndRenderPass(); // RenderPass End
+            
+            CmdPipelineBarrier(cmdBuffer, renderImage, ImageLayout.ColorAttachmentOptimal, ImageLayout.TransferSrcOptimal, AccessFlags.ColorAttachmentWrite, AccessFlags.TransferRead);
 
-            //var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            //var imageMemoryBarrier = new ImageMemoryBarrier(ImageLayout.ColorAttachmentOptimal, ImageLayout.TransferSrcOptimal, 0, 0, renderImage, subresourceRange);
-            //imageMemoryBarrier.SrcAccessMask = AccessFlags.TransferRead | AccessFlags.HostRead | AccessFlags.ColorAttachmentRead | AccessFlags.MemoryRead;
-            //var imageMemoryBarriers = new List<ImageMemoryBarrier> { imageMemoryBarrier };
-            //var bufferBarrier = new BufferMemoryBarrier(0, 0, buffer, 0, memRequirements.Size);
-            //var bufferMemoryBarriers = new List<BufferMemoryBarrier> { bufferBarrier };
-            //cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.BottomOfPipe, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, bufferMemoryBarriers, imageMemoryBarriers);
-
-            CmdPipelineBarrier(cmdBuffer, renderImage, ImageLayout.ColorAttachmentOptimal, ImageLayout.TransferSrcOptimal, AccessFlags.ColorAttachmentRead, AccessFlags.TransferRead);
-
-            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 1, 0, 1);
-            var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(width, height, 1));
+            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
+            var imageCopy = new BufferImageCopy(0, width, height, subresource, new Offset3D(0, 0, 0), new Extent3D(width, height, 0));
             cmdBuffer.CmdCopyImageToBuffer(renderImage, ImageLayout.TransferSrcOptimal, buffer, new List<BufferImageCopy> { imageCopy });
 
             cmdBuffer.End(); // CommandBuffer End
-
-            //memBarrier = new ImageMemoryBarrier(ImageLayout.ColorAttachmentOptimal, ImageLayout.General, 0, 0, renderImage, subresourceRange);
-            //memBarrier.SrcAccessMask = AccessFlags.ColorAttachmentWrite;
-            //memBarrier.DstAccessMask = AccessFlags.MemoryRead;
-            //cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memBarrier });
-
+            
             //var semCreateInfo = new SemaphoreCreateInfo();
             //var presentCompleteSemaphore = device.CreateSemaphore(semCreateInfo);
             var submitInfo = new SubmitInfo(null, null, new[] { cmdBuffer }, null);
             queue.Submit(new List<SubmitInfo> { submitInfo });
-
             queue.WaitIdle();
 
             //device.DestroySemaphore(presentCompleteSemaphore);
 
-            //var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
-            //device.UnmapMemory(bufferMem);
+            var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
+            var data = new byte[memRequirements.Size];
+            Marshal.Copy(map, data, 0, (int)((ulong)memRequirements.Size));
+            device.UnmapMemory(bufferMem);
+            Console.WriteLine(data.All(x => x == 0) ? "Got no data" : "Got data!!");
+            Console.WriteLine(data.Where(x => x != 0 && x != 0xFF).First());
+
+            var headerBytes = new byte[]
+            {
+                0x42,0x4D,0x36,0xF9,0x15,0x00,0x00,0x00,0x00,0x00,0x36,0x00,0x00,0x00,0x28,0x00,0x00,0x00,0x20,0x03,0x00,0x00,0x58,0x02,0x00,0x00,0x01,
+                0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0xF9,0x15,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+            };
+
+            data = data.Where((x, i) => (i + 1) % 4 != 0).ToArray();
+
+            var final = headerBytes.ToList();
+            final.AddRange(data);
+
+            File.WriteAllBytes("./out.bmp", final.ToArray());
+
+            //var ms = new MemoryStream(data);
+            //Dvar img = System.Drawing.Image.FromStream(ms);
+            //img.Save("./out.jpg");
         }
 
         void CmdPipelineBarrier(CommandBuffer cmdBuffer, Image image, ImageLayout oldLayout, ImageLayout newLayout, AccessFlags srcMask, AccessFlags dstMask)
@@ -615,7 +608,8 @@ namespace TanagraExample
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
             //Console.WriteLine($"[VULK] [{flags}] ([{messageCode}] {layerPrefix})\n{message}");
-            Console.WriteLine(message);
+            if(messageCode != 0)
+                Console.WriteLine($"{message}");
             return true;
         }
     }

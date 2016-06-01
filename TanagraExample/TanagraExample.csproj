@@ -82,6 +82,7 @@
     <Compile Include="Utils.cs" />
     <Compile Include="VKInit.cs" />
     <Compile Include="VKTriangle.cs" />
+    <Compile Include="VKTriangle2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
