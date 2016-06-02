@@ -5,10 +5,6 @@ using System.Text;
 
 namespace Tanagra.Generator
 {
-    // Notes:
-    //  - By default, structures use "copy" behaviour on assignment ie; the struct's data is copied
-    //    to a new struct instance and then assigned. So using a simmilar copy method in the interop
-    //    layer actually maintains expected functionality
     public class CSharpCodeGenerator
     {
         class GeneratedObjectInfo
@@ -275,7 +271,7 @@ namespace Tanagra.Generator
 
             if(CombineFiles)
             {
-
+                // todo
             }
             else
             {
@@ -555,8 +551,7 @@ namespace Tanagra.Generator
                     WriteLine("");
                     continue;
                 }
-
-                // If the member is a value type or an enum
+                
                 if (IsPlatformStruct(vkMember.Type) || vkMember.Type is VkEnum)
                 {
                     WriteMember(vkMember, vkStruct.ReturnedOnly);
@@ -590,9 +585,7 @@ namespace Tanagra.Generator
             // Unless the underlying struct is returned-only, generate
             // a constructor by omitting any members that are marked as
             // 'optional' in the spec and using the remaning 'mandatory'
-            // members as the constructor arguments. These generated
-            // constructors arent as good as the ones generated for the
-            // simpler public strcuts.
+            // members as the constructor arguments.
             if(!vkStruct.ReturnedOnly)
             {
                 var cotorParams = new Dictionary<string, string>();
@@ -1293,8 +1286,6 @@ namespace Tanagra.Generator
                 #region Return Param
                 if(vkParam == commandInfo.ReturnParam && commandInfo.ReturnsList)
                 {
-                    // if the return value is a list and this is the kind of
-                    // function we need to call twice (todo)
                     internalCallParams.Add(isSecondArrayCall ? "resultPtr" : "null");
                     continue;
                 }
@@ -1361,7 +1352,7 @@ namespace Tanagra.Generator
                 throw new InvalidOperationException();
             }
 
-            return String.Join(", ", internalCallParams);
+            return string.Join(", ", internalCallParams);
         }
 
         string GenerateHandleExtensions(string className, IEnumerable<VkHandle> vkHandles, IEnumerable<VkCommand> vkCommands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
@@ -1539,7 +1530,7 @@ namespace Tanagra.Generator
 
             #region Determine if command has Array Parameters
             //
-            // In C, arrays are passed using the (uint32_t objectCount, const Object* pObject).
+            // In C, arrays are passed using the pattern (uint32_t objectCount, const Object* pObject).
             // We can combine the count and array pointer into one object, List<T>. Then we can
             // read the length of the list inside the function as needed.
             //

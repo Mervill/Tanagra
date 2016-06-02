@@ -15,7 +15,7 @@ namespace TanagraExample
 {
     public class VKInit
     {
-        // Note: Most of the comments in this example are taken right from the Vulkan spec:
+        // Note: Some of the comments in this example are taken right from the Vulkan spec:
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html
         
         class VertexData
@@ -82,13 +82,13 @@ namespace TanagraExample
 
             VertexData vertexData;
             ImageData imageData;
+            Buffer imageBuffer;
             RenderPass renderPass;
             PipelineLayout pipelineLayout;
             List<Pipeline> pipelines;
             Pipeline pipeline;
             Framebuffer framebuffer;
-            Buffer imageBuffer;
-
+            
             // This exercise would be pointless if we had nothing to 
             // render, so lets create that data now.
             vertexData = CreateVertexData();
@@ -103,6 +103,21 @@ namespace TanagraExample
             imageData.Memory = BindImage(imageData.Image);
             imageData.View   = CreateImageView(imageData.Image);
 
+            // Allocate device memory to the image so that it can be read from and written to
+            var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
+            imageBuffer = CreateBuffer(memRequirements.Size, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst);
+            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
+            var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
+            var bufferMem = BindBuffer(imageBuffer, memAlloc);
+
+            // Initialize the image's memory by writing to it.
+            // This step can actually be excluded since we're just going to overwrite this data with the
+            // result of the render operation. It's done here for completeness/correctness
+            var data = new byte[memRequirements.Size];
+            for(ulong x = 0; x < memRequirements.Size; x++) data[x] = 0x00;
+            CopyArrayToBuffer(bufferMem, memRequirements.Size, data);
+            CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
+
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
             var shaderStageCreateInfos = new[]
             {
@@ -110,25 +125,14 @@ namespace TanagraExample
                 GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "frag.spv"),
             };
 
+            // Create the render dependencies
             renderPass     = CreateRenderPass();
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderStageCreateInfos, vertexData);
             pipeline       = pipelines[0];
             framebuffer    = CreateFramebuffer(renderPass, imageData);
-
-            var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
-            imageBuffer = CreateBuffer(memRequirements, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst);
-
-            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
-            var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
-            var bufferMem = BindBuffer(imageBuffer, memAlloc);
-
-            // validation
-            var data = new byte[memRequirements.Size];
-            for(ulong x = 0; x < memRequirements.Size; x++) data[x] = 0x00;
-            CopyBytesToBuffer(bufferMem, memRequirements, data);
-            CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
             
+            // Render the triangle to the image
             Render(queue, cmdPool, vertexData, imageData, imageBuffer, renderPass, pipeline, framebuffer);
 
             var renderData = CopyBufferToArray(bufferMem, memRequirements);
@@ -289,21 +293,18 @@ namespace TanagraExample
                 { -0.5f,  0.5f,  0.5f, /* UV Coordinates: */ 0.0f, 0.0f, 1.0f },
             };
 
-            var memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
-            var createInfo = new BufferCreateInfo(memorySize, BufferUsageFlags.VertexBuffer, SharingMode.Exclusive, null);
-            data.Buffer = device.CreateBuffer(createInfo);
+            DeviceSize memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
+            data.Buffer = CreateBuffer(memorySize, BufferUsageFlags.VertexBuffer);
 
             var memoryRequirements = device.GetBufferMemoryRequirements(data.Buffer);
             var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
             var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, memoryIndex);
-            data.DeviceMemory = device.AllocateMemory(allocateInfo);
-
-            var mapped = device.MapMemory(data.DeviceMemory, 0, createInfo.Size);
-            MemUtil.Copy2DArray(triangleVertices, mapped, createInfo.Size, createInfo.Size);
+            data.DeviceMemory = BindBuffer(data.Buffer, allocateInfo);
+            
+            var mapped = device.MapMemory(data.DeviceMemory, 0, memorySize);
+            MemUtil.Copy2DArray(triangleVertices, mapped, memorySize, memorySize);
             device.UnmapMemory(data.DeviceMemory);
-
-            device.BindBufferMemory(data.Buffer, data.DeviceMemory, 0);
-
+            
             data.BindingDescriptions = new[]
             {
                 new VertexInputBindingDescription(0, (uint)(sizeof(float) * triangleVertices.GetLength(1)), VertexInputRate.Vertex)
@@ -497,9 +498,9 @@ namespace TanagraExample
             return device.CreateFramebuffer(createInfo);
         }
 
-        Buffer CreateBuffer(MemoryRequirements requiredMemory, BufferUsageFlags flags)
+        Buffer CreateBuffer(DeviceSize size, BufferUsageFlags flags)
         {
-            var bufferCreateInfo = new BufferCreateInfo(requiredMemory.Size, flags, SharingMode.Exclusive, null);
+            var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, null);
             return device.CreateBuffer(bufferCreateInfo);
         }
         
@@ -550,13 +551,6 @@ namespace TanagraExample
             device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
         }
         
-        void CopyBytesToBuffer(DeviceMemory bufferMem, MemoryRequirements memRequirements, byte[] data)
-        {
-            var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
-            Marshal.Copy(data, 0, map, (int)((ulong)memRequirements.Size));
-            device.UnmapMemory(bufferMem);
-        }
-
         void CopyBufferToImage(Queue queue, CommandPool cmdPool, ImageData imageData, Buffer imageBuffer)
         {
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
@@ -582,7 +576,14 @@ namespace TanagraExample
 
             device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
         }
-        
+
+        void CopyArrayToBuffer(DeviceMemory bufferMem, DeviceSize size, byte[] data)
+        {
+            var map = device.MapMemory(bufferMem, 0, size);
+            Marshal.Copy(data, 0, map, (int)((ulong)size));
+            device.UnmapMemory(bufferMem);
+        }
+
         byte[] CopyBufferToArray(DeviceMemory bufferMem, MemoryRequirements memRequirements)
         {
             var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
@@ -595,6 +596,7 @@ namespace TanagraExample
         void WriteBitmap(byte[] imageBytes, string filename)
         {
             // BMP header
+            // https://en.wikipedia.org/wiki/BMP_file_format
             var headerBytes = new byte[]
             {
                 0x42,0x4D,0x36,0xF9,0x15,0x00,0x00,0x00,0x00,0x00,0x36,0x00,0x00,0x00,0x28,0x00,0x00,0x00,0x20,0x03,0x00,0x00,0x58,0x02,0x00,0x00,0x01,

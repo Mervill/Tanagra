@@ -252,8 +252,7 @@ namespace Tanagra.Generator
                 enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `EXT`
                 trimEXT = true;
             }
-
-            //if(isFlags)
+            
             if (enumPrefix.EndsWith("Flags"))
                 enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
 
@@ -366,7 +365,7 @@ namespace Tanagra.Generator
                 paramName = char.ToLower(paramName[0]) + paramName.Substring(1);
 
                 if (paramName == "event" || paramName == "object")
-                    paramName = '@' + paramName; // alias names
+                    paramName = '@' + paramName;
 
                 param.Name = paramName;
 

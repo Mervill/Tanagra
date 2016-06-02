@@ -74,12 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Swapchain.cs" />
-    <Compile Include="TextureLoader.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="VKInit.cs" />
     <Compile Include="VKTriangle.cs" />
     <Compile Include="VKTriangle2.cs" />

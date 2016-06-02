@@ -94,7 +94,7 @@ namespace Tanagra.Generator
         // readme.tex:
         //   Each <validity> tag contains zero or more <usage> tags. Each <usage> tag is intended to 
         //   represent a specific validation requirement for the structure and include arbitrary 
-        //   asciidoc text describing  that requirement.
+        //   asciidoc text describing that requirement.
         public string[] Validity { get; set; }
         
         public bool ContainsPointers => Members.Any(x => x.IsPointer);
