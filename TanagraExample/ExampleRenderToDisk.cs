@@ -13,8 +13,12 @@ using Image = Vulkan.Image;
 
 namespace TanagraExample
 {
-    public class VKInit
+    public class ExampleRenderToDisk
     {
+        // NOTE: This example does NOT render to the screen! Instead it renders to an image and then
+        //       writes that image to a file. This allows us to focus on the core Vulkan API. Presenting
+        //       images to the screen in covered in another example.
+
         // Note: Some of the comments in this example are taken right from the Vulkan spec:
         // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html
         
@@ -45,7 +49,7 @@ namespace TanagraExample
         DebugReportCallbackEXT debugCallback;
         PhysicalDeviceMemoryProperties physDeviceMem;
         
-        public VKInit()
+        public ExampleRenderToDisk()
         {
             // The goal of this example is to:
             //
@@ -137,6 +141,7 @@ namespace TanagraExample
 
             var renderData = CopyBufferToArray(bufferMem, memRequirements);
             WriteBitmap(renderData, OutputFilename);
+            Console.WriteLine($"Render written to {OutputFilename}");
 
             #region Shutdown
             // Destroy Vulkan handles in reverse order of creation (roughly)
@@ -170,20 +175,9 @@ namespace TanagraExample
 
             // For this example, we want Vulkan to act in a 'default' fashion, so we don't
             // pass and ApplicationInfo object and we don't request any layers or extensions
-
-            String[] enabledExtensions = new[]
-            {
-                VulkanConstant.ExtDebugReportExtensionName,
-            };
-
-            String[] enabledLayers = new string[]
-            {
-                //"VK_LAYER_LUNARG_standard_validation"
-            };
-
-            var instanceCreateInfo = new InstanceCreateInfo(enabledLayers, enabledExtensions);
+            
+            var instanceCreateInfo = new InstanceCreateInfo(null, null);
             var instance = Vk.CreateInstance(instanceCreateInfo);
-            debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
             return instance;
         }
 
@@ -218,16 +212,11 @@ namespace TanagraExample
             // must create a separate logical device for each physical device it will use. The created 
             // logical device is then the primary interface to the physical device.
             
-            String[] enabledLayers = new string[]
-            {
-                //"VK_LAYER_LUNARG_standard_validation"
-            };
-
             var features = new PhysicalDeviceFeatures();
             features.ShaderClipDistance = true;
 
             var queueCreateInfo = new DeviceQueueCreateInfo(0, new[] { 0f });
-            var deviceCreateInfo = new DeviceCreateInfo(new[] { queueCreateInfo }, enabledLayers, null);
+            var deviceCreateInfo = new DeviceCreateInfo(new[] { queueCreateInfo }, null, null);
             deviceCreateInfo.EnabledFeatures = features;
             return physicalDevice.CreateDevice(deviceCreateInfo);
         }
@@ -630,13 +619,6 @@ namespace TanagraExample
 
             throw new InvalidOperationException();
         }
-
-        private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
-        {
-            //Console.WriteLine($"[VULK] [{flags}] ([{messageCode}] {layerPrefix})\n{message}");
-            if(messageCode != 0)
-                Console.WriteLine($"{message}");
-            return true;
-        }
+        
     }
 }

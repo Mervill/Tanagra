@@ -9,7 +9,7 @@ namespace TanagraExample
             //run();
             //ExampleBaseTest();
 
-            var init = new VKInit();
+            var renderToDisk = new ExampleRenderToDisk();
 
             //var opt = new Tanagra.InstanceMgr.InitializeOptions();
             //opt.ForceUseDevice(x);
