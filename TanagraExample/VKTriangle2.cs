@@ -331,7 +331,7 @@ namespace TanagraExample
             vertexBufferMemory = device.AllocateMemory(allocateInfo);
 
             var mapped = device.MapMemory(vertexBufferMemory, 0, bufferSize);
-            MemUtil.Copy2DArray(vertices, mapped, bufferSize, bufferSize);
+            VulkanUtils.Copy2DArray(vertices, mapped, bufferSize, bufferSize);
             device.UnmapMemory(vertexBufferMemory);
 
             device.BindBufferMemory(vertexBuffer, vertexBufferMemory, 0);

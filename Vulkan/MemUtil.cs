@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Vulkan
+namespace Vulkan.Managed
 {
 	public unsafe static class MemUtil
     {
@@ -29,19 +29,7 @@ namespace Vulkan
             PointerMemory = new Dictionary<IntPtr, long>();
         }
 #endif
-
-        public static void Copy2DArray(float[,] source, IntPtr destination, ulong destinationSizeInBytes, ulong sourceBytesToCopy)
-        {
-            /*fixed (float* sourcePtr = &source[0, 0])
-                System.Buffer.MemoryCopy(sourcePtr, (void*)destination, destinationSizeInBytes, sourceBytesToCopy);*/
-            fixed (float* sourcePtr = &source[0, 0])
-            {
-                byte[] data = new byte[destinationSizeInBytes];
-                Marshal.Copy(new IntPtr(sourcePtr), data, 0, (int)destinationSizeInBytes);
-                Marshal.Copy(data, 0, destination, (int)destinationSizeInBytes);
-            }
-        }
-
+        
         internal static IntPtr Alloc(Type type)
 		{
 			var size = Marshal.SizeOf(type);

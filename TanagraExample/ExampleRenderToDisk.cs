@@ -291,7 +291,7 @@ namespace TanagraExample
             data.DeviceMemory = BindBuffer(data.Buffer, allocateInfo);
             
             var mapped = device.MapMemory(data.DeviceMemory, 0, memorySize);
-            MemUtil.Copy2DArray(triangleVertices, mapped, memorySize, memorySize);
+            VulkanUtils.Copy2DArray(triangleVertices, mapped, memorySize, memorySize);
             device.UnmapMemory(data.DeviceMemory);
             
             data.BindingDescriptions = new[]
