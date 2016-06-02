@@ -3,7 +3,7 @@
 namespace Vulkan
 {
     /// <summary>
-    /// Essentially a <see cref="UInt64"/> 
+    /// For sizes and offsets pertaining to device address space. Equivalent to <see cref="UInt64"/>
     /// </summary>
     public struct DeviceSize
     {

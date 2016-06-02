@@ -82,14 +82,14 @@ namespace Tanagra.Generator
 
             platformStructTypes = new List<string>
             {
-                "IntPtr",
-                "String",
-                "Single",
                 "Byte",
                 "Int32",
                 "UInt32",
                 "UInt64",
-                //"UIntPtr",
+                "IntPtr",
+                "UIntPtr",
+                "Single",
+                "String",
                 "Boolean",
                 "Bool32",
                 "DeviceSize",

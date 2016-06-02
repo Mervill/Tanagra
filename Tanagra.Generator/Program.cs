@@ -11,13 +11,13 @@ namespace Tanagra.Generator
         // todo: union
         // todo: merge flag enums
         // todo: port member comments to constructor
+        // todo: CodeSize preventing x64 from working
         // todo: tanagra: handle wrapper, parent notify on destroy
         // todo: tanagra: nondispatchable extentions
-        // todo: Depreciate DeviceSize?
-        // todo: `==` operator generation for Handles? DeviceSize?
+        // todo: `==` operator generation for Handles?
         // todo: study more closely the lifecycle of vulkan objects, esp returned-only objects - when are they freed?
         // todo: typed pointers in structs?
-        // todo: typed non-dispatchable?
+        // todo: Use handle types in structs? Would require handles to be structs
         // todo: generate arrays instead of lists on commands?
         // todo: Fix edge cases in VulkanConstant
         // todo: MemoryPressure in extra areas

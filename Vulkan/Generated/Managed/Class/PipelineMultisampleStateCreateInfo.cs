@@ -50,11 +50,11 @@ namespace Vulkan.Managed
         {
             get
             {
-                throw new System.NotImplementedException("Latexmath");
+                throw new NotImplementedException("Latexmath");
             }
             set
             {
-                throw new System.NotImplementedException("Latexmath");
+                throw new NotImplementedException("Latexmath");
             }
         }
         

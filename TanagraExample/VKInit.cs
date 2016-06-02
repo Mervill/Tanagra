@@ -623,10 +623,9 @@ namespace TanagraExample
         uint FindMemoryIndex(MemoryPropertyFlags propertyFlags)
         {
             for(uint x = 0; x < 32; x++)
-            {
                 if((physDeviceMem.MemoryTypes[x].PropertyFlags & propertyFlags) == propertyFlags)
                     return x;
-            }
+
             throw new InvalidOperationException();
         }
 

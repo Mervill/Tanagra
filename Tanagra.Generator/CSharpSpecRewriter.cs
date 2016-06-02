@@ -7,22 +7,15 @@ namespace Tanagra.Generator
 {
     public class CSharpSpecRewriter
     {
-        Dictionary<string, string> basetypeOverride;
         Dictionary<string, string> structNameOverride;
 
         // TODO: read this info from the constant struct
         Dictionary<string, string> constantMap;
 
+        public bool UseDeviceSize = true;
+
         public CSharpSpecRewriter()
         {
-            basetypeOverride = new Dictionary<string, string>
-            {
-                { "VkSampleMask", "uint32_t" },
-                //{ "VkBool32", "uint32_t" },
-                //{ "VkFlags", "uint32_t" },
-                { "VkDeviceSize", "uint64_t" },
-            };
-            
             structNameOverride = new Dictionary<string, string>
             {
                 { "void",     "IntPtr" },
@@ -93,6 +86,13 @@ namespace Tanagra.Generator
                 Replace(spec, vkType, intPtr);
 
             spec.AllTypes = spec.AllTypes.Except(functionPointers).ToList();
+
+            if(!UseDeviceSize)
+            {
+                var deviceSize = spec.AllTypes.FirstOrDefault(x => x.Name == "DeviceSize");
+                var uint64 = spec.AllTypes.FirstOrDefault(x => x.Name == "UInt64");
+                Replace(spec, deviceSize, uint64);
+            }
             
             return spec;
         }
