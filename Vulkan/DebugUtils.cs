@@ -37,7 +37,7 @@ namespace Vulkan
             {
                 var result = createDelegate(instance.NativePointer, createInfo.NativePointer, null, ptr);
                 if(result != Result.Success)
-                    throw new VulkanCommandException("vkCreateDebugReportCallbackEXT", result);
+                    throw new VulkanResultException("vkCreateDebugReportCallbackEXT", result);
             }
 
             createInfo.Dispose();

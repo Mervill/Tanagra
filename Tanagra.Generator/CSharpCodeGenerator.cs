@@ -58,7 +58,7 @@ namespace Tanagra.Generator
 
         const string NativePointer           = "NativePointer";
         const string CallingConvention       = "Winapi";
-        const string VulkanResultException   = "VulkanCommandException";
+        const string VulkanResultException   = "VulkanResultException";
         const string AllocateFnName          = "MemUtil.Alloc";
         const string FreeFnName              = "MemUtil.Free";
         const string FixedSizeStringFnName   = "MemUtil.MarshalFixedSizeString";

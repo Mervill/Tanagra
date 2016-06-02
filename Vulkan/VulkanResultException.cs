@@ -2,12 +2,12 @@
 
 namespace Vulkan
 {
-    public class VulkanCommandException : Exception
+    public class VulkanResultException : Exception
     {
         public readonly string CommandName;
         public readonly Result Result;
 
-        public VulkanCommandException(string commandName, Result result)
+        public VulkanResultException(string commandName, Result result)
             : base($"Vulkan command {commandName} failed with error `{result}`")
         {
             CommandName = commandName;

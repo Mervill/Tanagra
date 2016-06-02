@@ -590,7 +590,7 @@ namespace TanagraExample
                 // Get the index of the next available swapchain image
                 currentBackBufferIndex = device.AcquireNextImageKHR(swapchain, ulong.MaxValue, presentCompleteSemaphore, null);
             }
-            catch (VulkanCommandException e) when (e.Result == Result.ErrorOutOfDateKHR)
+            catch (VulkanResultException e) when (e.Result == Result.ErrorOutOfDateKHR)
             {
                 // TODO: Handle resize and retry draw
                 throw new NotImplementedException();

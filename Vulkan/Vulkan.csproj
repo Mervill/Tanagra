@@ -302,7 +302,7 @@
     <Compile Include="MemUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Version.cs" />
-    <Compile Include="VulkanCommandException.cs" />
+    <Compile Include="VulkanResultException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
