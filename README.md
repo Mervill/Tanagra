@@ -40,15 +40,6 @@ Device vulkanDevice = physicalDevices[0].CreateDevice(deviceCreateInfo);
 
 The managed layer is reccomended in almost all cases. If you'd rather work with the interop layer directly (if you want total control over memory, for example) you can do that as well. You will need to compile with `unsafe` in order to work with memory directly.
 
-## Project Directory
-
-```
-./Vulkan/            - Generated Vulkan API as a standalone DLL
-./Tanagra.Generator/ - Generates the Vulkan API from vk.xml
-./Tanagra/           - Extended managed support for Vulkan
-./TanagraExample/    - Example code
-```
-
 ```C#
 using Vulkan;           // Core Vulkan classes
 using Vulkan.Unmanaged; // Unmanaged structs and callbacks
@@ -77,6 +68,15 @@ fixed(IntPtr* resultPtr = &arrayPhysicalDevice[0])
 	vkEnumeratePhysicalDevices(instancePtr, &listLength, resultPtr);
 
 vkCreateDevice(...);
+```
+
+## Project Directory
+
+```
+./Vulkan/            - Generated Vulkan API as a standalone DLL
+./Tanagra.Generator/ - Generates the Vulkan API from vk.xml
+./Tanagra/           - Extended managed support for Vulkan
+./TanagraExample/    - Example code
 ```
 
 ## License
