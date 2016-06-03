@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Windows.Forms;
+
+using SharpDX.Windows;
 
 using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
@@ -10,18 +14,12 @@ using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
 using Buffer = Vulkan.Buffer;
 using Image = Vulkan.Image;
+using ImageLayout = Vulkan.ImageLayout;
 
 namespace TanagraExample
 {
-    public class ExampleRenderToDisk
+    public class ExampleRenderToWindow
     {
-        // NOTE: This example does NOT render to the screen! Instead it renders to an image and then
-        //       writes that image to a file. This allows us to focus on the core Vulkan API. Presenting
-        //       images to the screen in covered in another example.
-
-        // Note: Some of the comments in this example are taken right from the Vulkan spec:
-        // https://www.khronos.org/registry/vulkan/specs/1.0/xhtml/vkspec.html
-        
         class VertexData
         {
             public Buffer Buffer;
@@ -39,16 +37,25 @@ namespace TanagraExample
             public ImageView View;
         }
 
+        class SwapchainData
+        {
+            public SwapchainKHR Swapchain;
+            public List<ImageData> Images; 
+            public Format ImageFormat;
+            public PresentModeKHR PresentMode;
+        }
+
         const string OutputFilename = "./out.bmp";
         const Format ImageFormat = Format.R8g8b8a8Unorm;
 
         // Device is held as a class member because its used in
         // basically every operation after it's been created.
         Device device;
-        
+
+        DebugReportCallbackEXT debugCallback;
         PhysicalDeviceMemoryProperties physDeviceMem;
         
-        public ExampleRenderToDisk()
+        public ExampleRenderToWindow()
         {
             // The goal of this example is to:
             //
@@ -59,8 +66,10 @@ namespace TanagraExample
             // - Shutdown Vulkan
             //
             
-            uint imageWidth  = 800;
-            uint imageHeight = 600;
+            var window = new RenderForm(nameof(ExampleRenderToWindow));
+
+            uint imageWidth  = (uint)window.Width;  // default: 800
+            uint imageHeight = (uint)window.Height; // default: 600
 
             Instance instance;
             List<PhysicalDevice> physDevices;
@@ -69,23 +78,32 @@ namespace TanagraExample
             //Device device;
             Queue queue;
             CommandPool cmdPool;
-            
+
+            SurfaceKHR surface;
+            SwapchainData swapchainData;
+            List<Image> swapchainImages;
+
             instance      = CreateInstance();                      // Create a new Vulkan Instance
             physDevices   = EnumeratePhysicalDevices(instance);    // Discover the physical devices attached to the system
             physDevice    = physDevices[0];                        // Select the first physical device
             queueFamilies = physDevice.GetQueueFamilyProperties(); // Get properties about the queues on the physical device
             physDeviceMem = physDevice.GetMemoryProperties();      // Get properties about the memory on the physical device
+
+            surface       = CreateWin32Surface(instance, window.Handle);
+
             device        = CreateDevice(physDevice);              // Create a device from the physical device
             queue         = GetQueue(physDevice, 0);               // Get an execution queue from the physical device
             cmdPool       = CreateCommandPool(0);                  // Create a command pool from which command buffers are created
-            
+
+            swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
+            swapchainImages      = device.GetSwapchainImagesKHR(swapchainData.Swapchain);
+            swapchainData.Images = InitializeSwapchainImages(queue, cmdPool, swapchainImages, swapchainData.ImageFormat);
+
             // Now that we have a command pool, we can begin creating command buffers 
             // and recording commands. You will find however that you can't do much of 
             // anything without first initializing a few more dependencies.
-
+            
             VertexData vertexData;
-            ImageData imageData;
-            Buffer imageBuffer;
             RenderPass renderPass;
             PipelineLayout pipelineLayout;
             List<Pipeline> pipelines;
@@ -96,31 +114,6 @@ namespace TanagraExample
             // render, so lets create that data now.
             vertexData = CreateVertexData();
             
-            // Since we didn't enable any extensions, we don't have access to 
-            // any display surfaces to render too. Instead we'll create an image
-            // in memory and have Vulkan use it as the render target
-            imageData        = new ImageData();
-            imageData.Width  = imageWidth;
-            imageData.Height = imageHeight;
-            imageData.Image  = CreateImage(imageWidth, imageHeight);
-            imageData.Memory = BindImage(imageData.Image);
-            imageData.View   = CreateImageView(imageData.Image);
-
-            // Allocate device memory to the image so that it can be read from and written to
-            var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
-            imageBuffer = CreateBuffer(memRequirements.Size, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst);
-            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
-            var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
-            var bufferMem = BindBuffer(imageBuffer, memAlloc);
-
-            // Initialize the image's memory by writing to it.
-            // This step can actually be excluded since we're just going to overwrite this data with the
-            // result of the render operation. It's done here for completeness/correctness
-            var data = new byte[memRequirements.Size];
-            for(ulong x = 0; x < memRequirements.Size; x++) data[x] = 0x00;
-            CopyArrayToBuffer(bufferMem, memRequirements.Size, data);
-            CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
-
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
             var shaderStageCreateInfos = new[]
             {
@@ -172,10 +165,13 @@ namespace TanagraExample
             // `Instance` object. Creating a `Instance` object initializes the Vulkan library 
             // and allows the application to pass information about itself to the implementation.
 
-            // For this example, we want Vulkan to act in a 'default' fashion, so we don't
-            // pass and ApplicationInfo object and we don't request any layers or extensions
-            
-            var instanceCreateInfo = new InstanceCreateInfo(null, null);
+            var enabledExtensions = new[]
+            {
+                VulkanConstant.KhrSurfaceExtensionName,
+                VulkanConstant.KhrWin32SurfaceExtensionName,
+            };
+
+            var instanceCreateInfo = new InstanceCreateInfo(null, enabledExtensions);
             var instance = Vk.CreateInstance(instanceCreateInfo);
             return instance;
         }
@@ -267,6 +263,109 @@ namespace TanagraExample
         }
 
         #endregion
+
+        SurfaceKHR CreateWin32Surface(Instance instance, IntPtr formHandle)
+        {
+            var surfaceCreateInfo = new Win32SurfaceCreateInfoKHR(Process.GetCurrentProcess().Handle, formHandle);
+            return instance.CreateWin32SurfaceKHR(surfaceCreateInfo);
+        }
+
+        SwapchainData CreateSwapchain(PhysicalDevice physicalDevice, SurfaceKHR surface, uint windowWidth, uint windowHeight)
+        {
+            var data = new SwapchainData();
+
+            // surface format
+            var surfaceFormats = physicalDevice.GetSurfaceFormatsKHR(surface);
+            var surfaceFormat = surfaceFormats[0].Format;
+
+            var surfaceCapabilities = physicalDevice.GetSurfaceCapabilitiesKHR(surface);
+
+            // Buffer count
+            var desiredImageCount = Math.Min(surfaceCapabilities.MinImageCount + 1, surfaceCapabilities.MaxImageCount);
+            
+            // Transform
+            SurfaceTransformFlagsKHR preTransform;
+            if((surfaceCapabilities.SupportedTransforms & SurfaceTransformFlagsKHR.Identity) != 0)
+            {
+                preTransform = SurfaceTransformFlagsKHR.Identity;
+            }
+            else
+            {
+                preTransform = surfaceCapabilities.CurrentTransform;
+            }
+
+            // Present mode
+            var presentModes = physicalDevice.GetSurfacePresentModesKHR(surface);
+
+            var swapChainPresentMode = PresentModeKHR.Fifo;
+            if(presentModes.Contains(PresentModeKHR.Mailbox))
+                swapChainPresentMode = PresentModeKHR.Mailbox;
+            else if(presentModes.Contains(PresentModeKHR.Immediate))
+                swapChainPresentMode = PresentModeKHR.Immediate;
+            
+            var imageExtent = new Extent2D(windowWidth, windowHeight);
+            var swapchainCreateInfo = new SwapchainCreateInfoKHR
+            {
+                Surface            = surface,
+                MinImageCount      = desiredImageCount,
+                
+                ImageFormat        = surfaceFormat,
+                ImageExtent        = imageExtent,
+                ImageArrayLayers   = 1,
+                ImageUsage         = ImageUsageFlags.ColorAttachment,
+                ImageSharingMode   = SharingMode.Exclusive,
+                //ImageColorSpace    = ColorSpaceKHR.SrgbNonlinear,
+
+                QueueFamilyIndices = null,
+                PreTransform       = preTransform,
+                CompositeAlpha     = CompositeAlphaFlagsKHR.Opaque,
+                PresentMode        = swapChainPresentMode,
+                Clipped            = true,
+            };
+            data.Swapchain = device.CreateSwapchainKHR(swapchainCreateInfo);
+            data.ImageFormat = surfaceFormat;
+
+            return data;
+        }
+
+        List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, List<Image> images, Format imageFormat)
+        {
+            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            var cmdBuffer  = cmdBuffers[0];
+
+            var beginInfo = new CommandBufferBeginInfo();
+            cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
+
+            //foreach(var img in images)
+                //CmdPipelineBarrier(cmdBuffer, img, ImageLayout.Undefined, ImageLayout.PresentSrcKHR, AccessFlags.None, AccessFlags.None);
+
+            foreach(var img in images)
+                CmdPipelineBarrier(cmdBuffer, img, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
+
+            cmdBuffer.End();
+
+            var submitInfo = new SubmitInfo(null, null, new[] { cmdBuffer }, null);
+            queue.Submit(new List<SubmitInfo> { submitInfo });
+            queue.WaitIdle();
+
+            device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
+
+            //
+
+            var imageDatas = new List<ImageData>();
+
+            foreach(var img in images)
+            {
+                var imgData = new ImageData();
+                imgData.Image = img;
+                var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
+                var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
+                imgData.View = device.CreateImageView(createInfo);
+                imageDatas.Add(imgData);
+            }
+
+            return imageDatas;
+        }
 
         #region Dependencies
 
