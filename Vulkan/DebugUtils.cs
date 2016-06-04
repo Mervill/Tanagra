@@ -5,7 +5,7 @@ using System.Text;
 namespace Vulkan
 {
     using Managed;
-
+    
     public static class DebugUtils
     {
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -17,6 +17,9 @@ namespace Vulkan
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         internal unsafe delegate Result DestroyDebugReportCallbackDelegate(IntPtr instance, UInt64 callback, Unmanaged.AllocationCallbacks* allocator);
 
+        static DebugReportCallbackDelegate debugDelegate;
+        static IntPtr callbackHolder;
+
         public static unsafe DebugReportCallbackEXT CreateDebugReportCallback(Instance instance, DebugReportCallbackDelegate callback)
         {
             var name = "vkCreateDebugReportCallbackEXT";
@@ -25,11 +28,17 @@ namespace Vulkan
             if(procAddr == IntPtr.Zero)
                 throw new NullReferenceException($"Didn't find InstanceProcAddr {nameBytes}");
 
+            debugDelegate = callback;
+            GC.KeepAlive(debugDelegate);
+
+            callbackHolder = Marshal.GetFunctionPointerForDelegate(callback);
+            GC.KeepAlive(callbackHolder);
+
             var createDelegate = (CreateDebugReportCallbackEXT_Delegate)Marshal.GetDelegateForFunctionPointer(procAddr, typeof(CreateDebugReportCallbackEXT_Delegate));
             var createInfo = new DebugReportCallbackCreateInfoEXT
             {
                 Flags    = (DebugReportFlagsEXT)0x1F,//DebugReportFlagsEXT.Error | DebugReportFlagsEXT.Warning | DebugReportFlagsEXT.PerformanceWarning,
-                Callback = Marshal.GetFunctionPointerForDelegate(callback),
+                Callback = callbackHolder,
             };
 
             var debugReportCallbackEXT = new DebugReportCallbackEXT();

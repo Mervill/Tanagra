@@ -9,7 +9,8 @@ namespace TanagraExample
             //run();
             //ExampleBaseTest();
 
-            var renderToDisk = new ExampleRenderToWindow();
+            run();
+            //var renderToDisk = new ExampleRenderToWindow();
 
             //var opt = new Tanagra.InstanceMgr.InitializeOptions();
             //opt.ForceUseDevice(x);
