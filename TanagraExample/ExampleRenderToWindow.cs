@@ -120,12 +120,12 @@ namespace TanagraExample
                 GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "vert.spv"),
                 GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "frag.spv"),
             };*/
-
+            
             // Create the render dependencies
             swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
             swapchainImages      = device.GetSwapchainImagesKHR(swapchainData.Swapchain);
             swapchainData.Images = InitializeSwapchainImages(queue, cmdPool, swapchainImages, swapchainData.ImageFormat);
-
+            
             renderPass     = CreateRenderPass(swapchainData.ImageFormat);
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, null, vertexData);
@@ -368,6 +368,8 @@ namespace TanagraExample
             {
                 var imgData = new ImageData();
                 imgData.Image = img;
+                imgData.Width = 800;
+                imgData.Height = 600;
                 var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
                 var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
                 imgData.View = device.CreateImageView(createInfo);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
@@ -22,7 +23,9 @@ namespace Vulkan.Managed
 
 #if DEBUG
         static readonly Dictionary<IntPtr, Int64> PointerMemory;
-        public static int AllocCount => PointerMemory.Count;
+
+        public static Int32 AllocCount => PointerMemory.Count;
+        public static Int64 TotalBytes => PointerMemory.Values.Sum();
 
         static MemUtil()
 	    {
@@ -55,7 +58,34 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(ptr);
         }
 
-		internal static void MarshalFixedSizeString(byte* dst, string src, int size)
+	    internal static IntPtr Clone(IntPtr src, Type type)
+	    {
+            var size = Marshal.SizeOf(type);
+            var ptr = Marshal.AllocHGlobal(size);
+            Copy(src, ptr, size);
+#if DEBUG
+            //Console.WriteLine($"[SALLOC] Allocated {size} bytes for {type.Name} ({AllocCount})");
+            GC.AddMemoryPressure(size);
+            PointerMemory.Add(ptr, size);
+#endif
+            return ptr;
+        }
+
+        internal static void Copy(IntPtr src, IntPtr dest, int size)
+        {
+            /*fixed (float* sourcePtr = &source[0, 0])
+                System.Buffer.MemoryCopy(sourcePtr, (void*)destination, destinationSizeInBytes, sourceBytesToCopy);*/
+            var data = new byte[size];
+            Marshal.Copy(src, data, 0, size);
+            Marshal.Copy(data, 0, dest, size);
+        }
+
+	    internal static void Copy(IntPtr src, IntPtr dest, Type type)
+	    {
+            Copy(src, dest, Marshal.SizeOf(type));
+	    }
+
+        internal static void MarshalFixedSizeString(byte* dst, string src, int size)
 		{
 			var bytes = System.Text.Encoding.UTF8.GetBytes(src);
 			size = Math.Min(size - 1, bytes.Length);

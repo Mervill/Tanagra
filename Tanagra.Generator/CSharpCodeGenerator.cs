@@ -836,7 +836,7 @@ namespace Tanagra.Generator
                 var structType = vkStruct.Name;
                 if (IsManagedStruct(vkStruct))
                     structType = $"{UnmanagedNS}." + structType;
-
+                // todo: memory leak!
                 var getValueCast = IsManagedStruct(vkStruct) ? $"new {vkMember.Type} {{ {NativePointer} = &ptr[x] }}" : "ptr[x]";
                 var get = $"valueArray[x] = {getValueCast};";
 
