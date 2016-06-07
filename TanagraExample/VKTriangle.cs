@@ -7,7 +7,6 @@ using System.IO;
 
 using SharpDX.Windows;
 
-using Tanagra;
 using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
@@ -30,13 +29,13 @@ namespace TanagraExample
         private Device device;
         private Queue queue;
         private CommandPool commandPool;
-        private List<CommandBuffer> commandBuffer;
+        private CommandBuffer[] commandBuffer;
         private CommandBuffer setupCommanBuffer;
 
         private SwapchainKHR swapchain;
 
         private Format backBufferFormat;
-        private List<Image> backBuffers;
+        private Image[] backBuffers;
         private List<ImageView> backBufferViews;
         private uint currentBackBufferIndex;
 
@@ -138,7 +137,7 @@ namespace TanagraExample
             WriteLine($"[ OK ] {instance}");
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
-            WriteLine($"[INFO] Physical Devices: {physicalDevices.Count}");
+            WriteLine($"[INFO] Physical Devices: {physicalDevices.Length}");
 
             physicalDevice = physicalDevices[0];
             WriteLine($"[ OK ] {physicalDevice}");
@@ -215,7 +214,7 @@ namespace TanagraExample
             var commandBufferAllocationInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, 1);
             commandBuffer = device.AllocateCommandBuffers(commandBufferAllocationInfo);
             commandBufferAllocationInfo.Dispose();
-            WriteLine("[INFO] commandBuffers: " + commandBuffer.Count);
+            WriteLine("[INFO] commandBuffers: " + commandBuffer.Length);
             WriteLine($"[ OK ] {commandBuffer[0]}");
         }
 
@@ -223,7 +222,7 @@ namespace TanagraExample
         {
             // surface format
             var surfaceFormats = physicalDevice.GetSurfaceFormatsKHR(surface);
-            if (surfaceFormats.Count == 1 && surfaceFormats[0].Format == Format.Undefined)
+            if (surfaceFormats.Length == 1 && surfaceFormats[0].Format == Format.Undefined)
             {
                 backBufferFormat = Format.B8g8r8a8Unorm;
                 WriteLine($"using default backBufferFormat {backBufferFormat}");
@@ -336,7 +335,7 @@ namespace TanagraExample
             var sourceStages = PipelineStageFlags.TopOfPipe;
             var destinationStages = PipelineStageFlags.TopOfPipe;
 
-            setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { imageMemoryBarrier });
+            setupCommanBuffer.CmdPipelineBarrier(sourceStages, destinationStages, DependencyFlags.None, null, null, new ImageMemoryBarrier[] { imageMemoryBarrier });
             WriteLine("[ OK ] setupCommanBuffer.CmdPipelineBarrier");
 
             imageMemoryBarrier.Dispose();
@@ -354,13 +353,13 @@ namespace TanagraExample
 
             WriteLine($"[ OK ] {setupCommanBuffer} / {submitInfo.CommandBuffers[0]}");
 
-            queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            queue.Submit(new SubmitInfo[] { submitInfo }, null);
             WriteLine("[ OK ] queue.Submit");
 
             queue.WaitIdle();
             WriteLine("[ OK ] queue.WaitIdle");
 
-            device.FreeCommandBuffers(commandPool, new List<CommandBuffer> { setupCommanBuffer });
+            device.FreeCommandBuffers(commandPool, new CommandBuffer[] { setupCommanBuffer });
             WriteLine("[ OK ] device.DisposeCommandBuffers");
 
             setupCommanBuffer = null;
@@ -524,7 +523,7 @@ namespace TanagraExample
                 ColorBlendState = blendState,
                 DepthStencilState = depthStencilState,
             };
-            var pipelines = device.CreateGraphicsPipelines(null, new List<GraphicsPipelineCreateInfo> { createInfo });
+            var pipelines = device.CreateGraphicsPipelines(null, new GraphicsPipelineCreateInfo[] { createInfo });
             pipeline = pipelines[0];
             WriteLine($"[ OK ] {pipeline}");
 
@@ -568,14 +567,14 @@ namespace TanagraExample
 
         private void CreateFramebuffers()
         {
-            framebuffers = new Framebuffer[backBuffers.Count];
-            for (int i = 0; i < backBuffers.Count; i++)
+            framebuffers = new Framebuffer[backBuffers.Length];
+            for (int i = 0; i < backBuffers.Length; i++)
             {
                 var attachment = backBufferViews[i];
                 var createInfo = new FramebufferCreateInfo(renderPass, new[] { attachment }, (uint)form.ClientSize.Width, (uint)form.ClientSize.Height, 1);
                 framebuffers[i] = device.CreateFramebuffer(createInfo);
                 createInfo.Dispose();
-                WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Count}");
+                WriteLine($"[ OK ] {framebuffers[i]} {i}/{backBuffers.Length}");
             }
         }
 
@@ -607,7 +606,7 @@ namespace TanagraExample
             var drawCommandBuffer = commandBuffer[0];
             var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
             var submitInfo = new SubmitInfo(new[] { presentCompleteSemaphore }, new[] { pipelineStageFlags }, new[] { drawCommandBuffer }, null);
-            queue.Submit(new List<SubmitInfo> { submitInfo }, null);
+            queue.Submit(new SubmitInfo[] { submitInfo }, null);
             submitInfo.Dispose();
 
             // Present
@@ -636,11 +635,11 @@ namespace TanagraExample
                 Image            = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
-            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, new ImageMemoryBarrier[] { memoryBarrier });
             memoryBarrier.Dispose();
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            cmdBuffer.CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new List<ImageSubresourceRange> { clearRange }); // todo...
+            cmdBuffer.CmdClearColorImage(backBuffers[(int)currentBackBufferIndex], ImageLayout.TransferDstOptimal, new ClearColorValue(), new ImageSubresourceRange[] { clearRange }); // todo...
             
             // Begin render pass
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
@@ -653,16 +652,16 @@ namespace TanagraExample
 
             // Set viewport 
             var viewport = new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new List<Viewport> { viewport });
+            cmdBuffer.CmdSetViewport(0, new Viewport[] { viewport });
 
             // Set scissor
             var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D((uint)form.ClientSize.Width, (uint)form.ClientSize.Height));
-            cmdBuffer.CmdSetScissor(0, new List<Rect2D> { scissor });
+            cmdBuffer.CmdSetScissor(0, new Rect2D[] { scissor });
 
             // Bind vertex buffer
             var vertexBufferCopy = vertexBuffer; // todo!
             ulong offset = 0;
-            cmdBuffer.CmdBindVertexBuffers(0, new List<Buffer> { vertexBufferCopy }, new List<DeviceSize> { offset });
+            cmdBuffer.CmdBindVertexBuffers(0, new Buffer[] { vertexBufferCopy }, new DeviceSize[] { offset });
 
             // Draw vertices
             cmdBuffer.CmdDraw(3, 1, 0, 0);
@@ -680,7 +679,7 @@ namespace TanagraExample
                 Image            = backBuffers[(int)currentBackBufferIndex],
                 SubresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1),
             };
-            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new List<ImageMemoryBarrier> { memoryBarrier });
+            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.AllCommands, PipelineStageFlags.BottomOfPipe, DependencyFlags.None, null, null, new ImageMemoryBarrier[] { memoryBarrier });
             memoryBarrier.Dispose();
         }
 
@@ -695,7 +694,7 @@ namespace TanagraExample
             device.DestroyRenderPass(renderPass);
             device.DestroyPipeline(pipeline);
             device.DestroyPipelineLayout(pipelineLayout);
-            device.FreeCommandBuffers(commandPool, commandBuffer);
+            device.FreeCommandBuffers(commandPool, commandBuffer.ToArray());
             device.DestroyCommandPool(commandPool);
             foreach(var backBufferView in backBufferViews)
                 device.DestroyImageView(backBufferView);

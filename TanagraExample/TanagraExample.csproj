@@ -92,10 +92,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tanagra\Tanagra.csproj">
-      <Project>{907b0145-3c85-4517-ae82-cebad3773f4d}</Project>
-      <Name>Tanagra</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vulkan\Vulkan.csproj">
       <Project>{852159e6-f125-4178-a2e9-df5bce5fb67a}</Project>
       <Name>Vulkan</Name>

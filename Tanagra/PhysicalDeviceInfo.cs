@@ -22,7 +22,7 @@ namespace Tanagra
         PhysicalDeviceProperties Properties;
         //PhysicalDeviceLimits physicalDeviceLimits;
         //PhysicalDeviceSparseProperties SparseProperties;
-        List<QueueFamilyProperties> QueueFamilyProperties;
+        QueueFamilyProperties[] QueueFamilyProperties;
         PhysicalDeviceMemoryProperties MemoryProperties;
         public PhysicalDeviceFeatures Features { get; private set; }
 

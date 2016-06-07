@@ -1,7 +1,6 @@
 todo: realloc is broken
 todo: unions
 todo: merge flag enums
-todo: port member comments to constructor
 todo: CodeSize preventing x64 from working
 todo: Fix edge cases in VulkanConstant
 todo: Managed classes still leak memory in some cases

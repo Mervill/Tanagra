@@ -69,6 +69,7 @@ namespace Tanagra.Generator
         const string ObjectModelNS           = "ObjectModel";
         const string LineEnding              = "\n";
 
+        bool UseLists;
         bool CombineFiles;
 
         public CSharpCodeGenerator()
@@ -395,17 +396,27 @@ namespace Tanagra.Generator
                 if(mandatoryMembers.Any())
                 {
                     var mandatoryMemberStrings = new List<string>();
+                    var memberComments = new Dictionary<string, string>();
                     foreach (var member in mandatoryMembers)
                     {
                         if (member.IsFixedSize)
                         {
                             mandatoryMemberStrings.Add($"{member.Name}Info {member.Name}");
+                            if(!string.IsNullOrEmpty(member.XMLComment))
+                                memberComments.Add(member.Name, member.XMLComment);
                             continue;
                         }
                         mandatoryMemberStrings.Add($"{member.Type} {member.Name}");
+                        if(!string.IsNullOrEmpty(member.XMLComment))
+                            memberComments.Add(member.Name, member.XMLComment);
                     }
 
                     WriteLine("");
+                    //WriteLine("/// <summary>");
+                    //WriteLine("///");
+                    //WriteLine("/// </summary>");
+                    foreach(var kvp in memberComments)
+                        WriteLine($"/// <param name=\"{kvp.Key}\">{kvp.Value}</param>");
                     WriteLine($"public {vkStruct.Name}({string.Join(", ", mandatoryMemberStrings)})");
                     WriteBeginBlock();
 
@@ -589,6 +600,7 @@ namespace Tanagra.Generator
             if(!vkStruct.ReturnedOnly)
             {
                 var cotorParams = new Dictionary<string, string>();
+                var paramComments = new Dictionary<string, string>();
                 foreach (var vkMember in vkStruct.Members.Where(x => !hiddenMembers.Contains(x.Name) && x.Optional != "true"))
                 {                    
                     var memberTypeName = vkMember.Type.Name;
@@ -598,6 +610,8 @@ namespace Tanagra.Generator
                     {
                         memberTypeName = vkMember.Len.Length > 1 ? "String[]" : "String";
                         cotorParams.Add(memberName, memberTypeName);
+                        if(!string.IsNullOrEmpty(vkMember.XMLComment))
+                            paramComments.Add(memberName, vkMember.XMLComment);
                         continue;
                     }
 
@@ -608,6 +622,8 @@ namespace Tanagra.Generator
                             prefix = $"{UnmanagedNS}.{vkStruct.Name}.";
                         memberTypeName = $"{prefix}{memberName}Info";
                         cotorParams.Add(memberName, memberTypeName);
+                        if(!string.IsNullOrEmpty(vkMember.XMLComment))
+                            paramComments.Add(memberName, vkMember.XMLComment);
                         continue;
                     }
 
@@ -615,16 +631,25 @@ namespace Tanagra.Generator
                     {
                         memberTypeName += "[]";
                         cotorParams.Add(memberName, memberTypeName);
+                        if(!string.IsNullOrEmpty(vkMember.XMLComment))
+                            paramComments.Add(memberName, vkMember.XMLComment);
                         continue;
                     }
                     
                     cotorParams.Add(memberName, memberTypeName);
+                    if(!string.IsNullOrEmpty(vkMember.XMLComment))
+                        paramComments.Add(memberName, vkMember.XMLComment);
                 }
 
                 if (cotorParams.Count() != 0)
                 {
                     var mandatoryMemberString = string.Join(", ", cotorParams.Select(x => $"{x.Value} {x.Key}"));
                     WriteLine("");
+                    //WriteLine("/// <summary>");
+                    //WriteLine("///");
+                    //WriteLine("/// </summary>");
+                    foreach(var kvp in paramComments)
+                        WriteLine($"/// <param name=\"{kvp.Key}\">{kvp.Value}</param>");
                     WriteLine($"public {vkStruct.Name}({mandatoryMemberString}) : this()");
                     WriteBeginBlock();
                     foreach (var kvp in cotorParams)
@@ -1010,7 +1035,7 @@ namespace Tanagra.Generator
                     var paramType = vkParam.Type.Name;
                     
                     if(commandInfo.ParamArrays.Contains(vkParam))
-                        paramType = $"List<{paramType}>";
+                        paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
                     
                     Write($"{paramType} {paramName}");
 
@@ -1084,7 +1109,8 @@ namespace Tanagra.Generator
 
                         if(!existingCounts.Contains(countName))
                         {
-                            WriteLine($"var {countName} = ({paramName} != null) ? (UInt32){paramName}.Count : 0;");
+                            var count = (UseLists) ? "Count" : "Length";
+                            WriteLine($"var {countName} = ({paramName} != null) ? (UInt32){paramName}.{count} : 0;");
                             existingCounts.Add(countName);
                         }
 
@@ -1210,7 +1236,14 @@ namespace Tanagra.Generator
                         const string returnListName = "list";
 
                         WriteLine("");
-                        WriteLine($"var {returnListName} = new {commandInfo.ReturnType}();");
+                        if(UseLists)
+                        {
+                            WriteLine($"var {returnListName} = new {commandInfo.ReturnType}();");
+                        }
+                        else
+                        {
+                            WriteLine($"var {returnListName} = new {commandInfo.ReturnParam.Type}[listLength];");
+                        }
                         WriteLine($"for(var x = 0; x < {returnListLength}; x++)");
                         WriteBeginBlock();
 
@@ -1223,7 +1256,14 @@ namespace Tanagra.Generator
 
                         if(isInteropType || commandInfo.ReturnParam.Type is VkEnum)
                         {
-                            WriteLine($"{returnListName}.Add(array{commandInfo.ReturnParam.Type}[x]);");
+                            if(UseLists)
+                            {
+                                WriteLine($"{returnListName}.Add(array{commandInfo.ReturnParam.Type}[x]);");
+                            }
+                            else
+                            {
+                                WriteLine($"{returnListName}[x] = array{commandInfo.ReturnParam.Type}[x];");
+                            }
                         }
                         else
                         {
@@ -1241,7 +1281,15 @@ namespace Tanagra.Generator
                                 _tabs--;
                             }
 
-                            WriteLine($"{returnListName}.Add(item);");
+                            if(UseLists)
+                            {
+                                WriteLine($"{returnListName}.Add(item);");
+                            }
+                            else
+                            {
+                                WriteLine($"{returnListName}[x] = item;");
+                            }
+                            
                         }
                         WriteEndBlock();
                         WriteLine("");
@@ -1417,7 +1465,7 @@ namespace Tanagra.Generator
                             Write($"this ");
 
                         if (commandInfo.ParamArrays.Contains(vkParam))
-                            paramType = $"List<{paramType}>";
+                            paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
                         
                         Write($"{paramType} {paramName}");
 
@@ -1494,7 +1542,7 @@ namespace Tanagra.Generator
                     {
                         commandInfo.ReturnsList = true;
                         commandInfo.ReturnParam = commandInfo.LastParam;
-                        commandInfo.ReturnType = $"List<{commandInfo.ReturnParam.Type.Name}>";
+                        commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
                         commandInfo.InternalParams.Add(commandInfo.ReturnParam);
                         commandInfo.ReturnListCountParam = countParam;
                         commandInfo.InternalParams.Add(commandInfo.ReturnListCountParam);
@@ -1515,7 +1563,7 @@ namespace Tanagra.Generator
                         {
                             commandInfo.ReturnsList = true;
                             commandInfo.ReturnParam = commandInfo.LastParam;
-                            commandInfo.ReturnType = $"List<{commandInfo.ReturnParam.Type.Name}>";
+                            commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
                             commandInfo.ReturnListCountParam = countParam;
                             commandInfo.ReturnListCountMember = countMember;
                             commandInfo.ReturnListHasKnownLength = true;

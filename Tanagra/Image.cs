@@ -11,6 +11,7 @@ namespace Tanagra
 {
     public class Image
     {
+        public Device Parent { get; private set; }
         public Vulkan.Image Handle { get; private set; }
         ImageCreateInfo CreateInfo;
 
@@ -26,6 +27,10 @@ namespace Tanagra
         public SharingMode      SharingMode        => CreateInfo.SharingMode;
         public UInt32[]         QueueFamilyIndices => CreateInfo.QueueFamilyIndices;
         public ImageLayout      InitialLayout      => CreateInfo.InitialLayout;
+
+        public uint Width  => Extent.Width;
+        public uint Height => Extent.Height;
+        public uint Depth  => Extent.Depth;
 
         //public ImageLayout Layout { get; internal set; }
         //public AccessFlags AccessFlags { get; internal set; }
@@ -43,4 +48,26 @@ namespace Tanagra
             => new Image(Vk.CreateImage(device, createInfo, allocator), createInfo);
 
     }
+
+    public class SwapchainKHR
+    {
+        Device Device;
+        public Vulkan.SwapchainKHR Handle { get; private set; }
+        SwapchainCreateInfoKHR CreateInfo;
+
+        public void InitializeImages(Queue queue, CommandPool cmdPool)
+        {
+            List<Image> imageList = new List<Image>();
+            var images = Vk.GetSwapchainImagesKHR(Device, Handle);
+            foreach(var img in images)
+            {
+                var extent = new Extent3D(CreateInfo.ImageExtent.Width, CreateInfo.ImageExtent.Height, 1);
+                var imgCreateInfo = new ImageCreateInfo(ImageType.ImageType2d, CreateInfo.ImageFormat, extent, CreateInfo.MinImageCount, CreateInfo.ImageArrayLayers, SampleCountFlags.None, ImageTiling.Optimal, ImageUsageFlags.None, CreateInfo.ImageSharingMode, CreateInfo.QueueFamilyIndices, ImageLayout.Undefined);
+                imageList.Add(new Image(img, imgCreateInfo));
+            }
+
+
+        }
+    }
+
 }

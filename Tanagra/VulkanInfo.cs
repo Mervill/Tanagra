@@ -45,7 +45,7 @@ namespace Tanagra
             _tabs = 0;
             WriteLine("");
             var queueFamilyProperties = physicalDevice.GetQueueFamilyProperties();
-            for (int x = 0; x < queueFamilyProperties.Count; x++)
+            for (int x = 0; x < queueFamilyProperties.Length; x++)
             {
                 WriteLine($"QueueFamilyProperties[{x}]:");
                 WriteLine("==========================");

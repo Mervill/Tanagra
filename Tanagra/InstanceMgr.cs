@@ -123,11 +123,11 @@ namespace Tanagra
             return instance;
         }
 
-        static List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
+        static PhysicalDevice[] EnumeratePhysicalDevices(Instance instance)
         {
             var physicalDevices = instance.EnumeratePhysicalDevices();
 
-            if(physicalDevices.Count == 0)
+            if(physicalDevices.Length == 0)
                 throw new InvalidOperationException("Didn't find any physical devices!");
 
             return physicalDevices;

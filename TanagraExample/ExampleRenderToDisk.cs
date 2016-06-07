@@ -63,9 +63,9 @@ namespace TanagraExample
             uint imageHeight = 600;
 
             Instance instance;
-            List<PhysicalDevice> physDevices;
+            PhysicalDevice[] physDevices;
             PhysicalDevice physDevice;
-            List<QueueFamilyProperties> queueFamilies;
+            QueueFamilyProperties[] queueFamilies;
             //Device device;
             Queue queue;
             CommandPool cmdPool;
@@ -75,7 +75,7 @@ namespace TanagraExample
             physDevice    = physDevices[0];                        // Select the first physical device
             queueFamilies = physDevice.GetQueueFamilyProperties(); // Get properties about the queues on the physical device
             physDeviceMem = physDevice.GetMemoryProperties();      // Get properties about the memory on the physical device
-            device        = CreateDevice(physDevice);              // Create a device from the physical device
+            device        = CreateDevice(physDevice, 0);           // Create a device from the physical device
             queue         = GetQueue(physDevice, 0);               // Get an execution queue from the physical device
             cmdPool       = CreateCommandPool(0);                  // Create a command pool from which command buffers are created
             
@@ -88,7 +88,7 @@ namespace TanagraExample
             Buffer imageBuffer;
             RenderPass renderPass;
             PipelineLayout pipelineLayout;
-            List<Pipeline> pipelines;
+            Pipeline[] pipelines;
             Pipeline pipeline;
             Framebuffer framebuffer;
             
@@ -129,7 +129,7 @@ namespace TanagraExample
             };
 
             // Create the render dependencies
-            renderPass     = CreateRenderPass();
+            renderPass     = CreateRenderPass(ImageFormat);
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderStageCreateInfos, vertexData);
             pipeline       = pipelines[0];
@@ -180,7 +180,7 @@ namespace TanagraExample
             return instance;
         }
 
-        List<PhysicalDevice> EnumeratePhysicalDevices(Instance instance)
+        PhysicalDevice[] EnumeratePhysicalDevices(Instance instance)
         {
             // Once Vulkan is initialized, devices and queues are the primary objects used to interact
             // with a Vulkan implementation.
@@ -192,13 +192,13 @@ namespace TanagraExample
 
             var physicalDevices = instance.EnumeratePhysicalDevices();
 
-            if(physicalDevices.Count == 0)
+            if(physicalDevices.Length == 0)
                 throw new InvalidOperationException("Didn't find any physical devices");
 
             return physicalDevices;
         }
 
-        Device CreateDevice(PhysicalDevice physicalDevice)
+        Device CreateDevice(PhysicalDevice physicalDevice, uint queueFamily)
         {
             // Device objects represent logical connections to physical devices. Each device exposes 
             // a number of queue families each having one or more queues. All queues in a queue family 
@@ -214,8 +214,8 @@ namespace TanagraExample
             var features = new PhysicalDeviceFeatures();
             features.ShaderClipDistance = true;
 
-            var queueCreateInfo = new DeviceQueueCreateInfo(0, new[] { 0f });
-            var deviceCreateInfo = new DeviceCreateInfo(new[] { queueCreateInfo }, null, null);
+            var queueCreateInfo = new DeviceQueueCreateInfo(queueFamily, new[]{ 0f });
+            var deviceCreateInfo = new DeviceCreateInfo(new[]{ queueCreateInfo }, null, null);
             deviceCreateInfo.EnabledFeatures = features;
             return physicalDevice.CreateDevice(deviceCreateInfo);
         }
@@ -244,7 +244,7 @@ namespace TanagraExample
             return device.CreateCommandPool(commandPoolCreateInfo);
         }
 
-        List<CommandBuffer> AllocateCommandBuffers(CommandPool commandPool, uint buffersToAllocate)
+        CommandBuffer[] AllocateCommandBuffers(CommandPool commandPool, uint buffersToAllocate)
         {
             // Command buffers are objects used to record commands which can be subsequently submitted 
             // to a device queue for execution. There are two levels of command buffers - primary 
@@ -260,7 +260,7 @@ namespace TanagraExample
             var commandBufferAllocationInfo = new CommandBufferAllocateInfo(commandPool, CommandBufferLevel.Primary, buffersToAllocate);
             var commandBuffers = device.AllocateCommandBuffers(commandBufferAllocationInfo);
 
-            if(commandBuffers.Count == 0)
+            if(commandBuffers.Length == 0)
                 throw new InvalidOperationException("Couldn't allocate any command buffers");
 
             return commandBuffers;
@@ -344,7 +344,7 @@ namespace TanagraExample
             return device.CreateImageView(createInfo);
         }
 
-        RenderPass CreateRenderPass()
+        RenderPass CreateRenderPass(Format imageFormat)
         {
             // A `RenderPass` represents a collection of attachments, subpasses, and dependencies 
             // between the subpasses, and describes how the attachments are used over the course of 
@@ -361,7 +361,7 @@ namespace TanagraExample
             {
                 new AttachmentDescription
                 {
-                    Format         = ImageFormat,
+                    Format         = imageFormat,
                     Samples        = SampleCountFlags.SampleCountFlags1,
                     StencilLoadOp  = AttachmentLoadOp.DontCare,
                     StencilStoreOp = AttachmentStoreOp.DontCare,
@@ -404,8 +404,7 @@ namespace TanagraExample
         PipelineShaderStageCreateInfo GetShaderStageCreateInfo(ShaderStageFlags stage, string filename, string entrypoint = "main\0")
         {
             var shaderBytes = File.ReadAllBytes(filename);
-            var shaderModule = CreateShaderModule(shaderBytes);
-            return new PipelineShaderStageCreateInfo(stage, shaderModule, entrypoint);
+            return new PipelineShaderStageCreateInfo(stage, CreateShaderModule(shaderBytes), entrypoint);
         }
 
         ShaderModule CreateShaderModule(byte[] shaderCode)
@@ -433,7 +432,7 @@ namespace TanagraExample
             return device.CreatePipelineLayout(createInfo);
         }
 
-        List<Pipeline> CreatePipelines(PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexData vertexData)
+        Pipeline[] CreatePipelines(PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexData vertexData)
         {
             // Some Vulkan commands specify geometric objects to be drawn or computational work to be 
             // performed, while others specify state controlling how objects are handled by the various 
@@ -473,7 +472,7 @@ namespace TanagraExample
                 }
             };
 
-            return device.CreateGraphicsPipelines(null, createInfos.ToList());
+            return device.CreateGraphicsPipelines(null, createInfos);
         }
         
         Framebuffer CreateFramebuffer(RenderPass renderPass, ImageData imageData)
@@ -481,7 +480,7 @@ namespace TanagraExample
             // Render passes operate in conjunction with framebuffers, which represent a collection 
             // of specific memory attachments that a render pass instance uses.
 
-            var attachments = new[] { imageData.View };
+            var attachments = new[]{ imageData.View };
             var createInfo = new FramebufferCreateInfo(renderPass, attachments, imageData.Width, imageData.Height, 1);
             return device.CreateFramebuffer(createInfo);
         }
@@ -491,7 +490,7 @@ namespace TanagraExample
             var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, null);
             return device.CreateBuffer(bufferCreateInfo);
         }
-        
+
         DeviceMemory BindBuffer(Buffer buffer, MemoryAllocateInfo allocInfo)
         {
             var bufferMem = device.AllocateMemory(allocInfo);
@@ -516,7 +515,7 @@ namespace TanagraExample
 
             // Set the viewport
             var viewport = new Viewport(0, 0, width, height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new List<Viewport> { viewport });
+            cmdBuffer.CmdSetViewport(0, new[]{ viewport });
             
             // Begin the render pass. Just as all commands must be issued between a Begin() 
             // and End() call, certain commands can only be called bewteen CmdBeginRenderPass()
@@ -544,12 +543,12 @@ namespace TanagraExample
 
             SubmitForExecution(queue, cmdBuffer);
 
-            device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
         }
         
         void DrawTriangle(CommandBuffer cmdBuffer, VertexData vertexData)
         {
-            cmdBuffer.CmdBindVertexBuffers(0, new List<Buffer> { vertexData.Buffer }, new List<DeviceSize> { 0 });
+            cmdBuffer.CmdBindVertexBuffers(0, new[]{ vertexData.Buffer }, new DeviceSize[] { 0 });
             cmdBuffer.CmdDraw(3, 1, 0, 0);
         }
 
@@ -557,13 +556,13 @@ namespace TanagraExample
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, width, height, subresource, new Offset3D(0, 0, 0), new Extent3D(width, height, 0));
-            cmdBuffer.CmdCopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, new List<BufferImageCopy> { imageCopy });
+            cmdBuffer.CmdCopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, new[]{ imageCopy });
         }
 
         void SubmitForExecution(Queue queue, CommandBuffer cmdBuffer)
         {
-            var submitInfo = new SubmitInfo(null, null, new[] { cmdBuffer }, null);
-            queue.Submit(new List<SubmitInfo> { submitInfo });
+            var submitInfo = new SubmitInfo(null, null, new[]{ cmdBuffer }, null);
+            queue.Submit(new[]{ submitInfo });
             submitInfo.Dispose();
             queue.WaitIdle(); // wait for execution to finish
         }
@@ -582,18 +581,18 @@ namespace TanagraExample
 
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
-            cmdBuffer.CmdCopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new List<BufferImageCopy> { imageCopy });
+            cmdBuffer.CmdCopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
 
             PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ColorAttachmentOptimal, AccessFlags.TransferWrite, AccessFlags.ColorAttachmentWrite);
 
             cmdBuffer.End();
 
-            var submitInfo = new SubmitInfo(null, null, new[] { cmdBuffer }, null);
-            queue.Submit(new List<SubmitInfo> { submitInfo });
+            var submitInfo = new SubmitInfo(null, null, new[]{ cmdBuffer }, null);
+            queue.Submit(new[]{ submitInfo });
             submitInfo.Dispose();
             queue.WaitIdle();
 
-            device.FreeCommandBuffers(cmdPool, new List<CommandBuffer> { cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
         }
 
         void CopyArrayToBuffer(DeviceMemory bufferMem, DeviceSize size, byte[] data)
@@ -637,7 +636,7 @@ namespace TanagraExample
             var imageMemoryBarrier = new ImageMemoryBarrier(oldLayout, newLayout, 0, 0, image, subresourceRange);
             imageMemoryBarrier.SrcAccessMask = srcMask;
             imageMemoryBarrier.DstAccessMask = dstMask;
-            var imageMemoryBarriers = new List<ImageMemoryBarrier> { imageMemoryBarrier };
+            var imageMemoryBarriers = new[]{ imageMemoryBarrier };
             cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, imageMemoryBarriers);
         }
         
