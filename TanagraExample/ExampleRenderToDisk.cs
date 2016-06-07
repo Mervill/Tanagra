@@ -399,8 +399,8 @@ namespace TanagraExample
             var createInfo = new RenderPassCreateInfo(attachmentDescriptions, subpassDescriptions, null);
             return device.CreateRenderPass(createInfo);
         }
-        
-        PipelineShaderStageCreateInfo GetShaderStageCreateInfo(ShaderStageFlags stage, string filename, string entrypoint = "main\0")
+
+        PipelineShaderStageCreateInfo GetShaderStageCreateInfo(ShaderStageFlags stage, string filename, string entrypoint = "main")
         {
             var shaderBytes = File.ReadAllBytes(filename);
             return new PipelineShaderStageCreateInfo(stage, CreateShaderModule(shaderBytes), entrypoint);
@@ -473,7 +473,7 @@ namespace TanagraExample
 
             return device.CreateGraphicsPipelines(null, createInfos);
         }
-        
+
         Framebuffer CreateFramebuffer(RenderPass renderPass, ImageData imageData)
         {
             // Render passes operate in conjunction with framebuffers, which represent a collection 
@@ -542,6 +542,8 @@ namespace TanagraExample
 
             SubmitForExecution(queue, cmdBuffer);
 
+            queue.WaitIdle(); // wait for execution to finish
+
             device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
         }
         
@@ -563,7 +565,6 @@ namespace TanagraExample
             var submitInfo = new SubmitInfo(null, null, new[]{ cmdBuffer }, null);
             queue.Submit(new[]{ submitInfo });
             submitInfo.Dispose();
-            queue.WaitIdle(); // wait for execution to finish
         }
 
         #endregion
@@ -637,11 +638,12 @@ namespace TanagraExample
             imageMemoryBarrier.DstAccessMask = dstMask;
             var imageMemoryBarriers = new[]{ imageMemoryBarrier };
             cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, imageMemoryBarriers);
+            imageMemoryBarrier.Dispose();
         }
         
         uint FindMemoryIndex(MemoryPropertyFlags propertyFlags)
         {
-            for(uint x = 0; x < 32; x++)
+            for(uint x = 0; x < VulkanConstant.MaxMemoryTypes; x++)
                 if((physDeviceMem.MemoryTypes[x].PropertyFlags & propertyFlags) == propertyFlags)
                     return x;
 

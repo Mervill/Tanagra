@@ -124,8 +124,10 @@ namespace TanagraExample
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
             pipeline       = pipelines.First();
-
-            swapchainData.Framebuffers = CreateFramebuffers(renderPass, swapchainData.Images);
+            
+            swapchainData.Framebuffers = swapchainData.Images
+                .Select(x => CreateFramebuffer(renderPass, x))
+                .ToList();
 
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             var cmdBuffer  = cmdBuffers.First();
@@ -582,13 +584,6 @@ namespace TanagraExample
             return device.CreateGraphicsPipelines(null, createInfos);
         }
 
-        List<Framebuffer> CreateFramebuffers(RenderPass renderPass, List<ImageData> imageData)
-        {
-            return imageData
-                .Select(x => CreateFramebuffer(renderPass, x))
-                .ToList();
-        }
-
         Framebuffer CreateFramebuffer(RenderPass renderPass, ImageData imageData)
         {
             // Render passes operate in conjunction with framebuffers, which represent a collection 
@@ -699,8 +694,7 @@ namespace TanagraExample
 
         void SubmitForExecution(Queue queue, Semaphore presentSemaphore, CommandBuffer cmdBuffer)
         {
-            var pipelineStageFlags = PipelineStageFlags.BottomOfPipe;
-            var submitInfo = new SubmitInfo(new[]{ presentSemaphore }, new[]{ pipelineStageFlags }, new[]{ cmdBuffer }, null);
+            var submitInfo = new SubmitInfo(new[]{ presentSemaphore }, null, new[]{ cmdBuffer }, null);
             queue.Submit(new[]{ submitInfo });
             submitInfo.Dispose();
         }
