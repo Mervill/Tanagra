@@ -79,6 +79,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
         
+        /// <param name="DepthBoundsTestEnable">Optional (depth_bounds_test)</param>
         public PipelineDepthStencilStateCreateInfo(Bool32 DepthTestEnable, Bool32 DepthWriteEnable, CompareOp DepthCompareOp, Bool32 DepthBoundsTestEnable, Bool32 StencilTestEnable, StencilOpState Front, StencilOpState Back, Single MinDepthBounds, Single MaxDepthBounds) : this()
         {
             this.DepthTestEnable = DepthTestEnable;

@@ -40,6 +40,9 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorBufferInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorBufferInfo));
         }
         
+        /// <param name="Buffer">Buffer used for this descriptor slot when the descriptor is UNIFORM_BUFFER[_DYNAMIC] or STORAGE_BUFFER[_DYNAMIC]. VK_NULL_HANDLE otherwise.</param>
+        /// <param name="Offset">Base offset from buffer start in bytes to update in the descriptor set.</param>
+        /// <param name="Range">Size in bytes of the buffer resource for this descriptor update.</param>
         public DescriptorBufferInfo(Buffer Buffer, DeviceSize Offset, DeviceSize Range) : this()
         {
             this.Buffer = Buffer;

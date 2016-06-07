@@ -56,6 +56,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferViewCreateInfo;
         }
         
+        /// <param name="Format">Optionally specifies format of elements</param>
+        /// <param name="Offset">Specified in bytes</param>
+        /// <param name="Range">View size specified in bytes</param>
         public BufferViewCreateInfo(Buffer Buffer, Format Format, DeviceSize Offset, DeviceSize Range) : this()
         {
             this.Buffer = Buffer;

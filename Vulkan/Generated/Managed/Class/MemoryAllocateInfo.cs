@@ -31,6 +31,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.MemoryAllocateInfo;
         }
         
+        /// <param name="AllocationSize">Size of memory allocation</param>
+        /// <param name="MemoryTypeIndex">Index of the of the memory type to allocate from</param>
         public MemoryAllocateInfo(DeviceSize AllocationSize, UInt32 MemoryTypeIndex) : this()
         {
             this.AllocationSize = AllocationSize;

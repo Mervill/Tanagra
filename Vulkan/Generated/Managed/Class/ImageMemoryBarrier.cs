@@ -86,6 +86,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ImageMemoryBarrier;
         }
         
+        /// <param name="OldLayout">Current layout of the image</param>
+        /// <param name="NewLayout">New layout to transition the image to</param>
+        /// <param name="SrcQueueFamilyIndex">Queue family to transition ownership from</param>
+        /// <param name="DstQueueFamilyIndex">Queue family to transition ownership to</param>
+        /// <param name="Image">Image to sync</param>
+        /// <param name="SubresourceRange">Subresource range to sync</param>
         public ImageMemoryBarrier(ImageLayout OldLayout, ImageLayout NewLayout, UInt32 SrcQueueFamilyIndex, UInt32 DstQueueFamilyIndex, Image Image, ImageSubresourceRange SubresourceRange) : this()
         {
             this.OldLayout = OldLayout;

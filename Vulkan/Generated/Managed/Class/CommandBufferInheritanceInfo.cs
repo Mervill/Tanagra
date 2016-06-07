@@ -66,6 +66,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
         }
         
+        /// <param name="OcclusionQueryEnable">Whether this secondary command buffer may be executed during an occlusion query</param>
         public CommandBufferInheritanceInfo(UInt32 Subpass, Bool32 OcclusionQueryEnable) : this()
         {
             this.Subpass = Subpass;

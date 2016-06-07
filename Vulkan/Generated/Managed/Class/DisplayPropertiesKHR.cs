@@ -76,6 +76,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayPropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPropertiesKHR));
         }
         
+        /// <param name="Display">Handle of the display object</param>
+        /// <param name="DisplayName">Name of the display</param>
+        /// <param name="PhysicalDimensions">In millimeters?</param>
+        /// <param name="PhysicalResolution">Max resolution for CRT?</param>
+        /// <param name="PlaneReorderPossible">VK_TRUE if the overlay plane's z-order can be changed on this display.</param>
+        /// <param name="PersistentContent">VK_TRUE if this is a "smart" display that supports self-refresh/internal buffering.</param>
         public DisplayPropertiesKHR(DisplayKHR Display, String DisplayName, Extent2D PhysicalDimensions, Extent2D PhysicalResolution, Bool32 PlaneReorderPossible, Bool32 PersistentContent) : this()
         {
             this.Display = Display;

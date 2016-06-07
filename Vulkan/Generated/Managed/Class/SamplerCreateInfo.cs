@@ -121,6 +121,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SamplerCreateInfo;
         }
         
+        /// <param name="MagFilter">Filter mode for magnification</param>
+        /// <param name="MinFilter">Filter mode for minifiation</param>
+        /// <param name="MipmapMode">Mipmap selection mode</param>
         public SamplerCreateInfo(Filter MagFilter, Filter MinFilter, SamplerMipmapMode MipmapMode, SamplerAddressMode AddressModeU, SamplerAddressMode AddressModeV, SamplerAddressMode AddressModeW, Single MipLodBias, Bool32 AnisotropyEnable, Single MaxAnisotropy, Bool32 CompareEnable, CompareOp CompareOp, Single MinLod, Single MaxLod, BorderColor BorderColor, Bool32 UnnormalizedCoordinates) : this()
         {
             this.MagFilter = MagFilter;

@@ -31,6 +31,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerMarkerInfoEXT;
         }
         
+        /// <param name="MarkerName">Name of the debug marker</param>
         public DebugMarkerMarkerInfoEXT(String MarkerName) : this()
         {
             this.MarkerName = MarkerName;

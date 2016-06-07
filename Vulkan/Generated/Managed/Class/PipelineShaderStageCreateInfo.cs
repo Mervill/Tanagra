@@ -57,6 +57,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineShaderStageCreateInfo;
         }
         
+        /// <param name="Stage">Shader stage</param>
+        /// <param name="Module">Module containing entry point</param>
+        /// <param name="Name">Null-terminated entry point name</param>
         public PipelineShaderStageCreateInfo(ShaderStageFlags Stage, ShaderModule Module, String Name) : this()
         {
             this.Stage = Stage;

@@ -67,6 +67,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineCacheCreateInfo;
         }
         
+        /// <param name="InitialData">Initial data to populate cache</param>
         public PipelineCacheCreateInfo(IntPtr[] InitialData) : this()
         {
             this.InitialData = InitialData;

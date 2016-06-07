@@ -210,6 +210,7 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SubpassDescription*)MemUtil.Alloc(typeof(Unmanaged.SubpassDescription));
         }
         
+        /// <param name="PipelineBindPoint">Must be VK_PIPELINE_BIND_POINT_GRAPHICS for now</param>
         public SubpassDescription(PipelineBindPoint PipelineBindPoint, AttachmentReference[] InputAttachments, AttachmentReference[] ColorAttachments, UInt32[] PreserveAttachments) : this()
         {
             this.PipelineBindPoint = PipelineBindPoint;

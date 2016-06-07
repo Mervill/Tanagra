@@ -186,6 +186,19 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
         
+        /// <param name="Surface">The swapchain's target surface</param>
+        /// <param name="MinImageCount">Minimum number of presentation images the application needs</param>
+        /// <param name="ImageFormat">Format of the presentation images</param>
+        /// <param name="ImageColorSpace">Colorspace of the presentation images</param>
+        /// <param name="ImageExtent">Dimensions of the presentation images</param>
+        /// <param name="ImageArrayLayers">Determines the number of views for multiview/stereo presentation</param>
+        /// <param name="ImageUsage">Bits indicating how the presentation images will be used</param>
+        /// <param name="ImageSharingMode">Sharing mode used for the presentation images</param>
+        /// <param name="QueueFamilyIndices">Array of queue family indices having access to the images in case of concurrent sharing mode</param>
+        /// <param name="PreTransform">The transform, relative to the device's natural orientation, applied to the image content prior to presentation</param>
+        /// <param name="CompositeAlpha">The alpha blending mode used when compositing this surface with other surfaces in the window system</param>
+        /// <param name="PresentMode">Which presentation mode to use for presents on this swap chain</param>
+        /// <param name="Clipped">Specifies whether presentable images may be affected by window clip regions</param>
         public SwapchainCreateInfoKHR(SurfaceKHR Surface, UInt32 MinImageCount, Format ImageFormat, ColorSpaceKHR ImageColorSpace, Extent2D ImageExtent, UInt32 ImageArrayLayers, ImageUsageFlags ImageUsage, SharingMode ImageSharingMode, UInt32[] QueueFamilyIndices, SurfaceTransformFlagsKHR PreTransform, CompositeAlphaFlagsKHR CompositeAlpha, PresentModeKHR PresentMode, Bool32 Clipped) : this()
         {
             this.Surface = Surface;

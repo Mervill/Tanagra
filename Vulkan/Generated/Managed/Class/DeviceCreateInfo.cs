@@ -166,6 +166,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
         
+        /// <param name="EnabledLayerNames">Ordered list of layer names to be enabled</param>
         public DeviceCreateInfo(DeviceQueueCreateInfo[] QueueCreateInfos, String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
         {
             this.QueueCreateInfos = QueueCreateInfos;

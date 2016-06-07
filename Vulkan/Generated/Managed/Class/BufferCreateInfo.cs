@@ -88,6 +88,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferCreateInfo;
         }
         
+        /// <param name="Size">Specified in bytes</param>
+        /// <param name="Usage">Buffer usage flags</param>
         public BufferCreateInfo(DeviceSize Size, BufferUsageFlags Usage, SharingMode SharingMode, UInt32[] QueueFamilyIndices) : this()
         {
             this.Size = Size;

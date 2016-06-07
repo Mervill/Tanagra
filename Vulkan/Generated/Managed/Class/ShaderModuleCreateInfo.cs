@@ -67,6 +67,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ShaderModuleCreateInfo;
         }
         
+        /// <param name="Code">Binary code of size codeSize</param>
         public ShaderModuleCreateInfo(Byte[] Code) : this()
         {
             this.Code = Code;

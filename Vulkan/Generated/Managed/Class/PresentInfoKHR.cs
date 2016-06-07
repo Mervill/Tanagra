@@ -193,6 +193,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
         
+        /// <param name="Swapchains">Swapchains to present an image from</param>
+        /// <param name="ImageIndices">Indices of which swapchain images to present</param>
         public PresentInfoKHR(SwapchainKHR[] Swapchains, UInt32[] ImageIndices) : this()
         {
             this.Swapchains = Swapchains;

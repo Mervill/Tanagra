@@ -31,6 +31,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DisplayModeCreateInfoKHR;
         }
         
+        /// <param name="Parameters">The parameters this mode uses.</param>
         public DisplayModeCreateInfoKHR(DisplayModeParametersKHR Parameters) : this()
         {
             this.Parameters = Parameters;

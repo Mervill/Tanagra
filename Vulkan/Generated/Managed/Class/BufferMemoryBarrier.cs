@@ -77,6 +77,11 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferMemoryBarrier;
         }
         
+        /// <param name="SrcQueueFamilyIndex">Queue family to transition ownership from</param>
+        /// <param name="DstQueueFamilyIndex">Queue family to transition ownership to</param>
+        /// <param name="Buffer">Buffer to sync</param>
+        /// <param name="Offset">Offset within the buffer to sync</param>
+        /// <param name="Size">Amount of bytes to sync</param>
         public BufferMemoryBarrier(UInt32 SrcQueueFamilyIndex, UInt32 DstQueueFamilyIndex, Buffer Buffer, DeviceSize Offset, DeviceSize Size) : this()
         {
             this.SrcQueueFamilyIndex = SrcQueueFamilyIndex;

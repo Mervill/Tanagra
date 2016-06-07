@@ -112,6 +112,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
         
+        /// <param name="SetLayouts">Array of setCount number of descriptor set layout objects defining the layout of the</param>
+        /// <param name="PushConstantRanges">Array of pushConstantRangeCount number of ranges used by various shader stages</param>
         public PipelineLayoutCreateInfo(DescriptorSetLayout[] SetLayouts, PushConstantRange[] PushConstantRanges) : this()
         {
             this.SetLayouts = SetLayouts;

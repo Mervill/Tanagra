@@ -76,6 +76,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
         
+        /// <param name="RasterizationSamples">Number of samples used for rasterization</param>
+        /// <param name="SampleShadingEnable">Optional (GL45)</param>
+        /// <param name="MinSampleShading">Optional (GL45)</param>
         public PipelineMultisampleStateCreateInfo(SampleCountFlags RasterizationSamples, Bool32 SampleShadingEnable, Single MinSampleShading, Bool32 AlphaToCoverageEnable, Bool32 AlphaToOneEnable) : this()
         {
             this.RasterizationSamples = RasterizationSamples;

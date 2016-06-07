@@ -58,6 +58,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ComputePipelineCreateInfo;
         }
         
+        /// <param name="Layout">Interface layout of the pipeline</param>
+        /// <param name="BasePipelineIndex">If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is not -1, it specifies an index into pCreateInfos of the base pipeline this is a derivative of</param>
         public ComputePipelineCreateInfo(PipelineShaderStageCreateInfo Stage, PipelineLayout Layout, Int32 BasePipelineIndex) : this()
         {
             this.Stage = Stage;

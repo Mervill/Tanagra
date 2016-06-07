@@ -102,6 +102,8 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SpecializationInfo*)MemUtil.Alloc(typeof(Unmanaged.SpecializationInfo));
         }
         
+        /// <param name="MapEntries">Array of map entries</param>
+        /// <param name="Data">Pointer to SpecConstant data</param>
         public SpecializationInfo(SpecializationMapEntry[] MapEntries, IntPtr[] Data) : this()
         {
             this.MapEntries = MapEntries;

@@ -9,7 +9,6 @@ using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
 using Buffer = Vulkan.Buffer;
-using Image = Vulkan.Image;
 
 namespace TanagraExample
 {

@@ -40,6 +40,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DisplayPresentInfoKHR;
         }
         
+        /// <param name="SrcRect">Rectangle within the presentable image to read pixel data from when presenting to the display.</param>
+        /// <param name="DstRect">Rectangle within the current display mode's visible region to display srcRectangle in.</param>
+        /// <param name="Persistent">For smart displays, use buffered mode. If the display properties member "persistentMode" is VK_FALSE, this member must always be VK_FALSE.</param>
         public DisplayPresentInfoKHR(Rect2D SrcRect, Rect2D DstRect, Bool32 Persistent) : this()
         {
             this.SrcRect = SrcRect;

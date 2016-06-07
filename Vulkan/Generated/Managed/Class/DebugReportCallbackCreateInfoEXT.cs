@@ -40,6 +40,8 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
         
+        /// <param name="Flags">Indicates which events call this callback</param>
+        /// <param name="Callback">Function pointer of a callback function</param>
         public DebugReportCallbackCreateInfoEXT(DebugReportFlagsEXT Flags, IntPtr Callback) : this()
         {
             this.Flags = Flags;

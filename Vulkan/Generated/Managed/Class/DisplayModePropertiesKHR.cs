@@ -31,6 +31,8 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayModePropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayModePropertiesKHR));
         }
         
+        /// <param name="DisplayMode">Handle of this display mode.</param>
+        /// <param name="Parameters">The parameters this mode uses.</param>
         public DisplayModePropertiesKHR(DisplayModeKHR DisplayMode, DisplayModeParametersKHR Parameters) : this()
         {
             this.DisplayMode = DisplayMode;

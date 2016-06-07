@@ -85,6 +85,10 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerObjectTagInfoEXT;
         }
         
+        /// <param name="ObjectType">The type of the object</param>
+        /// <param name="Object">The handle of the object, cast to uint64_t</param>
+        /// <param name="TagName">The name of the tag to set on the object</param>
+        /// <param name="Tag">Tag data to attach to the object</param>
         public DebugMarkerObjectTagInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, UInt64 TagName, IntPtr[] Tag) : this()
         {
             this.ObjectType = ObjectType;

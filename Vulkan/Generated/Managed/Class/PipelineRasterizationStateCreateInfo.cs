@@ -85,6 +85,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
         
+        /// <param name="PolygonMode">Optional (GL45)</param>
         public PipelineRasterizationStateCreateInfo(Bool32 DepthClampEnable, Bool32 RasterizerDiscardEnable, PolygonMode PolygonMode, FrontFace FrontFace, Bool32 DepthBiasEnable, Single DepthBiasConstantFactor, Single DepthBiasClamp, Single DepthBiasSlopeFactor, Single LineWidth) : this()
         {
             this.DepthClampEnable = DepthClampEnable;

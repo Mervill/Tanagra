@@ -136,6 +136,10 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ImageCreateInfo;
         }
         
+        /// <param name="Usage">Image usage flags</param>
+        /// <param name="SharingMode">Cross-queue-family sharing mode</param>
+        /// <param name="QueueFamilyIndices">Array of queue family indices to share across</param>
+        /// <param name="InitialLayout">Initial image layout for all subresources</param>
         public ImageCreateInfo(ImageType ImageType, Format Format, Extent3D Extent, UInt32 MipLevels, UInt32 ArrayLayers, SampleCountFlags Samples, ImageTiling Tiling, ImageUsageFlags Usage, SharingMode SharingMode, UInt32[] QueueFamilyIndices, ImageLayout InitialLayout) : this()
         {
             this.ImageType = ImageType;

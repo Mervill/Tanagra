@@ -55,6 +55,7 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SparseImageMemoryBind*)MemUtil.Alloc(typeof(Unmanaged.SparseImageMemoryBind));
         }
         
+        /// <param name="MemoryOffset">Specified in bytes</param>
         public SparseImageMemoryBind(ImageSubresource Subresource, Offset3D Offset, Extent3D Extent, DeviceSize MemoryOffset) : this()
         {
             this.Subresource = Subresource;

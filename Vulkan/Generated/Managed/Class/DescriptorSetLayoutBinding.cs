@@ -84,6 +84,9 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)MemUtil.Alloc(typeof(Unmanaged.DescriptorSetLayoutBinding));
         }
         
+        /// <param name="Binding">Binding number for this entry</param>
+        /// <param name="DescriptorType">Type of the descriptors in this binding</param>
+        /// <param name="StageFlags">Shader stages this binding is visible to</param>
         public DescriptorSetLayoutBinding(UInt32 Binding, DescriptorType DescriptorType, ShaderStageFlags StageFlags) : this()
         {
             this.Binding = Binding;

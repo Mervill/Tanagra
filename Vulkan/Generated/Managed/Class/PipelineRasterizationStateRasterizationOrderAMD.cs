@@ -22,6 +22,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineRasterizationStateRasterizationOrderAMD;
         }
         
+        /// <param name="RasterizationOrder">Rasterization order to use for the pipeline</param>
         public PipelineRasterizationStateRasterizationOrderAMD(RasterizationOrderAMD RasterizationOrder) : this()
         {
             this.RasterizationOrder = RasterizationOrder;

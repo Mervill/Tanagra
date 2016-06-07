@@ -78,6 +78,13 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CopyDescriptorSet;
         }
         
+        /// <param name="SrcSet">Source descriptor set</param>
+        /// <param name="SrcBinding">Binding within the source descriptor set to copy from</param>
+        /// <param name="SrcArrayElement">Array element within the source binding to copy from</param>
+        /// <param name="DstSet">Destination descriptor set</param>
+        /// <param name="DstBinding">Binding within the destination descriptor set to copy to</param>
+        /// <param name="DstArrayElement">Array element within the destination binding to copy to</param>
+        /// <param name="DescriptorCount">Number of descriptors to write (determines the size of the array pointed by pDescriptors)</param>
         public CopyDescriptorSet(DescriptorSet SrcSet, UInt32 SrcBinding, UInt32 SrcArrayElement, DescriptorSet DstSet, UInt32 DstBinding, UInt32 DstArrayElement, UInt32 DescriptorCount) : this()
         {
             this.SrcSet = SrcSet;

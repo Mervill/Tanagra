@@ -67,6 +67,7 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DescriptorSetLayoutCreateInfo;
         }
         
+        /// <param name="Bindings">Array of descriptor set layout bindings</param>
         public DescriptorSetLayoutCreateInfo(DescriptorSetLayoutBinding[] Bindings) : this()
         {
             this.Bindings = Bindings;

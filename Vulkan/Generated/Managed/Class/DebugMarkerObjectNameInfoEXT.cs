@@ -40,6 +40,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerObjectNameInfoEXT;
         }
         
+        /// <param name="ObjectType">The type of the object</param>
+        /// <param name="Object">The handle of the object, cast to uint64_t</param>
+        /// <param name="ObjectName">Name to apply to the object</param>
         public DebugMarkerObjectNameInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, String ObjectName) : this()
         {
             this.ObjectType = ObjectType;

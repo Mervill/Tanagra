@@ -31,6 +31,8 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayPlanePropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPlanePropertiesKHR));
         }
         
+        /// <param name="CurrentDisplay">Display the plane is currently associated with. Will be VK_NULL_HANDLE if the plane is not in use.</param>
+        /// <param name="CurrentStackIndex">Current z-order of the plane.</param>
         public DisplayPlanePropertiesKHR(DisplayKHR CurrentDisplay, UInt32 CurrentStackIndex) : this()
         {
             this.CurrentDisplay = CurrentDisplay;

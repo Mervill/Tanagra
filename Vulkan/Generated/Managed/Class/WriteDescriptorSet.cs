@@ -185,6 +185,13 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.WriteDescriptorSet;
         }
         
+        /// <param name="DstSet">Destination descriptor set</param>
+        /// <param name="DstBinding">Binding within the destination descriptor set to write</param>
+        /// <param name="DstArrayElement">Array element within the destination binding to write</param>
+        /// <param name="DescriptorType">Descriptor type to write (determines which members of the array pointed by pDescriptors are going to be used)</param>
+        /// <param name="ImageInfo">Sampler, image view, and layout for SAMPLER, COMBINED_IMAGE_SAMPLER, {SAMPLED,STORAGE}_IMAGE, and INPUT_ATTACHMENT descriptor types.</param>
+        /// <param name="BufferInfo">Raw buffer, size, and offset for {UNIFORM,STORAGE}_BUFFER[_DYNAMIC] descriptor types.</param>
+        /// <param name="TexelBufferView">Buffer view to write to the descriptor for {UNIFORM,STORAGE}_TEXEL_BUFFER descriptor types.</param>
         public WriteDescriptorSet(DescriptorSet DstSet, UInt32 DstBinding, UInt32 DstArrayElement, DescriptorType DescriptorType, DescriptorImageInfo[] ImageInfo, DescriptorBufferInfo[] BufferInfo, BufferView[] TexelBufferView) : this()
         {
             this.DstSet = DstSet;

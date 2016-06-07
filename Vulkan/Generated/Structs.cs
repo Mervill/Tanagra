@@ -504,6 +504,9 @@ namespace Vulkan
         /// </summary>
         public DeviceSize Size;
         
+        /// <param name="SrcOffset">Specified in bytes</param>
+        /// <param name="DstOffset">Specified in bytes</param>
+        /// <param name="Size">Specified in bytes</param>
         public BufferCopy(DeviceSize SrcOffset, DeviceSize DstOffset, DeviceSize Size)
         {
             this.SrcOffset = SrcOffset;
@@ -529,6 +532,9 @@ namespace Vulkan
         /// </summary>
         public Extent3D Extent;
         
+        /// <param name="SrcOffset">Specified in pixels for both compressed and uncompressed images</param>
+        /// <param name="DstOffset">Specified in pixels for both compressed and uncompressed images</param>
+        /// <param name="Extent">Specified in pixels for both compressed and uncompressed images</param>
         public ImageCopy(ImageSubresourceLayers SrcSubresource, Offset3D SrcOffset, ImageSubresourceLayers DstSubresource, Offset3D DstOffset, Extent3D Extent)
         {
             this.SrcSubresource = SrcSubresource;
@@ -592,6 +598,8 @@ namespace Vulkan
         /// </summary>
         public DstOffsetsInfo DstOffsets;
         
+        /// <param name="SrcOffsets">Specified in pixels for both compressed and uncompressed images</param>
+        /// <param name="DstOffsets">Specified in pixels for both compressed and uncompressed images</param>
         public ImageBlit(ImageSubresourceLayers SrcSubresource, SrcOffsetsInfo SrcOffsets, ImageSubresourceLayers DstSubresource, DstOffsetsInfo DstOffsets)
         {
             this.SrcSubresource = SrcSubresource;
@@ -622,6 +630,10 @@ namespace Vulkan
         /// </summary>
         public Extent3D ImageExtent;
         
+        /// <param name="BufferOffset">Specified in bytes</param>
+        /// <param name="BufferRowLength">Specified in texels</param>
+        /// <param name="ImageOffset">Specified in pixels for both compressed and uncompressed images</param>
+        /// <param name="ImageExtent">Specified in pixels for both compressed and uncompressed images</param>
         public BufferImageCopy(DeviceSize BufferOffset, UInt32 BufferRowLength, UInt32 BufferImageHeight, ImageSubresourceLayers ImageSubresource, Offset3D ImageOffset, Extent3D ImageExtent)
         {
             this.BufferOffset = BufferOffset;
@@ -678,6 +690,9 @@ namespace Vulkan
         /// </summary>
         public UInt32 Size;
         
+        /// <param name="ConstantID">The SpecConstant ID specified in the BIL</param>
+        /// <param name="Offset">Offset of the value in the data block</param>
+        /// <param name="Size">Size in bytes of the SpecConstant</param>
         public SpecializationMapEntry(UInt32 ConstantID, UInt32 Offset, UInt32 Size)
         {
             this.ConstantID = ConstantID;
@@ -701,6 +716,9 @@ namespace Vulkan
         /// </summary>
         public VertexInputRate InputRate;
         
+        /// <param name="Binding">Vertex buffer binding id</param>
+        /// <param name="Stride">Distance between vertices in bytes (0 = no advancement)</param>
+        /// <param name="InputRate">The rate at which the vertex data is consumed</param>
         public VertexInputBindingDescription(UInt32 Binding, UInt32 Stride, VertexInputRate InputRate)
         {
             this.Binding = Binding;
@@ -728,6 +746,10 @@ namespace Vulkan
         /// </summary>
         public UInt32 Offset;
         
+        /// <param name="Location">Location of the shader vertex attrib</param>
+        /// <param name="Binding">Vertex buffer binding id</param>
+        /// <param name="Format">Format of source data</param>
+        /// <param name="Offset">Offset of first element in bytes from base of vertex</param>
         public VertexInputAttributeDescription(UInt32 Location, UInt32 Binding, Format Format, UInt32 Offset)
         {
             this.Location = Location;
@@ -798,6 +820,9 @@ namespace Vulkan
         /// </summary>
         public UInt32 Size;
         
+        /// <param name="StageFlags">Which stages use the range</param>
+        /// <param name="Offset">Start of the range, in bytes</param>
+        /// <param name="Size">Size of the range, in bytes</param>
         public PushConstantRange(ShaderStageFlags StageFlags, UInt32 Offset, UInt32 Size)
         {
             this.StageFlags = StageFlags;
@@ -856,6 +881,10 @@ namespace Vulkan
         public ImageLayout InitialLayout;
         public ImageLayout FinalLayout;
         
+        /// <param name="LoadOp">Load operation for color or depth data</param>
+        /// <param name="StoreOp">Store operation for color or depth data</param>
+        /// <param name="StencilLoadOp">Load operation for stencil data</param>
+        /// <param name="StencilStoreOp">Store operation for stencil data</param>
         public AttachmentDescription(Format Format, SampleCountFlags Samples, AttachmentLoadOp LoadOp, AttachmentStoreOp StoreOp, AttachmentLoadOp StencilLoadOp, AttachmentStoreOp StencilStoreOp, ImageLayout InitialLayout, ImageLayout FinalLayout)
         {
             this.Format = Format;
@@ -1683,6 +1712,8 @@ namespace Vulkan
         /// </summary>
         public UInt32 RefreshRate;
         
+        /// <param name="VisibleRegion">Visible scannout region.</param>
+        /// <param name="RefreshRate">Number of times per second the display is updated.</param>
         public DisplayModeParametersKHR(Extent2D VisibleRegion, UInt32 RefreshRate)
         {
             this.VisibleRegion = VisibleRegion;
@@ -1708,6 +1739,7 @@ namespace Vulkan
         public Extent2D MinDstExtent;
         public Extent2D MaxDstExtent;
         
+        /// <param name="MinSrcPosition">Does the plane have any position and extent restrictions?</param>
         public DisplayPlaneCapabilitiesKHR(Offset2D MinSrcPosition, Offset2D MaxSrcPosition, Extent2D MinSrcExtent, Extent2D MaxSrcExtent, Offset2D MinDstPosition, Offset2D MaxDstPosition, Extent2D MinDstExtent, Extent2D MaxDstExtent)
         {
             this.MinSrcPosition = MinSrcPosition;
@@ -1765,6 +1797,13 @@ namespace Vulkan
         /// </summary>
         public ImageUsageFlags SupportedUsageFlags;
         
+        /// <param name="MinImageCount">Supported minimum number of images for the surface</param>
+        /// <param name="MaxImageCount">Supported maximum number of images for the surface, 0 for unlimited</param>
+        /// <param name="CurrentExtent">Current image width and height for the surface, (0, 0) if undefined</param>
+        /// <param name="MinImageExtent">Supported minimum image width and height for the surface</param>
+        /// <param name="MaxImageExtent">Supported maximum image width and height for the surface</param>
+        /// <param name="MaxImageArrayLayers">Supported maximum number of image layers for the surface</param>
+        /// <param name="CurrentTransform">The surface's current transform relative to the device's natural orientation</param>
         public SurfaceCapabilitiesKHR(UInt32 MinImageCount, UInt32 MaxImageCount, Extent2D CurrentExtent, Extent2D MinImageExtent, Extent2D MaxImageExtent, UInt32 MaxImageArrayLayers, SurfaceTransformFlagsKHR CurrentTransform)
         {
             this.MinImageCount = MinImageCount;
@@ -1791,6 +1830,8 @@ namespace Vulkan
         /// </summary>
         public ColorSpaceKHR ColorSpace;
         
+        /// <param name="Format">Supported pair of rendering format</param>
+        /// <param name="ColorSpace">And colorspace for the surface</param>
         public SurfaceFormatKHR(Format Format, ColorSpaceKHR ColorSpace)
         {
             this.Format = Format;

@@ -41,6 +41,9 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.MappedMemoryRange;
         }
         
+        /// <param name="Memory">Mapped memory object</param>
+        /// <param name="Offset">Offset within the memory object where the range starts</param>
+        /// <param name="Size">Size of the range within the memory object</param>
         public MappedMemoryRange(DeviceMemory Memory, DeviceSize Offset, DeviceSize Size) : this()
         {
             this.Memory = Memory;

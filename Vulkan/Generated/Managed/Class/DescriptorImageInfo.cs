@@ -41,6 +41,9 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorImageInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorImageInfo));
         }
         
+        /// <param name="Sampler">Sampler to write to the descriptor in case it's a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.</param>
+        /// <param name="ImageView">Image view to write to the descriptor in case it's a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.</param>
+        /// <param name="ImageLayout">Layout the image is expected to be in when accessed using this descriptor (only used if imageView is not VK_NULL_HANDLE).</param>
         public DescriptorImageInfo(Sampler Sampler, ImageView ImageView, ImageLayout ImageLayout) : this()
         {
             this.Sampler = Sampler;
