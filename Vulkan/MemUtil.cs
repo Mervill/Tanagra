@@ -95,11 +95,21 @@ namespace Vulkan.Managed
 			dst[i] = 0;
 		}
 
-	    /*internal static void ClearMemory(IntPtr ptr, ulong size)
+        /*internal static void ClearMemory(IntPtr ptr, ulong size)
 	    {
             var bptr = (byte*)ptr;
             for (ulong i = 0; i < size; i++)
                 bptr[i] = 0;
         }*/
-	}
+
+        internal static void DumpStruct<T>(T structTarget)
+        {
+            var size = Marshal.SizeOf(typeof(T));
+            var bytes = new byte[size];
+            IntPtr ptr = Marshal.AllocHGlobal(size);
+            Marshal.Copy(ptr, bytes, 0, size);
+            Marshal.FreeHGlobal(ptr);
+            Console.WriteLine(bytes.ToString());
+        }
+    }
 }

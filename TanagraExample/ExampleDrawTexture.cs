@@ -61,12 +61,9 @@ namespace TanagraExample
         {
             public OpenTK.Matrix4 projection;
             public OpenTK.Matrix4 model;
-            public OpenTK.Vector4 viewPos;
             public float lodBias;
         }
-
-        const Format ImageFormat = Format.R8g8b8a8Unorm;
-
+        
         // Device is held as a class member because its used in
         // basically every operation after it's been created.
         Device device;
@@ -120,18 +117,15 @@ namespace TanagraExample
             // and recording commands. You will find however that you can't do much of 
             // anything without first initializing a few more dependencies.
             
-            const float zoom = -2.5f;
+            const float zoom = 3f;
             // rotation = { 0.0f, 15.0f, 0.0f };
 
             var textureData = LoadTexture("./ThisSideUp.jpg", queue, cmdPool);
             var uniform = CreateUniformBuffer(typeof(UBO));
+            
             var ubo = new UBO();
             UpdateUBO(ubo, imageWidth, imageHeight, zoom);
             CopyUBO(ubo, uniform);
-
-            var descriptorPool = CreateDescriptorPool();
-            var descriptorSetLayout = CreateDescriptorSetLayout();
-            var descriptorSet = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniform);
 
             VertexData vertexData;
             RenderPass renderPass;
@@ -157,7 +151,11 @@ namespace TanagraExample
             swapchainData.Framebuffers = swapchainData.Images
                 .Select(x => CreateFramebuffer(renderPass, x))
                 .ToList();
-            
+
+            var descriptorPool      = CreateDescriptorPool();
+            var descriptorSetLayout = CreateDescriptorSetLayout();
+            var descriptorSet       = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniform);
+
             pipelineLayout = CreatePipelineLayout(descriptorSetLayout);
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
             pipeline       = pipelines.First();
@@ -165,7 +163,7 @@ namespace TanagraExample
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             var cmdBuffer  = cmdBuffers.First();
             
-            RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipeline, swapchainData));
+            RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipelineLayout, pipeline, descriptorSet, swapchainData));
             
             #region Shutdown
             // Destroy Vulkan handles in reverse order of creation (roughly)
@@ -183,7 +181,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                //"VK_LAYER_LUNARG_standard_validation"
+                "VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -234,7 +232,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                //"VK_LAYER_LUNARG_standard_validation"
+                "VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -244,6 +242,7 @@ namespace TanagraExample
 
             var features = new PhysicalDeviceFeatures();
             features.ShaderClipDistance = true;
+            //features.FullDrawIndexUint32 = true;
 
             var queueCreateInfo = new DeviceQueueCreateInfo(queueFamily, new[]{ 0f });
             var deviceCreateInfo = new DeviceCreateInfo(new[]{ queueCreateInfo }, enabledLayers, enabledExtensions);
@@ -426,12 +425,23 @@ namespace TanagraExample
             var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, memoryIndex);
             data.DeviceMemory = BindBuffer(data.Buffer, allocateInfo);
             
-            var mapped = device.MapMemory(data.DeviceMemory, 0, memorySize);
-            VulkanUtils.Copy2DArray(quadVertices, mapped, memorySize, memorySize);
+            var vertexPtr = device.MapMemory(data.DeviceMemory, 0, memorySize);
+            VulkanUtils.Copy2DArray(quadVertices, vertexPtr, memorySize, memorySize);
             device.UnmapMemory(data.DeviceMemory);
 
             data.Indicies = new[] { 0,1,2, 2,3,0 };
 
+            memorySize = (ulong)(sizeof(uint) * data.Indicies.Length);
+            data.IndexBuffer = CreateBuffer(memorySize, BufferUsageFlags.IndexBuffer);
+
+            memoryRequirements = device.GetBufferMemoryRequirements(data.IndexBuffer);
+            memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
+            allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, memoryIndex);
+            data.IndexDeviceMemory = BindBuffer(data.IndexBuffer, allocateInfo);
+            
+            var bytes = data.Indicies.SelectMany(BitConverter.GetBytes).ToArray(); // oh man, dat Linq tho
+            CopyArrayToBuffer(data.IndexDeviceMemory, memorySize, bytes);
+            
             data.BindingDescriptions = new[]
             {
                 new VertexInputBindingDescription(0, (uint)(sizeof(float) * quadVertices.GetLength(1)), VertexInputRate.Vertex)
@@ -456,6 +466,14 @@ namespace TanagraExample
 
             var size = new Extent3D(width, height, 1);
             var usage = ImageUsageFlags.ColorAttachment | ImageUsageFlags.TransferSrc | ImageUsageFlags.TransferDst;
+            var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, imageFormat, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, usage, SharingMode.Exclusive, null, ImageLayout.Preinitialized);
+            return device.CreateImage(createImageInfo);
+        }
+
+        Image CreateTextureImage(Format imageFormat, uint width, uint height)
+        {
+            var size = new Extent3D(width, height, 1);
+            var usage = ImageUsageFlags.TransferDst | ImageUsageFlags.Sampled;
             var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, imageFormat, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, usage, SharingMode.Exclusive, null, ImageLayout.Preinitialized);
             return device.CreateImage(createImageInfo);
         }
@@ -595,7 +613,7 @@ namespace TanagraExample
             // on individual fragments before they finally alter the framebuffer.
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
             //rasterizationState.RasterizerDiscardEnable = true;
-            rasterizationState.LineWidth = 1;
+            //rasterizationState.LineWidth = 1;
 
             //PipelineDepthStencilStateCreateInfo
             //PipelineDynamicStateCreateInfo
@@ -627,7 +645,7 @@ namespace TanagraExample
 
         Buffer CreateBuffer(DeviceSize size, BufferUsageFlags flags)
         {
-            var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, null);
+            var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, new[] { 0U });
             return device.CreateBuffer(bufferCreateInfo);
         }
 
@@ -645,7 +663,7 @@ namespace TanagraExample
             //
             var bmp = new Bitmap(filename);
 
-            var bitmapFormat = System.Drawing.Imaging.PixelFormat.Format24bppRgb;
+            var bitmapFormat = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
             var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             var bitmapData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmapFormat);
             //
@@ -656,9 +674,9 @@ namespace TanagraExample
             var imageData     = new ImageData();
             imageData.Width   = imageWidth;
             imageData.Height  = imageHeight;
-            imageData.Image   = CreateImage(ImageFormat, imageWidth, imageHeight);
+            imageData.Image   = CreateTextureImage(Format.B8g8r8a8Unorm, imageWidth, imageHeight);
             imageData.Memory  = BindImage(imageData.Image);
-            imageData.View    = CreateImageView(imageData.Image, ImageFormat);
+            imageData.View    = CreateImageView(imageData.Image, Format.B8g8r8a8Unorm);
             imageData.Sampler = CreateSampler();
             
             var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
@@ -666,7 +684,8 @@ namespace TanagraExample
             var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
             imageData.Memory = BindBuffer(imageBuffer, memAlloc);
-            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 3), imageData.Memory, memRequirements);
+
+            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 4), imageData.Memory, memRequirements);
             CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
 
             //
@@ -713,13 +732,8 @@ namespace TanagraExample
         void UpdateUBO(UBO ubo, float width, float height, float zoom)
         {
             ubo.projection = OpenTK.Matrix4.CreatePerspectiveFieldOfView(DegreesToRadians(60), width / height, 0.001f, 256.0f);
-
-            var viewMatrix = OpenTK.Matrix4.CreateTranslation(0, 0, zoom);
-            ubo.model = OpenTK.Matrix4.Identity;
-
-            ubo.viewPos = new OpenTK.Vector4(0, 0, -zoom, 0);
-
-            //return ubo;
+            //var viewMatrix = OpenTK.Matrix4.CreateTranslation(0, 0, zoom);
+            ubo.model = OpenTK.Matrix4.LookAt(new OpenTK.Vector3(0, 0, zoom), OpenTK.Vector3.Zero, OpenTK.Vector3.UnitY);
         }
 
         void CopyUBO(UBO ubo, UniformData uniform)
@@ -736,7 +750,7 @@ namespace TanagraExample
 
             Marshal.Copy(bytes, 0, uniform.Mapped, size);
         }
-
+        
         DescriptorPool CreateDescriptorPool()
         {
             var poolSizes = new[]
@@ -820,13 +834,16 @@ namespace TanagraExample
             uint width  = imageData.Width;
             uint height = imageData.Height;
             
-            var viewport = new Viewport(0, 0, width, height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new[] { viewport });
-
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
             var renderPassBegin = new RenderPassBeginInfo(renderPass, framebuffer, renderArea, null);
             cmdBuffer.CmdBeginRenderPass(renderPassBegin, SubpassContents.Inline);
             renderPassBegin.Dispose();
+
+            var viewport = new Viewport(0, 0, width, height, 0, 1);
+            cmdBuffer.CmdSetViewport(0, new[] { viewport });
+
+            var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
+            cmdBuffer.CmdSetScissor(0, new[] { scissor });
 
             cmdBuffer.CmdBindDescriptorSets(PipelineBindPoint.Graphics, pipelineLayout, 0, new[] { descriptorSet }, null);
 
@@ -897,7 +914,7 @@ namespace TanagraExample
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
             cmdBuffer.CmdCopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
 
-            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ColorAttachmentOptimal, AccessFlags.TransferWrite, AccessFlags.ColorAttachmentWrite);
+            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ShaderReadOnlyOptimal, AccessFlags.TransferWrite, AccessFlags.ShaderRead);
 
             cmdBuffer.End();
 
@@ -980,13 +997,14 @@ namespace TanagraExample
 
         float DegreesToRadians(float degrees)
         {
-            const float degToRad = (float)System.Math.PI / 180.0f;
+            const float degToRad = (float)Math.PI / 180.0f;
             return degrees * degToRad;
         }
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
-            if(messageCode != 0) Console.WriteLine(message);
+            if(messageCode != 0)
+                Console.WriteLine(message);
             return true;
         }
     }
