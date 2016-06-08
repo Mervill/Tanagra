@@ -37,10 +37,7 @@ namespace TanagraExample
             public DeviceMemory Memory;
             public ImageView View;
         }
-
-        const string OutputFilename = "./out.bmp";
-        const Format ImageFormat = Format.R8g8b8a8Unorm;
-
+        
         // Device is held as a class member because its used in
         // basically every operation after it's been created.
         Device device;
@@ -57,7 +54,10 @@ namespace TanagraExample
             // - Save the render to disk
             // - Shutdown Vulkan
             //
-            
+
+            const string OutputFilename = "./out.bmp";
+            const Format ImageFormat = Format.R8g8b8a8Unorm;
+
             uint imageWidth  = 800;
             uint imageHeight = 600;
 
@@ -101,9 +101,9 @@ namespace TanagraExample
             imageData        = new ImageData();
             imageData.Width  = imageWidth;
             imageData.Height = imageHeight;
-            imageData.Image  = CreateImage(imageWidth, imageHeight);
+            imageData.Image  = CreateImage(ImageFormat, imageWidth, imageHeight);
             imageData.Memory = BindImage(imageData.Image);
-            imageData.View   = CreateImageView(imageData.Image);
+            imageData.View   = CreateImageView(imageData.Image, ImageFormat);
 
             // Allocate device memory to the image so that it can be read from and written to
             var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
@@ -275,9 +275,9 @@ namespace TanagraExample
 
             var triangleVertices = new[,]
             {
-                {  0.0f, -0.5f,  0.5f, /* UV Coordinates: */ 1.0f, 0.0f, 0.0f },
-                {  0.5f,  0.5f,  0.5f, /* UV Coordinates: */ 0.0f, 1.0f, 0.0f },
-                { -0.5f,  0.5f,  0.5f, /* UV Coordinates: */ 0.0f, 0.0f, 1.0f },
+                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
+                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
+                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
             };
 
             DeviceSize memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
@@ -306,7 +306,7 @@ namespace TanagraExample
             return data;
         }
 
-        Image CreateImage(uint width, uint height)
+        Image CreateImage(Format imageFormat, uint width, uint height)
         {
             // Images represent multidimensional - up to 3 - arrays of data which can be used for 
             // various purposes (e.g. attachments, textures), by binding them to a graphics or 
@@ -315,7 +315,7 @@ namespace TanagraExample
 
             var size = new Extent3D(width, height, 1);
             var usage = ImageUsageFlags.ColorAttachment | ImageUsageFlags.TransferSrc | ImageUsageFlags.TransferDst;
-            var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, ImageFormat, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, usage, SharingMode.Exclusive, null, ImageLayout.Preinitialized);
+            var createImageInfo = new ImageCreateInfo(ImageType.ImageType2d, imageFormat, size, 1, 1, SampleCountFlags.SampleCountFlags1, ImageTiling.Optimal, usage, SharingMode.Exclusive, null, ImageLayout.Preinitialized);
             return device.CreateImage(createImageInfo);
         }
 
@@ -329,7 +329,7 @@ namespace TanagraExample
             return deviceMem;
         }
 
-        ImageView CreateImageView(Image image)
+        ImageView CreateImageView(Image image, Format imageFormat)
         {
             // Image objects are not directly accessed by pipeline shaders for reading or writing 
             // image data. Instead, image views representing contiguous ranges of the image 
@@ -339,7 +339,7 @@ namespace TanagraExample
 
             var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             var components = new ComponentMapping(ComponentSwizzle.R, ComponentSwizzle.G, ComponentSwizzle.B, ComponentSwizzle.A);
-            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, ImageFormat, components, subresourceRange);
+            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, imageFormat, components, subresourceRange);
             return device.CreateImageView(createInfo);
         }
 
@@ -512,25 +512,8 @@ namespace TanagraExample
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
 
-            // Set the viewport
-            var viewport = new Viewport(0, 0, width, height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new[]{ viewport });
-            
-            // Begin the render pass. Just as all commands must be issued between a Begin() 
-            // and End() call, certain commands can only be called bewteen CmdBeginRenderPass()
-            // and CmdEndRenderPass()
-            var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
-            var renderPassBegin = new RenderPassBeginInfo(renderPass, framebuffer, renderArea, null);
-            cmdBuffer.CmdBeginRenderPass(renderPassBegin, SubpassContents.Inline);
+            RenderTriangle(cmdBuffer, vertexData, imageData, renderPass, pipeline, framebuffer);
 
-            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
-
-            // Render the triangle
-            DrawTriangle(cmdBuffer, vertexData);
-
-            // End the RenderPass
-            cmdBuffer.CmdEndRenderPass();
-            
             // Prepare the render target for copying
             PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.ColorAttachmentOptimal, ImageLayout.TransferSrcOptimal, AccessFlags.ColorAttachmentWrite, AccessFlags.TransferRead);
 
@@ -544,15 +527,36 @@ namespace TanagraExample
 
             queue.WaitIdle(); // wait for execution to finish
 
-            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
-        }
-        
-        void DrawTriangle(CommandBuffer cmdBuffer, VertexData vertexData)
-        {
-            cmdBuffer.CmdBindVertexBuffers(0, new[]{ vertexData.Buffer }, new DeviceSize[] { 0 });
-            cmdBuffer.CmdDraw(3, 1, 0, 0);
+            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });
         }
 
+        void RenderTriangle(CommandBuffer cmdBuffer, VertexData vertexData, ImageData imageData, RenderPass renderPass, Pipeline pipeline, Framebuffer framebuffer)
+        {
+            uint width  = imageData.Width;
+            uint height = imageData.Height;
+            
+            // Set the viewport
+            var viewport = new Viewport(0, 0, width, height, 0, 0);
+            cmdBuffer.CmdSetViewport(0, new[]{ viewport });
+            
+            // Begin the render pass. Just as all commands must be issued between a Begin() 
+            // and End() call, certain commands can only be called bewteen CmdBeginRenderPass()
+            // and CmdEndRenderPass()
+            var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
+            var renderPassBegin = new RenderPassBeginInfo(renderPass, framebuffer, renderArea, null);
+            cmdBuffer.CmdBeginRenderPass(renderPassBegin, SubpassContents.Inline);
+            renderPassBegin.Dispose();
+
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
+
+            // Render the triangle
+            cmdBuffer.CmdBindVertexBuffers(0, new[] { vertexData.Buffer }, new DeviceSize[] { 0 });
+            cmdBuffer.CmdDraw(3, 1, 0, 0);
+
+            // End the RenderPass
+            cmdBuffer.CmdEndRenderPass();
+        }
+        
         void CopyImageToBuffer(CommandBuffer cmdBuffer, ImageData imageData, Buffer imageBuffer, uint width, uint height)
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);

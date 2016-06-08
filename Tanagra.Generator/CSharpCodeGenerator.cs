@@ -269,6 +269,7 @@ namespace Tanagra.Generator
             
             var structNamespace = $"Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}";
             var structUsing = new[] { "System" };
+            //var structUsing = new[] { "System", "System.Runtime.InteropServices" };
 
             if(CombineFiles)
             {
@@ -295,6 +296,10 @@ namespace Tanagra.Generator
                 WriteLine("/// </summary>");
             }
 
+            // Sequential is the default layout for structures in the majority of (if not all)
+            // implementations, adding it here is a completeness mesure more then it is a
+            // correctness mesure
+            //WriteLine("[StructLayout(LayoutKind.Sequential)]"); // Serializable
             WriteLine($"{vis} struct {vkStruct.Name}");
             WriteBeginBlock();
 

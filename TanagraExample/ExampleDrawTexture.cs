@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Drawing;
 
 using SharpDX.Windows;
 
@@ -11,11 +12,12 @@ using Vulkan;                     // Core Vulkan classes
 using Vulkan.Managed;             // A managed interface to Vulkan
 using Vulkan.Managed.ObjectModel; // Extentions to object handles
 
+using Image  = Vulkan.Image;
 using Buffer = Vulkan.Buffer;
 
 namespace TanagraExample
 {
-    public class ExampleRenderToWindow
+    public class ExampleDrawTexture
     {
         class VertexData
         {
@@ -23,6 +25,7 @@ namespace TanagraExample
             public DeviceMemory DeviceMemory;
             public VertexInputBindingDescription[] BindingDescriptions;
             public VertexInputAttributeDescription[] AttributeDescriptions;
+            public int[] Indicies;
         }
 
         class ImageData
@@ -32,6 +35,7 @@ namespace TanagraExample
             public Image Image;
             public DeviceMemory Memory;
             public ImageView View;
+            public Sampler Sampler;
         }
 
         class SwapchainData
@@ -42,6 +46,23 @@ namespace TanagraExample
             public Format ImageFormat;
         }
         
+        class UniformData
+        {
+            public Buffer Buffer;
+            public DeviceMemory Memory;
+            public DescriptorBufferInfo Descriptor;
+            public uint AllocSize;
+            public IntPtr Mapped;
+        }
+
+        struct UBO
+        {
+            public OpenTK.Matrix4 projection;
+            public OpenTK.Matrix4 model;
+            public OpenTK.Vector4 viewPos;
+            public float lodBias;
+        }
+
         const Format ImageFormat = Format.R8g8b8a8Unorm;
 
         // Device is held as a class member because its used in
@@ -54,7 +75,7 @@ namespace TanagraExample
         static List<ShaderModule> shaders = new List<ShaderModule>();
         static List<PipelineShaderStageCreateInfo> shaderInfos = new List<PipelineShaderStageCreateInfo>();
 
-        public ExampleRenderToWindow()
+        public ExampleDrawTexture()
         {
             // The goal of this example is to:
             //
@@ -92,11 +113,20 @@ namespace TanagraExample
             device        = CreateDevice(physDevice, 0);           // Create a device from the physical device
             queue         = GetQueue(physDevice, 0);               // Get an execution queue from the physical device
             cmdPool       = CreateCommandPool(0);                  // Create a command pool from which command buffers are created
-            
+
             // Now that we have a command pool, we can begin creating command buffers 
             // and recording commands. You will find however that you can't do much of 
             // anything without first initializing a few more dependencies.
-            
+
+            const float zoom = -2.5f;
+            // rotation = { 0.0f, 15.0f, 0.0f };
+
+            var textureData = LoadTexture("./ThisSideUp.jpg", queue, cmdPool);
+            var uniform = CreateUniformBuffer(typeof(UBO));
+            var ubo = new UBO();
+            UpdateUBO(ubo, imageWidth, imageHeight, zoom);
+            CopyUBO(ubo, uniform);
+
             VertexData vertexData;
             RenderPass renderPass;
             PipelineLayout pipelineLayout;
@@ -108,8 +138,8 @@ namespace TanagraExample
             vertexData = CreateVertexData();
 
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./vert.spv"));
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./frag.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./texture.vert.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./texture.frag.spv"));
 
             // Create the render dependencies
             swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
@@ -374,14 +404,15 @@ namespace TanagraExample
         {
             var data = new VertexData();
 
-            var triangleVertices = new[,]
+            var quadVertices = new[,]
             {
-                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
-                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
-                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
+                {  1.0f,  1.0f,  0.0f, /* UV: */ 1.0f, 1.0f, /* Normal: */ 0.0f, 0.0f, 1.0f },
+                { -1.0f,  1.0f,  0.0f, /* UV: */ 0.0f, 1.0f, /* Normal: */ 0.0f, 0.0f, 1.0f },
+                { -1.0f, -1.0f,  0.0f, /* UV: */ 0.0f, 0.0f, /* Normal: */ 0.0f, 0.0f, 1.0f },
+                {  1.0f, -1.0f,  0.0f, /* UV: */ 1.0f, 0.0f, /* Normal: */ 0.0f, 0.0f, 1.0f },
             };
 
-            DeviceSize memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
+            DeviceSize memorySize = (ulong)(sizeof(float) * quadVertices.Length);
             data.Buffer = CreateBuffer(memorySize, BufferUsageFlags.VertexBuffer);
 
             var memoryRequirements = device.GetBufferMemoryRequirements(data.Buffer);
@@ -390,18 +421,21 @@ namespace TanagraExample
             data.DeviceMemory = BindBuffer(data.Buffer, allocateInfo);
             
             var mapped = device.MapMemory(data.DeviceMemory, 0, memorySize);
-            VulkanUtils.Copy2DArray(triangleVertices, mapped, memorySize, memorySize);
+            VulkanUtils.Copy2DArray(quadVertices, mapped, memorySize, memorySize);
             device.UnmapMemory(data.DeviceMemory);
-            
+
+            data.Indicies = new[] { 0,1,2, 2,3,0 };
+
             data.BindingDescriptions = new[]
             {
-                new VertexInputBindingDescription(0, (uint)(sizeof(float) * triangleVertices.GetLength(1)), VertexInputRate.Vertex)
+                new VertexInputBindingDescription(0, (uint)(sizeof(float) * quadVertices.GetLength(1)), VertexInputRate.Vertex)
             };
 
             data.AttributeDescriptions = new[]
             {
-                new VertexInputAttributeDescription(0, 0, Format.R32g32b32Sfloat, 0),
-                new VertexInputAttributeDescription(1, 0, Format.R32g32b32Sfloat, sizeof(float) * 3)
+                new VertexInputAttributeDescription(0, 0, Format.R32g32b32Sfloat, 0),                 // Vertex: X, Y, Z
+                new VertexInputAttributeDescription(1, 0, Format.R32g32Sfloat, sizeof(float) * 3),    // UV: U, V
+                new VertexInputAttributeDescription(2, 0, Format.R32g32b32Sfloat, sizeof(float) * 5), // Normal: X, Y, Z
             };
 
             return data;
@@ -519,16 +553,13 @@ namespace TanagraExample
             return device.CreateShaderModule(createInfo);
         }
 
-        PipelineLayout CreatePipelineLayout()
+        PipelineLayout CreatePipelineLayout(DescriptorSetLayout layout)
         {
             // The pipeline layout represents a sequence of descriptor sets with each having a 
             // specific layout. This sequence of layouts is used to determine the interface between 
             // shader stages and shader resources. Each pipeline is created using a pipeline layout.
-
-            // We're not using any resources in this example so we dont
-            // need to create any descriptor sets
-
-            var createInfo = new PipelineLayoutCreateInfo();
+            
+            var createInfo = new PipelineLayoutCreateInfo(new[]{ layout }, null);
             return device.CreatePipelineLayout(createInfo);
         }
 
@@ -603,8 +634,125 @@ namespace TanagraExample
 
         #endregion
 
-        #region Rendering
+        ImageData LoadTexture(string filename, Queue queue, CommandPool cmdPool)
+        {
+            //
+            var bmp = new Bitmap(filename);
+
+            var bitmapFormat = System.Drawing.Imaging.PixelFormat.Format24bppRgb;
+            var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            var bitmapData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmapFormat);
+            //
+            
+            uint imageWidth  = (uint)bmp.Width;
+            uint imageHeight = (uint)bmp.Height;
+
+            var imageData    = new ImageData();
+            imageData.Width  = imageWidth;
+            imageData.Height = imageHeight;
+            imageData.Image  = CreateImage(ImageFormat, imageWidth, imageHeight);
+            imageData.Memory = BindImage(imageData.Image);
+            imageData.View   = CreateImageView(imageData.Image, ImageFormat);
+            
+            var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
+            var imageBuffer = CreateBuffer(memRequirements.Size, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst);
+            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
+            var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
+            imageData.Memory = BindBuffer(imageBuffer, memAlloc);
+            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 3), imageData.Memory, memRequirements);
+            CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
+
+            //
+            bmp.UnlockBits(bitmapData);
+            bmp.Dispose();
+            //
+
+            return imageData;
+        }
+
+        UniformData CreateUniformBuffer(Type targetType)
+        {
+            var data = new UniformData();
+            var size = Marshal.SizeOf(targetType);
+            data.Buffer = CreateBuffer((ulong)size, BufferUsageFlags.UniformBuffer);
+
+            var memRequirements = device.GetBufferMemoryRequirements(data.Buffer);
+            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
+            var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
+            data.Memory = BindBuffer(data.Buffer, memAlloc);
+
+            data.Descriptor = new DescriptorBufferInfo(data.Buffer, 0, memAlloc.AllocationSize);
+
+            return data;
+        }
+
+        void UpdateUBO(UBO ubo, float width, float height, float zoom)
+        {
+            ubo.projection = OpenTK.Matrix4.CreatePerspectiveFieldOfView(DegreesToRadians(60), width / height, 0.001f, 256.0f);
+
+            var viewMatrix = OpenTK.Matrix4.CreateTranslation(0, 0, zoom);
+            ubo.model = OpenTK.Matrix4.Identity;
+
+            ubo.viewPos = new OpenTK.Vector4(0, 0, -zoom, 0);
+
+            //return ubo;
+        }
+
+        void CopyUBO(UBO ubo, UniformData uniform)
+        {
+            if(uniform.Mapped == IntPtr.Zero)
+                uniform.Mapped = device.MapMemory(uniform.Memory, 0, uniform.AllocSize);
+            
+            var size = Marshal.SizeOf(typeof(UBO));
+            var bytes = new byte[size];
+            IntPtr ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(ubo, ptr, true);
+            Marshal.Copy(ptr, bytes, 0, size);
+            Marshal.FreeHGlobal(ptr);
+
+            Marshal.Copy(bytes, 0, uniform.Mapped, size);
+        }
+
+        DescriptorPool CreateDescriptorPool()
+        {
+            var poolSizes = new[]
+            {
+                new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
+                new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 1),
+            };
+            
+            var createInfo = new DescriptorPoolCreateInfo(2, poolSizes);
+            return device.CreateDescriptorPool(createInfo);
+        }
         
+        DescriptorSetLayout CreateDescriptorSetLayout()
+        {
+            var layoutBindings = new[]
+            {
+                new DescriptorSetLayoutBinding(0, DescriptorType.UniformBuffer, ShaderStageFlags.Vertex),
+                new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, ShaderStageFlags.Fragment),
+            };
+
+            var createInfo = new DescriptorSetLayoutCreateInfo(layoutBindings);
+            return device.CreateDescriptorSetLayout(createInfo);
+        }
+
+        void InitializeDescriptorSet(DescriptorPool pool, DescriptorSetLayout layout, Sampler sampler, ImageData imageData, UniformData uniformData)
+        {
+            var allocInfo = new DescriptorSetAllocateInfo(pool, new[] { layout });
+            var sets = device.AllocateDescriptorSets(allocInfo);
+            var descriptorSet = sets.First();
+            var texDescriptor = new DescriptorImageInfo(imageData.Sampler, imageData.View, ImageLayout.General);
+            var writeDescriptorSets = new[]
+            {
+                new WriteDescriptorSet(descriptorSet, 0, 0, DescriptorType.UniformBuffer, null, new[]{ uniformData.Descriptor }, null),
+                new WriteDescriptorSet(descriptorSet, 1, 0, DescriptorType.CombinedImageSampler, new[]{ texDescriptor }, null, null),
+            };
+            device.UpdateDescriptorSets(writeDescriptorSets, null);
+        }
+
+        #region Rendering
+
         void Render(Queue queue, CommandBuffer cmdBuffer, VertexData vertexData, RenderPass renderPass, Pipeline pipeline, SwapchainData swapchainData)
         {
             var semaphoreCreateInfo = new SemaphoreCreateInfo();
@@ -726,6 +874,20 @@ namespace TanagraExample
             return data;
         }
 
+        void CopyBitmapToBuffer(IntPtr scan0, int bitmapSize, DeviceMemory bufferMem, MemoryRequirements memRequirements)
+        {
+            var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
+            Copy(scan0, map, bitmapSize); // (int)(imageWidth * imageHeight * 3)
+            device.UnmapMemory(bufferMem);
+        }
+
+        void Copy(IntPtr src, IntPtr dest, int size)
+        {
+            var data = new byte[size];
+            Marshal.Copy(src, data, 0, size);
+            Marshal.Copy(data, 0, dest, size);
+        }
+
         void WriteBitmap(byte[] imageBytes, string filename)
         {
             // BMP header
@@ -763,6 +925,12 @@ namespace TanagraExample
                     return x;
 
             throw new InvalidOperationException();
+        }
+
+        float DegreesToRadians(float degrees)
+        {
+            const float degToRad = (float)System.Math.PI / 180.0f;
+            return degrees * degToRad;
         }
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
