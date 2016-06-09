@@ -20,3 +20,7 @@ VK_STENCIL_FRONT_AND_BACK
 In most destroy commands (ie DestroyFence) the handle to be destroyed is an optional param ... why?
 
 Dispatchable handles use the platform word length so IntPtr is used to ensure that they are the correct size in structs on both platforms. Nondispatchable handles are always 64 bits in length. 
+
+[StructLayout(LayoutKind.Sequential)]
+C#, Visual Basic, and C++ compilers apply the Sequential layout value to structures by default
+https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.structlayoutattribute(v=vs.110).aspx

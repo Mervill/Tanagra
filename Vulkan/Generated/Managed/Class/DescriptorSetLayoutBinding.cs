@@ -26,6 +26,15 @@ namespace Vulkan.Managed
         }
         
         /// <summary>
+        /// Number of descriptors in this binding (Optional)
+        /// </summary>
+        public UInt32 DescriptorCount
+        {
+            get { return NativePointer->DescriptorCount; }
+            set { NativePointer->DescriptorCount = value; }
+        }
+        
+        /// <summary>
         /// Shader stages this binding is visible to
         /// </summary>
         public ShaderStageFlags StageFlags

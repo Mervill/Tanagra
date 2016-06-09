@@ -613,7 +613,7 @@ namespace TanagraExample
             // on individual fragments before they finally alter the framebuffer.
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
             //rasterizationState.RasterizerDiscardEnable = true;
-            //rasterizationState.LineWidth = 1;
+            rasterizationState.LineWidth = 1;
 
             //PipelineDepthStencilStateCreateInfo
             //PipelineDynamicStateCreateInfo
@@ -770,6 +770,8 @@ namespace TanagraExample
                 new DescriptorSetLayoutBinding(0, DescriptorType.UniformBuffer, ShaderStageFlags.Vertex),
                 new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, ShaderStageFlags.Fragment),
             };
+            layoutBindings[0].DescriptorCount = 1;
+            layoutBindings[1].DescriptorCount = 1;
 
             var createInfo = new DescriptorSetLayoutCreateInfo(layoutBindings);
             return device.CreateDescriptorSetLayout(createInfo);
@@ -783,9 +785,11 @@ namespace TanagraExample
             var texDescriptor = new DescriptorImageInfo(imageData.Sampler, imageData.View, ImageLayout.General);
             var writeDescriptorSets = new[]
             {
-                new WriteDescriptorSet(descriptorSet, 0, 0, DescriptorType.UniformBuffer, null, new[]{ uniformData.Descriptor }, null),
-                new WriteDescriptorSet(descriptorSet, 1, 0, DescriptorType.CombinedImageSampler, new[]{ texDescriptor }, null, null),
+                new WriteDescriptorSet(descriptorSet, 0, 0, DescriptorType.UniformBuffer, null, null, null),
+                new WriteDescriptorSet(descriptorSet, 1, 0, DescriptorType.CombinedImageSampler, null, null, null),
             };
+            writeDescriptorSets[0].BufferInfo = new[] { uniformData.Descriptor };
+            writeDescriptorSets[0].ImageInfo = new[] { texDescriptor };
             device.UpdateDescriptorSets(writeDescriptorSets, null);
             return descriptorSet;
         }
@@ -851,7 +855,7 @@ namespace TanagraExample
 
             cmdBuffer.CmdBindVertexBuffers(0, new[] { vertexData.Buffer }, new DeviceSize[] { 0 });
             cmdBuffer.CmdBindIndexBuffer(vertexData.IndexBuffer, 0, IndexType.Uint32);
-            cmdBuffer.CmdDrawIndexed((uint)vertexData.Indicies.Length, 1, 0, 0, 0);
+            cmdBuffer.CmdDrawIndexed((uint)vertexData.Indicies.Length, 1, 0, 0, 1);
 
             // End the RenderPass
             cmdBuffer.CmdEndRenderPass();
@@ -1005,7 +1009,7 @@ namespace TanagraExample
         {
             if(messageCode != 0)
                 Console.WriteLine(message);
-            return true;
+            return false;
         }
     }
 }

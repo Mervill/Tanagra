@@ -91,7 +91,7 @@ namespace TanagraExample
             
             WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
             WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
-            WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
+            //WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
 
             WriteLine("Any key to continue");
             WriteLine("[INFO] Starup OK, Launching...");
@@ -723,7 +723,7 @@ namespace TanagraExample
             GC.WaitForPendingFinalizers();
             WriteLine($"[INFO] Allocator: {allocator.CallCount} allocated pointers");
             WriteLine($"[INFO] Allocator: {allocator.TrackedBytes} tracked bytes");
-            WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
+            //WriteLine($"[INFO] MemoryUtils: {MemUtil.AllocCount} allocated pointers");
         }
         
         private void GetProcessHandles(out IntPtr HINSTANCE, out IntPtr HWND)

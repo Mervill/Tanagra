@@ -498,10 +498,10 @@ namespace Tanagra.Generator
                 if (vkMember.Len.Length == 0)
                     continue;
 
-                var memberCountName = vkMember.Len[0];
+                /*var memberCountName = vkMember.Len[0];
                 var isCountMember = vkStruct.Members.Any(x => x.Name == memberCountName);
                 if(isCountMember && !hiddenMembers.Contains(vkStruct.Name))
-                    hiddenMembers.Add(memberCountName);
+                    hiddenMembers.Add(memberCountName);*/
             }
 
             if (vkStruct.IsExtensible)
