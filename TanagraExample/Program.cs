@@ -12,8 +12,8 @@ namespace TanagraExample
             //run();
             //var example = new ExampleRenderToWindow();
             //var example = new ExampleRenderToDisk();
-            //var example = new ExampleDrawTexture();
-            var example = new ExampleRenderToWindow2();
+            var example = new ExampleDrawTexture();
+            //var example = new ExampleRenderToWindow2();
 
             //var opt = new Tanagra.InstanceMgr.InitializeOptions();
             //opt.ForceUseDevice(x);

@@ -61,7 +61,7 @@ namespace TanagraExample
         {
             public OpenTK.Matrix4 projection;
             public OpenTK.Matrix4 model;
-            public float lodBias;
+            public OpenTK.Matrix4 view;
         }
         
         // Device is held as a class member because its used in
@@ -120,12 +120,11 @@ namespace TanagraExample
             const float zoom = 3f;
             // rotation = { 0.0f, 15.0f, 0.0f };
 
-            var textureData = LoadTexture("./ThisSideUp.jpg", queue, cmdPool);
-            var uniform = CreateUniformBuffer(typeof(UBO));
+            var textureData = LoadTexture("./test-image.png", queue, cmdPool);
             
-            var ubo = new UBO();
-            UpdateUBO(ubo, imageWidth, imageHeight, zoom);
-            CopyUBO(ubo, uniform);
+            var uniformData = CreateUniformBuffer(typeof(UBO));
+            var ubo = UpdateUBO(new UBO(), imageWidth, imageHeight, 3);
+            CopyUBO(ubo, uniformData);
 
             VertexData vertexData;
             RenderPass renderPass;
@@ -154,7 +153,7 @@ namespace TanagraExample
 
             var descriptorPool      = CreateDescriptorPool();
             var descriptorSetLayout = CreateDescriptorSetLayout();
-            var descriptorSet       = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniform);
+            var descriptorSet       = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniformData);
 
             pipelineLayout = CreatePipelineLayout(descriptorSetLayout);
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
@@ -181,7 +180,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                "VK_LAYER_LUNARG_standard_validation"
+                //"VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -232,7 +231,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                "VK_LAYER_LUNARG_standard_validation"
+                //"VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -577,13 +576,13 @@ namespace TanagraExample
             return device.CreateShaderModule(createInfo);
         }
 
-        PipelineLayout CreatePipelineLayout(DescriptorSetLayout layout)
+        PipelineLayout CreatePipelineLayout(DescriptorSetLayout descriptorSetLayout)
         {
             // The pipeline layout represents a sequence of descriptor sets with each having a 
             // specific layout. This sequence of layouts is used to determine the interface between 
             // shader stages and shader resources. Each pipeline is created using a pipeline layout.
             
-            var createInfo = new PipelineLayoutCreateInfo(new[]{ layout }, null);
+            var createInfo = new PipelineLayoutCreateInfo(new[]{ descriptorSetLayout }, null);
             return device.CreatePipelineLayout(createInfo);
         }
 
@@ -645,7 +644,7 @@ namespace TanagraExample
 
         Buffer CreateBuffer(DeviceSize size, BufferUsageFlags flags)
         {
-            var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, new[] { 0U });
+            var bufferCreateInfo = new BufferCreateInfo(size, flags, SharingMode.Exclusive, null);
             return device.CreateBuffer(bufferCreateInfo);
         }
 
@@ -683,16 +682,42 @@ namespace TanagraExample
             var imageBuffer = CreateBuffer(memRequirements.Size, BufferUsageFlags.TransferSrc | BufferUsageFlags.TransferDst);
             var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
-            imageData.Memory = BindBuffer(imageBuffer, memAlloc);
+            var bufferMemory = BindBuffer(imageBuffer, memAlloc);
 
-            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 4), imageData.Memory, memRequirements);
-            CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
+            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 4), bufferMemory, memRequirements);
+            
+            //
+            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            var cmdBuffer = cmdBuffers[0];
+
+            var beginInfo = new CommandBufferBeginInfo();
+            cmdBuffer.Begin(beginInfo);
+
+            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, AccessFlags.HostWrite, AccessFlags.TransferWrite);
+            CopyBufferToImage(cmdBuffer, imageData, imageBuffer);
+            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ShaderReadOnlyOptimal, AccessFlags.TransferWrite, AccessFlags.ShaderRead);
+
+            // wait... why does this work?
+            device.DestroyBuffer(imageBuffer);
+            device.FreeMemory(bufferMemory);
+            
+            cmdBuffer.End();
+            
+            var submitInfo = new SubmitInfo(null, null, new[]{ cmdBuffer }, null);
+            queue.Submit(new[] { submitInfo });
+            submitInfo.Dispose();
+            queue.WaitIdle();
+
+            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });
+            //
+
+            //CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
 
             //
             bmp.UnlockBits(bitmapData);
             bmp.Dispose();
             //
-
+            
             return imageData;
         }
 
@@ -722,18 +747,19 @@ namespace TanagraExample
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
             data.Memory = BindBuffer(data.Buffer, memAlloc);
 
-            data.Descriptor = new DescriptorBufferInfo(data.Buffer, 0, memAlloc.AllocationSize);
+            data.Descriptor = new DescriptorBufferInfo(data.Buffer, 0, (ulong)size);
 
             data.AllocSize = (uint)memAlloc.AllocationSize;
 
             return data;
         }
 
-        void UpdateUBO(UBO ubo, float width, float height, float zoom)
+        UBO UpdateUBO(UBO ubo, float width, float height, float zoom)
         {
             ubo.projection = OpenTK.Matrix4.CreatePerspectiveFieldOfView(DegreesToRadians(60), width / height, 0.001f, 256.0f);
-            //var viewMatrix = OpenTK.Matrix4.CreateTranslation(0, 0, zoom);
-            ubo.model = OpenTK.Matrix4.LookAt(new OpenTK.Vector3(0, 0, zoom), OpenTK.Vector3.Zero, OpenTK.Vector3.UnitY);
+            ubo.view = OpenTK.Matrix4.LookAt(new OpenTK.Vector3(0, 0, zoom), OpenTK.Vector3.Zero, OpenTK.Vector3.UnitY);
+            ubo.model = OpenTK.Matrix4.Identity;
+            return ubo;
         }
 
         void CopyUBO(UBO ubo, UniformData uniform)
@@ -789,7 +815,7 @@ namespace TanagraExample
                 new WriteDescriptorSet(descriptorSet, 1, 0, DescriptorType.CombinedImageSampler, null, null, null),
             };
             writeDescriptorSets[0].BufferInfo = new[] { uniformData.Descriptor };
-            writeDescriptorSets[0].ImageInfo = new[] { texDescriptor };
+            writeDescriptorSets[1].ImageInfo = new[] { texDescriptor };
             device.UpdateDescriptorSets(writeDescriptorSets, null);
             return descriptorSet;
         }
@@ -804,6 +830,7 @@ namespace TanagraExample
 
             var currentBufferIndex = (int)device.AcquireNextImageKHR(swapchainData.Swapchain, ulong.MaxValue, presentSemaphore, null);
 
+            // implicitly resets the command buffer
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
             beginInfo.Dispose();
@@ -861,15 +888,11 @@ namespace TanagraExample
             cmdBuffer.CmdEndRenderPass();
         }
 
-        void RenderTriangle(CommandBuffer cmdBuffer, VertexData vertexData, ImageData imageData, RenderPass renderPass, Pipeline pipeline, Framebuffer framebuffer)
+        void RenderTriangle(CommandBuffer cmdBuffer, VertexData vertexData, ImageData imageData, RenderPass renderPass, PipelineLayout pipelineLayout, Pipeline pipeline, DescriptorSet descriptorSet, Framebuffer framebuffer)
         {
             uint width  = imageData.Width;
             uint height = imageData.Height;
-            
-            // Set the viewport
-            var viewport = new Viewport(0, 0, width, height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new[]{ viewport });
-            
+
             // Begin the render pass. Just as all commands must be issued between a Begin() 
             // and End() call, certain commands can only be called bewteen CmdBeginRenderPass()
             // and CmdEndRenderPass()
@@ -878,16 +901,25 @@ namespace TanagraExample
             cmdBuffer.CmdBeginRenderPass(renderPassBegin, SubpassContents.Inline);
             renderPassBegin.Dispose();
 
+            var viewport = new Viewport(0, 0, width, height, 0, 1);
+            cmdBuffer.CmdSetViewport(0, new[] { viewport });
+
+            var scissor = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
+            cmdBuffer.CmdSetScissor(0, new[] { scissor });
+
+            cmdBuffer.CmdBindDescriptorSets(PipelineBindPoint.Graphics, pipelineLayout, 0, new[] { descriptorSet }, null);
+
             cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
 
             // Render the triangle
             cmdBuffer.CmdBindVertexBuffers(0, new[] { vertexData.Buffer }, new DeviceSize[] { 0 });
-            cmdBuffer.CmdDraw(3, 1, 0, 0);
+            cmdBuffer.CmdBindIndexBuffer(vertexData.IndexBuffer, 0, IndexType.Uint32);
+            cmdBuffer.CmdDrawIndexed(3, 1, 0, 0, 1);
 
             // End the RenderPass
             cmdBuffer.CmdEndRenderPass();
         }
-        
+
         void CopyImageToBuffer(CommandBuffer cmdBuffer, ImageData imageData, Buffer imageBuffer, uint width, uint height)
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
@@ -928,6 +960,15 @@ namespace TanagraExample
             queue.WaitIdle();
 
             device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
+        }
+
+        void CopyBufferToImage(CommandBuffer cmdBuffer, ImageData imageData, Buffer imageBuffer)
+        {
+            //PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, AccessFlags.HostWrite, AccessFlags.TransferWrite);
+            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
+            var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
+            cmdBuffer.CmdCopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
+            //PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ShaderReadOnlyOptimal, AccessFlags.TransferWrite, AccessFlags.ShaderRead);
         }
 
         void CopyArrayToBuffer(DeviceMemory bufferMem, DeviceSize size, byte[] data)

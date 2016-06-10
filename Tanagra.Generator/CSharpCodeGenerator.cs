@@ -1056,6 +1056,8 @@ namespace Tanagra.Generator
 
                 WriteBeginBlock();
 
+                //WriteLine($"Console.WriteLine(\"{vkCommand.SpecName}\");");
+
                 #region Single Return Prologue
                 if(commandInfo.ReturnParam != null && !commandInfo.ReturnsList)
                 {

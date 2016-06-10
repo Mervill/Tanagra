@@ -11,6 +11,8 @@ The example project has SharpDX as a dependency, this is just to gain access to 
 
 If you're looking for the LUNARG validation layer (`VK_LAYER_LUNARG_standard_validation`) you can downloaded it from lunarG [here](https://lunarg.com/vulkan-sdk/)
 
+Approximately %40 of all commands have been tested
+
 ## How To Play
 
 ### Tanagra

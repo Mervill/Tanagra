@@ -505,6 +505,36 @@ namespace TanagraExample
             return data;
         }
 
+        void CopyToDeviceLocalBuffer(byte[] bytes, BufferUsageFlags flags)
+        {
+            var bufferSize = (ulong)bytes.Length;
+
+            // hostBuffer
+            var hostBuffer = CreateBuffer(bufferSize, BufferUsageFlags.TransferSrc);
+            var memoryRequirements = device.GetBufferMemoryRequirements(hostBuffer);
+            var memoryIndex = FindMemoryIndex(MemoryPropertyFlags.HostVisible);
+            var allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, memoryIndex);
+            var hostBufferMemory = device.AllocateMemory(allocateInfo);
+            CopyArrayToBuffer(hostBufferMemory, bufferSize, bytes);
+            device.BindBufferMemory(hostBuffer, hostBufferMemory, 0);
+
+            // deviceBuffer
+            var deviceBuffer = CreateBuffer(bufferSize, flags | BufferUsageFlags.TransferDst);
+            memoryRequirements = device.GetBufferMemoryRequirements(deviceBuffer);
+            memoryIndex = FindMemoryIndex(MemoryPropertyFlags.DeviceLocal);
+            allocateInfo = new MemoryAllocateInfo(memoryRequirements.Size, memoryIndex);
+            var deviceBufferMemory = device.AllocateMemory(allocateInfo);
+            device.BindBufferMemory(deviceBuffer, deviceBufferMemory, 0);
+
+            // todo: device copy
+            //var copyRegion = new BufferCopy(0, 0, vertexBufferSize);
+            //cmdBuffer.CmdCopyBuffer(vertexSrcBuffer, vertexDstBuffer, new[] { copyRegion });
+
+            device.DestroyBuffer(hostBuffer);
+
+            // todo
+        }
+
         Image CreateImage(Format imageFormat, uint width, uint height)
         {
             // Images represent multidimensional - up to 3 - arrays of data which can be used for 

@@ -24,3 +24,8 @@ Dispatchable handles use the platform word length so IntPtr is used to ensure th
 [StructLayout(LayoutKind.Sequential)]
 C#, Visual Basic, and C++ compilers apply the Sequential layout value to structures by default
 https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.structlayoutattribute(v=vs.110).aspx
+
+Command Recording
+---
+
+- individual command buffers allocated from the pool can be reset either explicitly, by calling vkResetCommandBuffer, or implicitly, by calling vkBeginCommandBuffer on an executable command buffer. (spec/5.1)
