@@ -43,7 +43,8 @@ namespace TanagraExample
         Device device;
         
         PhysicalDeviceMemoryProperties physDeviceMem;
-        
+        DebugReportCallbackEXT debugCallback;
+
         public ExampleRenderToDisk()
         {
             // The goal of this example is to:
@@ -123,15 +124,15 @@ namespace TanagraExample
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
             var shaderStageCreateInfos = new[]
             {
-                GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "vert.spv"),
-                GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "frag.spv"),
+                GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "triangle.vert.spv"),
+                GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "triangle.frag.spv"),
             };
 
             // Create the render dependencies
             renderPass     = CreateRenderPass(ImageFormat);
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderStageCreateInfos, vertexData);
-            pipeline       = pipelines[0];
+            pipeline       = pipelines.First();
             framebuffer    = CreateFramebuffer(renderPass, imageData);
             
             // Render the triangle to the image
@@ -143,21 +144,30 @@ namespace TanagraExample
 
             #region Shutdown
             // Destroy Vulkan handles in reverse order of creation (roughly)
+            
+            device.DestroyShaderModule(shaderStageCreateInfos[0].Module);
+            device.DestroyShaderModule(shaderStageCreateInfos[1].Module);
 
             device.DestroyBuffer(imageBuffer);
+            device.FreeMemory(bufferMem);
+            
+            device.DestroyImageView(imageData.View);
+            device.DestroyImage(imageData.Image);
+            device.FreeMemory(imageData.Memory);
+
+            device.DestroyBuffer(vertexData.Buffer);
+            device.FreeMemory(vertexData.DeviceMemory);
+
             device.DestroyFramebuffer(framebuffer);
             device.DestroyPipeline(pipeline);
             device.DestroyPipelineLayout(pipelineLayout);
             device.DestroyRenderPass(renderPass);
-            
-            device.DestroyImageView(imageData.View);
-            device.DestroyImage(imageData.Image);
-
-            device.DestroyBuffer(vertexData.Buffer);
 
             device.DestroyCommandPool(cmdPool);
 
             device.Destroy();
+
+            DebugUtils.DestroyDebugReportCallback(instance, debugCallback);
 
             instance.Destroy();
             #endregion
@@ -173,9 +183,22 @@ namespace TanagraExample
 
             // For this example, we want Vulkan to act in a 'default' fashion, so we don't
             // pass and ApplicationInfo object and we don't request any layers or extensions
-            
-            var instanceCreateInfo = new InstanceCreateInfo(null, null);
+
+            String[] enabledLayers = new string[]
+            {
+                "VK_LAYER_LUNARG_standard_validation"
+            };
+
+            var enabledExtensions = new[]
+            {
+                VulkanConstant.ExtDebugReportExtensionName,
+            };
+
+            var instanceCreateInfo = new InstanceCreateInfo(enabledLayers, enabledExtensions);
             var instance = Vk.CreateInstance(instanceCreateInfo);
+
+            debugCallback = DebugUtils.CreateDebugReportCallback(instance, DebugReport);
+
             return instance;
         }
 
@@ -209,12 +232,18 @@ namespace TanagraExample
             // identified, an application will create a corresponding logical device. An application 
             // must create a separate logical device for each physical device it will use. The created 
             // logical device is then the primary interface to the physical device.
-            
+
+            String[] enabledLayers = new string[]
+            {
+                "VK_LAYER_LUNARG_standard_validation"
+            };
+
             var features = new PhysicalDeviceFeatures();
             features.ShaderClipDistance = true;
+            features.ShaderCullDistance = true;
 
             var queueCreateInfo = new DeviceQueueCreateInfo(queueFamily, new[]{ 0f });
-            var deviceCreateInfo = new DeviceCreateInfo(new[]{ queueCreateInfo }, null, null);
+            var deviceCreateInfo = new DeviceCreateInfo(new[]{ queueCreateInfo }, enabledLayers, null);
             deviceCreateInfo.EnabledFeatures = features;
             return physicalDevice.CreateDevice(deviceCreateInfo);
         }
@@ -275,9 +304,9 @@ namespace TanagraExample
 
             var triangleVertices = new[,]
             {
-                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
-                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
-                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
+                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
+                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
+                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
             };
 
             DeviceSize memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
@@ -338,8 +367,7 @@ namespace TanagraExample
             // subresources.
 
             var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            var components = new ComponentMapping(ComponentSwizzle.R, ComponentSwizzle.G, ComponentSwizzle.B, ComponentSwizzle.A);
-            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, imageFormat, components, subresourceRange);
+            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
             return device.CreateImageView(createInfo);
         }
 
@@ -456,7 +484,6 @@ namespace TanagraExample
             // fragment so produced is fed to the next stage (Fragment Shader) that performs operations 
             // on individual fragments before they finally alter the framebuffer.
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
-            //rasterizationState.RasterizerDiscardEnable = true;
             rasterizationState.LineWidth = 1;
 
             var createInfos = new[]
@@ -464,7 +491,7 @@ namespace TanagraExample
                 new GraphicsPipelineCreateInfo(shaderStageCreateInfos, vertexInputState, inputAssemblyState, rasterizationState, pipelineLayout, renderPass, 0, 0)
                 {
                     ViewportState = new PipelineViewportStateCreateInfo(),
-                    MultisampleState = new PipelineMultisampleStateCreateInfo() 
+                    MultisampleState = new PipelineMultisampleStateCreateInfo()
                     {
                         RasterizationSamples = SampleCountFlags.SampleCountFlags1
                     }
@@ -628,6 +655,10 @@ namespace TanagraExample
             // Remove every 4th byte (alpha) to convert the image to a 24bpp (RGB) BMP
             imageBytes = imageBytes.Where((x, i) => (i + 1) % 4 != 0).ToArray();
 
+            // The image will be flipped vertically from the correct output,
+            // this is because of the BMP format
+            imageBytes = imageBytes.Reverse().ToArray();
+
             var final = headerBytes.ToList();
             final.AddRange(imageBytes);
 
@@ -653,6 +684,12 @@ namespace TanagraExample
 
             throw new InvalidOperationException();
         }
-        
+
+        private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
+        {
+            if (messageCode != 0)
+                Console.WriteLine(message);
+            return false;
+        }
     }
 }

@@ -42,8 +42,6 @@ namespace TanagraExample
             public Format ImageFormat;
         }
         
-        const Format ImageFormat = Format.R8g8b8a8Unorm;
-
         // Device is held as a class member because its used in
         // basically every operation after it's been created.
         Device device;
@@ -108,8 +106,8 @@ namespace TanagraExample
             vertexData = CreateVertexData();
 
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./vert.spv"));
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./frag.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./triangle.vert.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./triangle.frag.spv"));
 
             // Create the render dependencies
             swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
@@ -125,15 +123,45 @@ namespace TanagraExample
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
             pipeline       = pipelines.First();
-            
-            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
-            var cmdBuffer  = cmdBuffers.First();
-            
-            RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipeline, swapchainData));
-            
+
+            //var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            //var cmdBuffer  = cmdBuffers.First();
+            //RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipeline, swapchainData));
+
+            var cmdBuffers = AllocateCommandBuffers(cmdPool, (uint)swapchainData.Images.Count());
+            for (int x = 0; x < swapchainData.Images.Count(); x++)
+                CreateCommandBuffer(cmdBuffers[x], vertexData, renderPass, pipeline, swapchainData.Images[x], swapchainData.Framebuffers[x]);
+
+            RenderLoop.Run(window, () => OnRenderCallback(queue, cmdBuffers, swapchainData));
+
             #region Shutdown
-            // Destroy Vulkan handles in reverse order of creation (roughly)
-            // todo
+            // Destroy Vulkan handles
+
+            device.FreeCommandBuffers(cmdPool, cmdBuffers);
+
+            device.DestroyShaderModule(shaderInfos[0].Module);
+            device.DestroyShaderModule(shaderInfos[1].Module);
+
+            swapchainData.Images.ForEach(x => device.DestroyImageView(x.View));
+            swapchainData.Framebuffers.ForEach(x => device.DestroyFramebuffer(x));
+            device.DestroySwapchainKHR(swapchainData.Swapchain);
+            
+            device.DestroyPipeline(pipeline);
+            device.DestroyPipelineLayout(pipelineLayout);
+            device.DestroyRenderPass(renderPass);
+
+            device.DestroyBuffer(vertexData.Buffer);
+            device.FreeMemory(vertexData.DeviceMemory);
+
+            device.DestroyCommandPool(cmdPool);
+
+            device.Destroy();
+
+            instance.DestroySurfaceKHR(surface);
+
+            DebugUtils.DestroyDebugReportCallback(instance, debugCallback);
+
+            instance.Destroy();
             #endregion
         }
 
@@ -208,6 +236,7 @@ namespace TanagraExample
 
             var features = new PhysicalDeviceFeatures();
             features.ShaderClipDistance = true;
+            features.ShaderCullDistance = true;
 
             var queueCreateInfo = new DeviceQueueCreateInfo(queueFamily, new[]{ 0f });
             var deviceCreateInfo = new DeviceCreateInfo(new[]{ queueCreateInfo }, enabledLayers, enabledExtensions);
@@ -332,11 +361,11 @@ namespace TanagraExample
         List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, Image[] images, Format imageFormat)
         {
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
-            var cmdBuffer  = cmdBuffers[0];
+            var cmdBuffer  = cmdBuffers.First();
 
             var inheritanceInfo = new CommandBufferInheritanceInfo();
             var beginInfo = new CommandBufferBeginInfo { InheritanceInfo = inheritanceInfo };
-            cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
+            cmdBuffer.Begin(beginInfo);
             
             foreach(var img in images)
                 PipelineBarrierSetLayout(cmdBuffer, img, ImageLayout.Undefined, ImageLayout.PresentSrcKHR, AccessFlags.None, AccessFlags.None);
@@ -357,9 +386,7 @@ namespace TanagraExample
                 imgData.Image = img;
                 imgData.Width = 800;
                 imgData.Height = 600;
-                var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-                var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
-                imgData.View = device.CreateImageView(createInfo);
+                imgData.View = CreateImageView(img, imageFormat);
                 imageDatas.Add(imgData);
             }
 
@@ -376,9 +403,9 @@ namespace TanagraExample
 
             var triangleVertices = new[,]
             {
-                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
-                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
-                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
+                {  0.5f,  0.5f,  0.0f, /* Vertex Color: */ 1.0f, 0.0f, 0.0f },
+                { -0.5f,  0.5f,  0.0f, /* Vertex Color: */ 0.0f, 1.0f, 0.0f },
+                {  0.0f, -0.5f,  0.0f, /* Vertex Color: */ 0.0f, 0.0f, 1.0f },
             };
 
             DeviceSize memorySize = (ulong)(sizeof(float) * triangleVertices.Length);
@@ -439,8 +466,7 @@ namespace TanagraExample
             // subresources.
 
             var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            var components = new ComponentMapping(ComponentSwizzle.R, ComponentSwizzle.G, ComponentSwizzle.B, ComponentSwizzle.A);
-            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, imageFormat, components, subresourceRange);
+            var createInfo = new ImageViewCreateInfo(image, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
             return device.CreateImageView(createInfo);
         }
 
@@ -604,48 +630,28 @@ namespace TanagraExample
         #endregion
 
         #region Rendering
-        
-        void Render(Queue queue, CommandBuffer cmdBuffer, VertexData vertexData, RenderPass renderPass, Pipeline pipeline, SwapchainData swapchainData)
+
+        void CreateCommandBuffer(CommandBuffer cmdBuffer, VertexData vertexData, RenderPass renderPass, Pipeline pipeline, ImageData swapchainImageData, Framebuffer framebuffer)
         {
-            var semaphoreCreateInfo = new SemaphoreCreateInfo();
-            var presentSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
-            semaphoreCreateInfo.Dispose();
-
-            var currentBufferIndex = (int)device.AcquireNextImageKHR(swapchainData.Swapchain, ulong.MaxValue, presentSemaphore, null);
-
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
             beginInfo.Dispose();
 
-            PipelineBarrierSetLayout(cmdBuffer, swapchainData.Images[currentBufferIndex].Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            cmdBuffer.CmdClearColorImage(swapchainData.Images[currentBufferIndex].Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
+            cmdBuffer.CmdClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
 
-            RenderTriangle(cmdBuffer, vertexData, swapchainData.Images[currentBufferIndex], renderPass, pipeline, swapchainData.Framebuffers[currentBufferIndex]);
+            RenderTriangle(cmdBuffer, vertexData, renderPass, framebuffer, pipeline, swapchainImageData.Width, swapchainImageData.Height);
 
-            PipelineBarrierSetLayout(cmdBuffer, swapchainData.Images[currentBufferIndex].Image, ImageLayout.ColorAttachmentOptimal, ImageLayout.PresentSrcKHR, AccessFlags.ColorAttachmentWrite, AccessFlags.MemoryRead);
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.ColorAttachmentOptimal, ImageLayout.PresentSrcKHR, AccessFlags.ColorAttachmentWrite, AccessFlags.MemoryRead);
 
             // End recording commands to the buffer
             cmdBuffer.End();
-
-            SubmitForExecution(queue, presentSemaphore, cmdBuffer);
-
-            // Present the image (display it on the screen)
-            var presentInfo = new PresentInfoKHR(new[]{ swapchainData.Swapchain }, new[]{ (uint)currentBufferIndex });
-            queue.PresentKHR(presentInfo);
-            presentInfo.Dispose();
-
-            queue.WaitIdle(); // wait for execution to finish
-
-            device.DestroySemaphore(presentSemaphore);
         }
-
-        void RenderTriangle(CommandBuffer cmdBuffer, VertexData vertexData, ImageData imageData, RenderPass renderPass, Pipeline pipeline, Framebuffer framebuffer)
+        
+        void RenderTriangle(CommandBuffer cmdBuffer, VertexData vertexData, RenderPass renderPass, Framebuffer framebuffer, Pipeline pipeline, uint width, uint height)
         {
-            uint width  = imageData.Width;
-            uint height = imageData.Height;
-            
             // Set the viewport
             var viewport = new Viewport(0, 0, width, height, 0, 0);
             cmdBuffer.CmdSetViewport(0, new[]{ viewport });
@@ -667,7 +673,26 @@ namespace TanagraExample
             // End the RenderPass
             cmdBuffer.CmdEndRenderPass();
         }
-        
+
+        void OnRenderCallback(Queue queue, CommandBuffer[] cmdBuffer, SwapchainData swapchainData)
+        {
+            var semaphoreCreateInfo = new SemaphoreCreateInfo();
+            var presentSemaphore = device.CreateSemaphore(semaphoreCreateInfo);
+            semaphoreCreateInfo.Dispose();
+
+            var currentBufferIndex = (int)device.AcquireNextImageKHR(swapchainData.Swapchain, ulong.MaxValue, presentSemaphore, null);
+            SubmitForExecution(queue, presentSemaphore, cmdBuffer[currentBufferIndex]);
+
+            // Present the image (display it on the screen)
+            var presentInfo = new PresentInfoKHR(new[] { swapchainData.Swapchain }, new[] { (uint)currentBufferIndex });
+            queue.PresentKHR(presentInfo);
+            presentInfo.Dispose();
+
+            queue.WaitIdle(); // wait for execution to finish
+
+            device.DestroySemaphore(presentSemaphore);
+        }
+
         void CopyImageToBuffer(CommandBuffer cmdBuffer, ImageData imageData, Buffer imageBuffer, uint width, uint height)
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
@@ -767,7 +792,8 @@ namespace TanagraExample
 
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
-            if(messageCode != 0) Console.WriteLine(message);
+            if(messageCode != 0)
+                Console.WriteLine(message);
             return false;
         }
     }

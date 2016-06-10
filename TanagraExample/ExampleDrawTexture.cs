@@ -54,7 +54,6 @@ namespace TanagraExample
             public DeviceMemory Memory;
             public DescriptorBufferInfo Descriptor;
             public uint AllocSize;
-            public IntPtr Mapped;
         }
 
         struct UBO
@@ -117,9 +116,6 @@ namespace TanagraExample
             // and recording commands. You will find however that you can't do much of 
             // anything without first initializing a few more dependencies.
             
-            const float zoom = 3f;
-            // rotation = { 0.0f, 15.0f, 0.0f };
-
             var textureData = LoadTexture("./test-image.png", queue, cmdPool);
             
             var uniformData = CreateUniformBuffer(typeof(UBO));
@@ -163,10 +159,49 @@ namespace TanagraExample
             var cmdBuffer  = cmdBuffers.First();
             
             RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipelineLayout, pipeline, descriptorSet, swapchainData));
-            
+
             #region Shutdown
-            // Destroy Vulkan handles in reverse order of creation (roughly)
-            // todo
+            // Destroy Vulkan handles
+
+            device.DestroyBuffer(uniformData.Buffer);
+            device.FreeMemory(uniformData.Memory);
+
+            //device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
+            device.DestroyDescriptorSetLayout(descriptorSetLayout);
+            device.DestroyDescriptorPool(descriptorPool);
+
+            device.DestroySampler(textureData.Sampler);
+            device.DestroyImageView(textureData.View);
+            device.DestroyImage(textureData.Image);
+            device.FreeMemory(textureData.Memory);
+
+            device.FreeCommandBuffers(cmdPool, cmdBuffers);
+
+            device.DestroyShaderModule(shaderInfos[0].Module);
+            device.DestroyShaderModule(shaderInfos[1].Module);
+
+            swapchainData.Images.ForEach(x => device.DestroyImageView(x.View));
+            swapchainData.Framebuffers.ForEach(x => device.DestroyFramebuffer(x));
+            device.DestroySwapchainKHR(swapchainData.Swapchain);
+
+            device.DestroyPipeline(pipeline);
+            device.DestroyPipelineLayout(pipelineLayout);
+            device.DestroyRenderPass(renderPass);
+
+            device.DestroyBuffer(vertexData.IndexBuffer);
+            device.FreeMemory(vertexData.IndexDeviceMemory);
+            device.DestroyBuffer(vertexData.Buffer);
+            device.FreeMemory(vertexData.DeviceMemory);
+
+            device.DestroyCommandPool(cmdPool);
+
+            device.Destroy();
+
+            instance.DestroySurfaceKHR(surface);
+
+            DebugUtils.DestroyDebugReportCallback(instance, debugCallback);
+
+            instance.Destroy();
             #endregion
         }
 
@@ -180,7 +215,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                //"VK_LAYER_LUNARG_standard_validation"
+                "VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -231,7 +266,7 @@ namespace TanagraExample
 
             String[] enabledLayers = new string[]
             {
-                //"VK_LAYER_LUNARG_standard_validation"
+                "VK_LAYER_LUNARG_standard_validation"
             };
 
             var enabledExtensions = new[]
@@ -366,7 +401,7 @@ namespace TanagraExample
         List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, Image[] images, Format imageFormat)
         {
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
-            var cmdBuffer  = cmdBuffers[0];
+            var cmdBuffer  = cmdBuffers.First();
 
             var inheritanceInfo = new CommandBufferInheritanceInfo();
             var beginInfo = new CommandBufferBeginInfo { InheritanceInfo = inheritanceInfo };
@@ -391,9 +426,7 @@ namespace TanagraExample
                 imgData.Image = img;
                 imgData.Width = 800;
                 imgData.Height = 600;
-                var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-                var createInfo = new ImageViewCreateInfo(img, ImageViewType.ImageViewType2d, imageFormat, new ComponentMapping(), subresourceRange);
-                imgData.View = device.CreateImageView(createInfo);
+                imgData.View = CreateImageView(img, imageFormat);
                 imageDatas.Add(imgData);
             }
 
@@ -763,9 +796,8 @@ namespace TanagraExample
         }
 
         void CopyUBO(UBO ubo, UniformData uniform)
-        {
-            if(uniform.Mapped == IntPtr.Zero)
-                uniform.Mapped = device.MapMemory(uniform.Memory, 0, uniform.AllocSize);
+        {   
+            var map = device.MapMemory(uniform.Memory, 0, uniform.AllocSize);
             
             var size = Marshal.SizeOf(typeof(UBO));
             var bytes = new byte[size];
@@ -774,7 +806,9 @@ namespace TanagraExample
             Marshal.Copy(ptr, bytes, 0, size);
             Marshal.FreeHGlobal(ptr);
 
-            Marshal.Copy(bytes, 0, uniform.Mapped, size);
+            Marshal.Copy(bytes, 0, map, size);
+
+            device.UnmapMemory(uniform.Memory);
         }
         
         DescriptorPool CreateDescriptorPool()
