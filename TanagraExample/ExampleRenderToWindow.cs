@@ -48,10 +48,7 @@ namespace TanagraExample
         
         PhysicalDeviceMemoryProperties physDeviceMem;
         DebugReportCallbackEXT debugCallback;
-
-        static List<ShaderModule> shaders = new List<ShaderModule>();
-        static List<PipelineShaderStageCreateInfo> shaderInfos = new List<PipelineShaderStageCreateInfo>();
-
+        
         public ExampleRenderToWindow()
         {
             // The goal of this example is to:
@@ -61,7 +58,7 @@ namespace TanagraExample
             // - Render a triangle to the screen
             //
             
-            var window = new RenderForm(nameof(ExampleRenderToWindow));
+            var window = new RenderForm(GetType().Name);
 
             uint imageWidth  = 800;
             uint imageHeight = 600;
@@ -106,6 +103,7 @@ namespace TanagraExample
             vertexData = CreateVertexData();
 
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
+            var shaderInfos = new List<PipelineShaderStageCreateInfo>();
             shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./triangle.vert.spv"));
             shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./triangle.frag.spv"));
 
@@ -123,11 +121,7 @@ namespace TanagraExample
             pipelineLayout = CreatePipelineLayout();
             pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
             pipeline       = pipelines.First();
-
-            //var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
-            //var cmdBuffer  = cmdBuffers.First();
-            //RenderLoop.Run(window, () => Render(queue, cmdBuffer, vertexData, renderPass, pipeline, swapchainData));
-
+            
             var cmdBuffers = AllocateCommandBuffers(cmdPool, (uint)swapchainData.Images.Count());
             for (int x = 0; x < swapchainData.Images.Count(); x++)
                 CreateCommandBuffer(cmdBuffers[x], vertexData, renderPass, pipeline, swapchainData.Images[x], swapchainData.Framebuffers[x]);
@@ -640,7 +634,7 @@ namespace TanagraExample
             PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            cmdBuffer.CmdClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
+            cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
 
             RenderTriangle(cmdBuffer, vertexData, renderPass, framebuffer, pipeline, swapchainImageData.Width, swapchainImageData.Height);
 
@@ -654,24 +648,24 @@ namespace TanagraExample
         {
             // Set the viewport
             var viewport = new Viewport(0, 0, width, height, 0, 0);
-            cmdBuffer.CmdSetViewport(0, new[]{ viewport });
+            cmdBuffer.SetViewport(0, new[]{ viewport });
             
             // Begin the render pass. Just as all commands must be issued between a Begin() 
-            // and End() call, certain commands can only be called bewteen CmdBeginRenderPass()
-            // and CmdEndRenderPass()
+            // and End() call, certain commands can only be called bewteen BeginRenderPass()
+            // and EndRenderPass()
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
             var renderPassBegin = new RenderPassBeginInfo(renderPass, framebuffer, renderArea, null);
-            cmdBuffer.CmdBeginRenderPass(renderPassBegin, SubpassContents.Inline);
+            cmdBuffer.BeginRenderPass(renderPassBegin, SubpassContents.Inline);
             renderPassBegin.Dispose();
 
-            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
+            cmdBuffer.BindPipeline(PipelineBindPoint.Graphics, pipeline);
 
             // Render the triangle
-            cmdBuffer.CmdBindVertexBuffers(0, new[] { vertexData.Buffer }, new DeviceSize[] { 0 });
-            cmdBuffer.CmdDraw(3, 1, 0, 0);
+            cmdBuffer.BindVertexBuffers(0, new[] { vertexData.Buffer }, new DeviceSize[] { 0 });
+            cmdBuffer.Draw(3, 1, 0, 0);
 
             // End the RenderPass
-            cmdBuffer.CmdEndRenderPass();
+            cmdBuffer.EndRenderPass();
         }
 
         void OnRenderCallback(Queue queue, CommandBuffer[] cmdBuffer, SwapchainData swapchainData)
@@ -697,7 +691,7 @@ namespace TanagraExample
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, width, height, subresource, new Offset3D(0, 0, 0), new Extent3D(width, height, 0));
-            cmdBuffer.CmdCopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, new[]{ imageCopy });
+            cmdBuffer.CopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, new[]{ imageCopy });
         }
 
         void SubmitForExecution(Queue queue, Semaphore presentSemaphore, CommandBuffer cmdBuffer)
@@ -721,7 +715,7 @@ namespace TanagraExample
 
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
-            cmdBuffer.CmdCopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
+            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
 
             PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ColorAttachmentOptimal, AccessFlags.TransferWrite, AccessFlags.ColorAttachmentWrite);
 
@@ -750,26 +744,7 @@ namespace TanagraExample
             device.UnmapMemory(bufferMem);
             return data;
         }
-
-        void WriteBitmap(byte[] imageBytes, string filename)
-        {
-            // BMP header
-            // https://en.wikipedia.org/wiki/BMP_file_format
-            var headerBytes = new byte[]
-            {
-                0x42,0x4D,0x36,0xF9,0x15,0x00,0x00,0x00,0x00,0x00,0x36,0x00,0x00,0x00,0x28,0x00,0x00,0x00,0x20,0x03,0x00,0x00,0x58,0x02,0x00,0x00,0x01,
-                0x00,0x18,0x00,0x00,0x00,0x00,0x00,0x00,0xF9,0x15,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
-            };
-
-            // Remove every 4th byte (alpha) to convert the image to a 24bpp (RGB) BMP
-            imageBytes = imageBytes.Where((x, i) => (i + 1) % 4 != 0).ToArray();
-
-            var final = headerBytes.ToList();
-            final.AddRange(imageBytes);
-
-            File.WriteAllBytes(filename, final.ToArray());
-        }
-
+        
         void PipelineBarrierSetLayout(CommandBuffer cmdBuffer, Image image, ImageLayout oldLayout, ImageLayout newLayout, AccessFlags srcMask, AccessFlags dstMask)
         {
             var subresourceRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
@@ -777,7 +752,7 @@ namespace TanagraExample
             imageMemoryBarrier.SrcAccessMask = srcMask;
             imageMemoryBarrier.DstAccessMask = dstMask;
             var imageMemoryBarriers = new[]{ imageMemoryBarrier };
-            cmdBuffer.CmdPipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, imageMemoryBarriers);
+            cmdBuffer.PipelineBarrier(PipelineStageFlags.TopOfPipe, PipelineStageFlags.TopOfPipe, DependencyFlags.None, null, null, imageMemoryBarriers);
             imageMemoryBarrier.Dispose();
         }
         

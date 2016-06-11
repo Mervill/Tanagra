@@ -16,7 +16,7 @@ namespace Vulkan.Allocation
         Dictionary<IntPtr, Int64> pointerMemory;
 
         public AllocationCallbacks AllocationCallbacks { get; set; }
-        public int CallCount => pointers.Count;
+        public int Count => pointers.Count;
         public Int64 TrackedBytes { get; private set; }
         public bool DebugLog { get; set; }
 
@@ -46,7 +46,7 @@ namespace Vulkan.Allocation
             pointerMemory.Add(aligned, (long)size);
             GC.AddMemoryPressure((long)size);
             TrackedBytes += (long)size;
-            if(DebugLog) Console.WriteLine($"[MALLOC] Allocated {size,4} bytes [SystemAllocationScope.{allocationScope}] ({CallCount})");
+            if(DebugLog) Console.WriteLine($"[MALLOC] Allocated {size,4} bytes [SystemAllocationScope.{allocationScope}] ({Count})");
             return aligned;
         }
 

@@ -1,11 +1,14 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace Vulkan
 {
+    [StructLayout(LayoutKind.Sequential)]
     public struct SampleMask
     {
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Offset2D
     {
         public Int32 X;
@@ -18,6 +21,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Offset3D
     {
         public Int32 X;
@@ -32,6 +36,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Extent2D
     {
         public UInt32 Width;
@@ -44,6 +49,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Extent3D
     {
         public UInt32 Width;
@@ -58,6 +64,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Viewport
     {
         public Single X;
@@ -78,6 +85,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Rect2D
     {
         public Offset2D Offset;
@@ -90,6 +98,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Rect3D
     {
         public Offset3D Offset;
@@ -102,6 +111,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ClearRect
     {
         public Rect2D Rect;
@@ -116,6 +126,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ComponentMapping
     {
         public ComponentSwizzle R;
@@ -135,6 +146,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct QueueFamilyProperties
     {
         /// <summary>
@@ -152,6 +164,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceMemoryProperties
     {
         public struct MemoryTypesInfo
@@ -291,6 +304,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct MemoryRequirements
     {
         /// <summary>
@@ -310,6 +324,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageFormatProperties
     {
         public ImageAspectFlags AspectMask;
@@ -320,6 +335,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageMemoryRequirements
     {
         public SparseImageFormatProperties FormatProperties;
@@ -341,6 +357,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct MemoryType
     {
         /// <summary>
@@ -356,6 +373,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct MemoryHeap
     {
         /// <summary>
@@ -371,6 +389,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct FormatProperties
     {
         /// <summary>
@@ -390,6 +409,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageFormatProperties
     {
         /// <summary>
@@ -414,6 +434,7 @@ namespace Vulkan
         public DeviceSize MaxResourceSize;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageSubresource
     {
         public ImageAspectFlags AspectMask;
@@ -428,6 +449,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageSubresourceLayers
     {
         public ImageAspectFlags AspectMask;
@@ -444,6 +466,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageSubresourceRange
     {
         public ImageAspectFlags AspectMask;
@@ -465,6 +488,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct SubresourceLayout
     {
         /// <summary>
@@ -489,6 +513,7 @@ namespace Vulkan
         public DeviceSize DepthPitch;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferCopy
     {
         /// <summary>
@@ -515,6 +540,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageCopy
     {
         public ImageSubresourceLayers SrcSubresource;
@@ -545,6 +571,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageBlit
     {
         public struct SrcOffsetsInfo
@@ -609,6 +636,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferImageCopy
     {
         /// <summary>
@@ -645,6 +673,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageResolve
     {
         public ImageSubresourceLayers SrcSubresource;
@@ -663,6 +692,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorPoolSize
     {
         public DescriptorType Type;
@@ -675,6 +705,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SpecializationMapEntry
     {
         /// <summary>
@@ -701,6 +732,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct VertexInputBindingDescription
     {
         /// <summary>
@@ -727,6 +759,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct VertexInputAttributeDescription
     {
         /// <summary>
@@ -759,6 +792,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineColorBlendAttachmentState
     {
         public Bool32 BlendEnable;
@@ -783,6 +817,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct StencilOpState
     {
         public StencilOp FailOp;
@@ -805,6 +840,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PushConstantRange
     {
         /// <summary>
@@ -831,6 +867,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ClearDepthStencilValue
     {
         public Single Depth;
@@ -843,6 +880,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ClearAttachment
     {
         public ImageAspectFlags AspectMask;
@@ -857,6 +895,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct AttachmentDescription
     {
         public AttachmentDescriptionFlags Flags;
@@ -899,6 +938,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct AttachmentReference
     {
         public UInt32 Attachment;
@@ -911,6 +951,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SubpassDependency
     {
         public UInt32 SrcSubpass;
@@ -939,6 +980,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceFeatures
     {
         /// <summary>
@@ -1166,6 +1208,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceSparseProperties
     {
         /// <summary>
@@ -1193,6 +1236,7 @@ namespace Vulkan
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceLimits
     {
         public struct MaxComputeWorkGroupCountInfo
@@ -1653,6 +1697,7 @@ namespace Vulkan
         public DeviceSize NonCoherentAtomSize;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DrawIndirectCommand
     {
         public UInt32 VertexCount;
@@ -1669,6 +1714,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DrawIndexedIndirectCommand
     {
         public UInt32 IndexCount;
@@ -1687,6 +1733,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DispatchIndirectCommand
     {
         public UInt32 X;
@@ -1701,6 +1748,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayModeParametersKHR
     {
         /// <summary>
@@ -1721,6 +1769,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayPlaneCapabilitiesKHR
     {
         /// <summary>
@@ -1754,6 +1803,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SurfaceCapabilitiesKHR
     {
         /// <summary>
@@ -1819,6 +1869,7 @@ namespace Vulkan
         }
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SurfaceFormatKHR
     {
         /// <summary>

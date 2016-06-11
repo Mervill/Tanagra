@@ -767,7 +767,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindPipeline(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, Pipeline pipeline)
+        public static void BindPipeline(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, Pipeline pipeline)
         {
             Vk.CmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
         }
@@ -776,7 +776,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetViewport(this CommandBuffer commandBuffer, UInt32 firstViewport, Viewport[] viewports)
+        public static void SetViewport(this CommandBuffer commandBuffer, UInt32 firstViewport, Viewport[] viewports)
         {
             Vk.CmdSetViewport(commandBuffer, firstViewport, viewports);
         }
@@ -785,7 +785,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetScissor(this CommandBuffer commandBuffer, UInt32 firstScissor, Rect2D[] scissors)
+        public static void SetScissor(this CommandBuffer commandBuffer, UInt32 firstScissor, Rect2D[] scissors)
         {
             Vk.CmdSetScissor(commandBuffer, firstScissor, scissors);
         }
@@ -794,7 +794,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetLineWidth(this CommandBuffer commandBuffer, Single lineWidth)
+        public static void SetLineWidth(this CommandBuffer commandBuffer, Single lineWidth)
         {
             Vk.CmdSetLineWidth(commandBuffer, lineWidth);
         }
@@ -803,7 +803,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetDepthBias(this CommandBuffer commandBuffer, Single depthBiasConstantFactor, Single depthBiasClamp, Single depthBiasSlopeFactor)
+        public static void SetDepthBias(this CommandBuffer commandBuffer, Single depthBiasConstantFactor, Single depthBiasClamp, Single depthBiasSlopeFactor)
         {
             Vk.CmdSetDepthBias(commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
         }
@@ -812,7 +812,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetBlendConstants(this CommandBuffer commandBuffer, Single blendConstants)
+        public static void SetBlendConstants(this CommandBuffer commandBuffer, Single blendConstants)
         {
             Vk.CmdSetBlendConstants(commandBuffer, blendConstants);
         }
@@ -821,7 +821,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetDepthBounds(this CommandBuffer commandBuffer, Single minDepthBounds, Single maxDepthBounds)
+        public static void SetDepthBounds(this CommandBuffer commandBuffer, Single minDepthBounds, Single maxDepthBounds)
         {
             Vk.CmdSetDepthBounds(commandBuffer, minDepthBounds, maxDepthBounds);
         }
@@ -830,7 +830,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetStencilCompareMask(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 compareMask)
+        public static void SetStencilCompareMask(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 compareMask)
         {
             Vk.CmdSetStencilCompareMask(commandBuffer, faceMask, compareMask);
         }
@@ -839,7 +839,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetStencilWriteMask(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 writeMask)
+        public static void SetStencilWriteMask(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 writeMask)
         {
             Vk.CmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
         }
@@ -848,7 +848,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetStencilReference(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 reference)
+        public static void SetStencilReference(this CommandBuffer commandBuffer, StencilFaceFlags faceMask, UInt32 reference)
         {
             Vk.CmdSetStencilReference(commandBuffer, faceMask, reference);
         }
@@ -857,7 +857,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindDescriptorSets(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, DescriptorSet[] descriptorSets, UInt32[] dynamicOffsets)
+        public static void BindDescriptorSets(this CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, DescriptorSet[] descriptorSets, UInt32[] dynamicOffsets)
         {
             Vk.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSets, dynamicOffsets);
         }
@@ -866,7 +866,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindIndexBuffer(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
+        public static void BindIndexBuffer(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, IndexType indexType)
         {
             Vk.CmdBindIndexBuffer(commandBuffer, buffer, offset, indexType);
         }
@@ -875,7 +875,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindVertexBuffers(this CommandBuffer commandBuffer, UInt32 firstBinding, Buffer[] buffers, DeviceSize[] offsets)
+        public static void BindVertexBuffers(this CommandBuffer commandBuffer, UInt32 firstBinding, Buffer[] buffers, DeviceSize[] offsets)
         {
             Vk.CmdBindVertexBuffers(commandBuffer, firstBinding, buffers, offsets);
         }
@@ -884,7 +884,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDraw(this CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
+        public static void Draw(this CommandBuffer commandBuffer, UInt32 vertexCount, UInt32 instanceCount, UInt32 firstVertex, UInt32 firstInstance)
         {
             Vk.CmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
         }
@@ -893,7 +893,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDrawIndexed(this CommandBuffer commandBuffer, UInt32 indexCount, UInt32 instanceCount, UInt32 firstIndex, Int32 vertexOffset, UInt32 firstInstance)
+        public static void DrawIndexed(this CommandBuffer commandBuffer, UInt32 indexCount, UInt32 instanceCount, UInt32 firstIndex, Int32 vertexOffset, UInt32 firstInstance)
         {
             Vk.CmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
         }
@@ -902,7 +902,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDrawIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
+        public static void DrawIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
         {
             Vk.CmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
         }
@@ -911,7 +911,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDrawIndexedIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
+        public static void DrawIndexedIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset, UInt32 drawCount, UInt32 stride)
         {
             Vk.CmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
         }
@@ -920,7 +920,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDispatch(this CommandBuffer commandBuffer, UInt32 x, UInt32 y, UInt32 z)
+        public static void Dispatch(this CommandBuffer commandBuffer, UInt32 x, UInt32 y, UInt32 z)
         {
             Vk.CmdDispatch(commandBuffer, x, y, z);
         }
@@ -929,7 +929,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdDispatchIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset)
+        public static void DispatchIndirect(this CommandBuffer commandBuffer, Buffer buffer, DeviceSize offset)
         {
             Vk.CmdDispatchIndirect(commandBuffer, buffer, offset);
         }
@@ -938,7 +938,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyBuffer(this CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, BufferCopy[] regions)
+        public static void CopyBuffer(this CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, BufferCopy[] regions)
         {
             Vk.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regions);
         }
@@ -947,7 +947,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageCopy[] regions)
+        public static void CopyImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageCopy[] regions)
         {
             Vk.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
         }
@@ -956,7 +956,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBlitImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageBlit[] regions, Filter filter)
+        public static void BlitImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageBlit[] regions, Filter filter)
         {
             Vk.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions, filter);
         }
@@ -965,7 +965,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyBufferToImage(this CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, BufferImageCopy[] regions)
+        public static void CopyBufferToImage(this CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, BufferImageCopy[] regions)
         {
             Vk.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regions);
         }
@@ -974,7 +974,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyImageToBuffer(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, BufferImageCopy[] regions)
+        public static void CopyImageToBuffer(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, BufferImageCopy[] regions)
         {
             Vk.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regions);
         }
@@ -983,7 +983,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdUpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, Byte[] data)
+        public static void UpdateBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, Byte[] data)
         {
             Vk.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, data);
         }
@@ -992,7 +992,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdFillBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
+        public static void FillBuffer(this CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize size, UInt32 data)
         {
             Vk.CmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
         }
@@ -1001,7 +1001,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearColorImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, ImageSubresourceRange[] ranges)
+        public static void ClearColorImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, ImageSubresourceRange[] ranges)
         {
             Vk.CmdClearColorImage(commandBuffer, image, imageLayout, color, ranges);
         }
@@ -1010,7 +1010,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearDepthStencilImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, ImageSubresourceRange[] ranges)
+        public static void ClearDepthStencilImage(this CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, ImageSubresourceRange[] ranges)
         {
             Vk.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, depthStencil, ranges);
         }
@@ -1019,7 +1019,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearAttachments(this CommandBuffer commandBuffer, ClearAttachment[] attachments, ClearRect[] rects)
+        public static void ClearAttachments(this CommandBuffer commandBuffer, ClearAttachment[] attachments, ClearRect[] rects)
         {
             Vk.CmdClearAttachments(commandBuffer, attachments, rects);
         }
@@ -1028,7 +1028,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdResolveImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageResolve[] regions)
+        public static void ResolveImage(this CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageResolve[] regions)
         {
             Vk.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regions);
         }
@@ -1037,7 +1037,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetEvent(this CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
+        public static void SetEvent(this CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
         {
             Vk.CmdSetEvent(commandBuffer, @event, stageMask);
         }
@@ -1046,7 +1046,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdResetEvent(this CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
+        public static void ResetEvent(this CommandBuffer commandBuffer, Event @event, PipelineStageFlags stageMask)
         {
             Vk.CmdResetEvent(commandBuffer, @event, stageMask);
         }
@@ -1055,7 +1055,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdWaitEvents(this CommandBuffer commandBuffer, Event[] events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
+        public static void WaitEvents(this CommandBuffer commandBuffer, Event[] events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
         {
             Vk.CmdWaitEvents(commandBuffer, events, srcStageMask, dstStageMask, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
         }
@@ -1065,7 +1065,7 @@ namespace Vulkan.Managed.ObjectModel
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="dependencyFlags">Optional</param>
-        public static void CmdPipelineBarrier(this CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
+        public static void PipelineBarrier(this CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
         {
             Vk.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
         }
@@ -1075,7 +1075,7 @@ namespace Vulkan.Managed.ObjectModel
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void CmdBeginQuery(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags = default(QueryControlFlags))
+        public static void BeginQuery(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query, QueryControlFlags flags = default(QueryControlFlags))
         {
             Vk.CmdBeginQuery(commandBuffer, queryPool, query, flags);
         }
@@ -1084,7 +1084,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdEndQuery(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query)
+        public static void EndQuery(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 query)
         {
             Vk.CmdEndQuery(commandBuffer, queryPool, query);
         }
@@ -1093,7 +1093,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdResetQueryPool(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount)
+        public static void ResetQueryPool(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount)
         {
             Vk.CmdResetQueryPool(commandBuffer, queryPool, firstQuery, queryCount);
         }
@@ -1102,7 +1102,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdWriteTimestamp(this CommandBuffer commandBuffer, PipelineStageFlags pipelineStage, QueryPool queryPool, UInt32 query)
+        public static void WriteTimestamp(this CommandBuffer commandBuffer, PipelineStageFlags pipelineStage, QueryPool queryPool, UInt32 query)
         {
             Vk.CmdWriteTimestamp(commandBuffer, pipelineStage, queryPool, query);
         }
@@ -1112,7 +1112,7 @@ namespace Vulkan.Managed.ObjectModel
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="flags">Optional</param>
-        public static void CmdCopyQueryPoolResults(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+        public static void CopyQueryPoolResults(this CommandBuffer commandBuffer, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Buffer dstBuffer, DeviceSize dstOffset, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
             Vk.CmdCopyQueryPoolResults(commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
         }
@@ -1121,7 +1121,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdPushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, IntPtr[] values)
+        public static void PushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, IntPtr[] values)
         {
             Vk.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
         }
@@ -1130,7 +1130,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBeginRenderPass(this CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
+        public static void BeginRenderPass(this CommandBuffer commandBuffer, RenderPassBeginInfo renderPassBegin, SubpassContents contents)
         {
             Vk.CmdBeginRenderPass(commandBuffer, renderPassBegin, contents);
         }
@@ -1139,7 +1139,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdNextSubpass(this CommandBuffer commandBuffer, SubpassContents contents)
+        public static void NextSubpass(this CommandBuffer commandBuffer, SubpassContents contents)
         {
             Vk.CmdNextSubpass(commandBuffer, contents);
         }
@@ -1148,7 +1148,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdEndRenderPass(this CommandBuffer commandBuffer)
+        public static void EndRenderPass(this CommandBuffer commandBuffer)
         {
             Vk.CmdEndRenderPass(commandBuffer);
         }
@@ -1157,7 +1157,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Both] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdExecuteCommands(this CommandBuffer commandBuffer, CommandBuffer[] commandBuffers)
+        public static void ExecuteCommands(this CommandBuffer commandBuffer, CommandBuffer[] commandBuffers)
         {
             Vk.CmdExecuteCommands(commandBuffer, commandBuffers);
         }
@@ -1165,7 +1165,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
-        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerBeginEXT(this CommandBuffer commandBuffer)
+        public static DebugMarkerMarkerInfoEXT DebugMarkerBeginEXT(this CommandBuffer commandBuffer)
         {
             return Vk.CmdDebugMarkerBeginEXT(commandBuffer);
         }
@@ -1173,7 +1173,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
-        public static void CmdDebugMarkerEndEXT(this CommandBuffer commandBuffer)
+        public static void DebugMarkerEndEXT(this CommandBuffer commandBuffer)
         {
             Vk.CmdDebugMarkerEndEXT(commandBuffer);
         }
@@ -1181,7 +1181,7 @@ namespace Vulkan.Managed.ObjectModel
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
-        public static DebugMarkerMarkerInfoEXT CmdDebugMarkerInsertEXT(this CommandBuffer commandBuffer)
+        public static DebugMarkerMarkerInfoEXT DebugMarkerInsertEXT(this CommandBuffer commandBuffer)
         {
             return Vk.CmdDebugMarkerInsertEXT(commandBuffer);
         }

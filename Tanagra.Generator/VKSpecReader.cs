@@ -61,7 +61,7 @@ namespace Tanagra.Generator
             var registry = xdoc.Root;
 
             var xtypes = registry.Element("types").Elements("type");
-            
+
             // 'Plaform' types //
             {
                 // These are mainly primitives like void, uint32_t, size_t, etc. They are treated
@@ -98,7 +98,7 @@ namespace Tanagra.Generator
                 foreach(var vkEnum in enums)
                     allTypes.Add(vkEnum.Name, vkEnum);
             }
-            
+
             // Handles //
             {
                 var handles = xtypes
@@ -123,10 +123,10 @@ namespace Tanagra.Generator
                     allTypes.Add(vkStruct.Name, vkStruct);
 
                 // Read the struct definitions
-                foreach (var vkStruct in structs)
+                foreach(var vkStruct in structs)
                     ReadStruct(structDefMap[vkStruct.Name], vkStruct);
             }
-            
+
             // Commands //
             var commandsRoot = registry.Element("commands");
             var commands = commandsRoot.Elements("command");
@@ -332,7 +332,7 @@ namespace Tanagra.Generator
             var xcategory = xstruct.Attribute("category");
             if(xcategory == null || xcategory.Value != "struct")
                 throw new ArgumentException("Invalid category", nameof(xstruct));
-            
+
             var xattributes = xstruct.Attributes();
             if(xattributes.Any())
             {
@@ -341,13 +341,13 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "name":
-                            vkStruct.Name = vkStruct.SpecName = xattrib.Value;
-                            break;
+                        vkStruct.Name = vkStruct.SpecName = xattrib.Value;
+                        break;
                         case "returnedonly":
-                            vkStruct.ReturnedOnly = xattrib.Value == "true";
-                            break;
+                        vkStruct.ReturnedOnly = xattrib.Value == "true";
+                        break;
                         case "category":
-                            break;
+                        break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }
@@ -365,7 +365,7 @@ namespace Tanagra.Generator
                 memberList.Add(vkMember);
             }
             vkStruct.Members = memberList.ToArray();
-            
+
             var xvalidity = xstruct.Element("validity");
             if(xvalidity != null)
             {
@@ -373,7 +373,7 @@ namespace Tanagra.Generator
                     .Select(x => x.Value)
                     .ToArray();
             }
-            
+
             return vkStruct;
         }
 
@@ -395,26 +395,26 @@ namespace Tanagra.Generator
                 switch(elm.Name.ToString())
                 {
                     case "type":
-                        vkMember.Type = GetOrAddType(elm.Value);
-                        break;
+                    vkMember.Type = GetOrAddType(elm.Value);
+                    break;
                     case "name":
-                        vkMember.Name = vkMember.SpecName = elm.Value;
-                        break;
+                    vkMember.Name = vkMember.SpecName = elm.Value;
+                    break;
                     case "enum": // todo
-                        break;
+                    break;
                     default: throw new NotImplementedException(elm.Name.ToString());
                 }
             }
 
             const string fixedSizePattern = @"\[(<enum>)?([^<\]]+)(</enum>)?\]";
             var fixedSizeMatch = Regex.Match(xmember.Value, fixedSizePattern);
-            if (fixedSizeMatch.Success)
+            if(fixedSizeMatch.Success)
             {
                 vkMember.IsFixedSize = true;
                 vkMember.FixedSize = fixedSizeMatch.Groups[2].Value;
             }
 
-            if (string.IsNullOrEmpty(vkMember.Name) || vkMember.Type == null)
+            if(string.IsNullOrEmpty(vkMember.Name) || vkMember.Type == null)
                 throw new InvalidOperationException("Member does not have proper `<name>` or `<type>` element");
 
             // Gah! Why are these not encoded properly!
@@ -431,22 +431,22 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "optional":
-                            var value = xattrib.Value;
-                            if(value != "true") throw new NotImplementedException(value);
-                            vkMember.Optional = value;
-                            break;
+                        var value = xattrib.Value;
+                        if(value != "true") throw new NotImplementedException(value);
+                        vkMember.Optional = value;
+                        break;
                         case "len":
-                            vkMember.Len = xattrib.Value.Split(',');
-                            break;
+                        vkMember.Len = xattrib.Value.Split(',');
+                        break;
                         /*case "externsync":
                         param.ExternSync = attrib.Value == "true";
                         break;*/
                         case "noautovalidity":
-                            vkMember.NoAutoValidity = xattrib.Value == "true";
-                            break;
+                        vkMember.NoAutoValidity = xattrib.Value == "true";
+                        break;
                         case "validextensionstructs":
-                            vkMember.ValidExtensionStructs = xattrib.Value.Split(',');
-                            break;
+                        vkMember.ValidExtensionStructs = xattrib.Value.Split(',');
+                        break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }
@@ -454,7 +454,7 @@ namespace Tanagra.Generator
 
             return vkMember;
         }
-        
+
         VkCommand ReadCommand(XElement xcommand)
         {
             if(xcommand.Name != "command")
@@ -493,13 +493,13 @@ namespace Tanagra.Generator
                 {
                     case "proto":
                     case "param":
-                        break;
+                    break;
                     case "validity":
-                        vkCommand.Validity = xelm.Elements().Select(x => x.Value).ToArray();
-                        break;
+                    vkCommand.Validity = xelm.Elements().Select(x => x.Value).ToArray();
+                    break;
                     case "implicitexternsyncparams":
-                        vkCommand.ImplicitExternSyncParams = xelm.Elements().Select(x => x.Value).ToArray();
-                        break;
+                    vkCommand.ImplicitExternSyncParams = xelm.Elements().Select(x => x.Value).ToArray();
+                    break;
                     default: throw new NotImplementedException(xelm.Name.ToString());
                 }
             }
@@ -515,25 +515,25 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "successcodes":
-                            vkCommand.SuccessCodes = xattrib.Value.Split(',');
-                            break;
+                        vkCommand.SuccessCodes = xattrib.Value.Split(',');
+                        break;
                         case "errorcodes":
-                            vkCommand.ErrorCodes = xattrib.Value.Split(',');
-                            break;
+                        vkCommand.ErrorCodes = xattrib.Value.Split(',');
+                        break;
                         case "queues":
-                            vkCommand.Queues = xattrib.Value.Split(',');
-                            break;
+                        vkCommand.Queues = xattrib.Value.Split(',');
+                        break;
                         case "renderpass":
-                            vkCommand.RenderPass = xattrib.Value;
-                            break;
+                        vkCommand.RenderPass = xattrib.Value;
+                        break;
                         case "cmdbufferlevel":
-                            vkCommand.CmdBufferLevel = xattrib.Value.Split(',');
-                            break;
+                        vkCommand.CmdBufferLevel = xattrib.Value.Split(',');
+                        break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }
             }
-            
+
             return vkCommand;
         }
 
@@ -553,11 +553,11 @@ namespace Tanagra.Generator
                 switch(xelm.Name.ToString())
                 {
                     case "type":
-                        vkParam.Type = GetOrAddType(xelm.Value);
-                        break;
+                    vkParam.Type = GetOrAddType(xelm.Value);
+                    break;
                     case "name":
-                        vkParam.Name = xelm.Value;
-                        break;
+                    vkParam.Name = xelm.Value;
+                    break;
                     default: throw new NotImplementedException(xelm.Name.ToString());
                 }
             }
@@ -579,17 +579,17 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "optional":
-                            vkParam.Optional = xattrib.Value.Split(',');
-                            break;
+                        vkParam.Optional = xattrib.Value.Split(',');
+                        break;
                         case "len":
-                            vkParam.Len = xattrib.Value;
-                            break;
+                        vkParam.Len = xattrib.Value;
+                        break;
                         case "externsync":
-                            vkParam.ExternSync = xattrib.Value == "true";
-                            break;
+                        vkParam.ExternSync = xattrib.Value == "true";
+                        break;
                         case "noautovalidity":
-                            vkParam.NoAutoValidity = xattrib.Value == "true";
-                            break;
+                        vkParam.NoAutoValidity = xattrib.Value == "true";
+                        break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }
@@ -613,14 +613,14 @@ namespace Tanagra.Generator
                     switch(xattrib.Name.ToString())
                     {
                         case "api":
-                            vkFeature.Api = xattrib.Value;
-                            break;
+                        vkFeature.Api = xattrib.Value;
+                        break;
                         case "name":
-                            vkFeature.Name = xattrib.Value;
-                            break;
+                        vkFeature.Name = xattrib.Value;
+                        break;
                         case "number":
-                            vkFeature.Number = xattrib.Value;
-                            break;
+                        vkFeature.Number = xattrib.Value;
+                        break;
                         default: throw new NotImplementedException(xattrib.Name.ToString());
                     }
                 }
@@ -654,14 +654,14 @@ namespace Tanagra.Generator
                 switch(elm.Name.ToString())
                 {
                     case "type":
-                        types.Add(elm.Attribute("name").Value);
-                        break;
+                    types.Add(elm.Attribute("name").Value);
+                    break;
                     case "enum":
-                        enums.Add(elm.Attribute("name").Value);
-                        break;
+                    enums.Add(elm.Attribute("name").Value);
+                    break;
                     case "command":
-                        commands.Add(elm.Attribute("name").Value);
-                        break;
+                    commands.Add(elm.Attribute("name").Value);
+                    break;
                     default: throw new NotImplementedException(elm.Name.ToString());
                 }
             }
@@ -675,11 +675,11 @@ namespace Tanagra.Generator
 
         VkExtension ReadExtension(XElement xextension)
         {
-            if (xextension.Name != "extension")
+            if(xextension.Name != "extension")
                 throw new ArgumentException("Not an extension", nameof(xextension));
 
             var xelements = xextension.Elements();
-            if (!xelements.Any())
+            if(!xelements.Any())
                 throw new ArgumentException("Contains no elements", nameof(xextension));
 
             var xrequire = xextension.Element("require");
@@ -689,11 +689,11 @@ namespace Tanagra.Generator
             var vkExtension = new VkExtension();
 
             var xattributes = xextension.Attributes();
-            if (xattributes.Any())
+            if(xattributes.Any())
             {
-                foreach (var xattrib in xattributes)
+                foreach(var xattrib in xattributes)
                 {
-                    switch (xattrib.Name.ToString())
+                    switch(xattrib.Name.ToString())
                     {
                         case "name":
                         vkExtension.Name = xattrib.Value;
@@ -725,11 +725,11 @@ namespace Tanagra.Generator
 
         VkExtensionRequirement ReadExtensionRequirement(XElement xextensionrequirement)
         {
-            if (xextensionrequirement.Name != "require")
+            if(xextensionrequirement.Name != "require")
                 throw new ArgumentException("Not an extension requirement", nameof(xextensionrequirement));
 
             var xelements = xextensionrequirement.Elements();
-            if (!xelements.Any())
+            if(!xelements.Any())
                 throw new ArgumentException("Contains no elements", nameof(xextensionrequirement));
 
             var vkExtensionRequirement = new VkExtensionRequirement();
@@ -749,17 +749,17 @@ namespace Tanagra.Generator
 
         VkExtensionEnum ReadExtensionEnum(XElement xextensionenum)
         {
-            if (xextensionenum.Name != "enum")
+            if(xextensionenum.Name != "enum")
                 throw new ArgumentException("Not an extension enum", nameof(xextensionenum));
 
             var vkExtensionEnum = new VkExtensionEnum();
 
             var xattributes = xextensionenum.Attributes();
-            if (xattributes.Any())
+            if(xattributes.Any())
             {
-                foreach (var xattrib in xattributes)
+                foreach(var xattrib in xattributes)
                 {
-                    switch (xattrib.Name.ToString())
+                    switch(xattrib.Name.ToString())
                     {
                         case "name":
                         vkExtensionEnum.Name = xattrib.Value;
@@ -850,7 +850,7 @@ namespace Tanagra.Generator
             var xcat = xtype.Attribute("category");
             return xcat != null && xcat.Value == "struct";
         }
-        
+
         static VkStruct CreatePlatformStruct(string name)
         {
             var vkStruct = new VkStruct();

@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace Vulkan.Unmanaged
 {
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceProperties
     {
         public struct PipelineCacheUUIDInfo
@@ -69,6 +71,7 @@ namespace Vulkan.Unmanaged
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct ExtensionProperties
     {
         /// <summary>
@@ -84,6 +87,7 @@ namespace Vulkan.Unmanaged
     /// <summary>
     /// Returned Only - This object is never given as input to a Vulkan function
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct LayerProperties
     {
         /// <summary>
@@ -104,6 +108,7 @@ namespace Vulkan.Unmanaged
         public unsafe fixed Byte Description[256];
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ApplicationInfo
     {
         /// <summary>
@@ -121,6 +126,7 @@ namespace Vulkan.Unmanaged
         public UInt32 ApiVersion;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct AllocationCallbacks
     {
         public IntPtr UserData;
@@ -131,6 +137,7 @@ namespace Vulkan.Unmanaged
         public IntPtr InternalFree;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DeviceQueueCreateInfo
     {
         /// <summary>
@@ -150,6 +157,7 @@ namespace Vulkan.Unmanaged
         public IntPtr QueuePriorities;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DeviceCreateInfo
     {
         /// <summary>
@@ -176,6 +184,7 @@ namespace Vulkan.Unmanaged
         public IntPtr EnabledFeatures;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct InstanceCreateInfo
     {
         /// <summary>
@@ -203,6 +212,7 @@ namespace Vulkan.Unmanaged
         public IntPtr EnabledExtensionNames;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct MemoryAllocateInfo
     {
         /// <summary>
@@ -223,6 +233,7 @@ namespace Vulkan.Unmanaged
         public UInt32 MemoryTypeIndex;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct MappedMemoryRange
     {
         /// <summary>
@@ -247,6 +258,7 @@ namespace Vulkan.Unmanaged
         public DeviceSize Size;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorBufferInfo
     {
         /// <summary>
@@ -263,6 +275,7 @@ namespace Vulkan.Unmanaged
         public DeviceSize Range;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorImageInfo
     {
         /// <summary>
@@ -279,6 +292,7 @@ namespace Vulkan.Unmanaged
         public ImageLayout ImageLayout;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct WriteDescriptorSet
     {
         /// <summary>
@@ -323,6 +337,7 @@ namespace Vulkan.Unmanaged
         public IntPtr TexelBufferView;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct CopyDescriptorSet
     {
         /// <summary>
@@ -363,6 +378,7 @@ namespace Vulkan.Unmanaged
         public UInt32 DescriptorCount;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferCreateInfo
     {
         /// <summary>
@@ -390,6 +406,7 @@ namespace Vulkan.Unmanaged
         public IntPtr QueueFamilyIndices;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferViewCreateInfo
     {
         /// <summary>
@@ -419,6 +436,7 @@ namespace Vulkan.Unmanaged
         public DeviceSize Range;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct MemoryBarrier
     {
         /// <summary>
@@ -439,6 +457,7 @@ namespace Vulkan.Unmanaged
         public AccessFlags DstAccessMask;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferMemoryBarrier
     {
         /// <summary>
@@ -479,6 +498,7 @@ namespace Vulkan.Unmanaged
         public DeviceSize Size;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageMemoryBarrier
     {
         /// <summary>
@@ -523,6 +543,7 @@ namespace Vulkan.Unmanaged
         public ImageSubresourceRange SubresourceRange;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageCreateInfo
     {
         /// <summary>
@@ -566,6 +587,7 @@ namespace Vulkan.Unmanaged
         public ImageLayout InitialLayout;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ImageViewCreateInfo
     {
         /// <summary>
@@ -587,6 +609,7 @@ namespace Vulkan.Unmanaged
         public ImageSubresourceRange SubresourceRange;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseMemoryBind
     {
         /// <summary>
@@ -608,6 +631,7 @@ namespace Vulkan.Unmanaged
         public SparseMemoryBindFlags Flags;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageMemoryBind
     {
         public ImageSubresource Subresource;
@@ -624,6 +648,7 @@ namespace Vulkan.Unmanaged
         public SparseMemoryBindFlags Flags;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseBufferMemoryBindInfo
     {
         public UInt64 Buffer;
@@ -631,6 +656,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Binds;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageOpaqueMemoryBindInfo
     {
         public UInt64 Image;
@@ -638,6 +664,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Binds;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageMemoryBindInfo
     {
         public UInt64 Image;
@@ -645,6 +672,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Binds;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct BindSparseInfo
     {
         /// <summary>
@@ -667,6 +695,7 @@ namespace Vulkan.Unmanaged
         public IntPtr SignalSemaphores;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ShaderModuleCreateInfo
     {
         /// <summary>
@@ -691,6 +720,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Code;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorSetLayoutBinding
     {
         /// <summary>
@@ -715,6 +745,7 @@ namespace Vulkan.Unmanaged
         public IntPtr ImmutableSamplers;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorSetLayoutCreateInfo
     {
         /// <summary>
@@ -739,6 +770,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Bindings;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorPoolCreateInfo
     {
         /// <summary>
@@ -755,6 +787,7 @@ namespace Vulkan.Unmanaged
         public IntPtr PoolSizes;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DescriptorSetAllocateInfo
     {
         /// <summary>
@@ -770,6 +803,7 @@ namespace Vulkan.Unmanaged
         public IntPtr SetLayouts;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SpecializationInfo
     {
         /// <summary>
@@ -790,6 +824,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Data;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineShaderStageCreateInfo
     {
         /// <summary>
@@ -819,6 +854,7 @@ namespace Vulkan.Unmanaged
         public IntPtr SpecializationInfo;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct ComputePipelineCreateInfo
     {
         /// <summary>
@@ -848,6 +884,7 @@ namespace Vulkan.Unmanaged
         public Int32 BasePipelineIndex;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineVertexInputStateCreateInfo
     {
         /// <summary>
@@ -874,6 +911,7 @@ namespace Vulkan.Unmanaged
         public IntPtr VertexAttributeDescriptions;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineInputAssemblyStateCreateInfo
     {
         /// <summary>
@@ -892,6 +930,7 @@ namespace Vulkan.Unmanaged
         public Bool32 PrimitiveRestartEnable;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineTessellationStateCreateInfo
     {
         /// <summary>
@@ -909,6 +948,7 @@ namespace Vulkan.Unmanaged
         public UInt32 PatchControlPoints;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineViewportStateCreateInfo
     {
         /// <summary>
@@ -929,6 +969,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Scissors;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineRasterizationStateCreateInfo
     {
         /// <summary>
@@ -958,6 +999,7 @@ namespace Vulkan.Unmanaged
         public Single LineWidth;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineMultisampleStateCreateInfo
     {
         /// <summary>
@@ -992,6 +1034,7 @@ namespace Vulkan.Unmanaged
         public Bool32 AlphaToOneEnable;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineColorBlendStateCreateInfo
     {
         public struct BlendConstantsInfo
@@ -1023,6 +1066,7 @@ namespace Vulkan.Unmanaged
         public BlendConstantsInfo BlendConstants;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineDynamicStateCreateInfo
     {
         /// <summary>
@@ -1041,6 +1085,7 @@ namespace Vulkan.Unmanaged
         public IntPtr DynamicStates;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineDepthStencilStateCreateInfo
     {
         /// <summary>
@@ -1069,6 +1114,7 @@ namespace Vulkan.Unmanaged
         public Single MaxDepthBounds;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct GraphicsPipelineCreateInfo
     {
         /// <summary>
@@ -1113,6 +1159,7 @@ namespace Vulkan.Unmanaged
         public Int32 BasePipelineIndex;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineCacheCreateInfo
     {
         /// <summary>
@@ -1137,6 +1184,7 @@ namespace Vulkan.Unmanaged
         public IntPtr InitialData;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineLayoutCreateInfo
     {
         /// <summary>
@@ -1169,6 +1217,7 @@ namespace Vulkan.Unmanaged
         public IntPtr PushConstantRanges;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SamplerCreateInfo
     {
         /// <summary>
@@ -1209,6 +1258,7 @@ namespace Vulkan.Unmanaged
         public Bool32 UnnormalizedCoordinates;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandPoolCreateInfo
     {
         /// <summary>
@@ -1226,6 +1276,7 @@ namespace Vulkan.Unmanaged
         public UInt32 QueueFamilyIndex;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandBufferAllocateInfo
     {
         /// <summary>
@@ -1241,6 +1292,7 @@ namespace Vulkan.Unmanaged
         public UInt32 CommandBufferCount;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandBufferInheritanceInfo
     {
         /// <summary>
@@ -1274,6 +1326,7 @@ namespace Vulkan.Unmanaged
         public QueryPipelineStatisticFlags PipelineStatistics;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandBufferBeginInfo
     {
         /// <summary>
@@ -1294,6 +1347,7 @@ namespace Vulkan.Unmanaged
         public IntPtr InheritanceInfo;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct RenderPassBeginInfo
     {
         /// <summary>
@@ -1311,6 +1365,7 @@ namespace Vulkan.Unmanaged
         public IntPtr ClearValues;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SubpassDescription
     {
         public SubpassDescriptionFlags Flags;
@@ -1328,6 +1383,7 @@ namespace Vulkan.Unmanaged
         public IntPtr PreserveAttachments;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct RenderPassCreateInfo
     {
         /// <summary>
@@ -1350,6 +1406,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Dependencies;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct EventCreateInfo
     {
         /// <summary>
@@ -1366,6 +1423,7 @@ namespace Vulkan.Unmanaged
         public EventCreateFlags Flags;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct FenceCreateInfo
     {
         /// <summary>
@@ -1382,6 +1440,7 @@ namespace Vulkan.Unmanaged
         public FenceCreateFlags Flags;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SemaphoreCreateInfo
     {
         /// <summary>
@@ -1398,6 +1457,7 @@ namespace Vulkan.Unmanaged
         public SemaphoreCreateFlags Flags;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct QueryPoolCreateInfo
     {
         /// <summary>
@@ -1420,6 +1480,7 @@ namespace Vulkan.Unmanaged
         public QueryPipelineStatisticFlags PipelineStatistics;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct FramebufferCreateInfo
     {
         /// <summary>
@@ -1442,6 +1503,7 @@ namespace Vulkan.Unmanaged
         public UInt32 Layers;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SubmitInfo
     {
         /// <summary>
@@ -1461,6 +1523,7 @@ namespace Vulkan.Unmanaged
         public IntPtr SignalSemaphores;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayPropertiesKHR
     {
         /// <summary>
@@ -1493,6 +1556,7 @@ namespace Vulkan.Unmanaged
         public Bool32 PersistentContent;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayPlanePropertiesKHR
     {
         /// <summary>
@@ -1505,6 +1569,7 @@ namespace Vulkan.Unmanaged
         public UInt32 CurrentStackIndex;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayModePropertiesKHR
     {
         /// <summary>
@@ -1517,6 +1582,7 @@ namespace Vulkan.Unmanaged
         public DisplayModeParametersKHR Parameters;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayModeCreateInfoKHR
     {
         /// <summary>
@@ -1537,6 +1603,7 @@ namespace Vulkan.Unmanaged
         public DisplayModeParametersKHR Parameters;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplaySurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1581,6 +1648,7 @@ namespace Vulkan.Unmanaged
         public Extent2D ImageExtent;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplayPresentInfoKHR
     {
         /// <summary>
@@ -1605,6 +1673,7 @@ namespace Vulkan.Unmanaged
         public Bool32 Persistent;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct AndroidSurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1622,6 +1691,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Window;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct MirSurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1640,6 +1710,7 @@ namespace Vulkan.Unmanaged
         public IntPtr MirSurface;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct WaylandSurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1658,6 +1729,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Surface;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct Win32SurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1676,6 +1748,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Hwnd;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct XlibSurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1694,6 +1767,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Window;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct XcbSurfaceCreateInfoKHR
     {
         /// <summary>
@@ -1712,6 +1786,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Window;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct SwapchainCreateInfoKHR
     {
         /// <summary>
@@ -1788,6 +1863,7 @@ namespace Vulkan.Unmanaged
         public UInt64 OldSwapchain;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PresentInfoKHR
     {
         /// <summary>
@@ -1824,6 +1900,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Results;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DebugReportCallbackCreateInfoEXT
     {
         /// <summary>
@@ -1848,6 +1925,7 @@ namespace Vulkan.Unmanaged
         public IntPtr UserData;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct PipelineRasterizationStateRasterizationOrderAMD
     {
         /// <summary>
@@ -1864,6 +1942,7 @@ namespace Vulkan.Unmanaged
         public RasterizationOrderAMD RasterizationOrder;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DebugMarkerObjectNameInfoEXT
     {
         /// <summary>
@@ -1888,6 +1967,7 @@ namespace Vulkan.Unmanaged
         public IntPtr ObjectName;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DebugMarkerObjectTagInfoEXT
     {
         /// <summary>
@@ -1920,6 +2000,7 @@ namespace Vulkan.Unmanaged
         public IntPtr Tag;
     }
     
+    [StructLayout(LayoutKind.Sequential)]
     public struct DebugMarkerMarkerInfoEXT
     {
         public struct ColorInfo

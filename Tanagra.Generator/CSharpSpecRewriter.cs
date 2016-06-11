@@ -63,10 +63,10 @@ namespace Tanagra.Generator
             foreach(var vkStruct in spec.Structs)
                 RewriteStructDefinition(vkStruct);
 
-            foreach (var vkStruct in spec.Structs)
+            foreach(var vkStruct in spec.Structs)
                 RewriteStructMemberLen(vkStruct, spec.Structs.ToArray());
 
-            foreach (var vkCmd in spec.Commands)
+            foreach(var vkCmd in spec.Commands)
                 RewriteCommandDefinition(vkCmd);
 
             foreach(var vkCmd in spec.Commands)
@@ -93,10 +93,10 @@ namespace Tanagra.Generator
                 var uint64 = spec.AllTypes.FirstOrDefault(x => x.Name == "UInt64");
                 Replace(spec, deviceSize, uint64);
             }
-            
+
             return spec;
         }
-        
+
         void RewriteHandleDefinition(VkHandle vkHandle)
         {
             if(vkHandle.Name.StartsWith("Vk"))
@@ -128,9 +128,9 @@ namespace Tanagra.Generator
                 memberName = char.ToUpper(memberName[0]) + memberName.Substring(1);
                 member.Name = memberName;
 
-                if (member.IsFixedSize)
+                if(member.IsFixedSize)
                 {
-                    if (constantMap.ContainsKey(member.FixedSize))
+                    if(constantMap.ContainsKey(member.FixedSize))
                         member.FixedSize = constantMap[member.FixedSize];
                 }
 
@@ -140,7 +140,7 @@ namespace Tanagra.Generator
                     comment = char.ToUpper(comment[0]) + comment.Substring(1, comment.Length - 1);
                     comment = comment.Replace("\r", string.Empty);
                     comment = comment.Replace("\n", " ");
-                    
+
                     Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
                     comment = regex.Replace(comment, " ");
 
@@ -151,12 +151,12 @@ namespace Tanagra.Generator
 
         void RewriteStructMemberLen(VkStruct vkStruct, VkStruct[] allStructs)
         {
-            for (var x = 0; x < vkStruct.Members.Length; x++)
+            for(var x = 0; x < vkStruct.Members.Length; x++)
             {
                 var member = vkStruct.Members[x];
-                if (member.Len.Length > 0)
+                if(member.Len.Length > 0)
                 {
-                    if (member.Len[0] == @"latexmath:[$codeSize \over 4$]" && member.Type.Name == "UInt32")
+                    if(member.Len[0] == @"latexmath:[$codeSize \over 4$]" && member.Type.Name == "UInt32")
                     {
                         member.Len[0] = "codeSize";
                         member.Type = allStructs.First(y => y.Name == "Byte");
@@ -168,9 +168,9 @@ namespace Tanagra.Generator
 
         void MergeExtensionEnums(VkEnum[] specEnums, VkExtension[] extensions)
         {
-            foreach (var specEnum in specEnums)
+            foreach(var specEnum in specEnums)
             {
-                foreach (var ext in extensions.Where(x => x.Supported != "disabled"))
+                foreach(var ext in extensions.Where(x => x.Supported != "disabled"))
                 {
                     var extNumber = ext.Number - 1;
 
@@ -178,12 +178,12 @@ namespace Tanagra.Generator
                         .Requirement.Enums
                         .Where(x => !x.IsConstant && x.Extends == specEnum.Name);
 
-                    if (deltas.Any())
+                    if(deltas.Any())
                     {
                         var existing = specEnum.Values.ToList();
-                        foreach (var newEnumValue in deltas)
+                        foreach(var newEnumValue in deltas)
                         {
-                            if (newEnumValue.IsFlag)
+                            if(newEnumValue.IsFlag)
                             {
                                 // ... todo
                             }
@@ -195,7 +195,7 @@ namespace Tanagra.Generator
                                 var enumValue = 1000000000;
                                 enumValue += 1000 * extNumber;
                                 enumValue += newEnumValue.Offset.Value;
-                                if (newEnumValue.Dir == "-")
+                                if(newEnumValue.Dir == "-")
                                     enumValue *= -1;
 
                                 VkEnumValue vkEnumValue = new VkEnumValue();
@@ -234,32 +234,32 @@ namespace Tanagra.Generator
         {
             if(vkEnum.Name.StartsWith("Vk"))
                 vkEnum.Name = vkEnum.Name.Remove(0, 2); // trim `Vk`
-            
+
             var isFlags = vkEnum.Name.EndsWith("Flags");
 
             var trimKHR = false;
             var trimEXT = false;
 
             var enumPrefix = vkEnum.Name;
-            if (enumPrefix.EndsWith("KHR"))
+            if(enumPrefix.EndsWith("KHR"))
             {
                 enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `KHR`
                 trimKHR = true;
             }
 
-            if (enumPrefix.EndsWith("EXT"))
+            if(enumPrefix.EndsWith("EXT"))
             {
                 enumPrefix = enumPrefix.Remove(enumPrefix.Length - 3, 3); // trim `EXT`
                 trimEXT = true;
             }
-            
-            if (enumPrefix.EndsWith("Flags"))
+
+            if(enumPrefix.EndsWith("Flags"))
                 enumPrefix = enumPrefix.Substring(0, enumPrefix.Length - 5);
 
             enumPrefix = ToUppercaseEnumName(enumPrefix) + "_";
-            
+
             var firstValue = vkEnum.Values.First();
-            
+
             foreach(var vkEnumValue in vkEnum.Values)
             {
                 var name = vkEnumValue.Name;
@@ -268,27 +268,27 @@ namespace Tanagra.Generator
 
                 if(!string.IsNullOrEmpty(enumPrefix) && name.StartsWith(enumPrefix))
                     name = name.Substring(enumPrefix.Length, name.Length - enumPrefix.Length);
-                
+
                 // bleh, this is janky
 
                 if(name.EndsWith("_KHR") && trimKHR)
                     name = name.Remove(name.Length - 4, 4); // trim `_KHR`
 
-                if (name.EndsWith("_EXT") && trimEXT)
+                if(name.EndsWith("_EXT") && trimEXT)
                     name = name.Remove(name.Length - 4, 4); // trim `_KHR`
-                
-                if (name.EndsWith("_BIT"))
+
+                if(name.EndsWith("_BIT"))
                     name = name.Substring(0, name.Length - 4);
-                
+
                 name = ToCamelCaseEnumName(name);
 
-                if (name.EndsWith("Khr"))
+                if(name.EndsWith("Khr"))
                     name = name.Remove(name.Length - 3, 3) + "KHR";
 
-                if (name.EndsWith("Ext"))
+                if(name.EndsWith("Ext"))
                     name = name.Remove(name.Length - 3, 3) + "EXT";
 
-                if (name.EndsWith("Amd"))
+                if(name.EndsWith("Amd"))
                     name = name.Remove(name.Length - 3, 3) + "AMD";
 
                 vkEnumValue.Name = name;
@@ -348,7 +348,7 @@ namespace Tanagra.Generator
             }
             return newName;
         }
-        
+
         void RewriteCommandDefinition(VkCommand vkCommand)
         {
             if(vkCommand.Name.StartsWith("vk"))
@@ -358,13 +358,13 @@ namespace Tanagra.Generator
             {
                 var param = vkCommand.Parameters[x];
                 var paramName = param.Name;
-                
+
                 if(param.IsPointer)
                     paramName = paramName.TrimStart(new[] { 'p' });
 
                 paramName = char.ToLower(paramName[0]) + paramName.Substring(1);
 
-                if (paramName == "event" || paramName == "object")
+                if(paramName == "event" || paramName == "object")
                     paramName = '@' + paramName;
 
                 param.Name = paramName;
