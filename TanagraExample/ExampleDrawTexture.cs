@@ -36,13 +36,6 @@ namespace TanagraExample
         
         public ExampleDrawTexture()
         {
-            // The goal of this example is to:
-            //
-            // - Initialize Vulkan
-            // - Create a surface object to interact with a display
-            // - Render a triangle to the screen
-            //
-
             var window = new RenderForm(GetType().Name);
 
             uint imageWidth  = 800;
@@ -72,10 +65,6 @@ namespace TanagraExample
             device        = CreateDevice(physDevice, 0);           // Create a device from the physical device
             queue         = GetQueue(physDevice, 0);               // Get an execution queue from the physical device
             cmdPool       = CreateCommandPool(0);                  // Create a command pool from which command buffers are created
-
-            // Now that we have a command pool, we can begin creating command buffers 
-            // and recording commands. You will find however that you can't do much of 
-            // anything without first initializing a few more dependencies.
             
             var textureData = LoadTexture("./test-image.png", queue, cmdPool);
             
@@ -453,33 +442,7 @@ namespace TanagraExample
         }
         
         #endregion
-
-        /*void CopyBufferToImage(Queue queue, CommandPool cmdPool, ImageData imageData, Buffer imageBuffer)
-        {
-            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
-            var cmdBuffer = cmdBuffers[0];
-
-            var beginInfo = new CommandBufferBeginInfo();
-            cmdBuffer.Begin(beginInfo);
-
-            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.Preinitialized, ImageLayout.TransferDstOptimal, AccessFlags.HostWrite, AccessFlags.TransferWrite);
-
-            var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
-            var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
-            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
-
-            PipelineBarrierSetLayout(cmdBuffer, imageData.Image, ImageLayout.TransferDstOptimal, ImageLayout.ShaderReadOnlyOptimal, AccessFlags.TransferWrite, AccessFlags.ShaderRead);
-
-            cmdBuffer.End();
-
-            var submitInfo = new SubmitInfo(null, null, new[]{ cmdBuffer }, null);
-            queue.Submit(new[]{ submitInfo });
-            submitInfo.Dispose();
-            queue.WaitIdle();
-
-            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
-        }*/
-
+        
         void CopyBufferToImage(CommandBuffer cmdBuffer, ImageData imageData, Buffer imageBuffer)
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
@@ -493,16 +456,7 @@ namespace TanagraExample
             Marshal.Copy(data, 0, map, (int)((ulong)size));
             device.UnmapMemory(bufferMem);
         }
-
-        /*byte[] CopyBufferToArray(DeviceMemory bufferMem, MemoryRequirements memRequirements)
-        {
-            var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
-            var data = new byte[memRequirements.Size];
-            Marshal.Copy(map, data, 0, (int)((ulong)memRequirements.Size));
-            device.UnmapMemory(bufferMem);
-            return data;
-        }*/
-
+        
         void CopyBitmapToBuffer(IntPtr scan0, int bitmapSize, DeviceMemory bufferMem, MemoryRequirements memRequirements)
         {
             var map = device.MapMemory(bufferMem, 0, memRequirements.Size);

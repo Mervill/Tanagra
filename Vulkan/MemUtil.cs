@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
-	public unsafe static class MemUtil
+    public unsafe static class MemUtil
     {
         /*
         ## Marshal.AllocHGlobal
@@ -28,25 +28,25 @@ namespace Vulkan.Managed
         public static Int64 TotalBytes => PointerMemory.Values.Sum();
 
         static MemUtil()
-	    {
+        {
             PointerMemory = new Dictionary<IntPtr, long>();
         }
 #endif
-        
+
         internal static IntPtr Alloc(Type type)
-		{
-			var size = Marshal.SizeOf(type);
-			var ptr = Marshal.AllocHGlobal(size);
-			var bptr = (byte*)ptr;
-			for(var i = 0; i < size; i++)
-				bptr[i] = 0;
+        {
+            var size = Marshal.SizeOf(type);
+            var ptr = Marshal.AllocHGlobal(size);
+            var bptr = (byte*)ptr;
+            for(var i = 0; i < size; i++)
+                bptr[i] = 0;
 #if DEBUG
             //Console.WriteLine($"[SALLOC] Allocated {size} bytes for {type.Name} ({AllocCount})");
             GC.AddMemoryPressure(size);
             PointerMemory.Add(ptr, size);
 #endif
             return ptr;
-		}
+        }
 
         internal static void Free(IntPtr ptr)
         {
@@ -58,8 +58,8 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(ptr);
         }
 
-	    internal static IntPtr Clone(IntPtr src, Type type)
-	    {
+        internal static IntPtr Clone(IntPtr src, Type type)
+        {
             var size = Marshal.SizeOf(type);
             var ptr = Marshal.AllocHGlobal(size);
             Copy(src, ptr, size);
@@ -80,20 +80,20 @@ namespace Vulkan.Managed
             Marshal.Copy(data, 0, dest, size);
         }
 
-	    internal static void Copy(IntPtr src, IntPtr dest, Type type)
-	    {
+        internal static void Copy(IntPtr src, IntPtr dest, Type type)
+        {
             Copy(src, dest, Marshal.SizeOf(type));
-	    }
+        }
 
         internal static void MarshalFixedSizeString(byte* dst, string src, int size)
-		{
-			var bytes = System.Text.Encoding.UTF8.GetBytes(src);
-			size = Math.Min(size - 1, bytes.Length);
-			int i;
-			for(i = 0; i < size; i++)
-				dst[i] = bytes[i];
-			dst[i] = 0;
-		}
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(src);
+            size = Math.Min(size - 1, bytes.Length);
+            int i;
+            for(i = 0; i < size; i++)
+                dst[i] = bytes[i];
+            dst[i] = 0;
+        }
 
         /*internal static void ClearMemory(IntPtr ptr, ulong size)
 	    {

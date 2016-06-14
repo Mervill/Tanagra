@@ -5,7 +5,7 @@ using System.Text;
 namespace Vulkan
 {
     using Managed;
-    
+
     public static class DebugUtils
     {
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -42,7 +42,7 @@ namespace Vulkan
             };
 
             var debugReportCallbackEXT = new DebugReportCallbackEXT();
-            fixed(UInt64* ptr = &debugReportCallbackEXT.NativePointer)
+            fixed (UInt64* ptr = &debugReportCallbackEXT.NativePointer)
             {
                 var result = createDelegate(instance.NativePointer, createInfo.NativePointer, null, ptr);
                 if(result != Result.Success)

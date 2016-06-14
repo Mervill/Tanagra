@@ -25,18 +25,18 @@ namespace Vulkan.Allocation
             pointers = new HashSet<IntPtr>();
             pointerMemory = new Dictionary<IntPtr, long>();
 
-            _allocationFunction   = Allocation;
-            _freeFunction         = Free;
+            _allocationFunction = Allocation;
+            _freeFunction = Free;
             _reallocationFunction = Reallocation;
 
-            AllocationCallbacks = new AllocationCallbacks 
+            AllocationCallbacks = new AllocationCallbacks
             {
-                Allocation   = Marshal.GetFunctionPointerForDelegate(_allocationFunction),
-                Free         = Marshal.GetFunctionPointerForDelegate(_freeFunction),
+                Allocation = Marshal.GetFunctionPointerForDelegate(_allocationFunction),
+                Free = Marshal.GetFunctionPointerForDelegate(_freeFunction),
                 Reallocation = Marshal.GetFunctionPointerForDelegate(_reallocationFunction),
             };
         }
-        
+
         public virtual IntPtr Allocation(IntPtr userData, IntPtr size, IntPtr alignment, SystemAllocationScope allocationScope)
         {
             var rawptr = Marshal.AllocHGlobal((int)(size + 8));
@@ -64,7 +64,7 @@ namespace Vulkan.Allocation
         {
             throw new NotImplementedException();
         }
-        
+
         /*public void InternalAllocationNotification(IntPtr userData, IntPtr size, InternalAllocationType allocationType, SystemAllocationScope allocationScope)
         {
             throw new NotImplementedException();

@@ -23,7 +23,7 @@ namespace Vulkan
         {
             value = versionCode;
         }
-        
+
         public static implicit operator uint(Version version)
             => version.value;
 
