@@ -63,11 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Image.cs" />
-    <Compile Include="InstanceMgr.cs" />
     <Compile Include="PhysicalDeviceInfo.cs" />
-    <Compile Include="Texture.cs" />
-    <Compile Include="Vector32.cs" />
     <Compile Include="VulkanInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
