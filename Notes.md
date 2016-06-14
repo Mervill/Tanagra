@@ -1,7 +1,7 @@
-todo: realloc is broken
-todo: unions
-todo: merge flag enums
-todo: CodeSize preventing x64 from working
+todo: Reallocating an array on a managed struct seems to be broken
+todo: Unions! ClearValue and ClearColorValue are basically empty
+todo: Merge extension flag enums
+todo: CodeSize (on ShaderModuleCreateInfo) is preventing x64 from working because it should be an `IntPtr` rather then a `UInt32`
 todo: Fix edge cases in VulkanConstant
 todo: Managed classes still leak memory in some cases
 
@@ -25,7 +25,5 @@ Dispatchable handles use the platform word length so IntPtr is used to ensure th
 C#, Visual Basic, and C++ compilers apply the Sequential layout value to structures by default
 https://msdn.microsoft.com/en-us/library/system.runtime.interopservices.structlayoutattribute(v=vs.110).aspx
 
-Command Recording
----
-
+Command Recording:
 - individual command buffers allocated from the pool can be reset either explicitly, by calling vkResetCommandBuffer, or implicitly, by calling vkBeginCommandBuffer on an executable command buffer. (spec/5.1)

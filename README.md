@@ -1,25 +1,21 @@
 
 # Tanagra
 
-Tanagra is a binding generator and (eventually) support library for Vulkan.
+Tanagra is a binding generator and (eventually) support library for Vulkan. Currently approximately half of all commands have been tested.
 
-The generator produces a compiling library that should render the triangle example correctly (at least on a windows machine)
+The example project should run on any Windows platform that can support Vulkan. More platform examples comming soon. The example uses SharpDX to quickly establish a render window and uses the OpenTK Math library for matrix and vector math.
 
-The example project contains (eventually) C#'ified versions of [Sascha Willems fantastic C example project](https://github.com/SaschaWillems/Vulkan). Be sure to check it out.
-
-The example project has SharpDX as a dependency, this is just to gain access to a well-defined rending window that is then passed to Vulkan. No DirectX is involved
+You can also check the Wiki for a basic introduction to Vulkan (Comming soon!)
 
 If you're looking for the LUNARG validation layer (`VK_LAYER_LUNARG_standard_validation`) you can downloaded it from lunarG [here](https://lunarg.com/vulkan-sdk/)
 
-Approximately %50 of all commands have been tested
-
 ## How To Play
 
-### Tanagra
+### Using Tanagra
 
 Coming soon!
 
-### Managed
+### Using Vulkan (Managed)
 
 ```C#
 using Vulkan;                     // Core Vulkan classes
@@ -31,23 +27,30 @@ var instanceCreateInfo = new InstanceCreateInfo();
 Instance vulkanInstance = Vk.CreateInstance(instanceCreateInfo);
 
 // Enumerate Physical Devices
-var physicalDevices = instance.EnumeratePhysicalDevices();
+PhysicalDevice[] physicalDevices = instance.EnumeratePhysicalDevices();
 
 // Create a Vulkan device
-var deviceCreateInfo = new DeviceCreateInfo(...);
+var queueCreateInfo = new DeviceQueueCreateInfo(0, new[]{ 0f });
+var deviceCreateInfo = new DeviceCreateInfo(queueCreateInfo, null, null);
 Device vulkanDevice = physicalDevices[0].CreateDevice(deviceCreateInfo);
+
+// The 'CreateInfo' structures implement IDisposable, so make sure
+// to either use a `using` block or dispose of these objects correctly
+deviceCreateInfo.Dispose();
+queueCreateInfo.Dispose();
+instanceCreateInfo.Dispose();
 ```
 
-### Unmanaged
+### Using Vulkan (Unmanaged)
 
-The managed layer is reccomended in almost all cases. If you'd rather work with the interop layer directly (if you want total control over memory, for example) you can do that as well. You will need to compile with `unsafe` in order to work with memory directly.
+The managed layer is reccomended in almost all cases. If you'd rather work with the interop layer directly (if you want total control over memory, for example) you can do that as well. You will need to compile with `unsafe` in order to work with unmanaged classes.
 
 ```C#
 using Vulkan;           // Core Vulkan classes
 using Vulkan.Unmanaged; // Unmanaged structs and callbacks
 
 // The vulkan functions are in the `VulkanBinding` class. It's designed to be used
-// with C# 6.0's 'using static' feature to replicate the vulkan C api.
+// with C# 6.0's 'using static' feature to replicate the Vulkan C api.
 using static Unmanaged.VulkanBinding;
 
 /* Allocate pointers to objects */

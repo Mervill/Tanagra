@@ -1,5 +1,7 @@
 
-These examples are based on (and uses shaders and assets from) [Sascha Willems fantastic C example project](https://github.com/SaschaWillems/Vulkan). Be sure to check it out.
+Originally this was going to be C#'ified versions of [Sascha Willems fantastic C example project](https://github.com/SaschaWillems/Vulkan). But I've decided to take a wholly C# approach to these examples.
+
+`ExampleRenderToDisk` is the introductory example. When run it should create a file called `out.bmp` with an image of a triangle. This example uses the absolute minimum number of Vulkan features/concepts and does not rely on any other files. It should serve as a good introduction to Vulkan's core concepts.
 
 ```
 /*
