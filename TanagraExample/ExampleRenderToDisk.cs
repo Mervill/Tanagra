@@ -116,8 +116,8 @@ namespace TanagraExample
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
             var shaderStageCreateInfos = new[]
             {
-                GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "triangle.vert.spv"),
-                GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "triangle.frag.spv"),
+                GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "Shaders/triangle.vert.spv"),
+                GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "Shaders/triangle.frag.spv"),
             };
 
             // Create the render dependencies
