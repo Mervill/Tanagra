@@ -404,7 +404,7 @@ namespace TanagraExample
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
             if(messageCode != 0)
-                Console.WriteLine(message);
+                Console.WriteLine($"[{messageCode,2}] {message}");
             return false;
         }
     }

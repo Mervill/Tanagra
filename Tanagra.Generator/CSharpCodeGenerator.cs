@@ -73,8 +73,13 @@ namespace Tanagra.Generator
         const string ObjectModelNS           = "ObjectModel";
         const string LineEnding              = "\n";
 
-        bool UseLists;
-        bool CombineFiles;
+        bool UseLists = false;
+        bool LastArrayIsParams = true;
+        bool StackallocReturnList = true;
+        bool StackallocListArgs = true;
+        bool InteropMarshalAsArrays = false;
+        bool LockExternSync = false;
+        bool CombineFiles = false;
 
         public CSharpCodeGenerator()
         {
@@ -160,7 +165,7 @@ namespace Tanagra.Generator
             files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
 
             // -- vk
-            files.Add($"./{UnmanagedNS}/{UnmanagedFunctionsClass}.cs", GenerateCommandBindings(commands));
+            files.Add($"./{UnmanagedNS}/{UnmanagedFunctionsClass}.cs", GenerateCommandBindings(commands, commandInfoMap));
 
             var generateWrapper = needsInteropStruct.Where(vkStruct => !IsPlatformStruct(vkStruct) && !disabledStructs.Contains(vkStruct.Name));
             foreach(var vkStruct in generateWrapper)
@@ -446,7 +451,7 @@ namespace Tanagra.Generator
             return _sb.ToString();
         }
 
-        string GenerateCommandBindings(IEnumerable<VkCommand> commands)
+        string GenerateCommandBindings(IEnumerable<VkCommand> commands, Dictionary<VkCommand, CommandInfo> commandInfoMap)
         {
             Clear();
 
@@ -462,6 +467,8 @@ namespace Tanagra.Generator
             WriteLine("");
             foreach(var vkCommand in commands)
             {
+                var commandInfo = commandInfoMap[vkCommand];
+
                 var returnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
 
                 WriteCommandComment(vkCommand, vkCommand.Parameters);
@@ -477,9 +484,18 @@ namespace Tanagra.Generator
                     if(param.Type is VkHandle)
                         paramType = GetHandleType((VkHandle)param.Type);
 
-                    var pointer = (param.IsPointer && paramType != "String") ? "*" : string.Empty;
-                    Write($"{paramType}{pointer} {param.Name}");
-
+                    if (InteropMarshalAsArrays && commandInfo.ParamListCountMap.ContainsKey(param))
+                    {
+                        var countParam = commandInfo.ParamListCountMap[param];
+                        var sizeParamIndex = vkCommand.Parameters.ToList().IndexOf(countParam);
+                        Write($"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = {sizeParamIndex})] {paramType}[] {param.Name}");
+                    }
+                    else
+                    {
+                        var pointer = (param.IsPointer && paramType != "String") ? "*" : string.Empty;
+                        Write($"{paramType}{pointer} {param.Name}");
+                    }
+                    
                     if(x + 1 < vkCommand.Parameters.Length)
                         Write(", ");
                 }
@@ -1044,6 +1060,9 @@ namespace Tanagra.Generator
                     var paramName = vkParam.Name;
                     var paramType = vkParam.Type.Name;
 
+                    if(!UseLists && commandInfo.ParamArrays.Contains(vkParam) && LastArrayIsParams && x == cmdParams.Count-1)
+                        Write("params ");
+
                     if(commandInfo.ParamArrays.Contains(vkParam))
                         paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
 
@@ -1061,11 +1080,19 @@ namespace Tanagra.Generator
 
                 WriteBeginBlock();
 
+                var extenSyncParams = cmdParams.Where(x => x.ExternSync && !x.IsOptional);
+                if(extenSyncParams.Any() && LockExternSync)
+                {
+                    foreach(var param in extenSyncParams)
+                        WriteLine($"lock({param.Name})");
+                    WriteBeginBlock();
+                }
+
                 //Console.WriteLine(vkCommand.SpecName);
                 //WriteLine($"Console.WriteLine(\"{vkCommand.SpecName}\");");
 
                 #region Single Return Prologue
-                if(commandInfo.ReturnParam != null && !commandInfo.ReturnsList)
+                if (commandInfo.ReturnParam != null && !commandInfo.ReturnsList)
                 {
                     WriteLine($"var {commandInfo.ReturnParam.Name} = new {commandInfo.ReturnParam.Type}();");
 
@@ -1127,17 +1154,53 @@ namespace Tanagra.Generator
                             existingCounts.Add(countName);
                         }
 
-                        WriteLine($"var {ptrVar} = ({arrayPointerType})IntPtr.Zero;");
-                        WriteLine($"if({countName} != 0)");
-                        WriteBeginBlock();
-                        WriteLine($"var {sizeVar} = Marshal.SizeOf(typeof({sizeType}));");
-                        WriteLine($"{ptrVar} = ({arrayPointerType})Marshal.AllocHGlobal((int)({sizeVar} * {countName}));");
-                        WriteLine($"for(var x = 0; x < {countName}; x++)");
-                        _tabs++;
-                        WriteLine($"{ptrVar}[x] = {pointerRefrence}{paramName}[x]{nativePtr};");
-                        _tabs--;
-                        WriteEndBlock();
-                        WriteLine("");
+                        if (InteropMarshalAsArrays && commandInfo.ParamListCountMap.ContainsKey(kv.Key))
+                        {
+                            var arrayType = (paramIsHandle) ? GetHandleType(paramType as VkHandle) : paramTypeName;
+                            if (paramIsInterop)
+                                arrayType = $"{UnmanagedNS}.{arrayType}";
+                            
+                            WriteLine($"var {ptrVar} = new {arrayType}[{countName}];");
+                            WriteLine($"if({countName} != 0)");
+                            WriteBeginBlock();
+                            WriteLine($"for(var x = 0; x < {countName}; x++)");
+                            _tabs++;
+                            WriteLine($"{ptrVar}[x] = {pointerRefrence}{paramName}[x]{nativePtr};");
+                            _tabs--;
+                            WriteEndBlock();
+                            WriteLine("");
+                        }
+                        if(StackallocListArgs)
+                        {
+                            var arrayType = (paramIsHandle) ? GetHandleType(paramType as VkHandle) : paramTypeName;
+                            if (paramIsInterop)
+                                arrayType = $"{UnmanagedNS}.{arrayType}";
+
+                            WriteLine($"var {ptrVar} = stackalloc {arrayType}[(int){countName}];");
+                            //WriteLine($"if({countName} != 0)");
+                            WriteLine($"if({paramName} != null)");
+                            _tabs++;
+                            WriteLine($"for(var x = 0; x < {countName}; x++)");
+                            _tabs++;
+                            WriteLine($"{ptrVar}[x] = {pointerRefrence}{paramName}[x]{nativePtr};");
+                            _tabs--;
+                            _tabs--;
+                            WriteLine("");
+                        }
+                        else
+                        {
+                            WriteLine($"var {ptrVar} = ({arrayPointerType})IntPtr.Zero;");
+                            WriteLine($"if({countName} != 0)");
+                            WriteBeginBlock();
+                            WriteLine($"var {sizeVar} = Marshal.SizeOf(typeof({sizeType}));");
+                            WriteLine($"{ptrVar} = ({arrayPointerType})Marshal.AllocHGlobal((int)({sizeVar} * {countName}));");
+                            WriteLine($"for(var x = 0; x < {countName}; x++)");
+                            _tabs++;
+                            WriteLine($"{ptrVar}[x] = {pointerRefrence}{paramName}[x]{nativePtr};");
+                            _tabs--;
+                            WriteEndBlock();
+                            WriteLine("");
+                        }
                     }
                 }
                 #endregion
@@ -1203,11 +1266,20 @@ namespace Tanagra.Generator
                     if(commandInfo.ReturnParam.Type is VkHandle)
                         sizeType = GetHandleType((VkHandle)commandInfo.ReturnParam.Type);
 
-                    WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}];");
-                    WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
+                    var stackallocReturnList = StackallocReturnList & !IsManagedStruct(commandInfo.ReturnParam.Type);
 
+                    if (stackallocReturnList)
+                    {
+                        WriteLine($"var array{commandInfo.ReturnParam.Type} = stackalloc {interop}{sizeType}[(int){returnListLength}];");
+                    }
+                    else
+                    {
+                        WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}];");
+                        WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
+                        _tabs++;
+                    }
+                    
                     #region Internal Function Call 2
-                    _tabs++;
                     WriteTabs();
                     if(commandInfo.InternalReturnsVkResult)
                         Write("result = ");
@@ -1215,8 +1287,10 @@ namespace Tanagra.Generator
                     var commandParams2 = CreateCommandCallParams(vkCommand.Parameters.ToList(), commandInfo, true);
                     Write($"{vkCommand.SpecName}({commandParams2});");
                     Write(LineEnding);
-                    _tabs--;
                     #endregion
+
+                    if(!stackallocReturnList)
+                        _tabs--;
 
                     if(commandInfo.InternalReturnsVkResult)
                     {
@@ -1229,7 +1303,7 @@ namespace Tanagra.Generator
                 #endregion
 
                 #region Array Parameters Prologue
-                if(commandInfo.HasArrayParams)
+                if(commandInfo.HasArrayParams && !InteropMarshalAsArrays && !StackallocListArgs)
                 {
                     // Emit a prologue block for each array param
                     foreach(var kv in commandInfo.ParamListCountMap)
@@ -1326,6 +1400,11 @@ namespace Tanagra.Generator
                 }
                 #endregion
 
+                if(extenSyncParams.Any() && LockExternSync)
+                {
+                    WriteEndBlock();
+                }
+
                 WriteEndBlock();
                 WriteLine("");
             }
@@ -1347,7 +1426,8 @@ namespace Tanagra.Generator
                 #region Return Param
                 if(vkParam == commandInfo.ReturnParam && commandInfo.ReturnsList)
                 {
-                    internalCallParams.Add(isSecondArrayCall ? "resultPtr" : "null");
+                    var varname = (StackallocReturnList && !IsManagedStruct(commandInfo.ReturnParam.Type)) ? $"array{commandInfo.ReturnParam.Type}" : "resultPtr";
+                    internalCallParams.Add(isSecondArrayCall ? varname : "null");
                     continue;
                 }
 

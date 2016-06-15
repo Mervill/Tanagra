@@ -57,7 +57,7 @@ namespace TanagraExample
             //
 
             const string OutputFilename = "./out.bmp";
-            const Format ImageFormat = Format.R8g8b8a8Unorm;
+            const Format ImageFormat = Format.R8G8B8A8_UNORM;
 
             uint imageWidth  = 800;
             uint imageHeight = 600;
@@ -320,8 +320,8 @@ namespace TanagraExample
 
             data.AttributeDescriptions = new[]
             {
-                new VertexInputAttributeDescription(0, 0, Format.R32g32b32Sfloat, 0),
-                new VertexInputAttributeDescription(1, 0, Format.R32g32b32Sfloat, sizeof(float) * 3)
+                new VertexInputAttributeDescription(0, 0, Format.R32G32B32_SFLOAT, 0),
+                new VertexInputAttributeDescription(1, 0, Format.R32G32B32_SFLOAT, sizeof(float) * 3)
             };
 
             return data;

@@ -263,6 +263,15 @@ namespace Tanagra.Generator
             foreach(var vkEnumValue in vkEnum.Values)
             {
                 var name = vkEnumValue.Name;
+
+                if (vkEnum.Name == "Format")
+                {
+                    //const string pattern = @"VK_FORMAT_([^_]_)";
+                    name = name.Substring(10, name.Length - 10);
+                    vkEnumValue.Name = name;
+                    continue;
+                }
+
                 if(name.StartsWith("VK_"))
                     name = name.Substring(3, name.Length - 3);
 
