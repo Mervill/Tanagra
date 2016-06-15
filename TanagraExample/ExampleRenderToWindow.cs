@@ -70,8 +70,8 @@ namespace TanagraExample
             vertexData = CreateVertexData();
             
             var shaderInfos = new List<PipelineShaderStageCreateInfo>();
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./triangle.vert.spv"));
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./triangle.frag.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "Shaders/triangle.vert.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "Shaders/triangle.frag.spv"));
 
             // Create the swapchain
             swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
