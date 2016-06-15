@@ -84,8 +84,8 @@ namespace TanagraExample
 
             // Load shaders from disk and set them up to be passed to `CreatePipeline`
             var shaderInfos = new List<PipelineShaderStageCreateInfo>();
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "./texture.vert.spv"));
-            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "./texture.frag.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Vertex, "Shaders/texture.vert.spv"));
+            shaderInfos.Add(GetShaderStageCreateInfo(ShaderStageFlags.Fragment, "Shaders/texture.frag.spv"));
 
             // Create the render dependencies
             swapchainData        = CreateSwapchain(physDevice, surface, imageWidth, imageHeight);
