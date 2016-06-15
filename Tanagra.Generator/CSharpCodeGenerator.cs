@@ -7,18 +7,6 @@ namespace Tanagra.Generator
 {
     public class CSharpCodeGenerator
     {
-        class GeneratedObjectInfo
-        {
-            public string Name;
-            public string Contents;
-
-            public GeneratedObjectInfo(string name, string contents)
-            {
-                Name = name;
-                Contents = contents;
-            }
-        }
-
         class CommandInfo
         {
             public bool ReturnsList;
@@ -79,8 +67,7 @@ namespace Tanagra.Generator
         bool StackallocListArgs = true;
         bool InteropMarshalAsArrays = false;
         bool LockExternSync = false;
-        bool CombineFiles = false;
-
+        
         public CSharpCodeGenerator()
         {
             _sb = new StringBuilder();
@@ -159,10 +146,12 @@ namespace Tanagra.Generator
             // -- struct
 
             var needsInteropStruct = spec.Structs.Where(IsManagedStruct);
-            files.Add($"./{UnmanagedNS}/Structs.cs", GenerateStructs(needsInteropStruct, false));
+            foreach(var vkStruct in needsInteropStruct)
+                files.Add($"./{UnmanagedNS}/Struct/{vkStruct.Name}.cs", GenerateStruct(vkStruct, false));
 
-            var regularStruct = spec.Structs.Except(needsInteropStruct).Where(x => !disabledStructs.Contains(x.Name));
-            files.Add("./Structs.cs", GenerateStructs(regularStruct, true));
+            var regularStruct = spec.Structs.Except(needsInteropStruct).Where(x => !disabledStructs.Contains(x.Name) && !IsPlatformStruct(x));
+            foreach(var vkStruct in regularStruct)
+                files.Add($"./Struct/{vkStruct.Name}.cs", GenerateStruct(vkStruct, true));
 
             // -- vk
             files.Add($"./{UnmanagedNS}/{UnmanagedFunctionsClass}.cs", GenerateCommandBindings(commands, commandInfoMap));
@@ -273,34 +262,18 @@ namespace Tanagra.Generator
 
             return _sb.ToString();
         }
-
-        string GenerateStructs(IEnumerable<VkStruct> vkStructs, bool isPublic)
-        {
-            var structs = vkStructs
-                .Where(x => !IsPlatformStruct(x))
-                .Select(x => new GeneratedObjectInfo(x.Name, GenerateStruct(x, isPublic)))
-                .ToArray();
-
-            var structNamespace = $"Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}";
-            var structUsing = new[] { "System", "System.Runtime.InteropServices" };
-
-            if(CombineFiles)
-            {
-                // todo
-            }
-            else
-            {
-                var files = structs.Select(x => CreateFile($"{x.Name}.cs", structNamespace, structUsing, x));
-            }
-
-            return CreateFile("Structs.cs", structNamespace, structUsing, structs).Contents;
-        }
-
+        
         string GenerateStruct(VkStruct vkStruct, bool isPublic)
         {
             Clear();
-
+            
             var vis = "public";//isPublic ? "public" : "internal";
+
+            WriteLine("using System;");
+            WriteLine("using System.Runtime.InteropServices;");
+            WriteLine("");
+            WriteLine($"namespace Vulkan{((!isPublic) ? $".{UnmanagedNS}" : string.Empty)}");
+            WriteBeginBlock();
 
             if(vkStruct.ReturnedOnly)
             {
@@ -446,6 +419,7 @@ namespace Tanagra.Generator
                 }
             }
 
+            WriteEndBlock();
             WriteEndBlock();
 
             return _sb.ToString();
@@ -1757,27 +1731,6 @@ namespace Tanagra.Generator
 
         bool IsManagedStruct(VkType vkType)
             => (vkType is VkStruct) && IsManagedStruct(vkType as VkStruct);
-
-        GeneratedObjectInfo CreateFile(string fileName, string fileNamespace, string[] fileUsing, params GeneratedObjectInfo[] fileObjects)
-        {
-            Clear();
-
-            foreach(var strUsing in fileUsing)
-                WriteLine($"using {strUsing};");
-
-            WriteLine("");
-            WriteLine($"namespace {fileNamespace}");
-            WriteBeginBlock();
-            foreach(var obj in fileObjects)
-            {
-                var objLines = obj.Contents.Split(new[] { LineEnding }, StringSplitOptions.None);
-                foreach(var line in objLines)
-                    WriteLine(line);
-            }
-            WriteEndBlock();
-
-            return new GeneratedObjectInfo(fileName, _sb.ToString());
-        }
 
         void Clear()
         {
