@@ -34,7 +34,8 @@ namespace Tanagra.Generator
         StringBuilder _sb;
         int _tabs;
 
-        public string DllName = "vulkan-1-1-0-8-0.dll";
+        //public string DllName = "vulkan-1-1-0-8-0.dll";
+        public string DllName = "vulkan-1.dll";
 
         readonly List<string> platformStructTypes;
         readonly List<string> disabledStructs;
