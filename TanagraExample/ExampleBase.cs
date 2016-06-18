@@ -304,6 +304,47 @@ namespace TanagraExample
             return device.CreateRenderPass(createInfo);
         }
 
+        protected RenderPass CreateRenderPass(Format colorFormat, Format stencilFormat)
+        {
+            var attachmentDescriptions = new[]
+            {
+                new AttachmentDescription
+                {
+                    Format         = colorFormat,
+                    Samples        = SampleCountFlags.SampleCountFlags1,
+                    StencilLoadOp  = AttachmentLoadOp.DontCare,
+                    StencilStoreOp = AttachmentStoreOp.DontCare,
+                    InitialLayout  = ImageLayout.ColorAttachmentOptimal,
+                    FinalLayout    = ImageLayout.ColorAttachmentOptimal
+                },
+                new AttachmentDescription
+                {
+                    Format         = stencilFormat,
+                    Samples        = SampleCountFlags.SampleCountFlags1,
+                    StencilLoadOp  = AttachmentLoadOp.DontCare,
+                    StencilStoreOp = AttachmentStoreOp.DontCare,
+                    InitialLayout  = ImageLayout.DepthStencilAttachmentOptimal,
+                    FinalLayout    = ImageLayout.DepthStencilAttachmentOptimal
+                },
+            };
+
+            var colorAttachmentReferences = new[]
+            {
+                new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal)
+            };
+            
+            var subpassDescriptions = new[]
+            {
+                new SubpassDescription(PipelineBindPoint.Graphics, null, colorAttachmentReferences, null)
+                {
+                    DepthStencilAttachment = new AttachmentReference(1, ImageLayout.DepthStencilAttachmentOptimal),
+                }
+            };
+
+            var createInfo = new RenderPassCreateInfo(attachmentDescriptions, subpassDescriptions, null);
+            return device.CreateRenderPass(createInfo);
+        }
+
         protected PipelineShaderStageCreateInfo GetShaderStageCreateInfo(ShaderStageFlags stage, string filename, string entrypoint = "main")
         {
             var shaderBytes = File.ReadAllBytes(filename);
@@ -331,6 +372,19 @@ namespace TanagraExample
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
             rasterizationState.LineWidth = 1;
 
+            //var blendState = new PipelineColorBlendStateCreateInfo();
+
+            //var viewportState = new PipelineViewportStateCreateInfo();
+            //viewportState.Viewports = 1;
+            //viewportState.Scissors = 1;
+
+            var depthStencilState = new PipelineDepthStencilStateCreateInfo();
+            depthStencilState.DepthTestEnable = true;
+            depthStencilState.DepthWriteEnable = true;
+            depthStencilState.DepthCompareOp = CompareOp.LessOrEqual;
+            depthStencilState.Back = new StencilOpState { CompareOp = CompareOp.Always };
+            depthStencilState.Front = new StencilOpState { CompareOp = CompareOp.Always };
+
             var createInfos = new[]
             {
                 new GraphicsPipelineCreateInfo(shaderStageCreateInfos, vertexInputState, inputAssemblyState, rasterizationState, pipelineLayout, renderPass, 0, 0)
@@ -339,17 +393,18 @@ namespace TanagraExample
                     MultisampleState = new PipelineMultisampleStateCreateInfo()
                     {
                         RasterizationSamples = SampleCountFlags.SampleCountFlags1
-                    }
+                    },
+                    DepthStencilState = depthStencilState,
                 }
             };
 
             return device.CreateGraphicsPipelines(null, createInfos);
         }
 
-        protected Framebuffer CreateFramebuffer(RenderPass renderPass, ImageData imageData)
+        protected Framebuffer CreateFramebuffer(RenderPass renderPass, params ImageData[] imageData)
         {
-            var attachments = new[]{ imageData.View };
-            var createInfo = new FramebufferCreateInfo(renderPass, attachments, imageData.Width, imageData.Height, 1);
+            var attachments = imageData.Select(x => x.View).ToArray();
+            var createInfo = new FramebufferCreateInfo(renderPass, attachments, imageData[0].Width, imageData[0].Height, 1);
             return device.CreateFramebuffer(createInfo);
         }
 

@@ -8,7 +8,8 @@ namespace TanagraExample
         {
             //var example = new ExampleRenderToDisk();
             //var example = new ExampleRenderToWindow();
-            var example = new ExampleDrawTexture();
+            //var example = new ExampleDrawTexture();
+            var example = new ExampleDrawCube();
 
             Console.WriteLine("program complete");
             Console.ReadKey();

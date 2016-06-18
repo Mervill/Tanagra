@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExampleBase.cs" />
+    <Compile Include="ExampleDrawCube.cs" />
     <Compile Include="ExampleDrawTexture.cs" />
     <Compile Include="ExampleRenderToWindow.cs" />
     <Compile Include="OpenTK\Math\Matrix3.cs" />
