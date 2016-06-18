@@ -33,8 +33,7 @@ namespace Tanagra.Generator
 
         StringBuilder _sb;
         int _tabs;
-
-        //public string DllName = "vulkan-1-1-0-8-0.dll";
+        
         public string DllName = "vulkan-1.dll";
 
         readonly List<string> platformStructTypes;
@@ -168,6 +167,7 @@ namespace Tanagra.Generator
 
         string GenerateConstants(VkEnum apiConstants)
         {
+            const string bitwisePattern = @"\((~)?([0-9])(U[L]{0,2})?\)";
             Clear();
 
             WriteLine("using System;");
@@ -179,13 +179,97 @@ namespace Tanagra.Generator
             foreach(var vkEnumValue in apiConstants.Values.Where(x => x.Name != "True" && x.Name != "False"))
             {
                 var constType = "String";
-                var constValue = $"\"{vkEnumValue.Value}\"";
-                var integerValue = 0;
-                if(Int32.TryParse(vkEnumValue.Value, out integerValue))
+                var constValue = vkEnumValue.Value;
+
+                var matches = System.Text.RegularExpressions.Regex.Match(vkEnumValue.Value, bitwisePattern);
+                if(matches.Success && !vkEnumValue.Value.EndsWith("f", StringComparison.OrdinalIgnoreCase))
                 {
-                    constType = "Int32";
-                    constValue = integerValue.ToString();
+                    var bitwiseNot = matches.Groups[1].Value == "~";
+                    var strValue = matches.Groups[2].Value;
+                    var isUnsinged = matches.Groups[3].Value.Contains("U");
+                    var isLong = matches.Groups[3].Value.Contains("L");
+                    var isLongLong = matches.Groups[3].Value.Contains("LL");
+                    
+                    if(isLongLong)
+                    {
+                        if(isUnsinged)
+                        {
+                            UInt64 intValue = 0;
+                            if(UInt64.TryParse(strValue, out intValue))
+                            {
+                                if(bitwiseNot)
+                                    intValue = ~intValue;
+
+                                constType = "UInt64";
+                                constValue = "0x" + intValue.ToString("X");
+                            }
+                        }
+                        else
+                        {
+                            Int64 intValue = 0;
+                            if(Int64.TryParse(strValue, out intValue))
+                            {
+                                if(bitwiseNot)
+                                    intValue = ~intValue;
+
+                                constType = "Int64 ";
+                                constValue = "0x" + intValue.ToString("X");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(isUnsinged)
+                        {
+                            UInt32 intValue = 0;
+                            if(UInt32.TryParse(strValue, out intValue))
+                            {
+                                if(bitwiseNot)
+                                    intValue = ~intValue;
+
+                                constType = "UInt32";
+                                constValue = "0x" + intValue.ToString("X");
+                            }
+                        }
+                        else
+                        {
+                            Int32 intValue = 0;
+                            if(Int32.TryParse(strValue, out intValue))
+                            {
+                                if(bitwiseNot)
+                                    intValue = ~intValue;
+
+                                constType = "Int32 ";
+                                constValue = "0x" + intValue.ToString("X");
+                            }
+                        }
+                    }
                 }
+                else if(vkEnumValue.Value.EndsWith("f", StringComparison.OrdinalIgnoreCase))
+                {
+                    var floatValue = 0f;
+                    var parseValue = vkEnumValue.Value.Replace("f", string.Empty);
+                    if(Single.TryParse(parseValue, out floatValue))
+                    {
+                        constType = "Single";
+                        constValue = floatValue.ToString() + "f";
+                    }
+                }
+                else
+                {
+                    var intValue = 0;
+                    if(Int32.TryParse(vkEnumValue.Value, out intValue))
+                    {
+                        constType = "Int32 ";
+                        constValue = intValue.ToString();
+                    }
+                    else
+                    {
+                        constType = "String";
+                        constValue = $"\"{vkEnumValue.Value}\"";
+                    }
+                }
+                
                 WriteLine($"public const {constType} {vkEnumValue.Name} = {constValue};");
             }
             WriteEndBlock();
@@ -1364,7 +1448,7 @@ namespace Tanagra.Generator
                 }
                 else if(commandInfo.ReturnType != "void")
                 {
-                    if(commandInfo.HasReturnValue && !commandInfo.HasArrayParams)
+                    if(commandInfo.HasReturnValue)
                     {
                         WriteLine("return result;");
                     }

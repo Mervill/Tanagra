@@ -461,7 +461,7 @@ namespace Vulkan.Managed
                     _fencesPtr[x] = fences[x].NativePointer;
             
             var result = vkWaitForFences(device.NativePointer, fenceCount, _fencesPtr, waitAll, timeout);
-            throw new NotImplementedException("Appears to return a value but could not determine the type");
+            return result;
         }
         
         /// <param name="allocator">Optional</param>
@@ -556,7 +556,7 @@ namespace Vulkan.Managed
                     _dataPtr[x] = data[x];
             
             var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, _dataPtr, stride, flags);
-            throw new NotImplementedException("Appears to return a value but could not determine the type");
+            return result;
         }
         
         /// <param name="allocator">Optional</param>

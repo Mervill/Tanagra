@@ -1,9 +1,9 @@
-todo: realloc is broken
+todo: Bug that occurs when 2 member arrays share the same count member, but one is set to null
 todo: unions
 todo: merge flag enums
 todo: CodeSize preventing x64 from working
-todo: Fix edge cases in VulkanConstant
 todo: Managed classes still leak memory in some cases
+todo: PipelineMultisampleStateCreateInfo.SampleMask
 
 Create overload for commands that return lists (ei: called twice) that allows you to manually provide the length?
 
@@ -29,3 +29,13 @@ Command Recording
 ---
 
 - individual command buffers allocated from the pool can be reset either explicitly, by calling vkResetCommandBuffer, or implicitly, by calling vkBeginCommandBuffer on an executable command buffer. (spec/5.1)
+
+stackalloc
+Here's what stackalloc looks like decompiled:
+
+```
+sizeof {objType}
+mul.ovf.un
+localloc
+stloc.X // where X is the index of the local variable
+```
