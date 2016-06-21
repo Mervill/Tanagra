@@ -60,7 +60,11 @@ namespace TanagraExample
             physDeviceMem = physDevice.GetMemoryProperties();      // Get properties about the memory on the physical device
             
             surface       = CreateWin32Surface(instance, window.Handle);
-            physDevice.GetSurfaceSupportKHR(0, surface);
+            var supportsPresent = physDevice.GetWin32PresentationSupportKHR(0);
+            var supportsSurface = physDevice.GetSurfaceSupportKHR(0, surface);
+
+            if(!(supportsPresent && supportsSurface))
+                throw new InvalidDataException();
 
             device        = CreateDevice(physDevice, 0);           // Create a device from the physical device
             queue         = GetQueue(physDevice, 0);               // Get an execution queue from the physical device
@@ -502,8 +506,8 @@ namespace TanagraExample
             var beginInfo = new CommandBufferBeginInfo();
             cmdBuffer.Begin(beginInfo);
             beginInfo.Dispose();
-
-            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
+            
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });

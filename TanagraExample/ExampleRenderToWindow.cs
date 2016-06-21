@@ -193,7 +193,7 @@ namespace TanagraExample
 
         List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, Image[] images, Format imageFormat)
         {
-            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            /*var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             var cmdBuffer  = cmdBuffers.First();
 
             var inheritanceInfo = new CommandBufferInheritanceInfo();
@@ -209,7 +209,7 @@ namespace TanagraExample
             queue.Submit(new[]{ submitInfo });
             queue.WaitIdle();
 
-            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, new[]{ cmdBuffer });*/
             
             var imageDatas = new List<ImageData>();
 
@@ -273,7 +273,7 @@ namespace TanagraExample
             cmdBuffer.Begin(beginInfo);  // CommandBuffer Begin
             beginInfo.Dispose();
 
-            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });

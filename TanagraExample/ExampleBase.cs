@@ -203,7 +203,7 @@ namespace TanagraExample
 
         protected List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, Image[] images, Format imageFormat, uint width, uint height)
         {
-            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            /*var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             var cmdBuffer  = cmdBuffers.First();
 
             var inheritanceInfo = new CommandBufferInheritanceInfo();
@@ -219,7 +219,7 @@ namespace TanagraExample
             queue.Submit(new[] { submitInfo });
             queue.WaitIdle();
 
-            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });*/
 
             var imageDatas = new List<ImageData>();
 

@@ -379,7 +379,7 @@ namespace TanagraExample
             cmdBuffer.Begin(beginInfo);
             beginInfo.Dispose();
 
-            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
