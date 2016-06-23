@@ -136,7 +136,7 @@ namespace TanagraExample
             device.DestroyBuffer(uniformData.Buffer);
             device.FreeMemory(uniformData.Memory);
 
-            //device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
+            device.FreeDescriptorSets(descriptorPool, descriptorSet);
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
             device.DestroyDescriptorPool(descriptorPool);
 
@@ -317,7 +317,7 @@ namespace TanagraExample
             submitInfo.Dispose();
             queue.WaitIdle();
 
-            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, cmdBuffer);
             //
 
             //CopyBufferToImage(queue, cmdPool, imageData, imageBuffer);
@@ -465,6 +465,7 @@ namespace TanagraExample
             };
             
             var createInfo = new DescriptorPoolCreateInfo(2, poolSizes);
+            createInfo.Flags = DescriptorPoolCreateFlags.FreeDescriptorSet;
             return device.CreateDescriptorPool(createInfo);
         }
         
@@ -510,10 +511,10 @@ namespace TanagraExample
             PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
-            cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
+            cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), clearRange);
 
             var stencilRange = new ImageSubresourceRange(ImageAspectFlags.Depth | ImageAspectFlags.Stencil, 0, 1, 0, 1);
-            cmdBuffer.ClearDepthStencilImage(depthStencil.Image, ImageLayout.TransferDstOptimal, new ClearDepthStencilValue(1.0f, 0), new[] { stencilRange });
+            cmdBuffer.ClearDepthStencilImage(depthStencil.Image, ImageLayout.TransferDstOptimal, new ClearDepthStencilValue(1.0f, 0), stencilRange);
 
             RenderTexturedQuad(cmdBuffer, vertexData, swapchainImageData, pipelineLayout, descriptorSet, renderPass, pipeline, framebuffer, swapchainImageData.Width, swapchainImageData.Height);
 
@@ -525,7 +526,7 @@ namespace TanagraExample
         void RenderTexturedQuad(CommandBuffer cmdBuffer, VertexData vertexData, ImageData imageData, PipelineLayout pipelineLayout, DescriptorSet descriptorSet, RenderPass renderPass, Pipeline pipeline, Framebuffer framebuffer, uint width, uint height)
         {
             var viewport = new Viewport(0, 0, width, height, 0, 1);
-            cmdBuffer.SetViewport(0, new[] { viewport });
+            cmdBuffer.SetViewport(0, viewport);
 
             var renderArea = new Rect2D(new Offset2D(0, 0), new Extent2D(width, height));
             //var clearValues = new[] { new ClearValue { Color = new ClearColorValue() }, new ClearValue { DepthStencil = new ClearDepthStencilValue(1.0f, 0) } };
@@ -572,7 +573,7 @@ namespace TanagraExample
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, width, height, subresource, new Offset3D(0, 0, 0), new Extent3D(width, height, 0));
-            cmdBuffer.CopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, new[]{ imageCopy });
+            cmdBuffer.CopyImageToBuffer(imageData.Image, ImageLayout.TransferSrcOptimal, imageBuffer, imageCopy);
         }
         
         #endregion
@@ -581,7 +582,7 @@ namespace TanagraExample
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
-            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new[] { imageCopy });
+            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, imageCopy);
         }
 
         void CopyArrayToBuffer(DeviceMemory bufferMem, DeviceSize size, byte[] data)

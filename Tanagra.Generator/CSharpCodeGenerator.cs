@@ -1235,6 +1235,8 @@ namespace Tanagra.Generator
                             if (paramIsInterop)
                                 arrayType = $"{UnmanagedNS}.{arrayType}";
 
+                            // todo: don't use stackalloc here. Data is (by very definition) leaving the function,
+                            // which will unfix the stackalloc'd memory and allow it to be overwritten :(
                             WriteLine($"var {ptrVar} = stackalloc {arrayType}[(int){countName}];");
                             //WriteLine($"if({countName} != 0)");
                             WriteLine($"if({paramName} != null)");
@@ -1333,6 +1335,7 @@ namespace Tanagra.Generator
                     }
                     else
                     {
+                        // todo: this needs to be allocated differently
                         WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}];");
                         WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
                         _tabs++;
@@ -1618,6 +1621,9 @@ namespace Tanagra.Generator
 
                         if(x == 0)
                             Write($"this ");
+
+                        if(x == cmdParams.Count - 1 && (LastArrayIsParams && !UseLists) && commandInfo.ParamArrays.Contains(vkParam))
+                            Write("params ");
 
                         if(commandInfo.ParamArrays.Contains(vkParam))
                             paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";

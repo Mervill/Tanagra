@@ -118,7 +118,7 @@ namespace TanagraExample
             device.DestroyBuffer(uniformData.Buffer);
             device.FreeMemory(uniformData.Memory);
 
-            //device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
+            device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
             device.DestroyDescriptorPool(descriptorPool);
 
@@ -337,6 +337,7 @@ namespace TanagraExample
             };
             
             var createInfo = new DescriptorPoolCreateInfo(2, poolSizes);
+            createInfo.Flags = DescriptorPoolCreateFlags.FreeDescriptorSet;
             return device.CreateDescriptorPool(createInfo);
         }
         

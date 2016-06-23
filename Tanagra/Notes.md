@@ -1,3 +1,6 @@
+todo: Based on docs, PipelineCacheCreateInfo is not generated correctly (also instance of size_t)
+todo: Above goes for GetPipelineCacheData as well
+todo: GetQueryPoolResults is not generated correctly
 todo: Bug that occurs when 2 member arrays share the same count member, but one is set to null
 todo: unions
 todo: merge flag enums
