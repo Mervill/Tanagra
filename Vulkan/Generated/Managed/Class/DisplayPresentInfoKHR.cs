@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplayPresentInfoKHR : IDisposable
     {
-        internal Unmanaged.DisplayPresentInfoKHR* NativePointer;
+        internal Unmanaged.DisplayPresentInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Rectangle within the presentable image to read pixel data from when presenting to the display.

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineRasterizationStateRasterizationOrderAMD : IDisposable
     {
-        internal Unmanaged.PipelineRasterizationStateRasterizationOrderAMD* NativePointer;
+        internal Unmanaged.PipelineRasterizationStateRasterizationOrderAMD* NativePointer { get; private set; }
         
         /// <summary>
         /// Rasterization order to use for the pipeline

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ApplicationInfo : IDisposable
     {
-        internal Unmanaged.ApplicationInfo* NativePointer;
+        internal Unmanaged.ApplicationInfo* NativePointer { get; private set; }
         
         public String ApplicationName
         {

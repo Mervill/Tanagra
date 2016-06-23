@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class AndroidSurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.AndroidSurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.AndroidSurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

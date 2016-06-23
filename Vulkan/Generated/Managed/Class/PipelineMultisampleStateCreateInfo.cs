@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineMultisampleStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineMultisampleStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineMultisampleStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

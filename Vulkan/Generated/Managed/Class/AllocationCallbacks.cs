@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class AllocationCallbacks : IDisposable
     {
-        internal Unmanaged.AllocationCallbacks* NativePointer;
+        internal Unmanaged.AllocationCallbacks* NativePointer { get; private set; }
         
         public IntPtr UserData
         {

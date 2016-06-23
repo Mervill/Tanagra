@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class RenderPassCreateInfo : IDisposable
     {
-        internal Unmanaged.RenderPassCreateInfo* NativePointer;
+        internal Unmanaged.RenderPassCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -68,7 +68,7 @@ namespace Vulkan.Managed
                 var valueArray = new SubpassDescription[valueCount];
                 var ptr = (Unmanaged.SubpassDescription*)NativePointer->Subpasses;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SubpassDescription { NativePointer = &ptr[x] };
+                    valueArray[x] = new SubpassDescription(&ptr[x]);
                 
                 return valueArray;
             }

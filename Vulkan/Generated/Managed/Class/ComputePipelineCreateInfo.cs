@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ComputePipelineCreateInfo : IDisposable
     {
-        internal Unmanaged.ComputePipelineCreateInfo* NativePointer;
+        internal Unmanaged.ComputePipelineCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Pipeline creation flags (Optional)

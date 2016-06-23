@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class FramebufferCreateInfo : IDisposable
     {
-        internal Unmanaged.FramebufferCreateInfo* NativePointer;
+        internal Unmanaged.FramebufferCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -33,7 +33,7 @@ namespace Vulkan.Managed
                 var valueArray = new ImageView[valueCount];
                 var ptr = (UInt64*)NativePointer->Attachments;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new ImageView { NativePointer = ptr[x] };
+                    valueArray[x] = new ImageView(ptr[x]);
                 
                 return valueArray;
             }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SubpassDescription : IDisposable
     {
-        internal Unmanaged.SubpassDescription* NativePointer;
+        internal Unmanaged.SubpassDescription* NativePointer { get; private set; }
         
         public SubpassDescriptionFlags Flags
         {

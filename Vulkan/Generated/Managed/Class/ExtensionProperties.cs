@@ -8,7 +8,7 @@ namespace Vulkan.Managed
     /// </summary>
     unsafe public class ExtensionProperties : IDisposable
     {
-        internal Unmanaged.ExtensionProperties* NativePointer;
+        internal Unmanaged.ExtensionProperties* NativePointer { get; private set; }
         
         /// <summary>
         /// Extension name

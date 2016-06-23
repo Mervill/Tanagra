@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ShaderModuleCreateInfo : IDisposable
     {
-        internal Unmanaged.ShaderModuleCreateInfo* NativePointer;
+        internal Unmanaged.ShaderModuleCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

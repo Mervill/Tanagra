@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SubmitInfo : IDisposable
     {
-        internal Unmanaged.SubmitInfo* NativePointer;
+        internal Unmanaged.SubmitInfo* NativePointer { get; private set; }
         
         public Semaphore[] WaitSemaphores
         {
@@ -17,7 +17,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }
@@ -101,7 +101,7 @@ namespace Vulkan.Managed
                 var valueArray = new CommandBuffer[valueCount];
                 var ptr = (IntPtr*)NativePointer->CommandBuffers;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new CommandBuffer { NativePointer = ptr[x] };
+                    valueArray[x] = new CommandBuffer(ptr[x]);
                 
                 return valueArray;
             }
@@ -143,7 +143,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }

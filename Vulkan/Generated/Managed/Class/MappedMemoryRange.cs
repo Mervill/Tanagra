@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class MappedMemoryRange : IDisposable
     {
-        internal Unmanaged.MappedMemoryRange* NativePointer;
+        internal Unmanaged.MappedMemoryRange* NativePointer { get; private set; }
         
         DeviceMemory _Memory;
         /// <summary>

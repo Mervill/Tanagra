@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorSetLayoutCreateInfo : IDisposable
     {
-        internal Unmanaged.DescriptorSetLayoutCreateInfo* NativePointer;
+        internal Unmanaged.DescriptorSetLayoutCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorSetLayoutBinding[valueCount];
                 var ptr = (Unmanaged.DescriptorSetLayoutBinding*)NativePointer->Bindings;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorSetLayoutBinding { NativePointer = &ptr[x] };
+                    valueArray[x] = new DescriptorSetLayoutBinding(&ptr[x]);
                 
                 return valueArray;
             }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorSetAllocateInfo : IDisposable
     {
-        internal Unmanaged.DescriptorSetAllocateInfo* NativePointer;
+        internal Unmanaged.DescriptorSetAllocateInfo* NativePointer { get; private set; }
         
         DescriptorPool _DescriptorPool;
         public DescriptorPool DescriptorPool
@@ -24,7 +24,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorSetLayout[valueCount];
                 var ptr = (UInt64*)NativePointer->SetLayouts;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                    valueArray[x] = new DescriptorSetLayout(ptr[x]);
                 
                 return valueArray;
             }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineDynamicStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineDynamicStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineDynamicStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

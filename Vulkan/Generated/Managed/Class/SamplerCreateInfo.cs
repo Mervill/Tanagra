@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SamplerCreateInfo : IDisposable
     {
-        internal Unmanaged.SamplerCreateInfo* NativePointer;
+        internal Unmanaged.SamplerCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ImageViewCreateInfo : IDisposable
     {
-        internal Unmanaged.ImageViewCreateInfo* NativePointer;
+        internal Unmanaged.ImageViewCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

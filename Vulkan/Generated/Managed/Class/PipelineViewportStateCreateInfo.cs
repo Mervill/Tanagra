@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineViewportStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineViewportStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineViewportStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

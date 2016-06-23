@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseImageMemoryBind : IDisposable
     {
-        internal Unmanaged.SparseImageMemoryBind* NativePointer;
+        internal Unmanaged.SparseImageMemoryBind* NativePointer { get; private set; }
         
         public ImageSubresource Subresource
         {

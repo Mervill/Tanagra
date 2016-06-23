@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandBufferBeginInfo : IDisposable
     {
-        internal Unmanaged.CommandBufferBeginInfo* NativePointer;
+        internal Unmanaged.CommandBufferBeginInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Command buffer usage flags (Optional)

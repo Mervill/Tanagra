@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class WaylandSurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.WaylandSurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.WaylandSurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

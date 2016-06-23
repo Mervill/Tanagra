@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineTessellationStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineTessellationStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineTessellationStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

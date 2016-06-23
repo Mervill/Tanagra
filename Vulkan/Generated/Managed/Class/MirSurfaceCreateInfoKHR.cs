@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class MirSurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.MirSurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.MirSurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

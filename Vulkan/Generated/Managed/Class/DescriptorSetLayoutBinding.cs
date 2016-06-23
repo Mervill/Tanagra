@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorSetLayoutBinding : IDisposable
     {
-        internal Unmanaged.DescriptorSetLayoutBinding* NativePointer;
+        internal Unmanaged.DescriptorSetLayoutBinding* NativePointer { get; private set; }
         
         /// <summary>
         /// Binding number for this entry
@@ -56,7 +56,7 @@ namespace Vulkan.Managed
                 var valueArray = new Sampler[valueCount];
                 var ptr = (UInt64*)NativePointer->ImmutableSamplers;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Sampler { NativePointer = ptr[x] };
+                    valueArray[x] = new Sampler(ptr[x]);
                 
                 return valueArray;
             }

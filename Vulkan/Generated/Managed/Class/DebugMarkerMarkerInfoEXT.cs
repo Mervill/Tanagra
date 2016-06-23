@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DebugMarkerMarkerInfoEXT : IDisposable
     {
-        internal Unmanaged.DebugMarkerMarkerInfoEXT* NativePointer;
+        internal Unmanaged.DebugMarkerMarkerInfoEXT* NativePointer { get; private set; }
         
         /// <summary>
         /// Name of the debug marker

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandPoolCreateInfo : IDisposable
     {
-        internal Unmanaged.CommandPoolCreateInfo* NativePointer;
+        internal Unmanaged.CommandPoolCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Command pool creation flags (Optional)

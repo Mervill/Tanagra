@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineDepthStencilStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineDepthStencilStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineDepthStencilStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

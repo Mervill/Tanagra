@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SpecializationInfo : IDisposable
     {
-        internal Unmanaged.SpecializationInfo* NativePointer;
+        internal Unmanaged.SpecializationInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Array of map entries

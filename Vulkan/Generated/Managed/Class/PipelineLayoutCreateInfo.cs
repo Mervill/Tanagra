@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineLayoutCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineLayoutCreateInfo* NativePointer;
+        internal Unmanaged.PipelineLayoutCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorSetLayout[valueCount];
                 var ptr = (UInt64*)NativePointer->SetLayouts;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                    valueArray[x] = new DescriptorSetLayout(ptr[x]);
                 
                 return valueArray;
             }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DeviceQueueCreateInfo : IDisposable
     {
-        internal Unmanaged.DeviceQueueCreateInfo* NativePointer;
+        internal Unmanaged.DeviceQueueCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

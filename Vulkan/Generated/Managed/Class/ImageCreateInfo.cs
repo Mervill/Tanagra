@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ImageCreateInfo : IDisposable
     {
-        internal Unmanaged.ImageCreateInfo* NativePointer;
+        internal Unmanaged.ImageCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Image creation flags (Optional)

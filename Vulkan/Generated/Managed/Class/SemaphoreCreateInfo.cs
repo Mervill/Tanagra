@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SemaphoreCreateInfo : IDisposable
     {
-        internal Unmanaged.SemaphoreCreateInfo* NativePointer;
+        internal Unmanaged.SemaphoreCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Semaphore creation flags (Optional)

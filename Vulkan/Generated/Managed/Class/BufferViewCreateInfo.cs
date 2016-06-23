@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BufferViewCreateInfo : IDisposable
     {
-        internal Unmanaged.BufferViewCreateInfo* NativePointer;
+        internal Unmanaged.BufferViewCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

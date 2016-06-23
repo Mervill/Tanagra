@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DeviceCreateInfo : IDisposable
     {
-        internal Unmanaged.DeviceCreateInfo* NativePointer;
+        internal Unmanaged.DeviceCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -26,7 +26,7 @@ namespace Vulkan.Managed
                 var valueArray = new DeviceQueueCreateInfo[valueCount];
                 var ptr = (Unmanaged.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DeviceQueueCreateInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new DeviceQueueCreateInfo(&ptr[x]);
                 
                 return valueArray;
             }

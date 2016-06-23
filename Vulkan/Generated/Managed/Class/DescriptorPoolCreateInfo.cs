@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorPoolCreateInfo : IDisposable
     {
-        internal Unmanaged.DescriptorPoolCreateInfo* NativePointer;
+        internal Unmanaged.DescriptorPoolCreateInfo* NativePointer { get; private set; }
         
         public DescriptorPoolCreateFlags Flags
         {

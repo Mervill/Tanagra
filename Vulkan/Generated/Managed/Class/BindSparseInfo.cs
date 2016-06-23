@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BindSparseInfo : IDisposable
     {
-        internal Unmanaged.BindSparseInfo* NativePointer;
+        internal Unmanaged.BindSparseInfo* NativePointer { get; private set; }
         
         public Semaphore[] WaitSemaphores
         {
@@ -17,7 +17,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }
@@ -59,7 +59,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseBufferMemoryBindInfo[valueCount];
                 var ptr = (Unmanaged.SparseBufferMemoryBindInfo*)NativePointer->BufferBinds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseBufferMemoryBindInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseBufferMemoryBindInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -101,7 +101,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseImageOpaqueMemoryBindInfo[valueCount];
                 var ptr = (Unmanaged.SparseImageOpaqueMemoryBindInfo*)NativePointer->ImageOpaqueBinds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseImageOpaqueMemoryBindInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseImageOpaqueMemoryBindInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -143,7 +143,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseImageMemoryBindInfo[valueCount];
                 var ptr = (Unmanaged.SparseImageMemoryBindInfo*)NativePointer->ImageBinds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseImageMemoryBindInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseImageMemoryBindInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -185,7 +185,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }

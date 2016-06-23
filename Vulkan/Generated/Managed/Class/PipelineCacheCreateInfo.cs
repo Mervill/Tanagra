@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineCacheCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineCacheCreateInfo* NativePointer;
+        internal Unmanaged.PipelineCacheCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class QueryPoolCreateInfo : IDisposable
     {
-        internal Unmanaged.QueryPoolCreateInfo* NativePointer;
+        internal Unmanaged.QueryPoolCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

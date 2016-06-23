@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseImageOpaqueMemoryBindInfo : IDisposable
     {
-        internal Unmanaged.SparseImageOpaqueMemoryBindInfo* NativePointer;
+        internal Unmanaged.SparseImageOpaqueMemoryBindInfo* NativePointer { get; private set; }
         
         Image _Image;
         public Image Image
@@ -24,7 +24,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseMemoryBind[valueCount];
                 var ptr = (Unmanaged.SparseMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseMemoryBind { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseMemoryBind(&ptr[x]);
                 
                 return valueArray;
             }

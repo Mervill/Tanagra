@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DebugReportCallbackCreateInfoEXT : IDisposable
     {
-        internal Unmanaged.DebugReportCallbackCreateInfoEXT* NativePointer;
+        internal Unmanaged.DebugReportCallbackCreateInfoEXT* NativePointer { get; private set; }
         
         /// <summary>
         /// Indicates which events call this callback

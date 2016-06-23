@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorBufferInfo : IDisposable
     {
-        internal Unmanaged.DescriptorBufferInfo* NativePointer;
+        internal Unmanaged.DescriptorBufferInfo* NativePointer { get; private set; }
         
         Buffer _Buffer;
         /// <summary>

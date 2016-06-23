@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandBufferAllocateInfo : IDisposable
     {
-        internal Unmanaged.CommandBufferAllocateInfo* NativePointer;
+        internal Unmanaged.CommandBufferAllocateInfo* NativePointer { get; private set; }
         
         CommandPool _CommandPool;
         public CommandPool CommandPool

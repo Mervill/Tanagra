@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class Win32SurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.Win32SurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.Win32SurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

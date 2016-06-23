@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandBufferInheritanceInfo : IDisposable
     {
-        internal Unmanaged.CommandBufferInheritanceInfo* NativePointer;
+        internal Unmanaged.CommandBufferInheritanceInfo* NativePointer { get; private set; }
         
         RenderPass _RenderPass;
         /// <summary>

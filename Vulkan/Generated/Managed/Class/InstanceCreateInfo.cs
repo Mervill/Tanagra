@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class InstanceCreateInfo : IDisposable
     {
-        internal Unmanaged.InstanceCreateInfo* NativePointer;
+        internal Unmanaged.InstanceCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

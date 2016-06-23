@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineShaderStageCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineShaderStageCreateInfo* NativePointer;
+        internal Unmanaged.PipelineShaderStageCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

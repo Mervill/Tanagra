@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class MemoryAllocateInfo : IDisposable
     {
-        internal Unmanaged.MemoryAllocateInfo* NativePointer;
+        internal Unmanaged.MemoryAllocateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Size of memory allocation

@@ -8,7 +8,7 @@ namespace Vulkan.Managed
     /// </summary>
     unsafe public class LayerProperties : IDisposable
     {
-        internal Unmanaged.LayerProperties* NativePointer;
+        internal Unmanaged.LayerProperties* NativePointer { get; private set; }
         
         /// <summary>
         /// Layer name

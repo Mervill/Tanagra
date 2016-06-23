@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class RenderPassBeginInfo : IDisposable
     {
-        internal Unmanaged.RenderPassBeginInfo* NativePointer;
+        internal Unmanaged.RenderPassBeginInfo* NativePointer { get; private set; }
         
         RenderPass _RenderPass;
         public RenderPass RenderPass

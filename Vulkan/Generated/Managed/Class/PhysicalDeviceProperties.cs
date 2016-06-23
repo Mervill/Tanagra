@@ -8,7 +8,7 @@ namespace Vulkan.Managed
     /// </summary>
     unsafe public class PhysicalDeviceProperties : IDisposable
     {
-        internal Unmanaged.PhysicalDeviceProperties* NativePointer;
+        internal Unmanaged.PhysicalDeviceProperties* NativePointer { get; private set; }
         
         public UInt32 ApiVersion
         {

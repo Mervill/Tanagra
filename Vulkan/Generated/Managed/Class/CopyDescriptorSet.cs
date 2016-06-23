@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CopyDescriptorSet : IDisposable
     {
-        internal Unmanaged.CopyDescriptorSet* NativePointer;
+        internal Unmanaged.CopyDescriptorSet* NativePointer { get; private set; }
         
         DescriptorSet _SrcSet;
         /// <summary>

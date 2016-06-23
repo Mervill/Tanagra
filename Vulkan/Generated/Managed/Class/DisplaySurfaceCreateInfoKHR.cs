@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplaySurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.DisplaySurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.DisplaySurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

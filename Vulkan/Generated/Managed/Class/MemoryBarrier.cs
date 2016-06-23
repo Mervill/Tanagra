@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class MemoryBarrier : IDisposable
     {
-        internal Unmanaged.MemoryBarrier* NativePointer;
+        internal Unmanaged.MemoryBarrier* NativePointer { get; private set; }
         
         /// <summary>
         /// Memory accesses from the source of the dependency to synchronize (Optional)

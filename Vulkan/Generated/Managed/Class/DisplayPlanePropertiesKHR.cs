@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplayPlanePropertiesKHR : IDisposable
     {
-        internal Unmanaged.DisplayPlanePropertiesKHR* NativePointer;
+        internal Unmanaged.DisplayPlanePropertiesKHR* NativePointer { get; private set; }
         
         DisplayKHR _CurrentDisplay;
         /// <summary>

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorImageInfo : IDisposable
     {
-        internal Unmanaged.DescriptorImageInfo* NativePointer;
+        internal Unmanaged.DescriptorImageInfo* NativePointer { get; private set; }
         
         Sampler _Sampler;
         /// <summary>

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseBufferMemoryBindInfo : IDisposable
     {
-        internal Unmanaged.SparseBufferMemoryBindInfo* NativePointer;
+        internal Unmanaged.SparseBufferMemoryBindInfo* NativePointer { get; private set; }
         
         Buffer _Buffer;
         public Buffer Buffer
@@ -24,7 +24,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseMemoryBind[valueCount];
                 var ptr = (Unmanaged.SparseMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseMemoryBind { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseMemoryBind(&ptr[x]);
                 
                 return valueArray;
             }

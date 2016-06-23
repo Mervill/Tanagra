@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class GraphicsPipelineCreateInfo : IDisposable
     {
-        internal Unmanaged.GraphicsPipelineCreateInfo* NativePointer;
+        internal Unmanaged.GraphicsPipelineCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Pipeline creation flags (Optional)
@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 var valueArray = new PipelineShaderStageCreateInfo[valueCount];
                 var ptr = (Unmanaged.PipelineShaderStageCreateInfo*)NativePointer->Stages;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new PipelineShaderStageCreateInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new PipelineShaderStageCreateInfo(&ptr[x]);
                 
                 return valueArray;
             }

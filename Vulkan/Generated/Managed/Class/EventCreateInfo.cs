@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class EventCreateInfo : IDisposable
     {
-        internal Unmanaged.EventCreateInfo* NativePointer;
+        internal Unmanaged.EventCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Event creation flags (Optional)

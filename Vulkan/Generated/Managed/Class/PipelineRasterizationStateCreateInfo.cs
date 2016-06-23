@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineRasterizationStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineRasterizationStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineRasterizationStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

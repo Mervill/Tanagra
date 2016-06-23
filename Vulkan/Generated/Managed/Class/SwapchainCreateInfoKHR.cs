@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SwapchainCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.SwapchainCreateInfoKHR* NativePointer;
+        internal Unmanaged.SwapchainCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineColorBlendStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineColorBlendStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineColorBlendStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)

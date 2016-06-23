@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BufferCreateInfo : IDisposable
     {
-        internal Unmanaged.BufferCreateInfo* NativePointer;
+        internal Unmanaged.BufferCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Buffer creation flags (Optional)

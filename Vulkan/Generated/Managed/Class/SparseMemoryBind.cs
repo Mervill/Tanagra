@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseMemoryBind : IDisposable
     {
-        internal Unmanaged.SparseMemoryBind* NativePointer;
+        internal Unmanaged.SparseMemoryBind* NativePointer { get; private set; }
         
         /// <summary>
         /// Specified in bytes

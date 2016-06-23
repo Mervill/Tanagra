@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PresentInfoKHR : IDisposable
     {
-        internal Unmanaged.PresentInfoKHR* NativePointer;
+        internal Unmanaged.PresentInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Semaphores to wait for before presenting (Optional)
@@ -20,7 +20,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }
@@ -65,7 +65,7 @@ namespace Vulkan.Managed
                 var valueArray = new SwapchainKHR[valueCount];
                 var ptr = (UInt64*)NativePointer->Swapchains;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SwapchainKHR { NativePointer = ptr[x] };
+                    valueArray[x] = new SwapchainKHR(ptr[x]);
                 
                 return valueArray;
             }

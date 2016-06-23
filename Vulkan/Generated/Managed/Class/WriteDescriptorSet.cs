@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class WriteDescriptorSet : IDisposable
     {
-        internal Unmanaged.WriteDescriptorSet* NativePointer;
+        internal Unmanaged.WriteDescriptorSet* NativePointer { get; private set; }
         
         DescriptorSet _DstSet;
         /// <summary>
@@ -57,7 +57,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorImageInfo[valueCount];
                 var ptr = (Unmanaged.DescriptorImageInfo*)NativePointer->ImageInfo;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorImageInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new DescriptorImageInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -102,7 +102,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorBufferInfo[valueCount];
                 var ptr = (Unmanaged.DescriptorBufferInfo*)NativePointer->BufferInfo;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorBufferInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new DescriptorBufferInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -147,7 +147,7 @@ namespace Vulkan.Managed
                 var valueArray = new BufferView[valueCount];
                 var ptr = (UInt64*)NativePointer->TexelBufferView;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new BufferView { NativePointer = ptr[x] };
+                    valueArray[x] = new BufferView(ptr[x]);
                 
                 return valueArray;
             }

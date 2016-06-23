@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class FenceCreateInfo : IDisposable
     {
-        internal Unmanaged.FenceCreateInfo* NativePointer;
+        internal Unmanaged.FenceCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Fence creation flags (Optional)
