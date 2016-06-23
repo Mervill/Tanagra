@@ -71,6 +71,29 @@ namespace Vulkan.Managed
             return ptr;
         }
 
+        // TODO
+        /*internal static void Register(void* ptr, Type type)
+        {
+            Register(ptr, type);
+        }*/
+
+        internal static void Register(IntPtr ptr, Type type)
+        {
+#if DEBUG
+            if(PointerMemory.ContainsKey(ptr))
+            {
+                Console.WriteLine($"(MemUtil) Duplicate registration of a `{type.Name}` instance (not an error)");
+            }
+            else
+            {
+                var size = Marshal.SizeOf(type);
+                Console.WriteLine($"(MemUtil) Registered tracked pointer to a `{type.Name}` instance");
+                GC.AddMemoryPressure(size);
+                PointerMemory.Add(ptr, size);
+            }
+#endif
+        }
+
         internal static void Copy(IntPtr src, IntPtr dest, int size)
         {
             /*fixed (float* sourcePtr = &source[0, 0])

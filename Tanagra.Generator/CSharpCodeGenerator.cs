@@ -341,6 +341,18 @@ namespace Tanagra.Generator
             WriteBeginBlock();
             WriteLine($"internal {type} {NativePointer};");
             WriteLine("");
+
+            WriteLine($"internal {name}()");
+            WriteBeginBlock();
+            WriteEndBlock();
+            WriteLine("");
+
+            WriteLine($"internal {name}({type} internalHandle)");
+            WriteBeginBlock();
+            WriteLine($"{NativePointer} = internalHandle;");
+            WriteEndBlock();
+            WriteLine("");
+
             WriteLine($"public override string ToString() => \"{name} 0x\" + {NativePointer}.ToString(\"X8\");");
             WriteEndBlock();
             WriteEndBlock();
@@ -672,11 +684,12 @@ namespace Tanagra.Generator
             WriteEndBlock();
 
             // internal constructor for clone operation
-            /*WriteLine("");
+            WriteLine("");
             WriteLine($"internal {vkStruct.Name}({UnmanagedNS}.{vkStruct.Name}* ptr)");
             WriteBeginBlock();
             WriteLine($"{NativePointer} = ptr;");
-            WriteEndBlock();*/
+            WriteLine($"MemUtil.Register((IntPtr){NativePointer}, typeof({UnmanagedNS}.{vkStruct.Name}));");
+            WriteEndBlock();
 
             // Unless the underlying struct is returned-only, generate
             // a constructor by omitting any members that are marked as
@@ -1234,9 +1247,7 @@ namespace Tanagra.Generator
                             var arrayType = (paramIsHandle) ? GetHandleType(paramType as VkHandle) : paramTypeName;
                             if (paramIsInterop)
                                 arrayType = $"{UnmanagedNS}.{arrayType}";
-
-                            // todo: don't use stackalloc here. Data is (by very definition) leaving the function,
-                            // which will unfix the stackalloc'd memory and allow it to be overwritten :(
+                            
                             WriteLine($"var {ptrVar} = stackalloc {arrayType}[(int){countName}];");
                             //WriteLine($"if({countName} != 0)");
                             WriteLine($"if({paramName} != null)");
@@ -1335,10 +1346,14 @@ namespace Tanagra.Generator
                     }
                     else
                     {
-                        // todo: this needs to be allocated differently
-                        WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}];");
-                        WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
-                        _tabs++;
+                        var paramType = commandInfo.ReturnParam.Type;
+                        WriteLine($"var resultPtr = ({UnmanagedNS}.{paramType}*)IntPtr.Zero;");
+                        WriteLine($"var resultSize = Marshal.SizeOf(typeof({UnmanagedNS}.{paramType}));");
+                        WriteLine($"resultPtr = ({UnmanagedNS}.{paramType}*)Marshal.AllocHGlobal((int)(resultSize * {returnListLength}));");
+
+                        //WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}]; // hello world");
+                        //WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
+                        //_tabs++;
                     }
                     
                     #region Internal Function Call 2
@@ -1351,8 +1366,8 @@ namespace Tanagra.Generator
                     Write(LineEnding);
                     #endregion
 
-                    if(!stackallocReturnList)
-                        _tabs--;
+                    //if(!stackallocReturnList)
+                        //_tabs--;
 
                     if(commandInfo.InternalReturnsVkResult)
                     {
@@ -1416,18 +1431,21 @@ namespace Tanagra.Generator
                         }
                         else
                         {
-                            WriteLine($"var item = new {commandInfo.ReturnParam.Type}();");
-
                             if(commandInfo.ReturnParam.Type is VkHandle)
                             {
-                                WriteLine($"item.{NativePointer} = array{commandInfo.ReturnParam.Type}[x];");
+                                WriteLine($"var item = new {commandInfo.ReturnParam.Type}(array{commandInfo.ReturnParam.Type}[x]);");
+                                //WriteLine($"item.{NativePointer} = array{commandInfo.ReturnParam.Type}[x];");
                             }
                             else
                             {
-                                WriteLine($"fixed({UnmanagedNS}.{commandInfo.ReturnParam.Type}* itemPtr = &array{commandInfo.ReturnParam.Type}[x])");
-                                _tabs++;
-                                WriteLine($"item.{NativePointer} = itemPtr;");
-                                _tabs--;
+                                WriteLine($"var item = new {commandInfo.ReturnParam.Type}(&resultPtr[x]);");
+                                //WriteLine($"var item = new {commandInfo.ReturnParam.Type}();");
+                                //WriteLine($"item.{NativePointer} = &resultPtr[x];");
+
+                                //WriteLine($"fixed({UnmanagedNS}.{commandInfo.ReturnParam.Type}* itemPtr = &array{commandInfo.ReturnParam.Type}[x])");
+                                //_tabs++;
+                                //WriteLine($"item.{NativePointer} = itemPtr;");
+                                //_tabs--;
                             }
 
                             if(UseLists)
