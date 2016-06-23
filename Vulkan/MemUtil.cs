@@ -48,6 +48,11 @@ namespace Vulkan.Managed
             return ptr;
         }
 
+        internal static void Free(void* ptr)
+        {
+            Free((IntPtr)ptr);
+        }
+
         internal static void Free(IntPtr ptr)
         {
 #if DEBUG
@@ -70,12 +75,11 @@ namespace Vulkan.Managed
 #endif
             return ptr;
         }
-
-        // TODO
-        /*internal static void Register(void* ptr, Type type)
+        
+        internal static void Register(void* ptr, Type type)
         {
-            Register(ptr, type);
-        }*/
+            Register((IntPtr)ptr, type);
+        }
 
         internal static void Register(IntPtr ptr, Type type)
         {
