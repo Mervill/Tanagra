@@ -22,6 +22,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineRasterizationStateRasterizationOrderAMD;
         }
         
+        internal PipelineRasterizationStateRasterizationOrderAMD(Unmanaged.PipelineRasterizationStateRasterizationOrderAMD* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineRasterizationStateRasterizationOrderAMD));
+        }
+        
         /// <param name="RasterizationOrder">Rasterization order to use for the pipeline</param>
         public PipelineRasterizationStateRasterizationOrderAMD(RasterizationOrderAMD RasterizationOrder) : this()
         {
@@ -30,7 +36,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -39,7 +45,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

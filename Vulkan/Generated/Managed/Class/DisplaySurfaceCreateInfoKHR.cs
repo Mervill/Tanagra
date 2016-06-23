@@ -86,6 +86,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DisplaySurfaceCreateInfoKHR;
         }
         
+        internal DisplaySurfaceCreateInfoKHR(Unmanaged.DisplaySurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DisplaySurfaceCreateInfoKHR));
+        }
+        
         /// <param name="DisplayMode">The mode to use when displaying this surface</param>
         /// <param name="PlaneIndex">The plane on which this surface appears. Must be between 0 and the value returned by vkGetPhysicalDeviceDisplayPlanePropertiesKHR() in pPropertyCount.</param>
         /// <param name="PlaneStackIndex">The z-order of the plane.</param>
@@ -106,7 +112,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -115,7 +121,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

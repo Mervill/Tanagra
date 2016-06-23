@@ -106,11 +106,17 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineViewportStateCreateInfo;
         }
         
+        internal PipelineViewportStateCreateInfo(Unmanaged.PipelineViewportStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineViewportStateCreateInfo));
+        }
+        
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Viewports);
             Marshal.FreeHGlobal(NativePointer->Scissors);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -121,7 +127,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->Viewports);
                 Marshal.FreeHGlobal(NativePointer->Scissors);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

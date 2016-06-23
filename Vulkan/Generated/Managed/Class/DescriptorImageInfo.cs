@@ -41,6 +41,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorImageInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorImageInfo));
         }
         
+        internal DescriptorImageInfo(Unmanaged.DescriptorImageInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorImageInfo));
+        }
+        
         /// <param name="Sampler">Sampler to write to the descriptor in case it's a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.</param>
         /// <param name="ImageView">Image view to write to the descriptor in case it's a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.</param>
         /// <param name="ImageLayout">Layout the image is expected to be in when accessed using this descriptor (only used if imageView is not VK_NULL_HANDLE).</param>
@@ -53,7 +59,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -62,7 +68,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

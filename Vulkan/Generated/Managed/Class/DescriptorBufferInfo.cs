@@ -40,6 +40,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorBufferInfo*)MemUtil.Alloc(typeof(Unmanaged.DescriptorBufferInfo));
         }
         
+        internal DescriptorBufferInfo(Unmanaged.DescriptorBufferInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorBufferInfo));
+        }
+        
         /// <param name="Buffer">Buffer used for this descriptor slot when the descriptor is UNIFORM_BUFFER[_DYNAMIC] or STORAGE_BUFFER[_DYNAMIC]. VK_NULL_HANDLE otherwise.</param>
         /// <param name="Offset">Base offset from buffer start in bytes to update in the descriptor set.</param>
         /// <param name="Range">Size in bytes of the buffer resource for this descriptor update.</param>
@@ -52,7 +58,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -61,7 +67,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

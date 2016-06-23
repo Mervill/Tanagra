@@ -31,6 +31,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerMarkerInfoEXT;
         }
         
+        internal DebugMarkerMarkerInfoEXT(Unmanaged.DebugMarkerMarkerInfoEXT* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DebugMarkerMarkerInfoEXT));
+        }
+        
         /// <param name="MarkerName">Name of the debug marker</param>
         public DebugMarkerMarkerInfoEXT(String MarkerName) : this()
         {
@@ -40,7 +46,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->MarkerName);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->MarkerName);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

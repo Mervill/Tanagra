@@ -43,6 +43,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ApplicationInfo;
         }
         
+        internal ApplicationInfo(Unmanaged.ApplicationInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ApplicationInfo));
+        }
+        
         public ApplicationInfo(UInt32 ApplicationVersion, UInt32 EngineVersion, UInt32 ApiVersion) : this()
         {
             this.ApplicationVersion = ApplicationVersion;
@@ -54,7 +60,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->ApplicationName);
             Marshal.FreeHGlobal(NativePointer->EngineName);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -65,7 +71,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->ApplicationName);
                 Marshal.FreeHGlobal(NativePointer->EngineName);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -22,9 +22,15 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.FenceCreateInfo;
         }
         
+        internal FenceCreateInfo(Unmanaged.FenceCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.FenceCreateInfo));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -33,7 +39,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

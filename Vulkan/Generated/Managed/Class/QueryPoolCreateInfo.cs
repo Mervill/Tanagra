@@ -43,6 +43,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.QueryPoolCreateInfo;
         }
         
+        internal QueryPoolCreateInfo(Unmanaged.QueryPoolCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.QueryPoolCreateInfo));
+        }
+        
         public QueryPoolCreateInfo(QueryType QueryType, UInt32 QueryCount) : this()
         {
             this.QueryType = QueryType;
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -60,7 +66,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

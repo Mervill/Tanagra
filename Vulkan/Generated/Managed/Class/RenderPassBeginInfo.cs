@@ -75,6 +75,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.RenderPassBeginInfo;
         }
         
+        internal RenderPassBeginInfo(Unmanaged.RenderPassBeginInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.RenderPassBeginInfo));
+        }
+        
         public RenderPassBeginInfo(RenderPass RenderPass, Framebuffer Framebuffer, Rect2D RenderArea, ClearValue[] ClearValues) : this()
         {
             this.RenderPass = RenderPass;
@@ -86,7 +92,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->ClearValues);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -96,7 +102,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ClearValues);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

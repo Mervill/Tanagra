@@ -172,6 +172,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.GraphicsPipelineCreateInfo;
         }
         
+        internal GraphicsPipelineCreateInfo(Unmanaged.GraphicsPipelineCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.GraphicsPipelineCreateInfo));
+        }
+        
         /// <param name="Stages">One entry for each active shader stage</param>
         /// <param name="Layout">Interface layout of the pipeline</param>
         /// <param name="BasePipelineIndex">If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is not -1, it specifies an index into pCreateInfos of the base pipeline this is a derivative of</param>
@@ -190,7 +196,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Stages);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -200,7 +206,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Stages);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

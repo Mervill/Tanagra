@@ -34,6 +34,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.XlibSurfaceCreateInfoKHR;
         }
         
+        internal XlibSurfaceCreateInfoKHR(Unmanaged.XlibSurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.XlibSurfaceCreateInfoKHR));
+        }
+        
         public XlibSurfaceCreateInfoKHR(IntPtr Dpy, IntPtr Window) : this()
         {
             this.Dpy = Dpy;
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -10,6 +10,15 @@ namespace Vulkan
     {
         internal UInt64 NativePointer;
         
+        internal DisplayModeKHR()
+        {
+        }
+        
+        internal DisplayModeKHR(UInt64 internalHandle)
+        {
+            NativePointer = internalHandle;
+        }
+        
         public override string ToString() => "DisplayModeKHR 0x" + NativePointer.ToString("X8");
     }
 }

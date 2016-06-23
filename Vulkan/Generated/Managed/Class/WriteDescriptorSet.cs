@@ -185,6 +185,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.WriteDescriptorSet;
         }
         
+        internal WriteDescriptorSet(Unmanaged.WriteDescriptorSet* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.WriteDescriptorSet));
+        }
+        
         /// <param name="DstSet">Destination descriptor set</param>
         /// <param name="DstBinding">Binding within the destination descriptor set to write</param>
         /// <param name="DstArrayElement">Array element within the destination binding to write</param>
@@ -208,7 +214,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageInfo);
             Marshal.FreeHGlobal(NativePointer->BufferInfo);
             Marshal.FreeHGlobal(NativePointer->TexelBufferView);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -220,7 +226,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ImageInfo);
                 Marshal.FreeHGlobal(NativePointer->BufferInfo);
                 Marshal.FreeHGlobal(NativePointer->TexelBufferView);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

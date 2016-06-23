@@ -76,6 +76,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineMultisampleStateCreateInfo;
         }
         
+        internal PipelineMultisampleStateCreateInfo(Unmanaged.PipelineMultisampleStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineMultisampleStateCreateInfo));
+        }
+        
         /// <param name="RasterizationSamples">Number of samples used for rasterization</param>
         /// <param name="SampleShadingEnable">Optional (GL45)</param>
         /// <param name="MinSampleShading">Optional (GL45)</param>
@@ -91,7 +97,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->SampleMask);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -101,7 +107,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->SampleMask);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

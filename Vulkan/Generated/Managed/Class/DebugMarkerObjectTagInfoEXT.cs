@@ -85,6 +85,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerObjectTagInfoEXT;
         }
         
+        internal DebugMarkerObjectTagInfoEXT(Unmanaged.DebugMarkerObjectTagInfoEXT* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DebugMarkerObjectTagInfoEXT));
+        }
+        
         /// <param name="ObjectType">The type of the object</param>
         /// <param name="Object">The handle of the object, cast to uint64_t</param>
         /// <param name="TagName">The name of the tag to set on the object</param>
@@ -100,7 +106,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Tag);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -110,7 +116,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Tag);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

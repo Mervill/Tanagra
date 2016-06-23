@@ -40,6 +40,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugReportCallbackCreateInfoEXT;
         }
         
+        internal DebugReportCallbackCreateInfoEXT(Unmanaged.DebugReportCallbackCreateInfoEXT* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DebugReportCallbackCreateInfoEXT));
+        }
+        
         /// <param name="Flags">Indicates which events call this callback</param>
         /// <param name="Callback">Function pointer of a callback function</param>
         public DebugReportCallbackCreateInfoEXT(DebugReportFlagsEXT Flags, IntPtr Callback) : this()
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -59,7 +65,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

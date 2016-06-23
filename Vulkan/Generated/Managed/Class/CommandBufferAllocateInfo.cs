@@ -32,6 +32,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CommandBufferAllocateInfo;
         }
         
+        internal CommandBufferAllocateInfo(Unmanaged.CommandBufferAllocateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.CommandBufferAllocateInfo));
+        }
+        
         public CommandBufferAllocateInfo(CommandPool CommandPool, CommandBufferLevel Level, UInt32 CommandBufferCount) : this()
         {
             this.CommandPool = CommandPool;
@@ -41,7 +47,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

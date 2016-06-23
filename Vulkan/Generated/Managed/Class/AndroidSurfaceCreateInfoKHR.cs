@@ -28,6 +28,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.AndroidSurfaceCreateInfoKHR;
         }
         
+        internal AndroidSurfaceCreateInfoKHR(Unmanaged.AndroidSurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.AndroidSurfaceCreateInfoKHR));
+        }
+        
         public AndroidSurfaceCreateInfoKHR(IntPtr Window) : this()
         {
             this.Window = Window;
@@ -35,7 +41,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -44,7 +50,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

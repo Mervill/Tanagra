@@ -31,6 +31,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.MemoryAllocateInfo;
         }
         
+        internal MemoryAllocateInfo(Unmanaged.MemoryAllocateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.MemoryAllocateInfo));
+        }
+        
         /// <param name="AllocationSize">Size of memory allocation</param>
         /// <param name="MemoryTypeIndex">Index of the of the memory type to allocate from</param>
         public MemoryAllocateInfo(DeviceSize AllocationSize, UInt32 MemoryTypeIndex) : this()
@@ -41,7 +47,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

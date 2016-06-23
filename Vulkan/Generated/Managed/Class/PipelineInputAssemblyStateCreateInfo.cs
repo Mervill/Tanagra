@@ -34,6 +34,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineInputAssemblyStateCreateInfo;
         }
         
+        internal PipelineInputAssemblyStateCreateInfo(Unmanaged.PipelineInputAssemblyStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineInputAssemblyStateCreateInfo));
+        }
+        
         public PipelineInputAssemblyStateCreateInfo(PrimitiveTopology Topology, Bool32 PrimitiveRestartEnable) : this()
         {
             this.Topology = Topology;
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -119,6 +119,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.InstanceCreateInfo;
         }
         
+        internal InstanceCreateInfo(Unmanaged.InstanceCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.InstanceCreateInfo));
+        }
+        
         /// <param name="EnabledLayerNames">Ordered list of layer names to be enabled</param>
         /// <param name="EnabledExtensionNames">Extension names to be enabled</param>
         public InstanceCreateInfo(String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
@@ -131,7 +137,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
             Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -142,7 +148,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
                 Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

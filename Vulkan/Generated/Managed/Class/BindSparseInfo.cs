@@ -223,6 +223,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BindSparseInfo;
         }
         
+        internal BindSparseInfo(Unmanaged.BindSparseInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.BindSparseInfo));
+        }
+        
         public BindSparseInfo(Semaphore[] WaitSemaphores, SparseBufferMemoryBindInfo[] BufferBinds, SparseImageOpaqueMemoryBindInfo[] ImageOpaqueBinds, SparseImageMemoryBindInfo[] ImageBinds, Semaphore[] SignalSemaphores) : this()
         {
             this.WaitSemaphores = WaitSemaphores;
@@ -239,7 +245,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ImageOpaqueBinds);
             Marshal.FreeHGlobal(NativePointer->ImageBinds);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -253,7 +259,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ImageOpaqueBinds);
                 Marshal.FreeHGlobal(NativePointer->ImageBinds);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

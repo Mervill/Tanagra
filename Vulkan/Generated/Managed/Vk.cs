@@ -39,8 +39,7 @@ namespace Vulkan.Managed
             var list = new PhysicalDevice[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new PhysicalDevice();
-                item.NativePointer = arrayPhysicalDevice[x];
+                var item = new PhysicalDevice(arrayPhysicalDevice[x]);
                 list[x] = item;
             }
             
@@ -140,16 +139,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateInstanceLayerProperties(&listLength, null);
             
-            var arrayLayerProperties = new Unmanaged.LayerProperties[listLength];
-            fixed(Unmanaged.LayerProperties* resultPtr = &arrayLayerProperties[0])
-                vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
+            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
+            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
             
             var list = new LayerProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new LayerProperties();
-                fixed(Unmanaged.LayerProperties* itemPtr = &arrayLayerProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new LayerProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -162,16 +160,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateInstanceExtensionProperties(layerName, &listLength, null);
             
-            var arrayExtensionProperties = new Unmanaged.ExtensionProperties[listLength];
-            fixed(Unmanaged.ExtensionProperties* resultPtr = &arrayExtensionProperties[0])
-                vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
+            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
             
             var list = new ExtensionProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new ExtensionProperties();
-                fixed(Unmanaged.ExtensionProperties* itemPtr = &arrayExtensionProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new ExtensionProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -183,16 +180,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayLayerProperties = new Unmanaged.LayerProperties[listLength];
-            fixed(Unmanaged.LayerProperties* resultPtr = &arrayLayerProperties[0])
-                vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
+            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new LayerProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new LayerProperties();
-                fixed(Unmanaged.LayerProperties* itemPtr = &arrayLayerProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new LayerProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -205,16 +201,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, null);
             
-            var arrayExtensionProperties = new Unmanaged.ExtensionProperties[listLength];
-            fixed(Unmanaged.ExtensionProperties* resultPtr = &arrayExtensionProperties[0])
-                vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
+            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
             
             var list = new ExtensionProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new ExtensionProperties();
-                fixed(Unmanaged.ExtensionProperties* itemPtr = &arrayExtensionProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new ExtensionProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -742,8 +737,7 @@ namespace Vulkan.Managed
             var list = new Pipeline[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Pipeline();
-                item.NativePointer = arrayPipeline[x];
+                var item = new Pipeline(arrayPipeline[x]);
                 list[x] = item;
             }
             
@@ -771,8 +765,7 @@ namespace Vulkan.Managed
             var list = new Pipeline[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Pipeline();
-                item.NativePointer = arrayPipeline[x];
+                var item = new Pipeline(arrayPipeline[x]);
                 list[x] = item;
             }
             
@@ -888,8 +881,7 @@ namespace Vulkan.Managed
             var list = new DescriptorSet[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DescriptorSet();
-                item.NativePointer = arrayDescriptorSet[x];
+                var item = new DescriptorSet(arrayDescriptorSet[x]);
                 list[x] = item;
             }
             
@@ -1017,8 +1009,7 @@ namespace Vulkan.Managed
             var list = new CommandBuffer[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new CommandBuffer();
-                item.NativePointer = arrayCommandBuffer[x];
+                var item = new CommandBuffer(arrayCommandBuffer[x]);
                 list[x] = item;
             }
             
@@ -1635,16 +1626,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayDisplayPropertiesKHR = new Unmanaged.DisplayPropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayPropertiesKHR* resultPtr = &arrayDisplayPropertiesKHR[0])
-                vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPropertiesKHR));
+            resultPtr = (Unmanaged.DisplayPropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayPropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayPropertiesKHR();
-                fixed(Unmanaged.DisplayPropertiesKHR* itemPtr = &arrayDisplayPropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayPropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1656,16 +1646,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayDisplayPlanePropertiesKHR = new Unmanaged.DisplayPlanePropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayPlanePropertiesKHR* resultPtr = &arrayDisplayPlanePropertiesKHR[0])
-                vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPlanePropertiesKHR));
+            resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayPlanePropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayPlanePropertiesKHR();
-                fixed(Unmanaged.DisplayPlanePropertiesKHR* itemPtr = &arrayDisplayPlanePropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayPlanePropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1683,8 +1672,7 @@ namespace Vulkan.Managed
             var list = new DisplayKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayKHR();
-                item.NativePointer = arrayDisplayKHR[x];
+                var item = new DisplayKHR(arrayDisplayKHR[x]);
                 list[x] = item;
             }
             
@@ -1696,16 +1684,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, null);
             
-            var arrayDisplayModePropertiesKHR = new Unmanaged.DisplayModePropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayModePropertiesKHR* resultPtr = &arrayDisplayModePropertiesKHR[0])
-                vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayModePropertiesKHR));
+            resultPtr = (Unmanaged.DisplayModePropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayModePropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayModePropertiesKHR();
-                fixed(Unmanaged.DisplayModePropertiesKHR* itemPtr = &arrayDisplayModePropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayModePropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1769,8 +1756,7 @@ namespace Vulkan.Managed
             var list = new SwapchainKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new SwapchainKHR();
-                item.NativePointer = arraySwapchainKHR[x];
+                var item = new SwapchainKHR(arraySwapchainKHR[x]);
                 list[x] = item;
             }
             
@@ -1887,8 +1873,7 @@ namespace Vulkan.Managed
             var list = new Image[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Image();
-                item.NativePointer = arrayImage[x];
+                var item = new Image(arrayImage[x]);
                 list[x] = item;
             }
             

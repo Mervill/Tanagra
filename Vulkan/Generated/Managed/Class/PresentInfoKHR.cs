@@ -193,6 +193,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PresentInfoKHR;
         }
         
+        internal PresentInfoKHR(Unmanaged.PresentInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PresentInfoKHR));
+        }
+        
         /// <param name="Swapchains">Swapchains to present an image from</param>
         /// <param name="ImageIndices">Indices of which swapchain images to present</param>
         public PresentInfoKHR(SwapchainKHR[] Swapchains, UInt32[] ImageIndices) : this()
@@ -207,7 +213,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->Swapchains);
             Marshal.FreeHGlobal(NativePointer->ImageIndices);
             Marshal.FreeHGlobal(NativePointer->Results);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -220,7 +226,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->Swapchains);
                 Marshal.FreeHGlobal(NativePointer->ImageIndices);
                 Marshal.FreeHGlobal(NativePointer->Results);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

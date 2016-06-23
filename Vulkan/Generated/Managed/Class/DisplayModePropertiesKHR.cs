@@ -31,6 +31,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayModePropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayModePropertiesKHR));
         }
         
+        internal DisplayModePropertiesKHR(Unmanaged.DisplayModePropertiesKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DisplayModePropertiesKHR));
+        }
+        
         /// <param name="DisplayMode">Handle of this display mode.</param>
         /// <param name="Parameters">The parameters this mode uses.</param>
         public DisplayModePropertiesKHR(DisplayModeKHR DisplayMode, DisplayModeParametersKHR Parameters) : this()
@@ -41,7 +47,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

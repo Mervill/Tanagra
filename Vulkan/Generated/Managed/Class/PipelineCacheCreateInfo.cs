@@ -67,6 +67,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineCacheCreateInfo;
         }
         
+        internal PipelineCacheCreateInfo(Unmanaged.PipelineCacheCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineCacheCreateInfo));
+        }
+        
         /// <param name="InitialData">Initial data to populate cache</param>
         public PipelineCacheCreateInfo(IntPtr[] InitialData) : this()
         {
@@ -76,7 +82,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->InitialData);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -86,7 +92,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->InitialData);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

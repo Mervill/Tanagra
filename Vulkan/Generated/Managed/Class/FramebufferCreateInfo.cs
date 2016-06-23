@@ -89,6 +89,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.FramebufferCreateInfo;
         }
         
+        internal FramebufferCreateInfo(Unmanaged.FramebufferCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.FramebufferCreateInfo));
+        }
+        
         public FramebufferCreateInfo(RenderPass RenderPass, ImageView[] Attachments, UInt32 Width, UInt32 Height, UInt32 Layers) : this()
         {
             this.RenderPass = RenderPass;
@@ -101,7 +107,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Attachments);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -111,7 +117,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -32,9 +32,15 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CommandBufferBeginInfo;
         }
         
+        internal CommandBufferBeginInfo(Unmanaged.CommandBufferBeginInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.CommandBufferBeginInfo));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -43,7 +49,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

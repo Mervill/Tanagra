@@ -112,6 +112,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
         
+        internal PipelineLayoutCreateInfo(Unmanaged.PipelineLayoutCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineLayoutCreateInfo));
+        }
+        
         /// <param name="SetLayouts">Array of setCount number of descriptor set layout objects defining the layout of the</param>
         /// <param name="PushConstantRanges">Array of pushConstantRangeCount number of ranges used by various shader stages</param>
         public PipelineLayoutCreateInfo(DescriptorSetLayout[] SetLayouts, PushConstantRange[] PushConstantRanges) : this()
@@ -124,7 +130,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->SetLayouts);
             Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -135,7 +141,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->SetLayouts);
                 Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -34,6 +34,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.Win32SurfaceCreateInfoKHR;
         }
         
+        internal Win32SurfaceCreateInfoKHR(Unmanaged.Win32SurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.Win32SurfaceCreateInfoKHR));
+        }
+        
         public Win32SurfaceCreateInfoKHR(IntPtr Hinstance, IntPtr Hwnd) : this()
         {
             this.Hinstance = Hinstance;
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

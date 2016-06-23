@@ -78,6 +78,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CopyDescriptorSet;
         }
         
+        internal CopyDescriptorSet(Unmanaged.CopyDescriptorSet* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.CopyDescriptorSet));
+        }
+        
         /// <param name="SrcSet">Source descriptor set</param>
         /// <param name="SrcBinding">Binding within the source descriptor set to copy from</param>
         /// <param name="SrcArrayElement">Array element within the source binding to copy from</param>
@@ -98,7 +104,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -107,7 +113,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

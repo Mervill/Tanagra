@@ -28,6 +28,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineTessellationStateCreateInfo;
         }
         
+        internal PipelineTessellationStateCreateInfo(Unmanaged.PipelineTessellationStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineTessellationStateCreateInfo));
+        }
+        
         public PipelineTessellationStateCreateInfo(UInt32 PatchControlPoints) : this()
         {
             this.PatchControlPoints = PatchControlPoints;
@@ -35,7 +41,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -44,7 +50,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

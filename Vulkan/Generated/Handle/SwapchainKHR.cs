@@ -10,6 +10,15 @@ namespace Vulkan
     {
         internal UInt64 NativePointer;
         
+        internal SwapchainKHR()
+        {
+        }
+        
+        internal SwapchainKHR(UInt64 internalHandle)
+        {
+            NativePointer = internalHandle;
+        }
+        
         public override string ToString() => "SwapchainKHR 0x" + NativePointer.ToString("X8");
     }
 }
