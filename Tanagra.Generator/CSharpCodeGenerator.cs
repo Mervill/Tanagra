@@ -53,6 +53,7 @@ namespace Tanagra.Generator
         const string VulkanResultException   = "VulkanResultException";
         const string AllocateFnName          = "MemUtil.Alloc";
         const string FreeFnName              = "MemUtil.Free";
+        // register
         const string FixedSizeStringFnName   = "MemUtil.MarshalFixedSizeString";
         const string ManagedNS               = "Managed";
         const string ManagedFunctionsClass   = "Vk";
@@ -67,7 +68,8 @@ namespace Tanagra.Generator
         bool StackallocListArgs = true;
         bool InteropMarshalAsArrays = false;
         bool LockExternSync = false;
-        
+        bool HandleExtensionsUseDebuggerStepThrough = false;
+
         public CSharpCodeGenerator()
         {
             _sb = new StringBuilder();
@@ -929,7 +931,6 @@ namespace Tanagra.Generator
             if(vkMember.Type is VkHandle)
             {
                 var structType = GetHandleType((VkHandle)vkMember.Type);
-                //var get = $"valueArray[x] = new {vkMember.Type} {{ {NativePointer} = ptr[x] }};";
                 var get = $"valueArray[x] = new {vkMember.Type}(ptr[x]);";
                 var set = $"ptr[x] = value[x].{NativePointer};";
                 WriteArray(vkMember, countName, readOnly, structType, get, set);
@@ -1343,6 +1344,7 @@ namespace Tanagra.Generator
 
                     if (stackallocReturnList)
                     {
+                        // todo: yeah, still can't use stackalloc here, this is a -return value-
                         WriteLine($"var array{commandInfo.ReturnParam.Type} = stackalloc {interop}{sizeType}[(int){returnListLength}];");
                     }
                     else
@@ -1351,10 +1353,6 @@ namespace Tanagra.Generator
                         WriteLine($"var resultPtr = ({UnmanagedNS}.{paramType}*)IntPtr.Zero;");
                         WriteLine($"var resultSize = Marshal.SizeOf(typeof({UnmanagedNS}.{paramType}));");
                         WriteLine($"resultPtr = ({UnmanagedNS}.{paramType}*)Marshal.AllocHGlobal((int)(resultSize * {returnListLength}));");
-
-                        //WriteLine($"var array{commandInfo.ReturnParam.Type} = new {interop}{sizeType}[{returnListLength}]; // hello world");
-                        //WriteLine($"fixed({interop}{sizeType}* resultPtr = &array{commandInfo.ReturnParam.Type}[0])");
-                        //_tabs++;
                     }
                     
                     #region Internal Function Call 2
@@ -1366,10 +1364,7 @@ namespace Tanagra.Generator
                     Write($"{vkCommand.SpecName}({commandParams2});");
                     Write(LineEnding);
                     #endregion
-
-                    //if(!stackallocReturnList)
-                        //_tabs--;
-
+                    
                     if(commandInfo.InternalReturnsVkResult)
                     {
                         WriteLine("if(result != Result.Success)");
@@ -1435,18 +1430,10 @@ namespace Tanagra.Generator
                             if(commandInfo.ReturnParam.Type is VkHandle)
                             {
                                 WriteLine($"var item = new {commandInfo.ReturnParam.Type}(array{commandInfo.ReturnParam.Type}[x]);");
-                                //WriteLine($"item.{NativePointer} = array{commandInfo.ReturnParam.Type}[x];");
                             }
                             else
                             {
                                 WriteLine($"var item = new {commandInfo.ReturnParam.Type}(&resultPtr[x]);");
-                                //WriteLine($"var item = new {commandInfo.ReturnParam.Type}();");
-                                //WriteLine($"item.{NativePointer} = &resultPtr[x];");
-
-                                //WriteLine($"fixed({UnmanagedNS}.{commandInfo.ReturnParam.Type}* itemPtr = &array{commandInfo.ReturnParam.Type}[x])");
-                                //_tabs++;
-                                //WriteLine($"item.{NativePointer} = itemPtr;");
-                                //_tabs--;
                             }
 
                             if(UseLists)
@@ -1582,7 +1569,8 @@ namespace Tanagra.Generator
             Clear();
             WriteLine("using System;");
             WriteLine("using System.Collections.Generic;");
-            //WriteLine("using System.Diagnostics;");
+            if(HandleExtensionsUseDebuggerStepThrough)
+                WriteLine("using System.Diagnostics;");
             WriteLine("");
             WriteLine($"namespace Vulkan.{ManagedNS}.{ObjectModelNS}");
             WriteBeginBlock();
@@ -1627,7 +1615,8 @@ namespace Tanagra.Generator
 
                     WriteCommandComment(vkCommand, cmdParams.ToArray());
 
-                    //WriteLine("[DebuggerStepThrough]");
+                    if(HandleExtensionsUseDebuggerStepThrough)
+                        WriteLine("[DebuggerStepThrough]");
 
                     #region Declaration
                     WriteTabs();
