@@ -42,3 +42,10 @@ mul.ovf.un
 localloc
 stloc.X // where X is the index of the local variable
 ```
+
+
+"vulkan-1.dll";
+"libvulkan.so.1"
+"vulkan.so"
+
+Winapi || StdCall ?

@@ -5,7 +5,7 @@ namespace Vulkan.Unmanaged
 {
     public unsafe static class VulkanBinding
     {
-        const string DllName = "vulkan-1.dll";
+        const string DllName = "vulkan-1";
         const CallingConvention callingConvention = CallingConvention.Winapi;
         
         /// <param name="allocator">Optional</param>
