@@ -4,7 +4,6 @@ todo: GetQueryPoolResults is not generated correctly
 todo: Bug that occurs when 2 member arrays share the same count member, but one is set to null
 todo: unions
 todo: merge flag enums
-todo: CodeSize preventing x64 from working
 todo: Managed classes still leak memory in some cases
 todo: PipelineMultisampleStateCreateInfo.SampleMask
 
