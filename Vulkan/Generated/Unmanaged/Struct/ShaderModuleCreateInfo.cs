@@ -21,7 +21,7 @@ namespace Vulkan.Unmanaged
         /// <summary>
         /// Specified in bytes
         /// </summary>
-        public UInt32 CodeSize;
+        public IntPtr CodeSize;
         /// <summary>
         /// Binary code of size codeSize
         /// </summary>
