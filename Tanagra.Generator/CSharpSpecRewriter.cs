@@ -81,6 +81,9 @@ namespace Tanagra.Generator
 
             spec.AllTypes = spec.AllTypes.Except(platfromTypes).ToList();
 
+            var shaderModuleCreateInfo = (VkStruct)spec.AllTypes.FirstOrDefault(x => x.Name == "ShaderModuleCreateInfo");
+            shaderModuleCreateInfo.Members[3].Type = intPtr;
+
             var functionPointers = spec.AllTypes.Where(x => x.Name.StartsWith("PFN_"));
             foreach(var vkType in functionPointers)
                 Replace(spec, vkType, intPtr);
