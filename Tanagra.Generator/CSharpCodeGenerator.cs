@@ -34,7 +34,7 @@ namespace Tanagra.Generator
         StringBuilder _sb;
         int _tabs;
         
-        public string DllName = "vulkan-1.dll";
+        public string DllName = "vulkan-1";
 
         readonly List<string> platformStructTypes;
         readonly List<string> disabledStructs;
@@ -951,7 +951,7 @@ namespace Tanagra.Generator
                 var get = "valueArray[x] = ptr[x];";
                 var set = "ptr[x] = value[x];";
                 var typeName = vkMember.Type.Name;
-                WriteArray(vkMember, countName, readOnly, typeName, get, set);
+                WriteArray(vkMember, countName, readOnly, typeName, get, set, vkMember.Name == "Code" && countName == "CodeSize");
                 return;
             }
 
@@ -973,12 +973,12 @@ namespace Tanagra.Generator
             }
         }
 
-        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string get, string set)
+        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string get, string set, bool intPtr = false)
         {
-            WriteArray(vkMember, countName, readOnly, structType, structType, structType, get, set);
+            WriteArray(vkMember, countName, readOnly, structType, structType, structType, get, set, intPtr);
         }
 
-        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string sizeType, string pointerType, string get, string set)
+        void WriteArray(VkMember vkMember, string countName, bool readOnly, string structType, string sizeType, string pointerType, string get, string set, bool intPtr = false)
         {
             WriteMemberComments(vkMember);
             WriteLine($"public {vkMember.Type}[] {vkMember.Name}");
@@ -990,7 +990,10 @@ namespace Tanagra.Generator
             _tabs++;
             WriteLine($"return null;");
             _tabs--;
-            WriteLine($"var valueCount = {NativePointer}->{countName};");
+            if(intPtr)
+                WriteLine($"var valueCount = (int){NativePointer}->{countName};");// var valueCount = (int)NativePointer->CodeSize;
+            else
+                WriteLine($"var valueCount = {NativePointer}->{countName};");
             WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
             WriteLine($"var ptr = ({structType}*){NativePointer}->{vkMember.Name};");
             WriteLine("for(var x = 0; x < valueCount; x++)");
@@ -1019,7 +1022,10 @@ namespace Tanagra.Generator
                 WriteLine($"{NativePointer}->{vkMember.Name} = Marshal.AllocHGlobal(typeSize);");
                 _tabs--;
                 WriteLine("");
-                WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
+                if (intPtr)
+                    WriteLine($"{NativePointer}->{countName} = new IntPtr(valueCount);"); // NativePointer->CodeSize = new IntPtr(valueCount);
+                else
+                    WriteLine($"{NativePointer}->{countName} = (UInt32)valueCount;");
                 WriteLine($"var ptr = ({pointerType}*){NativePointer}->{vkMember.Name};");
                 WriteLine("for(var x = 0; x < valueCount; x++)");
                 _tabs++;
@@ -1034,7 +1040,10 @@ namespace Tanagra.Generator
                 _tabs--;
                 WriteLine("");
                 WriteLine($"{NativePointer}->{vkMember.Name} = IntPtr.Zero;");
-                WriteLine($"{NativePointer}->{countName} = 0;");
+                if (intPtr)
+                    WriteLine($"{NativePointer}->{countName} = IntPtr.Zero;"); // NativePointer->CodeSize = IntPtr.Zero;
+                else
+                    WriteLine($"{NativePointer}->{countName} = 0;");
                 WriteEndBlock();
                 WriteEndBlock();
             }
