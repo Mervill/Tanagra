@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SwapchainCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.SwapchainCreateInfoKHR* NativePointer;
+        internal Unmanaged.SwapchainCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -186,6 +186,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SwapchainCreateInfoKHR;
         }
         
+        internal SwapchainCreateInfoKHR(Unmanaged.SwapchainCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SwapchainCreateInfoKHR));
+        }
+        
         /// <param name="Surface">The swapchain's target surface</param>
         /// <param name="MinImageCount">Minimum number of presentation images the application needs</param>
         /// <param name="ImageFormat">Format of the presentation images</param>
@@ -219,7 +225,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -229,7 +235,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

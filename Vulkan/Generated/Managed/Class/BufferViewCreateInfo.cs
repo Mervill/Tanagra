@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BufferViewCreateInfo : IDisposable
     {
-        internal Unmanaged.BufferViewCreateInfo* NativePointer;
+        internal Unmanaged.BufferViewCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -56,6 +56,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferViewCreateInfo;
         }
         
+        internal BufferViewCreateInfo(Unmanaged.BufferViewCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.BufferViewCreateInfo));
+        }
+        
         /// <param name="Format">Optionally specifies format of elements</param>
         /// <param name="Offset">Specified in bytes</param>
         /// <param name="Range">View size specified in bytes</param>
@@ -69,7 +75,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -78,7 +84,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

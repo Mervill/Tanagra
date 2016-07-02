@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class WaylandSurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.WaylandSurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.WaylandSurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -34,6 +34,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.WaylandSurfaceCreateInfoKHR;
         }
         
+        internal WaylandSurfaceCreateInfoKHR(Unmanaged.WaylandSurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.WaylandSurfaceCreateInfoKHR));
+        }
+        
         public WaylandSurfaceCreateInfoKHR(IntPtr Display, IntPtr Surface) : this()
         {
             this.Display = Display;
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BufferMemoryBarrier : IDisposable
     {
-        internal Unmanaged.BufferMemoryBarrier* NativePointer;
+        internal Unmanaged.BufferMemoryBarrier* NativePointer { get; private set; }
         
         /// <summary>
         /// Memory accesses from the source of the dependency to synchronize (Optional)
@@ -77,6 +77,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferMemoryBarrier;
         }
         
+        internal BufferMemoryBarrier(Unmanaged.BufferMemoryBarrier* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.BufferMemoryBarrier));
+        }
+        
         /// <param name="SrcQueueFamilyIndex">Queue family to transition ownership from</param>
         /// <param name="DstQueueFamilyIndex">Queue family to transition ownership to</param>
         /// <param name="Buffer">Buffer to sync</param>
@@ -93,7 +99,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -102,7 +108,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

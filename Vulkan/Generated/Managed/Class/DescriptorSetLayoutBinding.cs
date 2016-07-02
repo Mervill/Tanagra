@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorSetLayoutBinding : IDisposable
     {
-        internal Unmanaged.DescriptorSetLayoutBinding* NativePointer;
+        internal Unmanaged.DescriptorSetLayoutBinding* NativePointer { get; private set; }
         
         /// <summary>
         /// Binding number for this entry
@@ -56,7 +56,7 @@ namespace Vulkan.Managed
                 var valueArray = new Sampler[valueCount];
                 var ptr = (UInt64*)NativePointer->ImmutableSamplers;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Sampler { NativePointer = ptr[x] };
+                    valueArray[x] = new Sampler(ptr[x]);
                 
                 return valueArray;
             }
@@ -93,6 +93,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DescriptorSetLayoutBinding*)MemUtil.Alloc(typeof(Unmanaged.DescriptorSetLayoutBinding));
         }
         
+        internal DescriptorSetLayoutBinding(Unmanaged.DescriptorSetLayoutBinding* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorSetLayoutBinding));
+        }
+        
         /// <param name="Binding">Binding number for this entry</param>
         /// <param name="DescriptorType">Type of the descriptors in this binding</param>
         /// <param name="StageFlags">Shader stages this binding is visible to</param>
@@ -106,7 +112,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -116,7 +122,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ImmutableSamplers);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

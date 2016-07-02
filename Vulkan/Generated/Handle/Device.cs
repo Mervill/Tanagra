@@ -10,6 +10,15 @@ namespace Vulkan
     {
         internal IntPtr NativePointer;
         
+        internal Device()
+        {
+        }
+        
+        internal Device(IntPtr internalHandle)
+        {
+            NativePointer = internalHandle;
+        }
+        
         public override string ToString() => "Device 0x" + NativePointer.ToString("X8");
     }
 }

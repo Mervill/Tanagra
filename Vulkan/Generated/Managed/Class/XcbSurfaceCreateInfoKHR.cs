@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class XcbSurfaceCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.XcbSurfaceCreateInfoKHR* NativePointer;
+        internal Unmanaged.XcbSurfaceCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -34,6 +34,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.XcbSurfaceCreateInfoKHR;
         }
         
+        internal XcbSurfaceCreateInfoKHR(Unmanaged.XcbSurfaceCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.XcbSurfaceCreateInfoKHR));
+        }
+        
         public XcbSurfaceCreateInfoKHR(IntPtr Connection, IntPtr Window) : this()
         {
             this.Connection = Connection;
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -51,7 +57,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

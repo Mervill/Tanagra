@@ -203,7 +203,7 @@ namespace TanagraExample
 
         protected List<ImageData> InitializeSwapchainImages(Queue queue, CommandPool cmdPool, Image[] images, Format imageFormat, uint width, uint height)
         {
-            var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
+            /*var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
             var cmdBuffer  = cmdBuffers.First();
 
             var inheritanceInfo = new CommandBufferInheritanceInfo();
@@ -219,7 +219,7 @@ namespace TanagraExample
             queue.Submit(new[] { submitInfo });
             queue.WaitIdle();
 
-            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });
+            device.FreeCommandBuffers(cmdPool, new[] { cmdBuffer });*/
 
             var imageDatas = new List<ImageData>();
 
@@ -304,6 +304,47 @@ namespace TanagraExample
             return device.CreateRenderPass(createInfo);
         }
 
+        protected RenderPass CreateRenderPass(Format colorFormat, Format stencilFormat)
+        {
+            var attachmentDescriptions = new[]
+            {
+                new AttachmentDescription
+                {
+                    Format         = colorFormat,
+                    Samples        = SampleCountFlags.SampleCountFlags1,
+                    StencilLoadOp  = AttachmentLoadOp.DontCare,
+                    StencilStoreOp = AttachmentStoreOp.DontCare,
+                    InitialLayout  = ImageLayout.ColorAttachmentOptimal,
+                    FinalLayout    = ImageLayout.ColorAttachmentOptimal
+                },
+                new AttachmentDescription
+                {
+                    Format         = stencilFormat,
+                    Samples        = SampleCountFlags.SampleCountFlags1,
+                    StencilLoadOp  = AttachmentLoadOp.DontCare,
+                    StencilStoreOp = AttachmentStoreOp.DontCare,
+                    InitialLayout  = ImageLayout.DepthStencilAttachmentOptimal,
+                    FinalLayout    = ImageLayout.DepthStencilAttachmentOptimal
+                },
+            };
+
+            var colorAttachmentReferences = new[]
+            {
+                new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal)
+            };
+            
+            var subpassDescriptions = new[]
+            {
+                new SubpassDescription(PipelineBindPoint.Graphics, null, colorAttachmentReferences, null)
+                {
+                    DepthStencilAttachment = new AttachmentReference(1, ImageLayout.DepthStencilAttachmentOptimal),
+                }
+            };
+
+            var createInfo = new RenderPassCreateInfo(attachmentDescriptions, subpassDescriptions, null);
+            return device.CreateRenderPass(createInfo);
+        }
+
         protected PipelineShaderStageCreateInfo GetShaderStageCreateInfo(ShaderStageFlags stage, string filename, string entrypoint = "main")
         {
             var shaderBytes = File.ReadAllBytes(filename);
@@ -331,6 +372,19 @@ namespace TanagraExample
             var rasterizationState = new PipelineRasterizationStateCreateInfo();
             rasterizationState.LineWidth = 1;
 
+            //var blendState = new PipelineColorBlendStateCreateInfo();
+
+            //var viewportState = new PipelineViewportStateCreateInfo();
+            //viewportState.Viewports = 1;
+            //viewportState.Scissors = 1;
+
+            var depthStencilState = new PipelineDepthStencilStateCreateInfo();
+            depthStencilState.DepthTestEnable = true;
+            depthStencilState.DepthWriteEnable = true;
+            depthStencilState.DepthCompareOp = CompareOp.LessOrEqual;
+            depthStencilState.Back = new StencilOpState { CompareOp = CompareOp.Always };
+            depthStencilState.Front = new StencilOpState { CompareOp = CompareOp.Always };
+
             var createInfos = new[]
             {
                 new GraphicsPipelineCreateInfo(shaderStageCreateInfos, vertexInputState, inputAssemblyState, rasterizationState, pipelineLayout, renderPass, 0, 0)
@@ -339,17 +393,18 @@ namespace TanagraExample
                     MultisampleState = new PipelineMultisampleStateCreateInfo()
                     {
                         RasterizationSamples = SampleCountFlags.SampleCountFlags1
-                    }
+                    },
+                    DepthStencilState = depthStencilState,
                 }
             };
 
             return device.CreateGraphicsPipelines(null, createInfos);
         }
 
-        protected Framebuffer CreateFramebuffer(RenderPass renderPass, ImageData imageData)
+        protected Framebuffer CreateFramebuffer(RenderPass renderPass, params ImageData[] imageData)
         {
-            var attachments = new[]{ imageData.View };
-            var createInfo = new FramebufferCreateInfo(renderPass, attachments, imageData.Width, imageData.Height, 1);
+            var attachments = imageData.Select(x => x.View).ToArray();
+            var createInfo = new FramebufferCreateInfo(renderPass, attachments, imageData[0].Width, imageData[0].Height, 1);
             return device.CreateFramebuffer(createInfo);
         }
 
@@ -404,7 +459,7 @@ namespace TanagraExample
         private Bool32 DebugReport(DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, ulong @object, IntPtr location, int messageCode, string layerPrefix, string message, IntPtr userData)
         {
             if(messageCode != 0)
-                Console.WriteLine(message);
+                Console.WriteLine($"[{messageCode,2}] {message}");
             return false;
         }
     }

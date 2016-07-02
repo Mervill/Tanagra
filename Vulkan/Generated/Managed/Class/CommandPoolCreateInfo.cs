@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandPoolCreateInfo : IDisposable
     {
-        internal Unmanaged.CommandPoolCreateInfo* NativePointer;
+        internal Unmanaged.CommandPoolCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Command pool creation flags (Optional)
@@ -28,6 +28,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CommandPoolCreateInfo;
         }
         
+        internal CommandPoolCreateInfo(Unmanaged.CommandPoolCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.CommandPoolCreateInfo));
+        }
+        
         public CommandPoolCreateInfo(UInt32 QueueFamilyIndex) : this()
         {
             this.QueueFamilyIndex = QueueFamilyIndex;
@@ -35,7 +41,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -44,7 +50,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

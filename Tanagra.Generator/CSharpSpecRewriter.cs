@@ -81,6 +81,9 @@ namespace Tanagra.Generator
 
             spec.AllTypes = spec.AllTypes.Except(platfromTypes).ToList();
 
+            var shaderModuleCreateInfo = (VkStruct)spec.AllTypes.FirstOrDefault(x => x.Name == "ShaderModuleCreateInfo");
+            shaderModuleCreateInfo.Members[3].Type = intPtr;
+
             var functionPointers = spec.AllTypes.Where(x => x.Name.StartsWith("PFN_"));
             foreach(var vkType in functionPointers)
                 Replace(spec, vkType, intPtr);
@@ -263,6 +266,15 @@ namespace Tanagra.Generator
             foreach(var vkEnumValue in vkEnum.Values)
             {
                 var name = vkEnumValue.Name;
+
+                if (vkEnum.Name == "Format")
+                {
+                    //const string pattern = @"VK_FORMAT_([^_]_)";
+                    name = name.Substring(10, name.Length - 10);
+                    vkEnumValue.Name = name;
+                    continue;
+                }
+
                 if(name.StartsWith("VK_"))
                     name = name.Substring(3, name.Length - 3);
 

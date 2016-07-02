@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ComputePipelineCreateInfo : IDisposable
     {
-        internal Unmanaged.ComputePipelineCreateInfo* NativePointer;
+        internal Unmanaged.ComputePipelineCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Pipeline creation flags (Optional)
@@ -58,6 +58,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ComputePipelineCreateInfo;
         }
         
+        internal ComputePipelineCreateInfo(Unmanaged.ComputePipelineCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ComputePipelineCreateInfo));
+        }
+        
         /// <param name="Layout">Interface layout of the pipeline</param>
         /// <param name="BasePipelineIndex">If VK_PIPELINE_CREATE_DERIVATIVE_BIT is set and this value is not -1, it specifies an index into pCreateInfos of the base pipeline this is a derivative of</param>
         public ComputePipelineCreateInfo(PipelineShaderStageCreateInfo Stage, PipelineLayout Layout, Int32 BasePipelineIndex) : this()
@@ -69,7 +75,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -78,7 +84,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

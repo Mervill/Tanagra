@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplayPlanePropertiesKHR : IDisposable
     {
-        internal Unmanaged.DisplayPlanePropertiesKHR* NativePointer;
+        internal Unmanaged.DisplayPlanePropertiesKHR* NativePointer { get; private set; }
         
         DisplayKHR _CurrentDisplay;
         /// <summary>
@@ -31,6 +31,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayPlanePropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPlanePropertiesKHR));
         }
         
+        internal DisplayPlanePropertiesKHR(Unmanaged.DisplayPlanePropertiesKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DisplayPlanePropertiesKHR));
+        }
+        
         /// <param name="CurrentDisplay">Display the plane is currently associated with. Will be VK_NULL_HANDLE if the plane is not in use.</param>
         /// <param name="CurrentStackIndex">Current z-order of the plane.</param>
         public DisplayPlanePropertiesKHR(DisplayKHR CurrentDisplay, UInt32 CurrentStackIndex) : this()
@@ -41,7 +47,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -50,7 +56,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

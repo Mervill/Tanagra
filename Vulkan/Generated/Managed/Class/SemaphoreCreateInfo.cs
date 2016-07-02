@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SemaphoreCreateInfo : IDisposable
     {
-        internal Unmanaged.SemaphoreCreateInfo* NativePointer;
+        internal Unmanaged.SemaphoreCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Semaphore creation flags (Optional)
@@ -22,9 +22,15 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SemaphoreCreateInfo;
         }
         
+        internal SemaphoreCreateInfo(Unmanaged.SemaphoreCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SemaphoreCreateInfo));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -33,7 +39,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

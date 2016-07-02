@@ -8,7 +8,7 @@ namespace Vulkan.Managed
     /// </summary>
     unsafe public class PhysicalDeviceProperties : IDisposable
     {
-        internal Unmanaged.PhysicalDeviceProperties* NativePointer;
+        internal Unmanaged.PhysicalDeviceProperties* NativePointer { get; private set; }
         
         public UInt32 ApiVersion
         {
@@ -60,9 +60,15 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.PhysicalDeviceProperties*)MemUtil.Alloc(typeof(Unmanaged.PhysicalDeviceProperties));
         }
         
+        internal PhysicalDeviceProperties(Unmanaged.PhysicalDeviceProperties* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PhysicalDeviceProperties));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -71,7 +77,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

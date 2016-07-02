@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ImageViewCreateInfo : IDisposable
     {
-        internal Unmanaged.ImageViewCreateInfo* NativePointer;
+        internal Unmanaged.ImageViewCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -53,6 +53,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ImageViewCreateInfo;
         }
         
+        internal ImageViewCreateInfo(Unmanaged.ImageViewCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ImageViewCreateInfo));
+        }
+        
         public ImageViewCreateInfo(Image Image, ImageViewType ViewType, Format Format, ComponentMapping Components, ImageSubresourceRange SubresourceRange) : this()
         {
             this.Image = Image;
@@ -64,7 +70,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -73,7 +79,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

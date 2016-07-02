@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseMemoryBind : IDisposable
     {
-        internal Unmanaged.SparseMemoryBind* NativePointer;
+        internal Unmanaged.SparseMemoryBind* NativePointer { get; private set; }
         
         /// <summary>
         /// Specified in bytes
@@ -55,6 +55,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SparseMemoryBind*)MemUtil.Alloc(typeof(Unmanaged.SparseMemoryBind));
         }
         
+        internal SparseMemoryBind(Unmanaged.SparseMemoryBind* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SparseMemoryBind));
+        }
+        
         /// <param name="ResourceOffset">Specified in bytes</param>
         /// <param name="Size">Specified in bytes</param>
         /// <param name="MemoryOffset">Specified in bytes</param>
@@ -67,7 +73,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -76,7 +82,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

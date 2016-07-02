@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ShaderModuleCreateInfo : IDisposable
     {
-        internal Unmanaged.ShaderModuleCreateInfo* NativePointer;
+        internal Unmanaged.ShaderModuleCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -25,7 +25,7 @@ namespace Vulkan.Managed
             {
                 if(NativePointer->Code == IntPtr.Zero)
                     return null;
-                var valueCount = NativePointer->CodeSize;
+                var valueCount = (int)NativePointer->CodeSize;
                 var valueArray = new Byte[valueCount];
                 var ptr = (Byte*)NativePointer->Code;
                 for(var x = 0; x < valueCount; x++)
@@ -45,7 +45,7 @@ namespace Vulkan.Managed
                     if(NativePointer->Code == IntPtr.Zero)
                         NativePointer->Code = Marshal.AllocHGlobal(typeSize);
                     
-                    NativePointer->CodeSize = (UInt32)valueCount;
+                    NativePointer->CodeSize = new IntPtr(valueCount);
                     var ptr = (Byte*)NativePointer->Code;
                     for(var x = 0; x < valueCount; x++)
                         ptr[x] = value[x];
@@ -56,7 +56,7 @@ namespace Vulkan.Managed
                         Marshal.FreeHGlobal(NativePointer->Code);
                     
                     NativePointer->Code = IntPtr.Zero;
-                    NativePointer->CodeSize = 0;
+                    NativePointer->CodeSize = IntPtr.Zero;
                 }
             }
         }
@@ -65,6 +65,12 @@ namespace Vulkan.Managed
         {
             NativePointer = (Unmanaged.ShaderModuleCreateInfo*)MemUtil.Alloc(typeof(Unmanaged.ShaderModuleCreateInfo));
             NativePointer->SType = StructureType.ShaderModuleCreateInfo;
+        }
+        
+        internal ShaderModuleCreateInfo(Unmanaged.ShaderModuleCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ShaderModuleCreateInfo));
         }
         
         /// <param name="Code">Binary code of size codeSize</param>
@@ -76,7 +82,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Code);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -86,7 +92,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Code);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineRasterizationStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineRasterizationStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineRasterizationStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -85,6 +85,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineRasterizationStateCreateInfo;
         }
         
+        internal PipelineRasterizationStateCreateInfo(Unmanaged.PipelineRasterizationStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineRasterizationStateCreateInfo));
+        }
+        
         /// <param name="PolygonMode">Optional (GL45)</param>
         public PipelineRasterizationStateCreateInfo(Bool32 DepthClampEnable, Bool32 RasterizerDiscardEnable, PolygonMode PolygonMode, FrontFace FrontFace, Bool32 DepthBiasEnable, Single DepthBiasConstantFactor, Single DepthBiasClamp, Single DepthBiasSlopeFactor, Single LineWidth) : this()
         {
@@ -101,7 +107,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -110,7 +116,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DeviceQueueCreateInfo : IDisposable
     {
-        internal Unmanaged.DeviceQueueCreateInfo* NativePointer;
+        internal Unmanaged.DeviceQueueCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -70,6 +70,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DeviceQueueCreateInfo;
         }
         
+        internal DeviceQueueCreateInfo(Unmanaged.DeviceQueueCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DeviceQueueCreateInfo));
+        }
+        
         public DeviceQueueCreateInfo(UInt32 QueueFamilyIndex, Single[] QueuePriorities) : this()
         {
             this.QueueFamilyIndex = QueueFamilyIndex;
@@ -79,7 +85,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueuePriorities);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -89,7 +95,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueuePriorities);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

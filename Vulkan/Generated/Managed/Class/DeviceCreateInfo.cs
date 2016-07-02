@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DeviceCreateInfo : IDisposable
     {
-        internal Unmanaged.DeviceCreateInfo* NativePointer;
+        internal Unmanaged.DeviceCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -26,7 +26,7 @@ namespace Vulkan.Managed
                 var valueArray = new DeviceQueueCreateInfo[valueCount];
                 var ptr = (Unmanaged.DeviceQueueCreateInfo*)NativePointer->QueueCreateInfos;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DeviceQueueCreateInfo { NativePointer = &ptr[x] };
+                    valueArray[x] = new DeviceQueueCreateInfo(&ptr[x]);
                 
                 return valueArray;
             }
@@ -166,6 +166,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DeviceCreateInfo;
         }
         
+        internal DeviceCreateInfo(Unmanaged.DeviceCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DeviceCreateInfo));
+        }
+        
         /// <param name="EnabledLayerNames">Ordered list of layer names to be enabled</param>
         public DeviceCreateInfo(DeviceQueueCreateInfo[] QueueCreateInfos, String[] EnabledLayerNames, String[] EnabledExtensionNames) : this()
         {
@@ -179,7 +185,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
             Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
             Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -191,7 +197,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->QueueCreateInfos);
                 Marshal.FreeHGlobal(NativePointer->EnabledLayerNames);
                 Marshal.FreeHGlobal(NativePointer->EnabledExtensionNames);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

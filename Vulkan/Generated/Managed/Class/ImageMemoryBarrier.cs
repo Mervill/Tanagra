@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ImageMemoryBarrier : IDisposable
     {
-        internal Unmanaged.ImageMemoryBarrier* NativePointer;
+        internal Unmanaged.ImageMemoryBarrier* NativePointer { get; private set; }
         
         /// <summary>
         /// Memory accesses from the source of the dependency to synchronize (Optional)
@@ -86,6 +86,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ImageMemoryBarrier;
         }
         
+        internal ImageMemoryBarrier(Unmanaged.ImageMemoryBarrier* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ImageMemoryBarrier));
+        }
+        
         /// <param name="OldLayout">Current layout of the image</param>
         /// <param name="NewLayout">New layout to transition the image to</param>
         /// <param name="SrcQueueFamilyIndex">Queue family to transition ownership from</param>
@@ -104,7 +110,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -113,7 +119,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

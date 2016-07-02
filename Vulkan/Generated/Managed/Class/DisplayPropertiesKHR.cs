@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplayPropertiesKHR : IDisposable
     {
-        internal Unmanaged.DisplayPropertiesKHR* NativePointer;
+        internal Unmanaged.DisplayPropertiesKHR* NativePointer { get; private set; }
         
         DisplayKHR _Display;
         /// <summary>
@@ -76,6 +76,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.DisplayPropertiesKHR*)MemUtil.Alloc(typeof(Unmanaged.DisplayPropertiesKHR));
         }
         
+        internal DisplayPropertiesKHR(Unmanaged.DisplayPropertiesKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DisplayPropertiesKHR));
+        }
+        
         /// <param name="Display">Handle of the display object</param>
         /// <param name="DisplayName">Name of the display</param>
         /// <param name="PhysicalDimensions">In millimeters?</param>
@@ -95,7 +101,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->DisplayName);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -105,7 +111,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DisplayName);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

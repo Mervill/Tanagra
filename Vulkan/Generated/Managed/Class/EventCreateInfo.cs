@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class EventCreateInfo : IDisposable
     {
-        internal Unmanaged.EventCreateInfo* NativePointer;
+        internal Unmanaged.EventCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Event creation flags (Optional)
@@ -22,9 +22,15 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.EventCreateInfo;
         }
         
+        internal EventCreateInfo(Unmanaged.EventCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.EventCreateInfo));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -33,7 +39,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

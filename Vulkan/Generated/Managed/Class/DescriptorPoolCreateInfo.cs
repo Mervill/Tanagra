@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorPoolCreateInfo : IDisposable
     {
-        internal Unmanaged.DescriptorPoolCreateInfo* NativePointer;
+        internal Unmanaged.DescriptorPoolCreateInfo* NativePointer { get; private set; }
         
         public DescriptorPoolCreateFlags Flags
         {
@@ -67,6 +67,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DescriptorPoolCreateInfo;
         }
         
+        internal DescriptorPoolCreateInfo(Unmanaged.DescriptorPoolCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorPoolCreateInfo));
+        }
+        
         public DescriptorPoolCreateInfo(UInt32 MaxSets, DescriptorPoolSize[] PoolSizes) : this()
         {
             this.MaxSets = MaxSets;
@@ -76,7 +82,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->PoolSizes);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -86,7 +92,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->PoolSizes);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

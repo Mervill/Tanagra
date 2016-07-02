@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class BufferCreateInfo : IDisposable
     {
-        internal Unmanaged.BufferCreateInfo* NativePointer;
+        internal Unmanaged.BufferCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Buffer creation flags (Optional)
@@ -88,6 +88,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.BufferCreateInfo;
         }
         
+        internal BufferCreateInfo(Unmanaged.BufferCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.BufferCreateInfo));
+        }
+        
         /// <param name="Size">Specified in bytes</param>
         /// <param name="Usage">Buffer usage flags</param>
         public BufferCreateInfo(DeviceSize Size, BufferUsageFlags Usage, SharingMode SharingMode, UInt32[] QueueFamilyIndices) : this()
@@ -101,7 +107,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -111,7 +117,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

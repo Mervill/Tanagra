@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineDepthStencilStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineDepthStencilStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineDepthStencilStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -79,6 +79,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineDepthStencilStateCreateInfo;
         }
         
+        internal PipelineDepthStencilStateCreateInfo(Unmanaged.PipelineDepthStencilStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineDepthStencilStateCreateInfo));
+        }
+        
         /// <param name="DepthBoundsTestEnable">Optional (depth_bounds_test)</param>
         public PipelineDepthStencilStateCreateInfo(Bool32 DepthTestEnable, Bool32 DepthWriteEnable, CompareOp DepthCompareOp, Bool32 DepthBoundsTestEnable, Bool32 StencilTestEnable, StencilOpState Front, StencilOpState Back, Single MinDepthBounds, Single MaxDepthBounds) : this()
         {
@@ -95,7 +101,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -104,7 +110,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

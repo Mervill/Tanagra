@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseBufferMemoryBindInfo : IDisposable
     {
-        internal Unmanaged.SparseBufferMemoryBindInfo* NativePointer;
+        internal Unmanaged.SparseBufferMemoryBindInfo* NativePointer { get; private set; }
         
         Buffer _Buffer;
         public Buffer Buffer
@@ -24,7 +24,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseMemoryBind[valueCount];
                 var ptr = (Unmanaged.SparseMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseMemoryBind { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseMemoryBind(&ptr[x]);
                 
                 return valueArray;
             }
@@ -61,6 +61,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SparseBufferMemoryBindInfo*)MemUtil.Alloc(typeof(Unmanaged.SparseBufferMemoryBindInfo));
         }
         
+        internal SparseBufferMemoryBindInfo(Unmanaged.SparseBufferMemoryBindInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SparseBufferMemoryBindInfo));
+        }
+        
         public SparseBufferMemoryBindInfo(Buffer Buffer, SparseMemoryBind[] Binds) : this()
         {
             this.Buffer = Buffer;
@@ -70,7 +76,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Binds);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -80,7 +86,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Binds);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

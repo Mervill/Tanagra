@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DisplayModeCreateInfoKHR : IDisposable
     {
-        internal Unmanaged.DisplayModeCreateInfoKHR* NativePointer;
+        internal Unmanaged.DisplayModeCreateInfoKHR* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -31,6 +31,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DisplayModeCreateInfoKHR;
         }
         
+        internal DisplayModeCreateInfoKHR(Unmanaged.DisplayModeCreateInfoKHR* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DisplayModeCreateInfoKHR));
+        }
+        
         /// <param name="Parameters">The parameters this mode uses.</param>
         public DisplayModeCreateInfoKHR(DisplayModeParametersKHR Parameters) : this()
         {
@@ -39,7 +45,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -48,7 +54,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

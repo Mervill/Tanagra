@@ -118,7 +118,7 @@ namespace TanagraExample
             device.DestroyBuffer(uniformData.Buffer);
             device.FreeMemory(uniformData.Memory);
 
-            //device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
+            device.FreeDescriptorSets(descriptorPool, new[] { descriptorSet });
             device.DestroyDescriptorSetLayout(descriptorSetLayout);
             device.DestroyDescriptorPool(descriptorPool);
 
@@ -201,9 +201,9 @@ namespace TanagraExample
 
             data.AttributeDescriptions = new[]
             {
-                new VertexInputAttributeDescription(0, 0, Format.R32g32b32Sfloat, 0),                 // Vertex: X, Y, Z
-                new VertexInputAttributeDescription(1, 0, Format.R32g32Sfloat, sizeof(float) * 3),    // UV: U, V
-                new VertexInputAttributeDescription(2, 0, Format.R32g32b32Sfloat, sizeof(float) * 5), // Normal: X, Y, Z
+                new VertexInputAttributeDescription(0, 0, Format.R32G32B32A32_SFLOAT, 0),                 // Vertex: X, Y, Z
+                new VertexInputAttributeDescription(1, 0, Format.R32G32B32_SFLOAT, sizeof(float) * 3),    // UV: U, V
+                new VertexInputAttributeDescription(2, 0, Format.R32G32B32A32_SFLOAT, sizeof(float) * 5), // Normal: X, Y, Z
             };
 
             return data;
@@ -222,12 +222,13 @@ namespace TanagraExample
             uint imageWidth  = (uint)bmp.Width;
             uint imageHeight = (uint)bmp.Height;
 
+            var imageFormat   = Format.B8G8R8A8_UNORM;
             var imageData     = new ImageData();
             imageData.Width   = imageWidth;
             imageData.Height  = imageHeight;
-            imageData.Image   = CreateTextureImage(Format.B8g8r8a8Unorm, imageWidth, imageHeight);
+            imageData.Image   = CreateTextureImage(imageFormat, imageWidth, imageHeight);
             imageData.Memory  = BindImage(imageData.Image);
-            imageData.View    = CreateImageView(imageData.Image, Format.B8g8r8a8Unorm);
+            imageData.View    = CreateImageView(imageData.Image, imageFormat);
             imageData.Sampler = CreateSampler();
             
             var memRequirements = device.GetImageMemoryRequirements(imageData.Image);
@@ -236,7 +237,7 @@ namespace TanagraExample
             var memAlloc = new MemoryAllocateInfo(memRequirements.Size, memoryIndex);
             var bufferMemory = BindBuffer(imageBuffer, memAlloc);
 
-            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 4), bufferMemory, memRequirements);
+            CopyBitmapToBuffer(bitmapData.Scan0, (int)(imageWidth * imageHeight * 4), bufferMemory, memRequirements.Size);
             
             //
             var cmdBuffers = AllocateCommandBuffers(cmdPool, 1);
@@ -336,6 +337,7 @@ namespace TanagraExample
             };
             
             var createInfo = new DescriptorPoolCreateInfo(2, poolSizes);
+            createInfo.Flags = DescriptorPoolCreateFlags.FreeDescriptorSet;
             return device.CreateDescriptorPool(createInfo);
         }
         
@@ -378,7 +380,7 @@ namespace TanagraExample
             cmdBuffer.Begin(beginInfo);
             beginInfo.Dispose();
 
-            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.PresentSrcKHR, ImageLayout.ColorAttachmentOptimal, AccessFlags.MemoryRead, AccessFlags.ColorAttachmentWrite);
+            PipelineBarrierSetLayout(cmdBuffer, swapchainImageData.Image, ImageLayout.Undefined, ImageLayout.ColorAttachmentOptimal, AccessFlags.None, AccessFlags.ColorAttachmentWrite);
 
             var clearRange = new ImageSubresourceRange(ImageAspectFlags.Color, 0, 1, 0, 1);
             cmdBuffer.ClearColorImage(swapchainImageData.Image, ImageLayout.TransferDstOptimal, new ClearColorValue(), new[] { clearRange });
@@ -447,7 +449,7 @@ namespace TanagraExample
         {
             var subresource = new ImageSubresourceLayers(ImageAspectFlags.Color, 0, 0, 1);
             var imageCopy = new BufferImageCopy(0, 0, 0, subresource, new Offset3D(0, 0, 0), new Extent3D(imageData.Width, imageData.Height, 1));
-            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new BufferImageCopy[] { imageCopy });
+            cmdBuffer.CopyBufferToImage(imageBuffer, imageData.Image, ImageLayout.TransferDstOptimal, new[] { imageCopy });
         }
 
         void CopyArrayToBuffer(DeviceMemory bufferMem, DeviceSize size, byte[] data)
@@ -457,9 +459,9 @@ namespace TanagraExample
             device.UnmapMemory(bufferMem);
         }
         
-        void CopyBitmapToBuffer(IntPtr scan0, int bitmapSize, DeviceMemory bufferMem, MemoryRequirements memRequirements)
+        void CopyBitmapToBuffer(IntPtr scan0, int bitmapSize, DeviceMemory bufferMem, DeviceSize size)
         {
-            var map = device.MapMemory(bufferMem, 0, memRequirements.Size);
+            var map = device.MapMemory(bufferMem, 0, size);
             Copy(scan0, map, bitmapSize);
             device.UnmapMemory(bufferMem);
         }

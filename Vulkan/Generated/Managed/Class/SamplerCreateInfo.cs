@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SamplerCreateInfo : IDisposable
     {
-        internal Unmanaged.SamplerCreateInfo* NativePointer;
+        internal Unmanaged.SamplerCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -121,6 +121,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SamplerCreateInfo;
         }
         
+        internal SamplerCreateInfo(Unmanaged.SamplerCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SamplerCreateInfo));
+        }
+        
         /// <param name="MagFilter">Filter mode for magnification</param>
         /// <param name="MinFilter">Filter mode for minifiation</param>
         /// <param name="MipmapMode">Mipmap selection mode</param>
@@ -145,7 +151,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -154,7 +160,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

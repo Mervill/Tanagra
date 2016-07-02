@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DescriptorSetLayoutCreateInfo : IDisposable
     {
-        internal Unmanaged.DescriptorSetLayoutCreateInfo* NativePointer;
+        internal Unmanaged.DescriptorSetLayoutCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorSetLayoutBinding[valueCount];
                 var ptr = (Unmanaged.DescriptorSetLayoutBinding*)NativePointer->Bindings;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorSetLayoutBinding { NativePointer = &ptr[x] };
+                    valueArray[x] = new DescriptorSetLayoutBinding(&ptr[x]);
                 
                 return valueArray;
             }
@@ -67,6 +67,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DescriptorSetLayoutCreateInfo;
         }
         
+        internal DescriptorSetLayoutCreateInfo(Unmanaged.DescriptorSetLayoutCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorSetLayoutCreateInfo));
+        }
+        
         /// <param name="Bindings">Array of descriptor set layout bindings</param>
         public DescriptorSetLayoutCreateInfo(DescriptorSetLayoutBinding[] Bindings) : this()
         {
@@ -76,7 +82,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Bindings);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -86,7 +92,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Bindings);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

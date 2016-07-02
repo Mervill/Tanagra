@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class ImageCreateInfo : IDisposable
     {
-        internal Unmanaged.ImageCreateInfo* NativePointer;
+        internal Unmanaged.ImageCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Image creation flags (Optional)
@@ -136,6 +136,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.ImageCreateInfo;
         }
         
+        internal ImageCreateInfo(Unmanaged.ImageCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ImageCreateInfo));
+        }
+        
         /// <param name="Usage">Image usage flags</param>
         /// <param name="SharingMode">Cross-queue-family sharing mode</param>
         /// <param name="QueueFamilyIndices">Array of queue family indices to share across</param>
@@ -158,7 +164,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -168,7 +174,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->QueueFamilyIndices);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

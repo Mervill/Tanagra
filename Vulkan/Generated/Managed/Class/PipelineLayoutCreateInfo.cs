@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineLayoutCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineLayoutCreateInfo* NativePointer;
+        internal Unmanaged.PipelineLayoutCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -29,7 +29,7 @@ namespace Vulkan.Managed
                 var valueArray = new DescriptorSetLayout[valueCount];
                 var ptr = (UInt64*)NativePointer->SetLayouts;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new DescriptorSetLayout { NativePointer = ptr[x] };
+                    valueArray[x] = new DescriptorSetLayout(ptr[x]);
                 
                 return valueArray;
             }
@@ -112,6 +112,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineLayoutCreateInfo;
         }
         
+        internal PipelineLayoutCreateInfo(Unmanaged.PipelineLayoutCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineLayoutCreateInfo));
+        }
+        
         /// <param name="SetLayouts">Array of setCount number of descriptor set layout objects defining the layout of the</param>
         /// <param name="PushConstantRanges">Array of pushConstantRangeCount number of ranges used by various shader stages</param>
         public PipelineLayoutCreateInfo(DescriptorSetLayout[] SetLayouts, PushConstantRange[] PushConstantRanges) : this()
@@ -124,7 +130,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->SetLayouts);
             Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -135,7 +141,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->SetLayouts);
                 Marshal.FreeHGlobal(NativePointer->PushConstantRanges);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

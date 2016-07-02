@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineDynamicStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineDynamicStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineDynamicStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -64,6 +64,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineDynamicStateCreateInfo;
         }
         
+        internal PipelineDynamicStateCreateInfo(Unmanaged.PipelineDynamicStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineDynamicStateCreateInfo));
+        }
+        
         public PipelineDynamicStateCreateInfo(DynamicState[] DynamicStates) : this()
         {
             this.DynamicStates = DynamicStates;
@@ -72,7 +78,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->DynamicStates);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -82,7 +88,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->DynamicStates);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

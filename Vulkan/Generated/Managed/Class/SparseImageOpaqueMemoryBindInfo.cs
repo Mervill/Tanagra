@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SparseImageOpaqueMemoryBindInfo : IDisposable
     {
-        internal Unmanaged.SparseImageOpaqueMemoryBindInfo* NativePointer;
+        internal Unmanaged.SparseImageOpaqueMemoryBindInfo* NativePointer { get; private set; }
         
         Image _Image;
         public Image Image
@@ -24,7 +24,7 @@ namespace Vulkan.Managed
                 var valueArray = new SparseMemoryBind[valueCount];
                 var ptr = (Unmanaged.SparseMemoryBind*)NativePointer->Binds;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new SparseMemoryBind { NativePointer = &ptr[x] };
+                    valueArray[x] = new SparseMemoryBind(&ptr[x]);
                 
                 return valueArray;
             }
@@ -61,6 +61,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SparseImageOpaqueMemoryBindInfo*)MemUtil.Alloc(typeof(Unmanaged.SparseImageOpaqueMemoryBindInfo));
         }
         
+        internal SparseImageOpaqueMemoryBindInfo(Unmanaged.SparseImageOpaqueMemoryBindInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SparseImageOpaqueMemoryBindInfo));
+        }
+        
         public SparseImageOpaqueMemoryBindInfo(Image Image, SparseMemoryBind[] Binds) : this()
         {
             this.Image = Image;
@@ -70,7 +76,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Binds);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -80,7 +86,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Binds);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

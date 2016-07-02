@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineColorBlendStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineColorBlendStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineColorBlendStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -82,6 +82,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineColorBlendStateCreateInfo;
         }
         
+        internal PipelineColorBlendStateCreateInfo(Unmanaged.PipelineColorBlendStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineColorBlendStateCreateInfo));
+        }
+        
         public PipelineColorBlendStateCreateInfo(Bool32 LogicOpEnable, LogicOp LogicOp, PipelineColorBlendAttachmentState[] Attachments, Unmanaged.PipelineColorBlendStateCreateInfo.BlendConstantsInfo BlendConstants) : this()
         {
             this.LogicOpEnable = LogicOpEnable;
@@ -93,7 +99,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->Attachments);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -103,7 +109,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->Attachments);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

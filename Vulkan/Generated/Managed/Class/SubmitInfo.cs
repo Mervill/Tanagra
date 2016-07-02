@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SubmitInfo : IDisposable
     {
-        internal Unmanaged.SubmitInfo* NativePointer;
+        internal Unmanaged.SubmitInfo* NativePointer { get; private set; }
         
         public Semaphore[] WaitSemaphores
         {
@@ -17,7 +17,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->WaitSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }
@@ -101,7 +101,7 @@ namespace Vulkan.Managed
                 var valueArray = new CommandBuffer[valueCount];
                 var ptr = (IntPtr*)NativePointer->CommandBuffers;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new CommandBuffer { NativePointer = ptr[x] };
+                    valueArray[x] = new CommandBuffer(ptr[x]);
                 
                 return valueArray;
             }
@@ -143,7 +143,7 @@ namespace Vulkan.Managed
                 var valueArray = new Semaphore[valueCount];
                 var ptr = (UInt64*)NativePointer->SignalSemaphores;
                 for(var x = 0; x < valueCount; x++)
-                    valueArray[x] = new Semaphore { NativePointer = ptr[x] };
+                    valueArray[x] = new Semaphore(ptr[x]);
                 
                 return valueArray;
             }
@@ -181,6 +181,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.SubmitInfo;
         }
         
+        internal SubmitInfo(Unmanaged.SubmitInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SubmitInfo));
+        }
+        
         public SubmitInfo(Semaphore[] WaitSemaphores, PipelineStageFlags[] WaitDstStageMask, CommandBuffer[] CommandBuffers, Semaphore[] SignalSemaphores) : this()
         {
             this.WaitSemaphores = WaitSemaphores;
@@ -195,7 +201,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->WaitDstStageMask);
             Marshal.FreeHGlobal(NativePointer->CommandBuffers);
             Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -208,7 +214,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->WaitDstStageMask);
                 Marshal.FreeHGlobal(NativePointer->CommandBuffers);
                 Marshal.FreeHGlobal(NativePointer->SignalSemaphores);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

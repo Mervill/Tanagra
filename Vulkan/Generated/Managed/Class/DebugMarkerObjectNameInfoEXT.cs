@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class DebugMarkerObjectNameInfoEXT : IDisposable
     {
-        internal Unmanaged.DebugMarkerObjectNameInfoEXT* NativePointer;
+        internal Unmanaged.DebugMarkerObjectNameInfoEXT* NativePointer { get; private set; }
         
         /// <summary>
         /// The type of the object
@@ -40,6 +40,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.DebugMarkerObjectNameInfoEXT;
         }
         
+        internal DebugMarkerObjectNameInfoEXT(Unmanaged.DebugMarkerObjectNameInfoEXT* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.DebugMarkerObjectNameInfoEXT));
+        }
+        
         /// <param name="ObjectType">The type of the object</param>
         /// <param name="Object">The handle of the object, cast to uint64_t</param>
         /// <param name="ObjectName">Name to apply to the object</param>
@@ -53,7 +59,7 @@ namespace Vulkan.Managed
         public void Dispose()
         {
             Marshal.FreeHGlobal(NativePointer->ObjectName);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -63,7 +69,7 @@ namespace Vulkan.Managed
             if(NativePointer != null)
             {
                 Marshal.FreeHGlobal(NativePointer->ObjectName);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class SubpassDescription : IDisposable
     {
-        internal Unmanaged.SubpassDescription* NativePointer;
+        internal Unmanaged.SubpassDescription* NativePointer { get; private set; }
         
         public SubpassDescriptionFlags Flags
         {
@@ -210,6 +210,12 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.SubpassDescription*)MemUtil.Alloc(typeof(Unmanaged.SubpassDescription));
         }
         
+        internal SubpassDescription(Unmanaged.SubpassDescription* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.SubpassDescription));
+        }
+        
         /// <param name="PipelineBindPoint">Must be VK_PIPELINE_BIND_POINT_GRAPHICS for now</param>
         public SubpassDescription(PipelineBindPoint PipelineBindPoint, AttachmentReference[] InputAttachments, AttachmentReference[] ColorAttachments, UInt32[] PreserveAttachments) : this()
         {
@@ -225,7 +231,7 @@ namespace Vulkan.Managed
             Marshal.FreeHGlobal(NativePointer->ColorAttachments);
             Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
             Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -238,7 +244,7 @@ namespace Vulkan.Managed
                 Marshal.FreeHGlobal(NativePointer->ColorAttachments);
                 Marshal.FreeHGlobal(NativePointer->ResolveAttachments);
                 Marshal.FreeHGlobal(NativePointer->PreserveAttachments);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

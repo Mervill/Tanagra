@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class CommandBufferInheritanceInfo : IDisposable
     {
-        internal Unmanaged.CommandBufferInheritanceInfo* NativePointer;
+        internal Unmanaged.CommandBufferInheritanceInfo* NativePointer { get; private set; }
         
         RenderPass _RenderPass;
         /// <summary>
@@ -66,6 +66,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.CommandBufferInheritanceInfo;
         }
         
+        internal CommandBufferInheritanceInfo(Unmanaged.CommandBufferInheritanceInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.CommandBufferInheritanceInfo));
+        }
+        
         /// <param name="OcclusionQueryEnable">Whether this secondary command buffer may be executed during an occlusion query</param>
         public CommandBufferInheritanceInfo(UInt32 Subpass, Bool32 OcclusionQueryEnable) : this()
         {
@@ -75,7 +81,7 @@ namespace Vulkan.Managed
         
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -84,7 +90,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

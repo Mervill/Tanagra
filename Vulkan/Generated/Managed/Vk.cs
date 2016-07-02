@@ -33,15 +33,13 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, null);
             
-            var arrayPhysicalDevice = new IntPtr[listLength];
-            fixed(IntPtr* resultPtr = &arrayPhysicalDevice[0])
-                vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, resultPtr);
+            var arrayPhysicalDevice = stackalloc IntPtr[(int)listLength];
+            vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, arrayPhysicalDevice);
             
             var list = new PhysicalDevice[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new PhysicalDevice();
-                item.NativePointer = arrayPhysicalDevice[x];
+                var item = new PhysicalDevice(arrayPhysicalDevice[x]);
                 list[x] = item;
             }
             
@@ -73,9 +71,8 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayQueueFamilyProperties = new QueueFamilyProperties[listLength];
-            fixed(QueueFamilyProperties* resultPtr = &arrayQueueFamilyProperties[0])
-                vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            var arrayQueueFamilyProperties = stackalloc QueueFamilyProperties[(int)listLength];
+            vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice.NativePointer, &listLength, arrayQueueFamilyProperties);
             
             var list = new QueueFamilyProperties[listLength];
             for(var x = 0; x < listLength; x++)
@@ -142,16 +139,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateInstanceLayerProperties(&listLength, null);
             
-            var arrayLayerProperties = new Unmanaged.LayerProperties[listLength];
-            fixed(Unmanaged.LayerProperties* resultPtr = &arrayLayerProperties[0])
-                vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
+            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
+            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
             
             var list = new LayerProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new LayerProperties();
-                fixed(Unmanaged.LayerProperties* itemPtr = &arrayLayerProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new LayerProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -164,16 +160,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateInstanceExtensionProperties(layerName, &listLength, null);
             
-            var arrayExtensionProperties = new Unmanaged.ExtensionProperties[listLength];
-            fixed(Unmanaged.ExtensionProperties* resultPtr = &arrayExtensionProperties[0])
-                vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
+            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
             
             var list = new ExtensionProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new ExtensionProperties();
-                fixed(Unmanaged.ExtensionProperties* itemPtr = &arrayExtensionProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new ExtensionProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -185,16 +180,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayLayerProperties = new Unmanaged.LayerProperties[listLength];
-            fixed(Unmanaged.LayerProperties* resultPtr = &arrayLayerProperties[0])
-                vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
+            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new LayerProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new LayerProperties();
-                fixed(Unmanaged.LayerProperties* itemPtr = &arrayLayerProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new LayerProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -207,16 +201,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, null);
             
-            var arrayExtensionProperties = new Unmanaged.ExtensionProperties[listLength];
-            fixed(Unmanaged.ExtensionProperties* resultPtr = &arrayExtensionProperties[0])
-                vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
+            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
             
             var list = new ExtensionProperties[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new ExtensionProperties();
-                fixed(Unmanaged.ExtensionProperties* itemPtr = &arrayExtensionProperties[x])
-                    item.NativePointer = itemPtr;
+                var item = new ExtensionProperties(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -238,19 +231,14 @@ namespace Vulkan.Managed
         public static void QueueSubmit(Queue queue, SubmitInfo[] submits, Fence fence = default(Fence))
         {
             var submitCount = (submits != null) ? (UInt32)submits.Length : 0;
-            var _submitsPtr = (Unmanaged.SubmitInfo*)IntPtr.Zero;
-            if(submitCount != 0)
-            {
-                var _submitsSize = Marshal.SizeOf(typeof(Unmanaged.SubmitInfo));
-                _submitsPtr = (Unmanaged.SubmitInfo*)Marshal.AllocHGlobal((int)(_submitsSize * submitCount));
+            var _submitsPtr = stackalloc Unmanaged.SubmitInfo[(int)submitCount];
+            if(submits != null)
                 for(var x = 0; x < submitCount; x++)
                     _submitsPtr[x] = *submits[x].NativePointer;
-            }
             
             var result = vkQueueSubmit(queue.NativePointer, submitCount, _submitsPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkQueueSubmit), result);
-            Marshal.FreeHGlobal((IntPtr)_submitsPtr);
         }
         
         public static void QueueWaitIdle(Queue queue)
@@ -304,40 +292,30 @@ namespace Vulkan.Managed
             vkUnmapMemory(device.NativePointer, memory.NativePointer);
         }
         
-        public static void FlushMappedMemoryRanges(Device device, MappedMemoryRange[] memoryRanges)
+        public static void FlushMappedMemoryRanges(Device device, params MappedMemoryRange[] memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Length : 0;
-            var _memoryRangesPtr = (Unmanaged.MappedMemoryRange*)IntPtr.Zero;
-            if(memoryRangeCount != 0)
-            {
-                var _memoryRangesSize = Marshal.SizeOf(typeof(Unmanaged.MappedMemoryRange));
-                _memoryRangesPtr = (Unmanaged.MappedMemoryRange*)Marshal.AllocHGlobal((int)(_memoryRangesSize * memoryRangeCount));
+            var _memoryRangesPtr = stackalloc Unmanaged.MappedMemoryRange[(int)memoryRangeCount];
+            if(memoryRanges != null)
                 for(var x = 0; x < memoryRangeCount; x++)
                     _memoryRangesPtr[x] = *memoryRanges[x].NativePointer;
-            }
             
             var result = vkFlushMappedMemoryRanges(device.NativePointer, memoryRangeCount, _memoryRangesPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkFlushMappedMemoryRanges), result);
-            Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
-        public static void InvalidateMappedMemoryRanges(Device device, MappedMemoryRange[] memoryRanges)
+        public static void InvalidateMappedMemoryRanges(Device device, params MappedMemoryRange[] memoryRanges)
         {
             var memoryRangeCount = (memoryRanges != null) ? (UInt32)memoryRanges.Length : 0;
-            var _memoryRangesPtr = (Unmanaged.MappedMemoryRange*)IntPtr.Zero;
-            if(memoryRangeCount != 0)
-            {
-                var _memoryRangesSize = Marshal.SizeOf(typeof(Unmanaged.MappedMemoryRange));
-                _memoryRangesPtr = (Unmanaged.MappedMemoryRange*)Marshal.AllocHGlobal((int)(_memoryRangesSize * memoryRangeCount));
+            var _memoryRangesPtr = stackalloc Unmanaged.MappedMemoryRange[(int)memoryRangeCount];
+            if(memoryRanges != null)
                 for(var x = 0; x < memoryRangeCount; x++)
                     _memoryRangesPtr[x] = *memoryRanges[x].NativePointer;
-            }
             
             var result = vkInvalidateMappedMemoryRanges(device.NativePointer, memoryRangeCount, _memoryRangesPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkInvalidateMappedMemoryRanges), result);
-            Marshal.FreeHGlobal((IntPtr)_memoryRangesPtr);
         }
         
         public static DeviceSize GetDeviceMemoryCommitment(Device device, DeviceMemory memory)
@@ -382,9 +360,8 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetImageSparseMemoryRequirements(device.NativePointer, image.NativePointer, &listLength, null);
             
-            var arraySparseImageMemoryRequirements = new SparseImageMemoryRequirements[listLength];
-            fixed(SparseImageMemoryRequirements* resultPtr = &arraySparseImageMemoryRequirements[0])
-                vkGetImageSparseMemoryRequirements(device.NativePointer, image.NativePointer, &listLength, resultPtr);
+            var arraySparseImageMemoryRequirements = stackalloc SparseImageMemoryRequirements[(int)listLength];
+            vkGetImageSparseMemoryRequirements(device.NativePointer, image.NativePointer, &listLength, arraySparseImageMemoryRequirements);
             
             var list = new SparseImageMemoryRequirements[listLength];
             for(var x = 0; x < listLength; x++)
@@ -400,9 +377,8 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceSparseImageFormatProperties(physicalDevice.NativePointer, format, type, samples, usage, tiling, &listLength, null);
             
-            var arraySparseImageFormatProperties = new SparseImageFormatProperties[listLength];
-            fixed(SparseImageFormatProperties* resultPtr = &arraySparseImageFormatProperties[0])
-                vkGetPhysicalDeviceSparseImageFormatProperties(physicalDevice.NativePointer, format, type, samples, usage, tiling, &listLength, resultPtr);
+            var arraySparseImageFormatProperties = stackalloc SparseImageFormatProperties[(int)listLength];
+            vkGetPhysicalDeviceSparseImageFormatProperties(physicalDevice.NativePointer, format, type, samples, usage, tiling, &listLength, arraySparseImageFormatProperties);
             
             var list = new SparseImageFormatProperties[listLength];
             for(var x = 0; x < listLength; x++)
@@ -421,19 +397,14 @@ namespace Vulkan.Managed
         public static void QueueBindSparse(Queue queue, BindSparseInfo[] bindInfo, Fence fence = default(Fence))
         {
             var bindInfoCount = (bindInfo != null) ? (UInt32)bindInfo.Length : 0;
-            var _bindInfoPtr = (Unmanaged.BindSparseInfo*)IntPtr.Zero;
-            if(bindInfoCount != 0)
-            {
-                var _bindInfoSize = Marshal.SizeOf(typeof(Unmanaged.BindSparseInfo));
-                _bindInfoPtr = (Unmanaged.BindSparseInfo*)Marshal.AllocHGlobal((int)(_bindInfoSize * bindInfoCount));
+            var _bindInfoPtr = stackalloc Unmanaged.BindSparseInfo[(int)bindInfoCount];
+            if(bindInfo != null)
                 for(var x = 0; x < bindInfoCount; x++)
                     _bindInfoPtr[x] = *bindInfo[x].NativePointer;
-            }
             
             var result = vkQueueBindSparse(queue.NativePointer, bindInfoCount, _bindInfoPtr, (fence != null) ? fence.NativePointer : 0);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkQueueBindSparse), result);
-            Marshal.FreeHGlobal((IntPtr)_bindInfoPtr);
         }
         
         /// <param name="allocator">Optional</param>
@@ -457,22 +428,17 @@ namespace Vulkan.Managed
         }
         
         /// <param name="fences">ExternSync</param>
-        public static void ResetFences(Device device, Fence[] fences)
+        public static void ResetFences(Device device, params Fence[] fences)
         {
             var fenceCount = (fences != null) ? (UInt32)fences.Length : 0;
-            var _fencesPtr = (UInt64*)IntPtr.Zero;
-            if(fenceCount != 0)
-            {
-                var _fencesSize = Marshal.SizeOf(typeof(IntPtr));
-                _fencesPtr = (UInt64*)Marshal.AllocHGlobal((int)(_fencesSize * fenceCount));
+            var _fencesPtr = stackalloc UInt64[(int)fenceCount];
+            if(fences != null)
                 for(var x = 0; x < fenceCount; x++)
                     _fencesPtr[x] = fences[x].NativePointer;
-            }
             
             var result = vkResetFences(device.NativePointer, fenceCount, _fencesPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkResetFences), result);
-            Marshal.FreeHGlobal((IntPtr)_fencesPtr);
         }
         
         public static Result GetFenceStatus(Device device, Fence fence)
@@ -484,18 +450,13 @@ namespace Vulkan.Managed
         public static Result WaitForFences(Device device, Fence[] fences, Bool32 waitAll, UInt64 timeout)
         {
             var fenceCount = (fences != null) ? (UInt32)fences.Length : 0;
-            var _fencesPtr = (UInt64*)IntPtr.Zero;
-            if(fenceCount != 0)
-            {
-                var _fencesSize = Marshal.SizeOf(typeof(IntPtr));
-                _fencesPtr = (UInt64*)Marshal.AllocHGlobal((int)(_fencesSize * fenceCount));
+            var _fencesPtr = stackalloc UInt64[(int)fenceCount];
+            if(fences != null)
                 for(var x = 0; x < fenceCount; x++)
                     _fencesPtr[x] = fences[x].NativePointer;
-            }
             
             var result = vkWaitForFences(device.NativePointer, fenceCount, _fencesPtr, waitAll, timeout);
-            Marshal.FreeHGlobal((IntPtr)_fencesPtr);
-            throw new NotImplementedException("Appears to return a value but could not determine the type");
+            return result;
         }
         
         /// <param name="allocator">Optional</param>
@@ -584,18 +545,13 @@ namespace Vulkan.Managed
         public static Result GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, IntPtr[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
             var dataSize = (data != null) ? (UInt32)data.Length : 0;
-            var _dataPtr = (IntPtr*)IntPtr.Zero;
-            if(dataSize != 0)
-            {
-                var _dataSize = Marshal.SizeOf(typeof(IntPtr));
-                _dataPtr = (IntPtr*)Marshal.AllocHGlobal((int)(_dataSize * dataSize));
+            var _dataPtr = stackalloc IntPtr[(int)dataSize];
+            if(data != null)
                 for(var x = 0; x < dataSize; x++)
                     _dataPtr[x] = data[x];
-            }
             
             var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, _dataPtr, stride, flags);
-            Marshal.FreeHGlobal((IntPtr)_dataPtr);
-            throw new NotImplementedException("Appears to return a value but could not determine the type");
+            return result;
         }
         
         /// <param name="allocator">Optional</param>
@@ -732,9 +688,8 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
             
-            var arrayIntPtr = new IntPtr[listLength];
-            fixed(IntPtr* resultPtr = &arrayIntPtr[0])
-                result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, resultPtr);
+            var arrayIntPtr = stackalloc IntPtr[(int)listLength];
+            result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, arrayIntPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
             
@@ -748,22 +703,17 @@ namespace Vulkan.Managed
         }
         
         /// <param name="dstCache">ExternSync</param>
-        public static void MergePipelineCaches(Device device, PipelineCache dstCache, PipelineCache[] srcCaches)
+        public static void MergePipelineCaches(Device device, PipelineCache dstCache, params PipelineCache[] srcCaches)
         {
             var srcCacheCount = (srcCaches != null) ? (UInt32)srcCaches.Length : 0;
-            var _srcCachesPtr = (UInt64*)IntPtr.Zero;
-            if(srcCacheCount != 0)
-            {
-                var _srcCachesSize = Marshal.SizeOf(typeof(IntPtr));
-                _srcCachesPtr = (UInt64*)Marshal.AllocHGlobal((int)(_srcCachesSize * srcCacheCount));
+            var _srcCachesPtr = stackalloc UInt64[(int)srcCacheCount];
+            if(srcCaches != null)
                 for(var x = 0; x < srcCacheCount; x++)
                     _srcCachesPtr[x] = srcCaches[x].NativePointer;
-            }
             
             var result = vkMergePipelineCaches(device.NativePointer, dstCache.NativePointer, srcCacheCount, _srcCachesPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkMergePipelineCaches), result);
-            Marshal.FreeHGlobal((IntPtr)_srcCachesPtr);
         }
         
         /// <param name="pipelineCache">Optional</param>
@@ -771,30 +721,23 @@ namespace Vulkan.Managed
         public static Pipeline[] CreateGraphicsPipelines(Device device, PipelineCache pipelineCache, GraphicsPipelineCreateInfo[] createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Length : 0;
-            var _createInfosPtr = (Unmanaged.GraphicsPipelineCreateInfo*)IntPtr.Zero;
-            if(createInfoCount != 0)
-            {
-                var _createInfosSize = Marshal.SizeOf(typeof(Unmanaged.GraphicsPipelineCreateInfo));
-                _createInfosPtr = (Unmanaged.GraphicsPipelineCreateInfo*)Marshal.AllocHGlobal((int)(_createInfosSize * createInfoCount));
+            var _createInfosPtr = stackalloc Unmanaged.GraphicsPipelineCreateInfo[(int)createInfoCount];
+            if(createInfos != null)
                 for(var x = 0; x < createInfoCount; x++)
                     _createInfosPtr[x] = *createInfos[x].NativePointer;
-            }
             
             var listLength = createInfoCount;
             Result result;
             
-            var arrayPipeline = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arrayPipeline[0])
-                result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
+            var arrayPipeline = stackalloc UInt64[(int)listLength];
+            result = vkCreateGraphicsPipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, arrayPipeline);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkCreateGraphicsPipelines), result);
-            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new Pipeline[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Pipeline();
-                item.NativePointer = arrayPipeline[x];
+                var item = new Pipeline(arrayPipeline[x]);
                 list[x] = item;
             }
             
@@ -806,30 +749,23 @@ namespace Vulkan.Managed
         public static Pipeline[] CreateComputePipelines(Device device, PipelineCache pipelineCache, ComputePipelineCreateInfo[] createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var createInfoCount = (createInfos != null) ? (UInt32)createInfos.Length : 0;
-            var _createInfosPtr = (Unmanaged.ComputePipelineCreateInfo*)IntPtr.Zero;
-            if(createInfoCount != 0)
-            {
-                var _createInfosSize = Marshal.SizeOf(typeof(Unmanaged.ComputePipelineCreateInfo));
-                _createInfosPtr = (Unmanaged.ComputePipelineCreateInfo*)Marshal.AllocHGlobal((int)(_createInfosSize * createInfoCount));
+            var _createInfosPtr = stackalloc Unmanaged.ComputePipelineCreateInfo[(int)createInfoCount];
+            if(createInfos != null)
                 for(var x = 0; x < createInfoCount; x++)
                     _createInfosPtr[x] = *createInfos[x].NativePointer;
-            }
             
             var listLength = createInfoCount;
             Result result;
             
-            var arrayPipeline = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arrayPipeline[0])
-                result = vkCreateComputePipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
+            var arrayPipeline = stackalloc UInt64[(int)listLength];
+            result = vkCreateComputePipelines(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, arrayPipeline);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkCreateComputePipelines), result);
-            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new Pipeline[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Pipeline();
-                item.NativePointer = arrayPipeline[x];
+                var item = new Pipeline(arrayPipeline[x]);
                 list[x] = item;
             }
             
@@ -937,17 +873,15 @@ namespace Vulkan.Managed
             var listLength = allocateInfo.NativePointer->DescriptorSetCount;
             Result result;
             
-            var arrayDescriptorSet = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arrayDescriptorSet[0])
-                result = vkAllocateDescriptorSets(device.NativePointer, allocateInfo.NativePointer, resultPtr);
+            var arrayDescriptorSet = stackalloc UInt64[(int)listLength];
+            result = vkAllocateDescriptorSets(device.NativePointer, allocateInfo.NativePointer, arrayDescriptorSet);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkAllocateDescriptorSets), result);
             
             var list = new DescriptorSet[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DescriptorSet();
-                item.NativePointer = arrayDescriptorSet[x];
+                var item = new DescriptorSet(arrayDescriptorSet[x]);
                 list[x] = item;
             }
             
@@ -956,49 +890,34 @@ namespace Vulkan.Managed
         
         /// <param name="descriptorPool">ExternSync</param>
         /// <param name="descriptorSets">ExternSync, No Auto Validity</param>
-        public static void FreeDescriptorSets(Device device, DescriptorPool descriptorPool, DescriptorSet[] descriptorSets)
+        public static void FreeDescriptorSets(Device device, DescriptorPool descriptorPool, params DescriptorSet[] descriptorSets)
         {
             var descriptorSetCount = (descriptorSets != null) ? (UInt32)descriptorSets.Length : 0;
-            var _descriptorSetsPtr = (UInt64*)IntPtr.Zero;
-            if(descriptorSetCount != 0)
-            {
-                var _descriptorSetsSize = Marshal.SizeOf(typeof(IntPtr));
-                _descriptorSetsPtr = (UInt64*)Marshal.AllocHGlobal((int)(_descriptorSetsSize * descriptorSetCount));
+            var _descriptorSetsPtr = stackalloc UInt64[(int)descriptorSetCount];
+            if(descriptorSets != null)
                 for(var x = 0; x < descriptorSetCount; x++)
                     _descriptorSetsPtr[x] = descriptorSets[x].NativePointer;
-            }
             
             var result = vkFreeDescriptorSets(device.NativePointer, descriptorPool.NativePointer, descriptorSetCount, _descriptorSetsPtr);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkFreeDescriptorSets), result);
-            Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
         }
         
-        public static void UpdateDescriptorSets(Device device, WriteDescriptorSet[] descriptorWrites, CopyDescriptorSet[] descriptorCopies)
+        public static void UpdateDescriptorSets(Device device, WriteDescriptorSet[] descriptorWrites, params CopyDescriptorSet[] descriptorCopies)
         {
             var descriptorWriteCount = (descriptorWrites != null) ? (UInt32)descriptorWrites.Length : 0;
-            var _descriptorWritesPtr = (Unmanaged.WriteDescriptorSet*)IntPtr.Zero;
-            if(descriptorWriteCount != 0)
-            {
-                var _descriptorWritesSize = Marshal.SizeOf(typeof(Unmanaged.WriteDescriptorSet));
-                _descriptorWritesPtr = (Unmanaged.WriteDescriptorSet*)Marshal.AllocHGlobal((int)(_descriptorWritesSize * descriptorWriteCount));
+            var _descriptorWritesPtr = stackalloc Unmanaged.WriteDescriptorSet[(int)descriptorWriteCount];
+            if(descriptorWrites != null)
                 for(var x = 0; x < descriptorWriteCount; x++)
                     _descriptorWritesPtr[x] = *descriptorWrites[x].NativePointer;
-            }
             
             var descriptorCopyCount = (descriptorCopies != null) ? (UInt32)descriptorCopies.Length : 0;
-            var _descriptorCopiesPtr = (Unmanaged.CopyDescriptorSet*)IntPtr.Zero;
-            if(descriptorCopyCount != 0)
-            {
-                var _descriptorCopiesSize = Marshal.SizeOf(typeof(Unmanaged.CopyDescriptorSet));
-                _descriptorCopiesPtr = (Unmanaged.CopyDescriptorSet*)Marshal.AllocHGlobal((int)(_descriptorCopiesSize * descriptorCopyCount));
+            var _descriptorCopiesPtr = stackalloc Unmanaged.CopyDescriptorSet[(int)descriptorCopyCount];
+            if(descriptorCopies != null)
                 for(var x = 0; x < descriptorCopyCount; x++)
                     _descriptorCopiesPtr[x] = *descriptorCopies[x].NativePointer;
-            }
             
             vkUpdateDescriptorSets(device.NativePointer, descriptorWriteCount, _descriptorWritesPtr, descriptorCopyCount, _descriptorCopiesPtr);
-            Marshal.FreeHGlobal((IntPtr)_descriptorWritesPtr);
-            Marshal.FreeHGlobal((IntPtr)_descriptorCopiesPtr);
         }
         
         /// <param name="allocator">Optional</param>
@@ -1082,17 +1001,15 @@ namespace Vulkan.Managed
             var listLength = allocateInfo.NativePointer->CommandBufferCount;
             Result result;
             
-            var arrayCommandBuffer = new IntPtr[listLength];
-            fixed(IntPtr* resultPtr = &arrayCommandBuffer[0])
-                result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, resultPtr);
+            var arrayCommandBuffer = stackalloc IntPtr[(int)listLength];
+            result = vkAllocateCommandBuffers(device.NativePointer, allocateInfo.NativePointer, arrayCommandBuffer);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkAllocateCommandBuffers), result);
             
             var list = new CommandBuffer[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new CommandBuffer();
-                item.NativePointer = arrayCommandBuffer[x];
+                var item = new CommandBuffer(arrayCommandBuffer[x]);
                 list[x] = item;
             }
             
@@ -1101,20 +1018,15 @@ namespace Vulkan.Managed
         
         /// <param name="commandPool">ExternSync</param>
         /// <param name="commandBuffers">ExternSync, No Auto Validity</param>
-        public static void FreeCommandBuffers(Device device, CommandPool commandPool, CommandBuffer[] commandBuffers)
+        public static void FreeCommandBuffers(Device device, CommandPool commandPool, params CommandBuffer[] commandBuffers)
         {
             var commandBufferCount = (commandBuffers != null) ? (UInt32)commandBuffers.Length : 0;
-            var _commandBuffersPtr = (IntPtr*)IntPtr.Zero;
-            if(commandBufferCount != 0)
-            {
-                var _commandBuffersSize = Marshal.SizeOf(typeof(IntPtr));
-                _commandBuffersPtr = (IntPtr*)Marshal.AllocHGlobal((int)(_commandBuffersSize * commandBufferCount));
+            var _commandBuffersPtr = stackalloc IntPtr[(int)commandBufferCount];
+            if(commandBuffers != null)
                 for(var x = 0; x < commandBufferCount; x++)
                     _commandBuffersPtr[x] = commandBuffers[x].NativePointer;
-            }
             
             vkFreeCommandBuffers(device.NativePointer, commandPool.NativePointer, commandBufferCount, _commandBuffersPtr);
-            Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
         /// <param name="commandBuffer">ExternSync</param>
@@ -1155,40 +1067,30 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetViewport(CommandBuffer commandBuffer, UInt32 firstViewport, Viewport[] viewports)
+        public static void CmdSetViewport(CommandBuffer commandBuffer, UInt32 firstViewport, params Viewport[] viewports)
         {
             var viewportCount = (viewports != null) ? (UInt32)viewports.Length : 0;
-            var _viewportsPtr = (Viewport*)IntPtr.Zero;
-            if(viewportCount != 0)
-            {
-                var _viewportsSize = Marshal.SizeOf(typeof(Viewport));
-                _viewportsPtr = (Viewport*)Marshal.AllocHGlobal((int)(_viewportsSize * viewportCount));
+            var _viewportsPtr = stackalloc Viewport[(int)viewportCount];
+            if(viewports != null)
                 for(var x = 0; x < viewportCount; x++)
                     _viewportsPtr[x] = viewports[x];
-            }
             
             vkCmdSetViewport(commandBuffer.NativePointer, firstViewport, viewportCount, _viewportsPtr);
-            Marshal.FreeHGlobal((IntPtr)_viewportsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdSetScissor(CommandBuffer commandBuffer, UInt32 firstScissor, Rect2D[] scissors)
+        public static void CmdSetScissor(CommandBuffer commandBuffer, UInt32 firstScissor, params Rect2D[] scissors)
         {
             var scissorCount = (scissors != null) ? (UInt32)scissors.Length : 0;
-            var _scissorsPtr = (Rect2D*)IntPtr.Zero;
-            if(scissorCount != 0)
-            {
-                var _scissorsSize = Marshal.SizeOf(typeof(Rect2D));
-                _scissorsPtr = (Rect2D*)Marshal.AllocHGlobal((int)(_scissorsSize * scissorCount));
+            var _scissorsPtr = stackalloc Rect2D[(int)scissorCount];
+            if(scissors != null)
                 for(var x = 0; x < scissorCount; x++)
                     _scissorsPtr[x] = scissors[x];
-            }
             
             vkCmdSetScissor(commandBuffer.NativePointer, firstScissor, scissorCount, _scissorsPtr);
-            Marshal.FreeHGlobal((IntPtr)_scissorsPtr);
         }
         
         /// <summary>
@@ -1258,31 +1160,21 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindDescriptorSets(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, DescriptorSet[] descriptorSets, UInt32[] dynamicOffsets)
+        public static void CmdBindDescriptorSets(CommandBuffer commandBuffer, PipelineBindPoint pipelineBindPoint, PipelineLayout layout, UInt32 firstSet, DescriptorSet[] descriptorSets, params UInt32[] dynamicOffsets)
         {
             var descriptorSetCount = (descriptorSets != null) ? (UInt32)descriptorSets.Length : 0;
-            var _descriptorSetsPtr = (UInt64*)IntPtr.Zero;
-            if(descriptorSetCount != 0)
-            {
-                var _descriptorSetsSize = Marshal.SizeOf(typeof(IntPtr));
-                _descriptorSetsPtr = (UInt64*)Marshal.AllocHGlobal((int)(_descriptorSetsSize * descriptorSetCount));
+            var _descriptorSetsPtr = stackalloc UInt64[(int)descriptorSetCount];
+            if(descriptorSets != null)
                 for(var x = 0; x < descriptorSetCount; x++)
                     _descriptorSetsPtr[x] = descriptorSets[x].NativePointer;
-            }
             
             var dynamicOffsetCount = (dynamicOffsets != null) ? (UInt32)dynamicOffsets.Length : 0;
-            var _dynamicOffsetsPtr = (UInt32*)IntPtr.Zero;
-            if(dynamicOffsetCount != 0)
-            {
-                var _dynamicOffsetsSize = Marshal.SizeOf(typeof(UInt32));
-                _dynamicOffsetsPtr = (UInt32*)Marshal.AllocHGlobal((int)(_dynamicOffsetsSize * dynamicOffsetCount));
+            var _dynamicOffsetsPtr = stackalloc UInt32[(int)dynamicOffsetCount];
+            if(dynamicOffsets != null)
                 for(var x = 0; x < dynamicOffsetCount; x++)
                     _dynamicOffsetsPtr[x] = dynamicOffsets[x];
-            }
             
             vkCmdBindDescriptorSets(commandBuffer.NativePointer, pipelineBindPoint, layout.NativePointer, firstSet, descriptorSetCount, _descriptorSetsPtr, dynamicOffsetCount, _dynamicOffsetsPtr);
-            Marshal.FreeHGlobal((IntPtr)_descriptorSetsPtr);
-            Marshal.FreeHGlobal((IntPtr)_dynamicOffsetsPtr);
         }
         
         /// <summary>
@@ -1298,30 +1190,20 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdBindVertexBuffers(CommandBuffer commandBuffer, UInt32 firstBinding, Buffer[] buffers, DeviceSize[] offsets)
+        public static void CmdBindVertexBuffers(CommandBuffer commandBuffer, UInt32 firstBinding, Buffer[] buffers, params DeviceSize[] offsets)
         {
             var bindingCount = (buffers != null) ? (UInt32)buffers.Length : 0;
-            var _buffersPtr = (UInt64*)IntPtr.Zero;
-            if(bindingCount != 0)
-            {
-                var _buffersSize = Marshal.SizeOf(typeof(IntPtr));
-                _buffersPtr = (UInt64*)Marshal.AllocHGlobal((int)(_buffersSize * bindingCount));
+            var _buffersPtr = stackalloc UInt64[(int)bindingCount];
+            if(buffers != null)
                 for(var x = 0; x < bindingCount; x++)
                     _buffersPtr[x] = buffers[x].NativePointer;
-            }
             
-            var _offsetsPtr = (DeviceSize*)IntPtr.Zero;
-            if(bindingCount != 0)
-            {
-                var _offsetsSize = Marshal.SizeOf(typeof(DeviceSize));
-                _offsetsPtr = (DeviceSize*)Marshal.AllocHGlobal((int)(_offsetsSize * bindingCount));
+            var _offsetsPtr = stackalloc DeviceSize[(int)bindingCount];
+            if(offsets != null)
                 for(var x = 0; x < bindingCount; x++)
                     _offsetsPtr[x] = offsets[x];
-            }
             
             vkCmdBindVertexBuffers(commandBuffer.NativePointer, firstBinding, bindingCount, _buffersPtr, _offsetsPtr);
-            Marshal.FreeHGlobal((IntPtr)_buffersPtr);
-            Marshal.FreeHGlobal((IntPtr)_offsetsPtr);
         }
         
         /// <summary>
@@ -1382,40 +1264,30 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, BufferCopy[] regions)
+        public static void CmdCopyBuffer(CommandBuffer commandBuffer, Buffer srcBuffer, Buffer dstBuffer, params BufferCopy[] regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (BufferCopy*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(BufferCopy));
-                _regionsPtr = (BufferCopy*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc BufferCopy[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdCopyBuffer(commandBuffer.NativePointer, srcBuffer.NativePointer, dstBuffer.NativePointer, regionCount, _regionsPtr);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageCopy[] regions)
+        public static void CmdCopyImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, params ImageCopy[] regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (ImageCopy*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(ImageCopy));
-                _regionsPtr = (ImageCopy*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc ImageCopy[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdCopyImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
@@ -1425,77 +1297,57 @@ namespace Vulkan.Managed
         public static void CmdBlitImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageBlit[] regions, Filter filter)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (ImageBlit*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(ImageBlit));
-                _regionsPtr = (ImageBlit*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc ImageBlit[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdBlitImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr, filter);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, BufferImageCopy[] regions)
+        public static void CmdCopyBufferToImage(CommandBuffer commandBuffer, Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout, params BufferImageCopy[] regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (BufferImageCopy*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(BufferImageCopy));
-                _regionsPtr = (BufferImageCopy*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc BufferImageCopy[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdCopyBufferToImage(commandBuffer.NativePointer, srcBuffer.NativePointer, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdCopyImageToBuffer(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, BufferImageCopy[] regions)
+        public static void CmdCopyImageToBuffer(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer, params BufferImageCopy[] regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (BufferImageCopy*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(BufferImageCopy));
-                _regionsPtr = (BufferImageCopy*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc BufferImageCopy[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdCopyImageToBuffer(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstBuffer.NativePointer, regionCount, _regionsPtr);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, Byte[] data)
+        public static void CmdUpdateBuffer(CommandBuffer commandBuffer, Buffer dstBuffer, DeviceSize dstOffset, params Byte[] data)
         {
             var dataSize = (data != null) ? (UInt32)data.Length : 0;
-            var _dataPtr = (Byte*)IntPtr.Zero;
-            if(dataSize != 0)
-            {
-                var _dataSize = Marshal.SizeOf(typeof(Byte));
-                _dataPtr = (Byte*)Marshal.AllocHGlobal((int)(_dataSize * dataSize));
+            var _dataPtr = stackalloc Byte[(int)dataSize];
+            if(data != null)
                 for(var x = 0; x < dataSize; x++)
                     _dataPtr[x] = data[x];
-            }
             
             vkCmdUpdateBuffer(commandBuffer.NativePointer, dstBuffer.NativePointer, dstOffset, dataSize, _dataPtr);
-            Marshal.FreeHGlobal((IntPtr)_dataPtr);
         }
         
         /// <summary>
@@ -1511,91 +1363,66 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, ImageSubresourceRange[] ranges)
+        public static void CmdClearColorImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearColorValue color, params ImageSubresourceRange[] ranges)
         {
             var rangeCount = (ranges != null) ? (UInt32)ranges.Length : 0;
-            var _rangesPtr = (ImageSubresourceRange*)IntPtr.Zero;
-            if(rangeCount != 0)
-            {
-                var _rangesSize = Marshal.SizeOf(typeof(ImageSubresourceRange));
-                _rangesPtr = (ImageSubresourceRange*)Marshal.AllocHGlobal((int)(_rangesSize * rangeCount));
+            var _rangesPtr = stackalloc ImageSubresourceRange[(int)rangeCount];
+            if(ranges != null)
                 for(var x = 0; x < rangeCount; x++)
                     _rangesPtr[x] = ranges[x];
-            }
             
             vkCmdClearColorImage(commandBuffer.NativePointer, image.NativePointer, imageLayout, &color, rangeCount, _rangesPtr);
-            Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearDepthStencilImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, ImageSubresourceRange[] ranges)
+        public static void CmdClearDepthStencilImage(CommandBuffer commandBuffer, Image image, ImageLayout imageLayout, ClearDepthStencilValue depthStencil, params ImageSubresourceRange[] ranges)
         {
             var rangeCount = (ranges != null) ? (UInt32)ranges.Length : 0;
-            var _rangesPtr = (ImageSubresourceRange*)IntPtr.Zero;
-            if(rangeCount != 0)
-            {
-                var _rangesSize = Marshal.SizeOf(typeof(ImageSubresourceRange));
-                _rangesPtr = (ImageSubresourceRange*)Marshal.AllocHGlobal((int)(_rangesSize * rangeCount));
+            var _rangesPtr = stackalloc ImageSubresourceRange[(int)rangeCount];
+            if(ranges != null)
                 for(var x = 0; x < rangeCount; x++)
                     _rangesPtr[x] = ranges[x];
-            }
             
             vkCmdClearDepthStencilImage(commandBuffer.NativePointer, image.NativePointer, imageLayout, &depthStencil, rangeCount, _rangesPtr);
-            Marshal.FreeHGlobal((IntPtr)_rangesPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Inside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdClearAttachments(CommandBuffer commandBuffer, ClearAttachment[] attachments, ClearRect[] rects)
+        public static void CmdClearAttachments(CommandBuffer commandBuffer, ClearAttachment[] attachments, params ClearRect[] rects)
         {
             var attachmentCount = (attachments != null) ? (UInt32)attachments.Length : 0;
-            var _attachmentsPtr = (ClearAttachment*)IntPtr.Zero;
-            if(attachmentCount != 0)
-            {
-                var _attachmentsSize = Marshal.SizeOf(typeof(ClearAttachment));
-                _attachmentsPtr = (ClearAttachment*)Marshal.AllocHGlobal((int)(_attachmentsSize * attachmentCount));
+            var _attachmentsPtr = stackalloc ClearAttachment[(int)attachmentCount];
+            if(attachments != null)
                 for(var x = 0; x < attachmentCount; x++)
                     _attachmentsPtr[x] = attachments[x];
-            }
             
             var rectCount = (rects != null) ? (UInt32)rects.Length : 0;
-            var _rectsPtr = (ClearRect*)IntPtr.Zero;
-            if(rectCount != 0)
-            {
-                var _rectsSize = Marshal.SizeOf(typeof(ClearRect));
-                _rectsPtr = (ClearRect*)Marshal.AllocHGlobal((int)(_rectsSize * rectCount));
+            var _rectsPtr = stackalloc ClearRect[(int)rectCount];
+            if(rects != null)
                 for(var x = 0; x < rectCount; x++)
                     _rectsPtr[x] = rects[x];
-            }
             
             vkCmdClearAttachments(commandBuffer.NativePointer, attachmentCount, _attachmentsPtr, rectCount, _rectsPtr);
-            Marshal.FreeHGlobal((IntPtr)_attachmentsPtr);
-            Marshal.FreeHGlobal((IntPtr)_rectsPtr);
         }
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdResolveImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, ImageResolve[] regions)
+        public static void CmdResolveImage(CommandBuffer commandBuffer, Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout, params ImageResolve[] regions)
         {
             var regionCount = (regions != null) ? (UInt32)regions.Length : 0;
-            var _regionsPtr = (ImageResolve*)IntPtr.Zero;
-            if(regionCount != 0)
-            {
-                var _regionsSize = Marshal.SizeOf(typeof(ImageResolve));
-                _regionsPtr = (ImageResolve*)Marshal.AllocHGlobal((int)(_regionsSize * regionCount));
+            var _regionsPtr = stackalloc ImageResolve[(int)regionCount];
+            if(regions != null)
                 for(var x = 0; x < regionCount; x++)
                     _regionsPtr[x] = regions[x];
-            }
             
             vkCmdResolveImage(commandBuffer.NativePointer, srcImage.NativePointer, srcImageLayout, dstImage.NativePointer, dstImageLayout, regionCount, _regionsPtr);
-            Marshal.FreeHGlobal((IntPtr)_regionsPtr);
         }
         
         /// <summary>
@@ -1620,53 +1447,33 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdWaitEvents(CommandBuffer commandBuffer, Event[] events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
+        public static void CmdWaitEvents(CommandBuffer commandBuffer, Event[] events, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, params ImageMemoryBarrier[] imageMemoryBarriers)
         {
             var eventCount = (events != null) ? (UInt32)events.Length : 0;
-            var _eventsPtr = (UInt64*)IntPtr.Zero;
-            if(eventCount != 0)
-            {
-                var _eventsSize = Marshal.SizeOf(typeof(IntPtr));
-                _eventsPtr = (UInt64*)Marshal.AllocHGlobal((int)(_eventsSize * eventCount));
+            var _eventsPtr = stackalloc UInt64[(int)eventCount];
+            if(events != null)
                 for(var x = 0; x < eventCount; x++)
                     _eventsPtr[x] = events[x].NativePointer;
-            }
             
             var memoryBarrierCount = (memoryBarriers != null) ? (UInt32)memoryBarriers.Length : 0;
-            var _memoryBarriersPtr = (Unmanaged.MemoryBarrier*)IntPtr.Zero;
-            if(memoryBarrierCount != 0)
-            {
-                var _memoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.MemoryBarrier));
-                _memoryBarriersPtr = (Unmanaged.MemoryBarrier*)Marshal.AllocHGlobal((int)(_memoryBarriersSize * memoryBarrierCount));
+            var _memoryBarriersPtr = stackalloc Unmanaged.MemoryBarrier[(int)memoryBarrierCount];
+            if(memoryBarriers != null)
                 for(var x = 0; x < memoryBarrierCount; x++)
                     _memoryBarriersPtr[x] = *memoryBarriers[x].NativePointer;
-            }
             
             var bufferMemoryBarrierCount = (bufferMemoryBarriers != null) ? (UInt32)bufferMemoryBarriers.Length : 0;
-            var _bufferMemoryBarriersPtr = (Unmanaged.BufferMemoryBarrier*)IntPtr.Zero;
-            if(bufferMemoryBarrierCount != 0)
-            {
-                var _bufferMemoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.BufferMemoryBarrier));
-                _bufferMemoryBarriersPtr = (Unmanaged.BufferMemoryBarrier*)Marshal.AllocHGlobal((int)(_bufferMemoryBarriersSize * bufferMemoryBarrierCount));
+            var _bufferMemoryBarriersPtr = stackalloc Unmanaged.BufferMemoryBarrier[(int)bufferMemoryBarrierCount];
+            if(bufferMemoryBarriers != null)
                 for(var x = 0; x < bufferMemoryBarrierCount; x++)
                     _bufferMemoryBarriersPtr[x] = *bufferMemoryBarriers[x].NativePointer;
-            }
             
             var imageMemoryBarrierCount = (imageMemoryBarriers != null) ? (UInt32)imageMemoryBarriers.Length : 0;
-            var _imageMemoryBarriersPtr = (Unmanaged.ImageMemoryBarrier*)IntPtr.Zero;
-            if(imageMemoryBarrierCount != 0)
-            {
-                var _imageMemoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.ImageMemoryBarrier));
-                _imageMemoryBarriersPtr = (Unmanaged.ImageMemoryBarrier*)Marshal.AllocHGlobal((int)(_imageMemoryBarriersSize * imageMemoryBarrierCount));
+            var _imageMemoryBarriersPtr = stackalloc Unmanaged.ImageMemoryBarrier[(int)imageMemoryBarrierCount];
+            if(imageMemoryBarriers != null)
                 for(var x = 0; x < imageMemoryBarrierCount; x++)
                     _imageMemoryBarriersPtr[x] = *imageMemoryBarriers[x].NativePointer;
-            }
             
             vkCmdWaitEvents(commandBuffer.NativePointer, eventCount, _eventsPtr, srcStageMask, dstStageMask, memoryBarrierCount, _memoryBarriersPtr, bufferMemoryBarrierCount, _bufferMemoryBarriersPtr, imageMemoryBarrierCount, _imageMemoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_eventsPtr);
-            Marshal.FreeHGlobal((IntPtr)_memoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_bufferMemoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
         /// <summary>
@@ -1674,42 +1481,27 @@ namespace Vulkan.Managed
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         /// <param name="dependencyFlags">Optional</param>
-        public static void CmdPipelineBarrier(CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, ImageMemoryBarrier[] imageMemoryBarriers)
+        public static void CmdPipelineBarrier(CommandBuffer commandBuffer, PipelineStageFlags srcStageMask, PipelineStageFlags dstStageMask, DependencyFlags dependencyFlags, MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers, params ImageMemoryBarrier[] imageMemoryBarriers)
         {
             var memoryBarrierCount = (memoryBarriers != null) ? (UInt32)memoryBarriers.Length : 0;
-            var _memoryBarriersPtr = (Unmanaged.MemoryBarrier*)IntPtr.Zero;
-            if(memoryBarrierCount != 0)
-            {
-                var _memoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.MemoryBarrier));
-                _memoryBarriersPtr = (Unmanaged.MemoryBarrier*)Marshal.AllocHGlobal((int)(_memoryBarriersSize * memoryBarrierCount));
+            var _memoryBarriersPtr = stackalloc Unmanaged.MemoryBarrier[(int)memoryBarrierCount];
+            if(memoryBarriers != null)
                 for(var x = 0; x < memoryBarrierCount; x++)
                     _memoryBarriersPtr[x] = *memoryBarriers[x].NativePointer;
-            }
             
             var bufferMemoryBarrierCount = (bufferMemoryBarriers != null) ? (UInt32)bufferMemoryBarriers.Length : 0;
-            var _bufferMemoryBarriersPtr = (Unmanaged.BufferMemoryBarrier*)IntPtr.Zero;
-            if(bufferMemoryBarrierCount != 0)
-            {
-                var _bufferMemoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.BufferMemoryBarrier));
-                _bufferMemoryBarriersPtr = (Unmanaged.BufferMemoryBarrier*)Marshal.AllocHGlobal((int)(_bufferMemoryBarriersSize * bufferMemoryBarrierCount));
+            var _bufferMemoryBarriersPtr = stackalloc Unmanaged.BufferMemoryBarrier[(int)bufferMemoryBarrierCount];
+            if(bufferMemoryBarriers != null)
                 for(var x = 0; x < bufferMemoryBarrierCount; x++)
                     _bufferMemoryBarriersPtr[x] = *bufferMemoryBarriers[x].NativePointer;
-            }
             
             var imageMemoryBarrierCount = (imageMemoryBarriers != null) ? (UInt32)imageMemoryBarriers.Length : 0;
-            var _imageMemoryBarriersPtr = (Unmanaged.ImageMemoryBarrier*)IntPtr.Zero;
-            if(imageMemoryBarrierCount != 0)
-            {
-                var _imageMemoryBarriersSize = Marshal.SizeOf(typeof(Unmanaged.ImageMemoryBarrier));
-                _imageMemoryBarriersPtr = (Unmanaged.ImageMemoryBarrier*)Marshal.AllocHGlobal((int)(_imageMemoryBarriersSize * imageMemoryBarrierCount));
+            var _imageMemoryBarriersPtr = stackalloc Unmanaged.ImageMemoryBarrier[(int)imageMemoryBarrierCount];
+            if(imageMemoryBarriers != null)
                 for(var x = 0; x < imageMemoryBarrierCount; x++)
                     _imageMemoryBarriersPtr[x] = *imageMemoryBarriers[x].NativePointer;
-            }
             
             vkCmdPipelineBarrier(commandBuffer.NativePointer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount, _memoryBarriersPtr, bufferMemoryBarrierCount, _bufferMemoryBarriersPtr, imageMemoryBarrierCount, _imageMemoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_memoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_bufferMemoryBarriersPtr);
-            Marshal.FreeHGlobal((IntPtr)_imageMemoryBarriersPtr);
         }
         
         /// <summary>
@@ -1763,20 +1555,15 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, IntPtr[] values)
+        public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, params IntPtr[] values)
         {
             var size = (values != null) ? (UInt32)values.Length : 0;
-            var _valuesPtr = (IntPtr*)IntPtr.Zero;
-            if(size != 0)
-            {
-                var _valuesSize = Marshal.SizeOf(typeof(IntPtr));
-                _valuesPtr = (IntPtr*)Marshal.AllocHGlobal((int)(_valuesSize * size));
+            var _valuesPtr = stackalloc IntPtr[(int)size];
+            if(values != null)
                 for(var x = 0; x < size; x++)
                     _valuesPtr[x] = values[x];
-            }
             
             vkCmdPushConstants(commandBuffer.NativePointer, layout.NativePointer, stageFlags, offset, size, _valuesPtr);
-            Marshal.FreeHGlobal((IntPtr)_valuesPtr);
         }
         
         /// <summary>
@@ -1810,20 +1597,15 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Both] [<see cref="QueueFlags"/>: Transfer, Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdExecuteCommands(CommandBuffer commandBuffer, CommandBuffer[] commandBuffers)
+        public static void CmdExecuteCommands(CommandBuffer commandBuffer, params CommandBuffer[] commandBuffers)
         {
             var commandBufferCount = (commandBuffers != null) ? (UInt32)commandBuffers.Length : 0;
-            var _commandBuffersPtr = (IntPtr*)IntPtr.Zero;
-            if(commandBufferCount != 0)
-            {
-                var _commandBuffersSize = Marshal.SizeOf(typeof(IntPtr));
-                _commandBuffersPtr = (IntPtr*)Marshal.AllocHGlobal((int)(_commandBuffersSize * commandBufferCount));
+            var _commandBuffersPtr = stackalloc IntPtr[(int)commandBufferCount];
+            if(commandBuffers != null)
                 for(var x = 0; x < commandBufferCount; x++)
                     _commandBuffersPtr[x] = commandBuffers[x].NativePointer;
-            }
             
             vkCmdExecuteCommands(commandBuffer.NativePointer, commandBufferCount, _commandBuffersPtr);
-            Marshal.FreeHGlobal((IntPtr)_commandBuffersPtr);
         }
         
         /// <param name="allocator">Optional</param>
@@ -1844,16 +1626,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayDisplayPropertiesKHR = new Unmanaged.DisplayPropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayPropertiesKHR* resultPtr = &arrayDisplayPropertiesKHR[0])
-                vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPropertiesKHR));
+            resultPtr = (Unmanaged.DisplayPropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayPropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayPropertiesKHR();
-                fixed(Unmanaged.DisplayPropertiesKHR* itemPtr = &arrayDisplayPropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayPropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1865,16 +1646,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, null);
             
-            var arrayDisplayPlanePropertiesKHR = new Unmanaged.DisplayPlanePropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayPlanePropertiesKHR* resultPtr = &arrayDisplayPlanePropertiesKHR[0])
-                vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPlanePropertiesKHR));
+            resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayPlanePropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayPlanePropertiesKHR();
-                fixed(Unmanaged.DisplayPlanePropertiesKHR* itemPtr = &arrayDisplayPlanePropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayPlanePropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1886,15 +1666,13 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, null);
             
-            var arrayDisplayKHR = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arrayDisplayKHR[0])
-                vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, resultPtr);
+            var arrayDisplayKHR = stackalloc UInt64[(int)listLength];
+            vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, arrayDisplayKHR);
             
             var list = new DisplayKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayKHR();
-                item.NativePointer = arrayDisplayKHR[x];
+                var item = new DisplayKHR(arrayDisplayKHR[x]);
                 list[x] = item;
             }
             
@@ -1906,16 +1684,15 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, null);
             
-            var arrayDisplayModePropertiesKHR = new Unmanaged.DisplayModePropertiesKHR[listLength];
-            fixed(Unmanaged.DisplayModePropertiesKHR* resultPtr = &arrayDisplayModePropertiesKHR[0])
-                vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
+            var resultPtr = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
+            var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayModePropertiesKHR));
+            resultPtr = (Unmanaged.DisplayModePropertiesKHR*)Marshal.AllocHGlobal((int)(resultSize * listLength));
+            vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
             
             var list = new DisplayModePropertiesKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new DisplayModePropertiesKHR();
-                fixed(Unmanaged.DisplayModePropertiesKHR* itemPtr = &arrayDisplayModePropertiesKHR[x])
-                    item.NativePointer = itemPtr;
+                var item = new DisplayModePropertiesKHR(&resultPtr[x]);
                 list[x] = item;
             }
             
@@ -1963,30 +1740,23 @@ namespace Vulkan.Managed
         public static SwapchainKHR[] CreateSharedSwapchainsKHR(Device device, SwapchainCreateInfoKHR[] createInfos, AllocationCallbacks allocator = default(AllocationCallbacks))
         {
             var swapchainCount = (createInfos != null) ? (UInt32)createInfos.Length : 0;
-            var _createInfosPtr = (Unmanaged.SwapchainCreateInfoKHR*)IntPtr.Zero;
-            if(swapchainCount != 0)
-            {
-                var _createInfosSize = Marshal.SizeOf(typeof(Unmanaged.SwapchainCreateInfoKHR));
-                _createInfosPtr = (Unmanaged.SwapchainCreateInfoKHR*)Marshal.AllocHGlobal((int)(_createInfosSize * swapchainCount));
+            var _createInfosPtr = stackalloc Unmanaged.SwapchainCreateInfoKHR[(int)swapchainCount];
+            if(createInfos != null)
                 for(var x = 0; x < swapchainCount; x++)
                     _createInfosPtr[x] = *createInfos[x].NativePointer;
-            }
             
             var listLength = swapchainCount;
             Result result;
             
-            var arraySwapchainKHR = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arraySwapchainKHR[0])
-                result = vkCreateSharedSwapchainsKHR(device.NativePointer, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, resultPtr);
+            var arraySwapchainKHR = stackalloc UInt64[(int)listLength];
+            result = vkCreateSharedSwapchainsKHR(device.NativePointer, listLength, _createInfosPtr, (allocator != null) ? allocator.NativePointer : null, arraySwapchainKHR);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkCreateSharedSwapchainsKHR), result);
-            Marshal.FreeHGlobal((IntPtr)_createInfosPtr);
             
             var list = new SwapchainKHR[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new SwapchainKHR();
-                item.NativePointer = arraySwapchainKHR[x];
+                var item = new SwapchainKHR(arraySwapchainKHR[x]);
                 list[x] = item;
             }
             
@@ -2043,9 +1813,8 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
             
-            var arraySurfaceFormatKHR = new SurfaceFormatKHR[listLength];
-            fixed(SurfaceFormatKHR* resultPtr = &arraySurfaceFormatKHR[0])
-                vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, resultPtr);
+            var arraySurfaceFormatKHR = stackalloc SurfaceFormatKHR[(int)listLength];
+            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arraySurfaceFormatKHR);
             
             var list = new SurfaceFormatKHR[listLength];
             for(var x = 0; x < listLength; x++)
@@ -2061,9 +1830,8 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
             
-            var arrayPresentModeKHR = new PresentModeKHR[listLength];
-            fixed(PresentModeKHR* resultPtr = &arrayPresentModeKHR[0])
-                vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, resultPtr);
+            var arrayPresentModeKHR = stackalloc PresentModeKHR[(int)listLength];
+            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arrayPresentModeKHR);
             
             var list = new PresentModeKHR[listLength];
             for(var x = 0; x < listLength; x++)
@@ -2099,15 +1867,13 @@ namespace Vulkan.Managed
             UInt32 listLength;
             vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, null);
             
-            var arrayImage = new UInt64[listLength];
-            fixed(UInt64* resultPtr = &arrayImage[0])
-                vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, resultPtr);
+            var arrayImage = stackalloc UInt64[(int)listLength];
+            vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, arrayImage);
             
             var list = new Image[listLength];
             for(var x = 0; x < listLength; x++)
             {
-                var item = new Image();
-                item.NativePointer = arrayImage[x];
+                var item = new Image(arrayImage[x]);
                 list[x] = item;
             }
             

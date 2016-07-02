@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class MemoryBarrier : IDisposable
     {
-        internal Unmanaged.MemoryBarrier* NativePointer;
+        internal Unmanaged.MemoryBarrier* NativePointer { get; private set; }
         
         /// <summary>
         /// Memory accesses from the source of the dependency to synchronize (Optional)
@@ -31,9 +31,15 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.MemoryBarrier;
         }
         
+        internal MemoryBarrier(Unmanaged.MemoryBarrier* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.MemoryBarrier));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

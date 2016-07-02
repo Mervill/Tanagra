@@ -5,7 +5,7 @@ namespace Vulkan.Managed
 {
     unsafe public class PipelineVertexInputStateCreateInfo : IDisposable
     {
-        internal Unmanaged.PipelineVertexInputStateCreateInfo* NativePointer;
+        internal Unmanaged.PipelineVertexInputStateCreateInfo* NativePointer { get; private set; }
         
         /// <summary>
         /// Reserved (Optional)
@@ -106,6 +106,12 @@ namespace Vulkan.Managed
             NativePointer->SType = StructureType.PipelineVertexInputStateCreateInfo;
         }
         
+        internal PipelineVertexInputStateCreateInfo(Unmanaged.PipelineVertexInputStateCreateInfo* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.PipelineVertexInputStateCreateInfo));
+        }
+        
         public PipelineVertexInputStateCreateInfo(VertexInputBindingDescription[] VertexBindingDescriptions, VertexInputAttributeDescription[] VertexAttributeDescriptions) : this()
         {
             this.VertexBindingDescriptions = VertexBindingDescriptions;
@@ -116,7 +122,7 @@ namespace Vulkan.Managed
         {
             Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
             Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -127,7 +133,7 @@ namespace Vulkan.Managed
             {
                 Marshal.FreeHGlobal(NativePointer->VertexBindingDescriptions);
                 Marshal.FreeHGlobal(NativePointer->VertexAttributeDescriptions);
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }

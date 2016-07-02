@@ -8,7 +8,7 @@ namespace Vulkan.Managed
     /// </summary>
     unsafe public class ExtensionProperties : IDisposable
     {
-        internal Unmanaged.ExtensionProperties* NativePointer;
+        internal Unmanaged.ExtensionProperties* NativePointer { get; private set; }
         
         /// <summary>
         /// Extension name
@@ -31,9 +31,15 @@ namespace Vulkan.Managed
             NativePointer = (Unmanaged.ExtensionProperties*)MemUtil.Alloc(typeof(Unmanaged.ExtensionProperties));
         }
         
+        internal ExtensionProperties(Unmanaged.ExtensionProperties* ptr)
+        {
+            NativePointer = ptr;
+            MemUtil.Register(NativePointer, typeof(Unmanaged.ExtensionProperties));
+        }
+        
         public void Dispose()
         {
-            MemUtil.Free((IntPtr)NativePointer);
+            MemUtil.Free(NativePointer);
             NativePointer = null;
             GC.SuppressFinalize(this);
         }
@@ -42,7 +48,7 @@ namespace Vulkan.Managed
         {
             if(NativePointer != null)
             {
-                MemUtil.Free((IntPtr)NativePointer);
+                MemUtil.Free(NativePointer);
                 NativePointer = null;
             }
         }
