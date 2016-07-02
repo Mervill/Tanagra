@@ -13,6 +13,11 @@ If you're looking for the LUNARG validation layer (`VK_LAYER_LUNARG_standard_val
 
 Approximately %50 of all commands have been tested
 
+## Tested Platforms
+
+- Windows 10 (10.0.10586) - NVidia GTX 970 (x86, x64)
+- Ubuntu 16.04 LTS - NVidia GTX 970 (x64) (ExampleRenderToDisk Only)
+
 ## How To Play
 
 ### Tanagra
