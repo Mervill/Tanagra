@@ -21,7 +21,7 @@ namespace Vulkan.Unmanaged
         /// <summary>
         /// Size of initial data to populate cache, in bytes (Optional)
         /// </summary>
-        public UInt32 InitialDataSize;
+        public IntPtr InitialDataSize;
         /// <summary>
         /// Initial data to populate cache
         /// </summary>

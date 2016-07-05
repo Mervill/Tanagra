@@ -629,7 +629,7 @@ namespace Tanagra.Generator
                 {
                     if(vkMember.Len.Length > 1)
                     {
-                        WriteMemberStringArray(vkMember, vkStruct.ReturnedOnly);
+                        WriteMemberStringArray(vkStruct, vkMember, vkStruct.ReturnedOnly);
                     }
                     else
                     {
@@ -657,7 +657,7 @@ namespace Tanagra.Generator
                         continue;
                     }
 
-                    WriteMemeberArray(vkMember, vkStruct.ReturnedOnly);
+                    WriteMemeberArray(vkStruct, vkMember, vkStruct.ReturnedOnly);
                     WriteLine("");
                     continue;
                 }
@@ -911,7 +911,7 @@ namespace Tanagra.Generator
 
         #region Member Array
 
-        void WriteMemberStringArray(VkMember vkMember, bool readOnly)
+        void WriteMemberStringArray(VkStruct vkStruct, VkMember vkMember, bool readOnly)
         {
             var countName = vkMember.Name.Substring(0, vkMember.Name.Length - 5) + "Count";
             var get = "valueArray[x] = Marshal.PtrToStringAnsi((IntPtr)ptr[x]);";
@@ -919,7 +919,7 @@ namespace Tanagra.Generator
             WriteArray(vkMember, countName, readOnly, "void*", "IntPtr", "void*", get, set);
         }
 
-        void WriteMemeberArray(VkMember vkMember, bool readOnly)
+        void WriteMemeberArray(VkStruct vkStruct, VkMember vkMember, bool readOnly)
         {
             var countName = vkMember.Len[0];
             if(countName.StartsWith("Latexmath"))
@@ -927,6 +927,8 @@ namespace Tanagra.Generator
                 WriteNotImplementedArray(vkMember, "Latexmath", readOnly);
                 return;
             }
+
+            var countMember = vkStruct.Members.Where(x => x.Name == countName).First();
 
             if(vkMember.Type is VkHandle)
             {
@@ -951,21 +953,21 @@ namespace Tanagra.Generator
                 var get = "valueArray[x] = ptr[x];";
                 var set = "ptr[x] = value[x];";
                 var typeName = vkMember.Type.Name;
-                WriteArray(vkMember, countName, readOnly, typeName, get, set, vkMember.Name == "Code" && countName == "CodeSize");
+                WriteArray(vkMember, countName, readOnly, typeName, get, set, countMember.Type.Name == "IntPtr");
                 return;
             }
 
             // struct
             {
-                var vkStruct = vkMember.Type as VkStruct;
-                var structType = vkStruct.Name;
-                if(IsManagedStruct(vkStruct))
+                var memberStruct = vkMember.Type as VkStruct;
+                var structType = memberStruct.Name;
+                if(IsManagedStruct(memberStruct))
                     structType = $"{UnmanagedNS}." + structType;
 
-                var getValueCast = IsManagedStruct(vkStruct) ? $"new {vkMember.Type}(&ptr[x])" : "ptr[x]";
+                var getValueCast = IsManagedStruct(memberStruct) ? $"new {vkMember.Type}(&ptr[x])" : "ptr[x]";
                 var get = $"valueArray[x] = {getValueCast};";
 
-                var setValueCast = IsManagedStruct(vkStruct) ? $"*value[x].{NativePointer}" : "value[x]";
+                var setValueCast = IsManagedStruct(memberStruct) ? $"*value[x].{NativePointer}" : "value[x]";
                 var set = $"ptr[x] = {setValueCast};";
 
                 var typeName = structType;
@@ -991,7 +993,7 @@ namespace Tanagra.Generator
             WriteLine($"return null;");
             _tabs--;
             if(intPtr)
-                WriteLine($"var valueCount = (int){NativePointer}->{countName};");// var valueCount = (int)NativePointer->CodeSize;
+                WriteLine($"var valueCount = (Int32){NativePointer}->{countName};");
             else
                 WriteLine($"var valueCount = {NativePointer}->{countName};");
             WriteLine($"var valueArray = new {vkMember.Type}[valueCount];");
@@ -1259,7 +1261,7 @@ namespace Tanagra.Generator
                             if (paramIsInterop)
                                 arrayType = $"{UnmanagedNS}.{arrayType}";
                             
-                            WriteLine($"var {ptrVar} = stackalloc {arrayType}[(int){countName}];");
+                            WriteLine($"var {ptrVar} = stackalloc {arrayType}[(Int32){countName}];");
                             //WriteLine($"if({countName} != 0)");
                             WriteLine($"if({paramName} != null)");
                             _tabs++;
@@ -1411,9 +1413,9 @@ namespace Tanagra.Generator
                         }
                         else
                         {
-                            WriteLine($"var {returnListName} = new {commandInfo.ReturnParam.Type}[listLength];");
+                            WriteLine($"var {returnListName} = new {commandInfo.ReturnParam.Type}[(Int32)listLength];");
                         }
-                        WriteLine($"for(var x = 0; x < {returnListLength}; x++)");
+                        WriteLine($"for(var x = 0; x < (Int32){returnListLength}; x++)");
                         WriteBeginBlock();
 
                         var isInteropType = false;
@@ -1535,8 +1537,16 @@ namespace Tanagra.Generator
                     var addressOf = string.Empty;
                     if(vkParam.IsPointer && paramType.Name != "String")
                         addressOf = "&";
+                    
+                    if(vkParam.Type.Name == "IntPtr" && commandInfo.ParamListCountMap.ContainsValue(vkParam))
+                    {
+                        internalCallParams.Add($"new IntPtr({paramName})");
+                    }
+                    else
+                    {
+                        internalCallParams.Add($"{addressOf}{paramName}");
+                    }
 
-                    internalCallParams.Add($"{addressOf}{paramName}");
                     continue;
                 }
 

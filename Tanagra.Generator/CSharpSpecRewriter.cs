@@ -25,7 +25,7 @@ namespace Tanagra.Generator
                 { "uint32_t", "UInt32" },
                 { "uint64_t", "UInt64" },
                 { "int32_t",  "Int32"  },
-                { "size_t",   "UInt32" },
+                { "size_t",   "IntPtr" },
                 { "VkBool32", "Bool32" }
             };
 
@@ -80,10 +80,7 @@ namespace Tanagra.Generator
                 Replace(spec, vkType, intPtr);
 
             spec.AllTypes = spec.AllTypes.Except(platfromTypes).ToList();
-
-            var shaderModuleCreateInfo = (VkStruct)spec.AllTypes.FirstOrDefault(x => x.Name == "ShaderModuleCreateInfo");
-            shaderModuleCreateInfo.Members[3].Type = intPtr;
-
+            
             var functionPointers = spec.AllTypes.Where(x => x.Name.StartsWith("PFN_"));
             foreach(var vkType in functionPointers)
                 Replace(spec, vkType, intPtr);

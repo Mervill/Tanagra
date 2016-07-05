@@ -25,7 +25,7 @@ namespace Vulkan.Managed
             {
                 if(NativePointer->Code == IntPtr.Zero)
                     return null;
-                var valueCount = (int)NativePointer->CodeSize;
+                var valueCount = (Int32)NativePointer->CodeSize;
                 var valueArray = new Byte[valueCount];
                 var ptr = (Byte*)NativePointer->Code;
                 for(var x = 0; x < valueCount; x++)

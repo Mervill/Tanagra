@@ -308,7 +308,7 @@ namespace Vulkan
         /// <summary>
         /// Min required alignment of pointers returned by MapMemory (bytes)
         /// </summary>
-        public UInt32 MinMemoryMapAlignment;
+        public IntPtr MinMemoryMapAlignment;
         /// <summary>
         /// Min required alignment for texel buffer offsets (bytes)
         /// </summary>

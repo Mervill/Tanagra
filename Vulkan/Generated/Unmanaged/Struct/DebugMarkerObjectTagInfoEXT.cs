@@ -29,7 +29,7 @@ namespace Vulkan.Unmanaged
         /// <summary>
         /// The length in bytes of the tag data
         /// </summary>
-        public UInt32 TagSize;
+        public IntPtr TagSize;
         /// <summary>
         /// Tag data to attach to the object
         /// </summary>
