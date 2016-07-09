@@ -68,7 +68,8 @@ namespace Tanagra.Generator
         bool StackallocListArgs = true;
         bool InteropMarshalAsArrays = false;
         bool LockExternSync = false;
-        bool HandleExtensionsUseDebuggerStepThrough = false;
+        bool ObjectModelUseDebuggerStepThrough = false;
+        bool ObjectModelAggressiveInlining = false;
 
         public CSharpCodeGenerator()
         {
@@ -1279,7 +1280,7 @@ namespace Tanagra.Generator
                             WriteLine($"if({countName} != 0)");
                             WriteBeginBlock();
                             WriteLine($"var {sizeVar} = Marshal.SizeOf(typeof({sizeType}));");
-                            WriteLine($"{ptrVar} = ({arrayPointerType})Marshal.AllocHGlobal((int)({sizeVar} * {countName}));");
+                            WriteLine($"{ptrVar} = ({arrayPointerType})Marshal.AllocHGlobal((Int32)({sizeVar} * {countName}));");
                             WriteLine($"for(var x = 0; x < {countName}; x++)");
                             _tabs++;
                             WriteLine($"{ptrVar}[x] = {pointerRefrence}{paramName}[x]{nativePtr};");
@@ -1357,14 +1358,14 @@ namespace Tanagra.Generator
                     if (stackallocReturnList)
                     {
                         // todo: yeah, still can't use stackalloc here, this is a -return value-
-                        WriteLine($"var array{commandInfo.ReturnParam.Type} = stackalloc {interop}{sizeType}[(int){returnListLength}];");
+                        WriteLine($"var array{commandInfo.ReturnParam.Type} = stackalloc {interop}{sizeType}[(Int32){returnListLength}];");
                     }
                     else
                     {
                         var paramType = commandInfo.ReturnParam.Type;
                         WriteLine($"var resultPtr = ({UnmanagedNS}.{paramType}*)IntPtr.Zero;");
                         WriteLine($"var resultSize = Marshal.SizeOf(typeof({UnmanagedNS}.{paramType}));");
-                        WriteLine($"resultPtr = ({UnmanagedNS}.{paramType}*)Marshal.AllocHGlobal((int)(resultSize * {returnListLength}));");
+                        WriteLine($"resultPtr = ({UnmanagedNS}.{paramType}*)Marshal.AllocHGlobal((Int32)(resultSize * {returnListLength}));");
                     }
                     
                     #region Internal Function Call 2
@@ -1588,9 +1589,12 @@ namespace Tanagra.Generator
         {
             Clear();
             WriteLine("using System;");
-            WriteLine("using System.Collections.Generic;");
-            if(HandleExtensionsUseDebuggerStepThrough)
+            if(UseLists)
+                WriteLine("using System.Collections.Generic;");
+            if(ObjectModelUseDebuggerStepThrough)
                 WriteLine("using System.Diagnostics;");
+            if(ObjectModelAggressiveInlining)
+                WriteLine("using System.Runtime.CompilerServices;");
             WriteLine("");
             WriteLine($"namespace Vulkan.{ManagedNS}.{ObjectModelNS}");
             WriteBeginBlock();
@@ -1635,8 +1639,11 @@ namespace Tanagra.Generator
 
                     WriteCommandComment(vkCommand, cmdParams.ToArray());
 
-                    if(HandleExtensionsUseDebuggerStepThrough)
+                    if(ObjectModelUseDebuggerStepThrough)
                         WriteLine("[DebuggerStepThrough]");
+
+                    if(ObjectModelAggressiveInlining)
+                        WriteLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
 
                     #region Declaration
                     WriteTabs();
@@ -1667,11 +1674,10 @@ namespace Tanagra.Generator
                     Write(")");
                     Write(LineEnding);
                     #endregion
-                    WriteBeginBlock();
                     #region Call into Vk
+                    _tabs++;
                     WriteTabs();
-                    if(commandInfo.ReturnParam != null || commandInfo.HasReturnValue)
-                        Write("return ");
+                    Write("=> ");
                     Write($"{ManagedFunctionsClass}.{vkCommand.Name}");
                     Write("(");
                     for(var x = 0; x < cmdParams.Count; x++)
@@ -1683,8 +1689,8 @@ namespace Tanagra.Generator
                     }
                     Write(");");
                     Write(LineEnding);
+                    _tabs--;
                     #endregion
-                    WriteEndBlock();
                     WriteLine("");
                 }
                 WriteLine("#endregion");
