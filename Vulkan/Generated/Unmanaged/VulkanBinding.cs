@@ -207,7 +207,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="flags">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetQueryPoolResults", CallingConvention = callingConvention)]
-        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, IntPtr dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
+        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
@@ -268,7 +268,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="data">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
-        public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, IntPtr* dataSize, IntPtr* data);
+        public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, Size* dataSize, IntPtr* data);
         
         /// <param name="dstCache">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
@@ -841,7 +841,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyDebugReportCallbackEXT(IntPtr instance, UInt64 callback, AllocationCallbacks* allocator);
         
         [DllImport(DllName, EntryPoint = "vkDebugReportMessageEXT", CallingConvention = callingConvention)]
-        public static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, IntPtr location, Int32 messageCode, String layerPrefix, String message);
+        public static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, Size location, Int32 messageCode, String layerPrefix, String message);
         
         [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectNameEXT", CallingConvention = callingConvention)]
         public static extern Result vkDebugMarkerSetObjectNameEXT(IntPtr device, DebugMarkerObjectNameInfoEXT* nameInfo);

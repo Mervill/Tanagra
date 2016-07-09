@@ -17,12 +17,12 @@ namespace Vulkan
         /// <summary>
         /// Size in bytes of the SpecConstant
         /// </summary>
-        public IntPtr Size;
+        public Size Size;
         
         /// <param name="ConstantID">The SpecConstant ID specified in the BIL</param>
         /// <param name="Offset">Offset of the value in the data block</param>
         /// <param name="Size">Size in bytes of the SpecConstant</param>
-        public SpecializationMapEntry(UInt32 ConstantID, UInt32 Offset, IntPtr Size)
+        public SpecializationMapEntry(UInt32 ConstantID, UInt32 Offset, Size Size)
         {
             this.ConstantID = ConstantID;
             this.Offset = Offset;

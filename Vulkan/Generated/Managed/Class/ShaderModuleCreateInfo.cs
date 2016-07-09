@@ -25,7 +25,7 @@ namespace Vulkan.Managed
             {
                 if(NativePointer->Code == IntPtr.Zero)
                     return null;
-                var valueCount = (Int32)NativePointer->CodeSize;
+                var valueCount = NativePointer->CodeSize;
                 var valueArray = new Byte[valueCount];
                 var ptr = (Byte*)NativePointer->Code;
                 for(var x = 0; x < valueCount; x++)
@@ -45,7 +45,7 @@ namespace Vulkan.Managed
                     if(NativePointer->Code == IntPtr.Zero)
                         NativePointer->Code = Marshal.AllocHGlobal(typeSize);
                     
-                    NativePointer->CodeSize = new IntPtr(valueCount);
+                    NativePointer->CodeSize = (UInt32)valueCount;
                     var ptr = (Byte*)NativePointer->Code;
                     for(var x = 0; x < valueCount; x++)
                         ptr[x] = value[x];
@@ -56,7 +56,7 @@ namespace Vulkan.Managed
                         Marshal.FreeHGlobal(NativePointer->Code);
                     
                     NativePointer->Code = IntPtr.Zero;
-                    NativePointer->CodeSize = IntPtr.Zero;
+                    NativePointer->CodeSize = 0;
                 }
             }
         }

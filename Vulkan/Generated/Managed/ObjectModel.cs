@@ -87,7 +87,7 @@ namespace Vulkan.Managed.ObjectModel
             Vk.DestroyDebugReportCallbackEXT(instance, callback, allocator);
         }
         
-        public static void DebugReportMessageEXT(this Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, IntPtr location, Int32 messageCode, String layerPrefix, String message)
+        public static void DebugReportMessageEXT(this Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, Size location, Int32 messageCode, String layerPrefix, String message)
         {
             Vk.DebugReportMessageEXT(instance, flags, objectType, @object, location, messageCode, layerPrefix, message);
         }

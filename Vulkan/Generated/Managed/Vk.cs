@@ -550,7 +550,7 @@ namespace Vulkan.Managed
                 for(var x = 0; x < dataSize; x++)
                     _dataPtr[x] = data[x];
             
-            var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, new IntPtr(dataSize), _dataPtr, stride, flags);
+            var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, _dataPtr, stride, flags);
             return result;
         }
         
@@ -683,7 +683,7 @@ namespace Vulkan.Managed
         
         public static IntPtr[] GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
-            IntPtr listLength;
+            Size listLength;
             var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
@@ -1994,7 +1994,7 @@ namespace Vulkan.Managed
             vkDestroyDebugReportCallbackEXT(instance.NativePointer, callback.NativePointer, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, IntPtr location, Int32 messageCode, String layerPrefix, String message)
+        public static void DebugReportMessageEXT(Instance instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, Size location, Int32 messageCode, String layerPrefix, String message)
         {
             vkDebugReportMessageEXT(instance.NativePointer, flags, objectType, @object, location, messageCode, layerPrefix, message);
         }

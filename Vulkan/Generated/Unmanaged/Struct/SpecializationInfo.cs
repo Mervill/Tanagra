@@ -17,7 +17,7 @@ namespace Vulkan.Unmanaged
         /// <summary>
         /// Size in bytes of pData (Optional)
         /// </summary>
-        public IntPtr DataSize;
+        public Size DataSize;
         /// <summary>
         /// Pointer to SpecConstant data
         /// </summary>
