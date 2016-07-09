@@ -87,6 +87,7 @@ namespace Tanagra.Generator
                 "String",
                 "Boolean",
                 "Bool32",
+                "Size",
                 "DeviceSize",
             };
 

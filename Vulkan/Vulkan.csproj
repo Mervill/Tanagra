@@ -54,13 +54,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Allocation\Delegates.cs" />
@@ -422,6 +415,7 @@
     <Compile Include="Generated\Unmanaged\VulkanBinding.cs" />
     <Compile Include="Generated\VulkanConstant.cs" />
     <Compile Include="Struct\Bool32.cs" />
+    <Compile Include="Struct\Size.cs" />
     <Compile Include="Union\ClearColorValue.cs" />
     <Compile Include="Union\ClearValue.cs" />
     <Compile Include="DebugUtils.cs" />

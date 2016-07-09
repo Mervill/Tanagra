@@ -25,7 +25,7 @@ namespace Tanagra.Generator
                 { "uint32_t", "UInt32" },
                 { "uint64_t", "UInt64" },
                 { "int32_t",  "Int32"  },
-                { "size_t",   "IntPtr" },
+                { "size_t",   "Size"   },
                 { "VkBool32", "Bool32" }
             };
 
