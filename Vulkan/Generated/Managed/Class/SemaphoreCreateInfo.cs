@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class SemaphoreCreateInfo : IDisposable
     {
         internal Unmanaged.SemaphoreCreateInfo* NativePointer { get; private set; }

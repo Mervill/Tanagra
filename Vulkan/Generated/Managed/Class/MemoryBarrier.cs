@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class MemoryBarrier : IDisposable
     {
         internal Unmanaged.MemoryBarrier* NativePointer { get; private set; }

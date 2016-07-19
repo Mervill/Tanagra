@@ -613,12 +613,27 @@ namespace Tanagra.Generator
             WriteLine("");
             WriteLine($"namespace Vulkan.{ManagedNS}");
             WriteBeginBlock();
+
+            #region Comment Block
+            var classComments = new List<string>();
+
             if(vkStruct.ReturnedOnly)
+                classComments.Add("Returned Only - This object is never given as input to a Vulkan function");
+
+            if(vkStruct.IsExtensible)
+                classComments.Add("IExtensible");
+
+            if(classComments.Any())
             {
                 WriteLine("/// <summary>");
-                WriteLine("/// Returned Only - This object is never given as input to a Vulkan function");
+                foreach(var com in classComments)
+                {
+                    WriteLine($"/// {com}");
+                }
                 WriteLine("/// </summary>");
             }
+            #endregion
+
             WriteLine($"unsafe public class {vkStruct.Name} : IDisposable");
             WriteBeginBlock();
             WriteLine($"internal {UnmanagedNS}.{vkStruct.Name}* {NativePointer} {{ get; private set; }}");

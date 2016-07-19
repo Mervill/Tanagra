@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class DebugMarkerMarkerInfoEXT : IDisposable
     {
         internal Unmanaged.DebugMarkerMarkerInfoEXT* NativePointer { get; private set; }

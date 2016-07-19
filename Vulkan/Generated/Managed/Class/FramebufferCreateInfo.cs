@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class FramebufferCreateInfo : IDisposable
     {
         internal Unmanaged.FramebufferCreateInfo* NativePointer { get; private set; }

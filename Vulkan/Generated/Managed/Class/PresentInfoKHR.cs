@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class PresentInfoKHR : IDisposable
     {
         internal Unmanaged.PresentInfoKHR* NativePointer { get; private set; }

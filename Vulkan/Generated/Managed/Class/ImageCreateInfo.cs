@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class ImageCreateInfo : IDisposable
     {
         internal Unmanaged.ImageCreateInfo* NativePointer { get; private set; }

@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class SubmitInfo : IDisposable
     {
         internal Unmanaged.SubmitInfo* NativePointer { get; private set; }

@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class CommandBufferAllocateInfo : IDisposable
     {
         internal Unmanaged.CommandBufferAllocateInfo* NativePointer { get; private set; }

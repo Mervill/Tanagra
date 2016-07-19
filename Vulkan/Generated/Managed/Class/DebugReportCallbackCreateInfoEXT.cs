@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class DebugReportCallbackCreateInfoEXT : IDisposable
     {
         internal Unmanaged.DebugReportCallbackCreateInfoEXT* NativePointer { get; private set; }

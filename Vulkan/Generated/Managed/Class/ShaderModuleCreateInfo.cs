@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class ShaderModuleCreateInfo : IDisposable
     {
         internal Unmanaged.ShaderModuleCreateInfo* NativePointer { get; private set; }

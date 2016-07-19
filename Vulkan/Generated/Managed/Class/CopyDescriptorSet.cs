@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class CopyDescriptorSet : IDisposable
     {
         internal Unmanaged.CopyDescriptorSet* NativePointer { get; private set; }

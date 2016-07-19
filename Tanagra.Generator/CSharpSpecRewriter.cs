@@ -8,10 +8,11 @@ namespace Tanagra.Generator
     public class CSharpSpecRewriter
     {
         Dictionary<string, string> structNameOverride;
+        Dictionary<string, string> explicitMemberTypeReplacement;
 
         // TODO: read this info from the constant struct
         Dictionary<string, string> constantMap;
-
+        
         public bool UseDeviceSize = true;
 
         public CSharpSpecRewriter()
@@ -27,6 +28,11 @@ namespace Tanagra.Generator
                 { "int32_t",  "Int32"  },
                 { "size_t",   "Size"   },
                 { "VkBool32", "Bool32" }
+            };
+
+            explicitMemberTypeReplacement = new Dictionary<string, string>
+            {
+                { "PipelineCacheCreateInfo.InitialData", "Byte" }
             };
 
             constantMap = new Dictionary<string, string>
@@ -93,6 +99,8 @@ namespace Tanagra.Generator
                 var uint64 = spec.AllTypes.FirstOrDefault(x => x.Name == "UInt64");
                 Replace(spec, deviceSize, uint64);
             }
+
+            DoExplicitMemberTypeReplacement(spec.Structs.ToArray());
 
             return spec;
         }
@@ -423,7 +431,7 @@ namespace Tanagra.Generator
                 }
             }
         }
-
+        
         void Replace(VkSpec spec, VkType existingType, VkType newType)
         {
             var vkStructs = spec.Structs.ToList();
@@ -451,6 +459,30 @@ namespace Tanagra.Generator
 
                 if(vkCommand.ReturnType == existingType)
                     vkCommand.ReturnType = newType;
+            }
+        }
+
+        void DoExplicitMemberTypeReplacement(VkStruct[] allStructs)
+        {
+            foreach(var kvp in explicitMemberTypeReplacement)
+            {
+                var split = kvp.Key.Split('.');
+                var typeStr = split[0];
+                var memberStr = split[1];
+
+                var structType = allStructs.First(x => x.Name == typeStr);
+                if(structType != null)
+                {
+                    var structMember = structType.Members.First(x => x.Name == memberStr);
+                    if(structMember != null)
+                    {
+                        var typeReplacement = allStructs.First(x => x.Name == kvp.Value);
+                        if(typeReplacement != null)
+                        {
+                            structMember.Type = typeReplacement;
+                        }
+                    }
+                }
             }
         }
 

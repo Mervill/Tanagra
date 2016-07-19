@@ -48,3 +48,15 @@ stloc.X // where X is the index of the local variable
 "vulkan.so"
 
 Winapi || StdCall ?
+
+XlibSurfaceCreateInfoKHR
+IntPtr Dpy    = (Display *dpy = XOpenDisplay(NIL);)
+IntPtr Window = (Window w = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 200, 100, 0, blackColor, blackColor);)
+
+https://tronche.com/gui/x/xlib-tutorial/2nd-program-anatomy.html
+https://www.opengl.org/wiki/Programming_OpenGL_in_Linux:_GLX_and_Xlib
+
+How to present in the absense of a window system:
+VK_KHR_display
+VK_KHR_display_swapchain
+https://devtalk.nvidia.com/default/topic/925605/linux/nvidia-364-12-release-vulkan-glvnd-drm-kms-and-eglstreams/

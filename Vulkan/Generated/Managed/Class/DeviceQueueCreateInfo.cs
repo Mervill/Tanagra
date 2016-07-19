@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class DeviceQueueCreateInfo : IDisposable
     {
         internal Unmanaged.DeviceQueueCreateInfo* NativePointer { get; private set; }

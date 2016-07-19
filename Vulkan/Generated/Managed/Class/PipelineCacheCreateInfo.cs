@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class PipelineCacheCreateInfo : IDisposable
     {
         internal Unmanaged.PipelineCacheCreateInfo* NativePointer { get; private set; }
@@ -19,15 +22,15 @@ namespace Vulkan.Managed
         /// <summary>
         /// Initial data to populate cache
         /// </summary>
-        public IntPtr[] InitialData
+        public Byte[] InitialData
         {
             get
             {
                 if(NativePointer->InitialData == IntPtr.Zero)
                     return null;
                 var valueCount = NativePointer->InitialDataSize;
-                var valueArray = new IntPtr[valueCount];
-                var ptr = (IntPtr*)NativePointer->InitialData;
+                var valueArray = new Byte[valueCount];
+                var ptr = (Byte*)NativePointer->InitialData;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
                 
@@ -38,7 +41,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Byte)) * valueCount;
                     if(NativePointer->InitialData != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->InitialData, (IntPtr)typeSize);
                     
@@ -46,7 +49,7 @@ namespace Vulkan.Managed
                         NativePointer->InitialData = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->InitialDataSize = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->InitialData;
+                    var ptr = (Byte*)NativePointer->InitialData;
                     for(var x = 0; x < valueCount; x++)
                         ptr[x] = value[x];
                 }
@@ -74,7 +77,7 @@ namespace Vulkan.Managed
         }
         
         /// <param name="InitialData">Initial data to populate cache</param>
-        public PipelineCacheCreateInfo(IntPtr[] InitialData) : this()
+        public PipelineCacheCreateInfo(Byte[] InitialData) : this()
         {
             this.InitialData = InitialData;
         }

@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class BufferViewCreateInfo : IDisposable
     {
         internal Unmanaged.BufferViewCreateInfo* NativePointer { get; private set; }

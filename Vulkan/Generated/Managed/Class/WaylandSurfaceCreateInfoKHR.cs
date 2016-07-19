@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class WaylandSurfaceCreateInfoKHR : IDisposable
     {
         internal Unmanaged.WaylandSurfaceCreateInfoKHR* NativePointer { get; private set; }

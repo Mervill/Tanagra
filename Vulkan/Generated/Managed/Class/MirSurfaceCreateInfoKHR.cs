@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class MirSurfaceCreateInfoKHR : IDisposable
     {
         internal Unmanaged.MirSurfaceCreateInfoKHR* NativePointer { get; private set; }

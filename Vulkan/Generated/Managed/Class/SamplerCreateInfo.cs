@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class SamplerCreateInfo : IDisposable
     {
         internal Unmanaged.SamplerCreateInfo* NativePointer { get; private set; }

@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class MappedMemoryRange : IDisposable
     {
         internal Unmanaged.MappedMemoryRange* NativePointer { get; private set; }

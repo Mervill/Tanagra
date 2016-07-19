@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class PipelineRasterizationStateCreateInfo : IDisposable
     {
         internal Unmanaged.PipelineRasterizationStateCreateInfo* NativePointer { get; private set; }

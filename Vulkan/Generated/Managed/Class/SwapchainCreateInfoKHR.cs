@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class SwapchainCreateInfoKHR : IDisposable
     {
         internal Unmanaged.SwapchainCreateInfoKHR* NativePointer { get; private set; }

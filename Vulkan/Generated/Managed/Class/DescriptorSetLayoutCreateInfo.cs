@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Vulkan.Managed
 {
+    /// <summary>
+    /// IExtensible
+    /// </summary>
     unsafe public class DescriptorSetLayoutCreateInfo : IDisposable
     {
         internal Unmanaged.DescriptorSetLayoutCreateInfo* NativePointer { get; private set; }
