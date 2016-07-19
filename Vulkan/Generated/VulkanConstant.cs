@@ -38,7 +38,7 @@ namespace Vulkan
         public const String KhrAndroidSurfaceExtensionName = "VK_KHR_android_surface";
         public const Int32  KhrWin32SurfaceSpecVersion = 5;
         public const String KhrWin32SurfaceExtensionName = "VK_KHR_win32_surface";
-        public const Int32  ExtDebugReportSpecVersion = 2;
+        public const Int32  ExtDebugReportSpecVersion = 3;
         public const String ExtDebugReportExtensionName = "VK_EXT_debug_report";
         public const String StructureTypeDebugReportCreateInfoEXT = "VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT";
         public const Int32  NvGlslShaderSpecVersion = 1;
@@ -49,7 +49,15 @@ namespace Vulkan
         public const String ImgFilterCubicExtensionName = "VK_IMG_filter_cubic";
         public const Int32  AmdRasterizationOrderSpecVersion = 1;
         public const String AmdRasterizationOrderExtensionName = "VK_AMD_rasterization_order";
+        public const Int32  AmdShaderTrinaryMinmaxSpecVersion = 1;
+        public const String AmdShaderTrinaryMinmaxExtensionName = "VK_AMD_shader_trinary_minmax";
+        public const Int32  AmdShaderExplicitVertexParameterSpecVersion = 1;
+        public const String AmdShaderExplicitVertexParameterExtensionName = "VK_AMD_shader_explicit_vertex_parameter";
         public const Int32  ExtDebugMarkerSpecVersion = 3;
         public const String ExtDebugMarkerExtensionName = "VK_EXT_debug_marker";
+        public const Int32  AmdGcnShaderSpecVersion = 1;
+        public const String AmdGcnShaderExtensionName = "VK_AMD_gcn_shader";
+        public const Int32  NvDedicatedAllocationSpecVersion = 1;
+        public const String NvDedicatedAllocationExtensionName = "VK_NV_dedicated_allocation";
     }
 }

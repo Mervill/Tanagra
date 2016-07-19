@@ -9,7 +9,7 @@ namespace Vulkan.Managed
         
         Sampler _Sampler;
         /// <summary>
-        /// Sampler to write to the descriptor in case it's a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.
+        /// Sampler to write to the descriptor in case it is a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.
         /// </summary>
         public Sampler Sampler
         {
@@ -19,7 +19,7 @@ namespace Vulkan.Managed
         
         ImageView _ImageView;
         /// <summary>
-        /// Image view to write to the descriptor in case it's a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.
+        /// Image view to write to the descriptor in case it is a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.
         /// </summary>
         public ImageView ImageView
         {
@@ -47,8 +47,8 @@ namespace Vulkan.Managed
             MemUtil.Register(NativePointer, typeof(Unmanaged.DescriptorImageInfo));
         }
         
-        /// <param name="Sampler">Sampler to write to the descriptor in case it's a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.</param>
-        /// <param name="ImageView">Image view to write to the descriptor in case it's a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.</param>
+        /// <param name="Sampler">Sampler to write to the descriptor in case it is a SAMPLER or COMBINED_IMAGE_SAMPLER descriptor. Ignored otherwise.</param>
+        /// <param name="ImageView">Image view to write to the descriptor in case it is a SAMPLED_IMAGE, STORAGE_IMAGE, COMBINED_IMAGE_SAMPLER, or INPUT_ATTACHMENT descriptor. Ignored otherwise.</param>
         /// <param name="ImageLayout">Layout the image is expected to be in when accessed using this descriptor (only used if imageView is not VK_NULL_HANDLE).</param>
         public DescriptorImageInfo(Sampler Sampler, ImageView ImageView, ImageLayout ImageLayout) : this()
         {

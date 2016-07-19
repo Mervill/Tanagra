@@ -542,10 +542,10 @@ namespace Vulkan.Managed
         }
         
         /// <param name="flags">Optional</param>
-        public static Result GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, IntPtr[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+        public static Result GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Byte[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
             var dataSize = (data != null) ? (UInt32)data.Length : 0;
-            var _dataPtr = stackalloc IntPtr[(Int32)dataSize];
+            var _dataPtr = stackalloc Byte[(Int32)dataSize];
             if(data != null)
                 for(var x = 0; x < dataSize; x++)
                     _dataPtr[x] = data[x];
@@ -681,22 +681,18 @@ namespace Vulkan.Managed
             vkDestroyPipelineCache(device.NativePointer, (pipelineCache != null) ? pipelineCache.NativePointer : 0, (allocator != null) ? allocator.NativePointer : null);
         }
         
-        public static IntPtr[] GetPipelineCacheData(Device device, PipelineCache pipelineCache)
+        public static Byte[] GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
             Size listLength;
-            var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
-            if(result != Result.Success)
-                throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
+            vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
             
-            var arrayIntPtr = stackalloc IntPtr[(Int32)listLength];
-            result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, arrayIntPtr);
-            if(result != Result.Success)
-                throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
+            var arrayByte = stackalloc Byte[(Int32)listLength];
+            vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, arrayByte);
             
-            var list = new IntPtr[(Int32)listLength];
+            var list = new Byte[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                list[x] = arrayIntPtr[x];
+                list[x] = arrayByte[x];
             }
             
             return list;
@@ -1555,10 +1551,10 @@ namespace Vulkan.Managed
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, params IntPtr[] values)
+        public static void CmdPushConstants(CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, params Byte[] values)
         {
             var size = (values != null) ? (UInt32)values.Length : 0;
-            var _valuesPtr = stackalloc IntPtr[(Int32)size];
+            var _valuesPtr = stackalloc Byte[(Int32)size];
             if(values != null)
                 for(var x = 0; x < size; x++)
                     _valuesPtr[x] = values[x];

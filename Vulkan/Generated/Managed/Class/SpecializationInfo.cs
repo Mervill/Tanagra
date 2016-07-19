@@ -55,15 +55,15 @@ namespace Vulkan.Managed
         /// <summary>
         /// Pointer to SpecConstant data
         /// </summary>
-        public IntPtr[] Data
+        public Byte[] Data
         {
             get
             {
                 if(NativePointer->Data == IntPtr.Zero)
                     return null;
                 var valueCount = NativePointer->DataSize;
-                var valueArray = new IntPtr[valueCount];
-                var ptr = (IntPtr*)NativePointer->Data;
+                var valueArray = new Byte[valueCount];
+                var ptr = (Byte*)NativePointer->Data;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
                 
@@ -74,7 +74,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Byte)) * valueCount;
                     if(NativePointer->Data != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Data, (IntPtr)typeSize);
                     
@@ -82,7 +82,7 @@ namespace Vulkan.Managed
                         NativePointer->Data = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->DataSize = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->Data;
+                    var ptr = (Byte*)NativePointer->Data;
                     for(var x = 0; x < valueCount; x++)
                         ptr[x] = value[x];
                 }
@@ -110,7 +110,7 @@ namespace Vulkan.Managed
         
         /// <param name="MapEntries">Array of map entries</param>
         /// <param name="Data">Pointer to SpecConstant data</param>
-        public SpecializationInfo(SpecializationMapEntry[] MapEntries, IntPtr[] Data) : this()
+        public SpecializationInfo(SpecializationMapEntry[] MapEntries, Byte[] Data) : this()
         {
             this.MapEntries = MapEntries;
             this.Data = Data;

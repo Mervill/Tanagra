@@ -217,6 +217,9 @@
     <Compile Include="Generated\Managed\Class\DebugMarkerObjectNameInfoEXT.cs" />
     <Compile Include="Generated\Managed\Class\DebugMarkerObjectTagInfoEXT.cs" />
     <Compile Include="Generated\Managed\Class\DebugReportCallbackCreateInfoEXT.cs" />
+    <Compile Include="Generated\Managed\Class\DedicatedAllocationBufferCreateInfoNV.cs" />
+    <Compile Include="Generated\Managed\Class\DedicatedAllocationImageCreateInfoNV.cs" />
+    <Compile Include="Generated\Managed\Class\DedicatedAllocationMemoryAllocateInfoNV.cs" />
     <Compile Include="Generated\Managed\Class\DescriptorBufferInfo.cs" />
     <Compile Include="Generated\Managed\Class\DescriptorImageInfo.cs" />
     <Compile Include="Generated\Managed\Class\DescriptorPoolCreateInfo.cs" />
@@ -349,6 +352,9 @@
     <Compile Include="Generated\Unmanaged\Struct\DebugMarkerObjectNameInfoEXT.cs" />
     <Compile Include="Generated\Unmanaged\Struct\DebugMarkerObjectTagInfoEXT.cs" />
     <Compile Include="Generated\Unmanaged\Struct\DebugReportCallbackCreateInfoEXT.cs" />
+    <Compile Include="Generated\Unmanaged\Struct\DedicatedAllocationBufferCreateInfoNV.cs" />
+    <Compile Include="Generated\Unmanaged\Struct\DedicatedAllocationImageCreateInfoNV.cs" />
+    <Compile Include="Generated\Unmanaged\Struct\DedicatedAllocationMemoryAllocateInfoNV.cs" />
     <Compile Include="Generated\Unmanaged\Struct\DescriptorBufferInfo.cs" />
     <Compile Include="Generated\Unmanaged\Struct\DescriptorImageInfo.cs" />
     <Compile Include="Generated\Unmanaged\Struct\DescriptorPoolCreateInfo.cs" />

@@ -18,7 +18,7 @@ namespace Vulkan
         /// </summary>
         public DeviceSize Alignment;
         /// <summary>
-        /// Bitfield of the allowed memory type indices into memoryTypes[] for this object
+        /// Bitmask of the allowed memory type indices into memoryTypes[] for this object
         /// </summary>
         public UInt32 MemoryTypeBits;
     }

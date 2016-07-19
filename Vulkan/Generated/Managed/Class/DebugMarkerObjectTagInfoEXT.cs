@@ -40,15 +40,15 @@ namespace Vulkan.Managed
         /// <summary>
         /// Tag data to attach to the object
         /// </summary>
-        public IntPtr[] Tag
+        public Byte[] Tag
         {
             get
             {
                 if(NativePointer->Tag == IntPtr.Zero)
                     return null;
                 var valueCount = NativePointer->TagSize;
-                var valueArray = new IntPtr[valueCount];
-                var ptr = (IntPtr*)NativePointer->Tag;
+                var valueArray = new Byte[valueCount];
+                var ptr = (Byte*)NativePointer->Tag;
                 for(var x = 0; x < valueCount; x++)
                     valueArray[x] = ptr[x];
                 
@@ -59,7 +59,7 @@ namespace Vulkan.Managed
                 if(value != null)
                 {
                     var valueCount = value.Length;
-                    var typeSize = Marshal.SizeOf(typeof(IntPtr)) * valueCount;
+                    var typeSize = Marshal.SizeOf(typeof(Byte)) * valueCount;
                     if(NativePointer->Tag != IntPtr.Zero)
                         Marshal.ReAllocHGlobal(NativePointer->Tag, (IntPtr)typeSize);
                     
@@ -67,7 +67,7 @@ namespace Vulkan.Managed
                         NativePointer->Tag = Marshal.AllocHGlobal(typeSize);
                     
                     NativePointer->TagSize = (UInt32)valueCount;
-                    var ptr = (IntPtr*)NativePointer->Tag;
+                    var ptr = (Byte*)NativePointer->Tag;
                     for(var x = 0; x < valueCount; x++)
                         ptr[x] = value[x];
                 }
@@ -98,7 +98,7 @@ namespace Vulkan.Managed
         /// <param name="Object">The handle of the object, cast to uint64_t</param>
         /// <param name="TagName">The name of the tag to set on the object</param>
         /// <param name="Tag">Tag data to attach to the object</param>
-        public DebugMarkerObjectTagInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, UInt64 TagName, IntPtr[] Tag) : this()
+        public DebugMarkerObjectTagInfoEXT(DebugReportObjectTypeEXT ObjectType, UInt64 Object, UInt64 TagName, Byte[] Tag) : this()
         {
             this.ObjectType = ObjectType;
             this.Object = Object;

@@ -207,7 +207,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="flags">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetQueryPoolResults", CallingConvention = callingConvention)]
-        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, IntPtr* data, DeviceSize stride, QueryResultFlags flags);
+        public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, Byte* data, DeviceSize stride, QueryResultFlags flags);
         
         /// <param name="allocator">Optional</param>
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
@@ -268,7 +268,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="data">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
-        public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, Size* dataSize, IntPtr* data);
+        public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, Size* dataSize, Byte* data);
         
         /// <param name="dstCache">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkMergePipelineCaches", CallingConvention = callingConvention)]
@@ -687,7 +687,7 @@ namespace Vulkan.Unmanaged
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
         [DllImport(DllName, EntryPoint = "vkCmdPushConstants", CallingConvention = callingConvention)]
-        public static extern void vkCmdPushConstants(IntPtr commandBuffer, UInt64 layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, IntPtr* values);
+        public static extern void vkCmdPushConstants(IntPtr commandBuffer, UInt64 layout, ShaderStageFlags stageFlags, UInt32 offset, UInt32 size, Byte* values);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary] [Render Pass: Outside] [<see cref="QueueFlags"/>: Graphics] 

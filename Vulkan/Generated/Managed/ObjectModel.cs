@@ -268,7 +268,7 @@ namespace Vulkan.Managed.ObjectModel
             => Vk.DestroyQueryPool(device, queryPool, allocator);
         
         /// <param name="flags">Optional</param>
-        public static Result GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, IntPtr[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+        public static Result GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Byte[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
             => Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
         
         /// <param name="allocator">Optional</param>
@@ -328,7 +328,7 @@ namespace Vulkan.Managed.ObjectModel
         public static void DestroyPipelineCache(this Device device, PipelineCache pipelineCache = default(PipelineCache), AllocationCallbacks allocator = default(AllocationCallbacks))
             => Vk.DestroyPipelineCache(device, pipelineCache, allocator);
         
-        public static IntPtr[] GetPipelineCacheData(this Device device, PipelineCache pipelineCache)
+        public static Byte[] GetPipelineCacheData(this Device device, PipelineCache pipelineCache)
             => Vk.GetPipelineCacheData(device, pipelineCache);
         
         /// <param name="dstCache">ExternSync</param>
@@ -794,7 +794,7 @@ namespace Vulkan.Managed.ObjectModel
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
         /// <param name="commandBuffer">ExternSync</param>
-        public static void PushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, params IntPtr[] values)
+        public static void PushConstants(this CommandBuffer commandBuffer, PipelineLayout layout, ShaderStageFlags stageFlags, UInt32 offset, params Byte[] values)
             => Vk.CmdPushConstants(commandBuffer, layout, stageFlags, offset, values);
         
         /// <summary>

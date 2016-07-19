@@ -15,7 +15,7 @@ namespace Vulkan
         /// </summary>
         StorageImage = 1 << 1,
         /// <summary>
-        /// Format supports atomic operations in case it's used for storage images
+        /// Format supports atomic operations in case it is used for storage images
         /// </summary>
         StorageImageAtomic = 1 << 2,
         /// <summary>
@@ -27,7 +27,7 @@ namespace Vulkan
         /// </summary>
         StorageTexelBuffer = 1 << 4,
         /// <summary>
-        /// Format supports atomic operations in case it's used for storage texel buffers
+        /// Format supports atomic operations in case it is used for storage texel buffers
         /// </summary>
         StorageTexelBufferAtomic = 1 << 5,
         /// <summary>
@@ -39,7 +39,7 @@ namespace Vulkan
         /// </summary>
         ColorAttachment = 1 << 7,
         /// <summary>
-        /// Format supports blending in case it's used for color attachment images
+        /// Format supports blending in case it is used for color attachment images
         /// </summary>
         ColorAttachmentBlend = 1 << 8,
         /// <summary>

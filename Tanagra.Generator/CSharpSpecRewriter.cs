@@ -32,7 +32,7 @@ namespace Tanagra.Generator
 
             explicitMemberTypeReplacement = new Dictionary<string, string>
             {
-                { "PipelineCacheCreateInfo.InitialData", "Byte" }
+                //{ "PipelineCacheCreateInfo.InitialData", "Byte" }
             };
 
             constantMap = new Dictionary<string, string>
@@ -169,6 +169,12 @@ namespace Tanagra.Generator
                         member.Len[0] = "codeSize";
                         member.Type = allStructs.First(y => y.Name == "Byte");
                     }
+
+                    if(member.Type.Name == "IntPtr" && member.PointerRank == 1)
+                    {
+                        member.Type = allStructs.First(y => y.Name == "Byte");
+                    }
+
                     member.Len[0] = ToFirstUppercase(member.Len[0]);
                 }
             }
@@ -427,6 +433,11 @@ namespace Tanagra.Generator
                 if(param.Len == @"latexmath:[$dataSize \over 4$]" && param.Type.Name == "UInt32")
                 {
                     param.Len = "dataSize";
+                    param.Type = allStructs.First(y => y.Name == "Byte");
+                }
+
+                if(param.Type.Name == "IntPtr" && param.PointerRank == 1)
+                {
                     param.Type = allStructs.First(y => y.Name == "Byte");
                 }
             }

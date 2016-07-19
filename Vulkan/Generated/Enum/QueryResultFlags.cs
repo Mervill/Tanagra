@@ -19,7 +19,7 @@ namespace Vulkan
         /// </summary>
         QueryResultFlagsWithAvailability = 1 << 2,
         /// <summary>
-        /// Copy the partial results of the query even if the final results aren't available
+        /// Copy the partial results of the query even if the final results are not available
         /// </summary>
         QueryResultFlagsPartial = 1 << 3,
     }
