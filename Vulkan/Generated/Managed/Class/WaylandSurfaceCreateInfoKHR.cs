@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Vulkan.Managed
 {
     /// <summary>
-    /// IExtensible
+    /// [<see cref="IExtensible"/>: None]
     /// </summary>
     unsafe public class WaylandSurfaceCreateInfoKHR : IDisposable
     {

@@ -621,8 +621,13 @@ namespace Tanagra.Generator
                 classComments.Add("Returned Only - This object is never given as input to a Vulkan function");
 
             if(vkStruct.IsExtensible)
-                classComments.Add("IExtensible");
-
+            {
+                var memberNext = vkStruct.Members.First(x => x.SpecName == "pNext");
+                var validEx = memberNext.ValidExtensionStructs;
+                if(!validEx.Any()) validEx = new string[] { "None" };
+                classComments.Add($"[<see cref=\"IExtensible\"/>: {string.Join(",", validEx)}]");
+            }
+            
             if(classComments.Any())
             {
                 WriteLine("/// <summary>");
