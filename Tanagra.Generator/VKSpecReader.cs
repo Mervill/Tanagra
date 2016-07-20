@@ -40,7 +40,7 @@ namespace Tanagra.Generator
             };
         }
 
-        public VkSpec Read(string raw)
+        public VkSpec Read(XDocument xdoc)
         {
             // Read the Vulkan spec into memory
             //
@@ -56,8 +56,7 @@ namespace Tanagra.Generator
             //
 
             var spec = new VkSpec();
-
-            var xdoc = XDocument.Parse(raw);
+            
             var registry = xdoc.Root;
 
             var xtypes = registry.Element("types").Elements("type");
@@ -156,26 +155,12 @@ namespace Tanagra.Generator
             var vkEnum = new VkEnum();
 
             var xattributes = xenums.Attributes();
-            if(xattributes.Any())
-            {
-                foreach(var xattrib in xattributes)
-                {
-                    switch(xattrib.Name.ToString())
-                    {
-                        case "name":
-                        vkEnum.Name = GetEnumName(xattrib.Value);
-                        break;
-                        case "type":
-                        vkEnum.IsBitmask = xattrib.Value == "bitmask";
-                        break;
-                        case "comment":
-                        vkEnum.Comment = xattrib.Value;
-                        break;
-                        default: throw new NotImplementedException(xattrib.Name.ToString());
-                    }
-                }
-            }
 
+            vkEnum.Name = GetEnumName(xattributes.UniqueOrAssert(x => x.Name.ToString() == "name").Value);
+            var typeValue = xattributes.UniqueOrDefault(x => x.Name.ToString() == "type")?.Value;
+            vkEnum.IsBitmask = typeValue == "bitmask";
+            vkEnum.Comment = xattributes.UniqueOrDefault(x => x.Name.ToString() == "comment")?.Value;
+            
             if(string.IsNullOrEmpty(vkEnum.Name))
                 throw new InvalidOperationException("Enum collection does not have proper `<name>` element");
 
@@ -209,33 +194,18 @@ namespace Tanagra.Generator
             var vkEnum = new VkEnumValue();
 
             var xattributes = xenum.Attributes();
-            if(xattributes.Any())
-            {
-                foreach(var xattrib in xattributes)
-                {
-                    switch(xattrib.Name.ToString())
-                    {
-                        case "name":
-                        vkEnum.Name = vkEnum.SpecName = xattrib.Value;
-                        break;
-                        case "bitpos":
-                        case "value":
-                        vkEnum.Value = xattrib.Value;
-                        break;
-                        case "comment":
-                        vkEnum.Comment = xattrib.Value;
-                        break;
-                        default: throw new NotImplementedException(xattrib.Name.ToString());
-                    }
-                }
-            }
+            
+            vkEnum.SpecName = xattributes.UniqueOrAssert(x => x.Name.ToString() == "name").Value;
+            vkEnum.Name = vkEnum.SpecName;
+            vkEnum.Value = xattributes.UniqueOrAssert(x => x.Name.ToString() == "value" || x.Name.ToString() == "bitpos").Value; // todo: change this!
+            vkEnum.Comment = xattributes.UniqueOrDefault(x => x.Name.ToString() == "comment")?.Value;
 
             if(string.IsNullOrEmpty(vkEnum.Name) || string.IsNullOrEmpty(vkEnum.Value))
                 throw new InvalidOperationException("Enum collection does not have proper `<name>` or `<value>` or `<bitpos>` element");
 
             return vkEnum;
         }
-
+        
         static VkEnum GenerateEmptyBitmask(string name)
         {
             var vkEnum = new VkEnum
@@ -270,36 +240,15 @@ namespace Tanagra.Generator
 
             var vkHandle = new VkHandle();
 
-            foreach(var xelm in xelements)
-            {
-                switch(xelm.Name.ToString())
-                {
-                    case "type":
-                    vkHandle.HandleType = xelm.Value;
-                    break;
-                    case "name":
-                    vkHandle.Name = xelm.Value;
-                    break;
-                    default: throw new NotImplementedException(xelm.Name.ToString());
-                }
-            }
-
+            vkHandle.HandleType = xelements.UniqueOrAssert(x => x.Name.ToString() == "type").Value;
+            vkHandle.Name = xelements.UniqueOrAssert(x => x.Name.ToString() == "name").Value;
+            
             var xattributes = xtype.Attributes();
-            if(xattributes.Any())
-            {
-                foreach(var xattrib in xattributes)
-                {
-                    switch(xattrib.Name.ToString())
-                    {
-                        case "parent":
-                        vkHandle.Parent = xattrib.Value;
-                        break;
-                        case "category": break;
-                        default: throw new NotImplementedException(xattrib.Name.ToString());
-                    }
-                }
-            }
+            if (!xattributes.Any())
+                throw new ArgumentException("Contains no attributes", nameof(xtype));
 
+            vkHandle.Parent = xattributes.UniqueOrDefault(x => x.Name.ToString() == "parent")?.Value;
+            
             return vkHandle;
         }
 
@@ -334,25 +283,12 @@ namespace Tanagra.Generator
                 throw new ArgumentException("Invalid category", nameof(xstruct));
 
             var xattributes = xstruct.Attributes();
-            if(xattributes.Any())
-            {
-                foreach(var xattrib in xattributes)
-                {
-                    switch(xattrib.Name.ToString())
-                    {
-                        case "name":
-                        vkStruct.Name = vkStruct.SpecName = xattrib.Value;
-                        break;
-                        case "returnedonly":
-                        vkStruct.ReturnedOnly = xattrib.Value == "true";
-                        break;
-                        case "category":
-                        break;
-                        default: throw new NotImplementedException(xattrib.Name.ToString());
-                    }
-                }
-            }
 
+            vkStruct.SpecName = xattributes.UniqueOrAssert(x => x.Name.ToString() == "name").Value;
+            vkStruct.Name = vkStruct.SpecName;
+            var returnedonlyValue = xattributes.UniqueOrDefault(x => x.Name.ToString() == "returnedonly")?.Value;
+            vkStruct.ReturnedOnly = returnedonlyValue == "true";
+            
             var memberList = new List<VkMember>();
             foreach(var xmember in xstruct.Elements("member"))
             {

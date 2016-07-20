@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="registry">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="comment" type="xs:string" />
+        <xs:element name="vendorids">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="vendorid">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="id" type="xs:string" use="required" />
+                  <xs:attribute name="comment" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="tags">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="tag">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="author" type="xs:string" use="required" />
+                  <xs:attribute name="contact" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="types">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="type">
+                <xs:complexType mixed="true">
+                  <xs:sequence minOccurs="0">
+                    <xs:choice maxOccurs="unbounded">
+                      <xs:element name="name" type="xs:string" />
+                      <xs:element name="type" type="xs:string" />
+                      <xs:element name="member">
+                        <xs:complexType mixed="true">
+                          <xs:sequence>
+                            <xs:element name="type" type="xs:string" />
+                            <xs:element name="name" type="xs:string" />
+                            <xs:element minOccurs="0" name="enum" type="xs:string" />
+                          </xs:sequence>
+                          <xs:attribute name="optional" type="xs:boolean" use="optional" />
+                          <xs:attribute name="len" type="xs:string" use="optional" />
+                          <xs:attribute name="noautovalidity" type="xs:boolean" use="optional" />
+                          <xs:attribute name="validextensionstructs" type="xs:string" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="validity">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="usage" type="xs:string" />
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="optional" />
+                  <xs:attribute name="category" type="xs:string" use="optional" />
+                  <xs:attribute name="requires" type="xs:string" use="optional" />
+                  <xs:attribute name="parent" type="xs:string" use="optional" />
+                  <xs:attribute name="returnedonly" type="xs:boolean" use="optional" />
+                  <xs:attribute name="comment" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" name="enums">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="enum">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:string" use="optional" />
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="comment" type="xs:string" use="optional" />
+                  <xs:attribute name="bitpos" type="xs:unsignedByte" use="optional" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="unused">
+                <xs:complexType>
+                  <xs:attribute name="start" type="xs:byte" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="comment" type="xs:string" use="optional" />
+            <xs:attribute name="type" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="commands">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="command">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="proto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="type" type="xs:string" />
+                          <xs:element name="name" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="unbounded" name="param">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element name="type" type="xs:string" />
+                          <xs:element name="name" type="xs:string" />
+                        </xs:sequence>
+                        <xs:attribute name="optional" type="xs:string" use="optional" />
+                        <xs:attribute name="externsync" type="xs:string" use="optional" />
+                        <xs:attribute name="len" type="xs:string" use="optional" />
+                        <xs:attribute name="noautovalidity" type="xs:boolean" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="implicitexternsyncparams">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="param" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="validity">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="usage" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="successcodes" type="xs:string" use="optional" />
+                  <xs:attribute name="errorcodes" type="xs:string" use="optional" />
+                  <xs:attribute name="queues" type="xs:string" use="optional" />
+                  <xs:attribute name="renderpass" type="xs:string" use="optional" />
+                  <xs:attribute name="cmdbufferlevel" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="feature">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="require">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:choice maxOccurs="unbounded">
+                      <xs:element maxOccurs="unbounded" name="enum">
+                        <xs:complexType>
+                          <xs:attribute name="name" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element maxOccurs="unbounded" name="type">
+                        <xs:complexType>
+                          <xs:attribute name="name" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="command">
+                        <xs:complexType>
+                          <xs:attribute name="name" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                  </xs:sequence>
+                  <xs:attribute name="comment" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="api" type="xs:string" use="required" />
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="number" type="xs:decimal" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="extensions">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="extension">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="require">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="enum">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:string" use="optional" />
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                              <xs:attribute name="offset" type="xs:unsignedByte" use="optional" />
+                              <xs:attribute name="dir" type="xs:string" use="optional" />
+                              <xs:attribute name="extends" type="xs:string" use="optional" />
+                              <xs:attribute name="comment" type="xs:string" use="optional" />
+                              <xs:attribute name="bitpos" type="xs:unsignedByte" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="usage">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute name="command" type="xs:string" use="optional" />
+                                  <xs:attribute name="struct" type="xs:string" use="optional" />
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="type">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="command">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="number" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="supported" type="xs:string" use="required" />
+                  <xs:attribute name="protect" type="xs:string" use="optional" />
+                  <xs:attribute name="author" type="xs:string" use="optional" />
+                  <xs:attribute name="contact" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

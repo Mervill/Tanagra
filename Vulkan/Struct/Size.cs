@@ -12,7 +12,7 @@ namespace Vulkan
         // http://stackoverflow.com/questions/1320296/intptr-vs-uintptr
         // http://stackoverflow.com/questions/1309509/correct-way-to-marshal-size-t
 
-        // So need this class to behave like size_t from C/C++, which in C11 is defined as:
+        // So we need this class to behave like size_t from C/C++, which in C11 is defined as:
         //
         // typedef unsigned size_t;
         //
@@ -26,6 +26,7 @@ namespace Vulkan
         // struct that changes it's size based on the bit-type being targeted. Also, the online consensus
         // seems to be that using `UIntPtr` is the correct way to implement size_t
 
+#if !VULKAN_USE_SINGED_SIZE
         readonly UIntPtr value;
 
         public Size(UInt32 value)
@@ -57,8 +58,8 @@ namespace Vulkan
 
         public static explicit operator Int64(Size size)
             => (Int64)size.value.ToUInt64();
-
-        /*readonly IntPtr value;
+#else
+        readonly IntPtr value;
 
         public Size(Int32 value)
         {
@@ -80,7 +81,8 @@ namespace Vulkan
             => new Size(value);
 
         public static implicit operator Int64(Size size)
-            => size.value.ToInt64();*/
+            => size.value.ToInt64();
+#endif
 
         public override string ToString()
             => value.ToString();
