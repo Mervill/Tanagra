@@ -420,6 +420,7 @@
     <Compile Include="Generated\Unmanaged\Struct\XlibSurfaceCreateInfoKHR.cs" />
     <Compile Include="Generated\Unmanaged\VulkanBinding.cs" />
     <Compile Include="Generated\VulkanConstant.cs" />
+    <Compile Include="IExtensible.cs" />
     <Compile Include="Struct\Bool32.cs" />
     <Compile Include="Struct\Size.cs" />
     <Compile Include="Union\ClearColorValue.cs" />

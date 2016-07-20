@@ -18,7 +18,6 @@ namespace Tanagra.Generator
             public Dictionary<VkParam, VkParam> ParamListCountMap;
             public string ReturnType;
             public bool InternalReturnsVkResult;
-            public VkParam LastParam;
             public bool HasReturnValue;
             public IEnumerable<VkParam> ParamArrays;
             public bool HasArrayParams;
@@ -1732,18 +1731,18 @@ namespace Tanagra.Generator
             if(commandInfo.InternalReturnsVkResult)
                 commandInfo.ReturnType = "void";
 
-            commandInfo.LastParam = vkCommand.Parameters.Last();
+            var lastParam = vkCommand.Parameters.Last();
 
             #region Determine Return Type
             //
             // If the last param is a non-constant pointer, it's a return value
             //
-            if(commandInfo.LastParam != null && commandInfo.LastParam.IsOut)
+            if(lastParam != null && (lastParam.IsPointer && !lastParam.IsConst))
             {
-                if(string.IsNullOrEmpty(commandInfo.LastParam.Len))
+                if(string.IsNullOrEmpty(lastParam.Len))
                 {
                     // return value is a single object
-                    commandInfo.ReturnParam = commandInfo.LastParam;
+                    commandInfo.ReturnParam = lastParam;
                     commandInfo.ReturnType = commandInfo.ReturnParam.Type.Name;
                     commandInfo.InternalParams.Add(commandInfo.ReturnParam);
                 }
@@ -1752,11 +1751,11 @@ namespace Tanagra.Generator
                     // The return value is an array, the count variable can either be
                     // a member of the current struct, or a member of another struct
                     // in the same scope, indicated by the value of `Len`
-                    var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == commandInfo.LastParam.Len);
+                    var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == lastParam.Len);
                     if(countParam != null)
                     {
                         commandInfo.ReturnsList = true;
-                        commandInfo.ReturnParam = commandInfo.LastParam;
+                        commandInfo.ReturnParam = lastParam;
                         commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
                         commandInfo.InternalParams.Add(commandInfo.ReturnParam);
                         commandInfo.ReturnListCountParam = countParam;
@@ -1770,14 +1769,14 @@ namespace Tanagra.Generator
                     }
                     else
                     {
-                        var splitLen = commandInfo.LastParam.Len.Split(new[] { "->" }, StringSplitOptions.None);
+                        var splitLen = lastParam.Len.Split(new[] { "->" }, StringSplitOptions.None);
                         countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == splitLen[0]);
                         var countStruct = countParam?.Type as VkStruct;
                         var countMember = countStruct?.Members.ToList().FirstOrDefault(x => string.Equals(x.Name, splitLen[1], StringComparison.OrdinalIgnoreCase));
                         if(countMember != null)
                         {
                             commandInfo.ReturnsList = true;
-                            commandInfo.ReturnParam = commandInfo.LastParam;
+                            commandInfo.ReturnParam = lastParam;
                             commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
                             commandInfo.ReturnListCountParam = countParam;
                             commandInfo.ReturnListCountMember = countMember;
@@ -1848,6 +1847,7 @@ namespace Tanagra.Generator
                 if(vkParam.ExternSync) comments.Add($"ExternSync");
                 if(vkParam.IsOptional) comments.Add($"Optional");
                 if(vkParam.NoAutoValidity) comments.Add("No Auto Validity");
+                if(vkParam.IsPointer && !vkParam.IsConst) comments.Add("NonConstantPointer");
                 if(comments.Any())
                     WriteLine($"/// <param name=\"{vkParam.Name}\">{string.Join(", ", comments)}</param>");
             }

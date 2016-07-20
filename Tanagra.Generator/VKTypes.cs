@@ -160,6 +160,7 @@ namespace Tanagra.Generator
 
         public VkMember()
         {
+            ValidExtensionStructs = new string[0];
             Len = new string[0];
         }
 
