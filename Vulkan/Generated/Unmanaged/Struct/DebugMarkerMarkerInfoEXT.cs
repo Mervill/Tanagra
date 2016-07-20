@@ -6,6 +6,7 @@ namespace Vulkan.Unmanaged
     [StructLayout(LayoutKind.Sequential)]
     public struct DebugMarkerMarkerInfoEXT
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct ColorInfo
         {
             public Single R;

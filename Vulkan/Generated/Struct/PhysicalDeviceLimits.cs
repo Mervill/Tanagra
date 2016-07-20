@@ -9,33 +9,39 @@ namespace Vulkan
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceLimits
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct MaxComputeWorkGroupCountInfo
         {
             public UInt32 X;
             public UInt32 Y;
             public UInt32 Z;
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct MaxComputeWorkGroupSizeInfo
         {
             public UInt32 X;
             public UInt32 Y;
             public UInt32 Z;
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct MaxViewportDimensionsInfo
         {
             public UInt32 X;
             public UInt32 Y;
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct ViewportBoundsRangeInfo
         {
             public Single Min;
             public Single Max;
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct PointSizeRangeInfo
         {
             public Single Min;
             public Single Max;
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct LineWidthRangeInfo
         {
             public Single Min;

@@ -48,13 +48,13 @@
                           </xs:sequence>
                           <xs:attribute name="optional" type="xs:boolean" use="optional" />
                           <xs:attribute name="len" type="xs:string" use="optional" />
-                          <xs:attribute name="noautovalidity" type="xs:boolean" use="optional" />
                           <xs:attribute name="validextensionstructs" type="xs:string" use="optional" />
+                          <xs:attribute name="noautovalidity" type="xs:boolean" use="optional" />
                         </xs:complexType>
                       </xs:element>
                       <xs:element name="validity">
-                        <xs:complexType>
-                          <xs:sequence>
+                        <xs:complexType mixed="true">
+                          <xs:sequence minOccurs="0">
                             <xs:element maxOccurs="unbounded" name="usage" type="xs:string" />
                           </xs:sequence>
                         </xs:complexType>
@@ -128,8 +128,8 @@
                       </xs:complexType>
                     </xs:element>
                     <xs:element minOccurs="0" name="validity">
-                      <xs:complexType>
-                        <xs:sequence>
+                      <xs:complexType mixed="true">
+                        <xs:sequence minOccurs="0">
                           <xs:element maxOccurs="unbounded" name="usage" type="xs:string" />
                         </xs:sequence>
                       </xs:complexType>
@@ -198,16 +198,6 @@
                               <xs:attribute name="bitpos" type="xs:unsignedByte" use="optional" />
                             </xs:complexType>
                           </xs:element>
-                          <xs:element minOccurs="0" maxOccurs="unbounded" name="usage">
-                            <xs:complexType>
-                              <xs:simpleContent>
-                                <xs:extension base="xs:string">
-                                  <xs:attribute name="command" type="xs:string" use="optional" />
-                                  <xs:attribute name="struct" type="xs:string" use="optional" />
-                                </xs:extension>
-                              </xs:simpleContent>
-                            </xs:complexType>
-                          </xs:element>
                           <xs:element minOccurs="0" maxOccurs="unbounded" name="type">
                             <xs:complexType>
                               <xs:attribute name="name" type="xs:string" use="required" />
@@ -216,6 +206,16 @@
                           <xs:element minOccurs="0" maxOccurs="unbounded" name="command">
                             <xs:complexType>
                               <xs:attribute name="name" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="usage">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute name="command" type="xs:string" use="optional" />
+                                  <xs:attribute name="struct" type="xs:string" use="optional" />
+                                </xs:extension>
+                              </xs:simpleContent>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>

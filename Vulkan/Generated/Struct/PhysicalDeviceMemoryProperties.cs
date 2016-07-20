@@ -9,6 +9,7 @@ namespace Vulkan
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceMemoryProperties
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct MemoryTypesInfo
         {
             public const UInt32 Length = 32;
@@ -89,6 +90,7 @@ namespace Vulkan
                 }
             }
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct MemoryHeapsInfo
         {
             public const UInt32 Length = 16;

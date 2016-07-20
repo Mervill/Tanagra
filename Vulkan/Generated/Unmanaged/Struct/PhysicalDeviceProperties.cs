@@ -9,6 +9,7 @@ namespace Vulkan.Unmanaged
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceProperties
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct PipelineCacheUUIDInfo
         {
             public const UInt32 Length = 16;

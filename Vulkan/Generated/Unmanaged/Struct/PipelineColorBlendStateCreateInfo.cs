@@ -6,6 +6,7 @@ namespace Vulkan.Unmanaged
     [StructLayout(LayoutKind.Sequential)]
     public struct PipelineColorBlendStateCreateInfo
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct BlendConstantsInfo
         {
             public Single R;

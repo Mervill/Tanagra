@@ -396,6 +396,7 @@ namespace Tanagra.Generator
                     if(vkFixedMember.Type.Name == "String")
                         continue;
 
+                    WriteLine("[StructLayout(LayoutKind.Sequential)]");
                     WriteLine($"public struct {vkFixedMember.Name}Info");
                     WriteBeginBlock();
                     if(isFixedRange.Contains(vkFixedMember.Name))

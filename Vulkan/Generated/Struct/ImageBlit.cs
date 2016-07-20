@@ -6,6 +6,7 @@ namespace Vulkan
     [StructLayout(LayoutKind.Sequential)]
     public struct ImageBlit
     {
+        [StructLayout(LayoutKind.Sequential)]
         public struct SrcOffsetsInfo
         {
             public const UInt32 Length = 2;
@@ -26,6 +27,7 @@ namespace Vulkan
                 }
             }
         }
+        [StructLayout(LayoutKind.Sequential)]
         public struct DstOffsetsInfo
         {
             public const UInt32 Length = 2;
