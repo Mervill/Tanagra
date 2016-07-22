@@ -142,11 +142,11 @@ namespace Vulkan.Managed.ObjectModel
         public static Bool32 GetWin32PresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
             => Vk.GetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
         
-        public static Bool32 GetXlibPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr dpy, IntPtr visualID)
-            => Vk.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, dpy, visualID);
+        public static IntPtr GetXlibPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr visualID)
+            => Vk.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, visualID);
         
-        public static Bool32 GetXcbPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr connection, IntPtr visual_id)
-            => Vk.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex, connection, visual_id);
+        public static IntPtr GetXcbPresentationSupportKHR(this PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr visual_id)
+            => Vk.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex, visual_id);
         
         #endregion
         
@@ -268,8 +268,8 @@ namespace Vulkan.Managed.ObjectModel
             => Vk.DestroyQueryPool(device, queryPool, allocator);
         
         /// <param name="flags">Optional</param>
-        public static Result GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Byte[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
-            => Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, data, stride, flags);
+        public static Byte[] GetQueryPoolResults(this Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+            => Vk.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, stride, flags);
         
         /// <param name="allocator">Optional</param>
         public static Buffer CreateBuffer(this Device device, BufferCreateInfo createInfo, AllocationCallbacks allocator = default(AllocationCallbacks))

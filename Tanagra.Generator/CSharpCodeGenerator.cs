@@ -9,6 +9,7 @@ namespace Tanagra.Generator
     {
         class CommandInfo
         {
+            public VkCommand Command;
             public bool ReturnsList;
             public VkParam ReturnParam;
             public VkParam ReturnListCountParam;
@@ -16,18 +17,66 @@ namespace Tanagra.Generator
             public bool ReturnListHasKnownLength;
             public List<VkParam> InternalParams;
             public Dictionary<VkParam, VkParam> ParamListCountMap;
-            public string ReturnType;
-            public bool InternalReturnsVkResult;
+            public string ReturnStr;
             public bool HasReturnValue;
             public IEnumerable<VkParam> ParamArrays;
-            public bool HasArrayParams;
 
-            public CommandInfo()
+            public bool HasArrayParams => ParamArrays.Any();
+
+            public VkType ReturnType
             {
+                get
+                {
+                    if(ReturnParam != null) return ReturnParam.Type;
+                    //return Command.ReturnType;
+                    return null; // todo
+                }
+            }
+
+            public CommandInfo(VkCommand parent)
+            {
+                Command = parent;
                 InternalParams = new List<VkParam>();
                 ParamListCountMap = new Dictionary<VkParam, VkParam>();
             }
 
+            public bool IsArray(VkParam param)
+            {
+                return ParamListCountMap.ContainsKey(param);
+            }
+
+        }
+
+        class NewCommandInfo
+        {
+            public readonly VkCommand Command;
+            public VkParam ReturnParam;
+            public List<CommandArrayInfo> ArrayInfos;
+            public List<VkParam> InternalParams;
+
+            public VkType ReturnType
+            {
+                get
+                {
+                    if(ReturnParam != null) return ReturnParam.Type;
+                    return Command.ReturnType;
+                }
+            }
+
+            public NewCommandInfo(VkCommand vkCommand)
+            {
+                Command = vkCommand;
+                ArrayInfos = new List<CommandArrayInfo>();
+                InternalParams = new List<VkParam>();
+            }
+        }
+
+        class CommandArrayInfo
+        {
+            public VkCommand Parent;
+            public VkParam ArrayParam;
+            public VkParam CountParam;
+            public VkMember CountParamMember;
         }
 
         StringBuilder _sb;
@@ -559,7 +608,7 @@ namespace Tanagra.Generator
                     if(param.Type is VkHandle)
                         paramType = GetHandleType((VkHandle)param.Type);
 
-                    if (InteropMarshalAsArrays && commandInfo.ParamListCountMap.ContainsKey(param))
+                    if (InteropMarshalAsArrays && commandInfo.IsArray(param))
                     {
                         var countParam = commandInfo.ParamListCountMap[param];
                         var sizeParamIndex = vkCommand.Parameters.ToList().IndexOf(countParam);
@@ -965,8 +1014,7 @@ namespace Tanagra.Generator
             {
                 var get = $"valueArray[x] = ({vkMember.Type})ptr[x];";
                 var set = "ptr[x] = (UInt32)value[x];";
-                var typeName = "UInt32";
-                WriteArray(vkMember, countName, readOnly, typeName, get, set);
+                WriteArray(vkMember, countName, readOnly, "UInt32", get, set);
                 return;
             }
 
@@ -974,8 +1022,7 @@ namespace Tanagra.Generator
             {
                 var get = "valueArray[x] = ptr[x];";
                 var set = "ptr[x] = value[x];";
-                var typeName = vkMember.Type.Name;
-                WriteArray(vkMember, countName, readOnly, typeName, get, set, countMember.Type.Name == "IntPtr");
+                WriteArray(vkMember, countName, readOnly, vkMember.Type.Name, get, set, countMember.Type.Name == "IntPtr");
                 return;
             }
 
@@ -991,9 +1038,8 @@ namespace Tanagra.Generator
 
                 var setValueCast = IsManagedStruct(memberStruct) ? $"*value[x].{NativePointer}" : "value[x]";
                 var set = $"ptr[x] = {setValueCast};";
-
-                var typeName = structType;
-                WriteArray(vkMember, countName, readOnly, typeName, get, set);
+                
+                WriteArray(vkMember, countName, readOnly, structType, get, set);
             }
         }
 
@@ -1160,7 +1206,8 @@ namespace Tanagra.Generator
 
                 #region Declaration
                 WriteTabs();
-                Write($"public static {commandInfo.ReturnType} {vkCommand.Name}(");
+
+                Write($"public static {commandInfo.ReturnStr} {vkCommand.Name}(");
                 for(var x = 0; x < cmdParams.Count; x++)
                 {
                     var vkParam = cmdParams[x];
@@ -1172,6 +1219,9 @@ namespace Tanagra.Generator
 
                     if(commandInfo.ParamArrays.Contains(vkParam))
                         paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
+
+                    if(vkParam.IsPointer && !vkParam.IsConst)
+                        Write("ref ");
 
                     Write($"{paramType} {paramName}");
 
@@ -1201,20 +1251,25 @@ namespace Tanagra.Generator
                 #region Single Return Prologue
                 if (commandInfo.ReturnParam != null && !commandInfo.ReturnsList)
                 {
-                    WriteLine($"var {commandInfo.ReturnParam.Name} = new {commandInfo.ReturnParam.Type}();");
+                    WriteLine($"var {commandInfo.ReturnParam.Name} = new {commandInfo.ReturnType}();");
 
-                    if(commandInfo.ReturnParam.IsFixed)
+                    if(commandInfo.ReturnParam.IsFixed) // NonConstant Handle
                     {
-                        var type = IsPlatformStruct(commandInfo.ReturnParam.Type) ? $"{commandInfo.ReturnParam.Type}" : "IntPtr";
-                        if(commandInfo.ReturnParam.Type is VkHandle)
-                            type = GetHandleType((VkHandle)commandInfo.ReturnParam.Type);
-
-                        var handle = (commandInfo.ReturnParam.Type is VkHandle) ? $".{NativePointer}" : string.Empty;
-                        WriteLine($"fixed({type}* ptr{commandInfo.ReturnParam.Type} = &{commandInfo.ReturnParam.Name}{handle})");
+                        var type = GetHandleType((VkHandle)commandInfo.ReturnType);
+                        WriteLine($"fixed({type}* ptr{commandInfo.ReturnType} = &{commandInfo.ReturnParam.Name}.{NativePointer})");
                         WriteBeginBlock();
                     }
                 }
                 #endregion
+
+                /*foreach(var vkParam in cmdParams)
+                {
+                    if(vkParam.IsPointer && !vkParam.IsConst)
+                    {
+                        WriteLine($"fixed({vkParam.Type.Name}* ref{vkParam.Name} = &{vkParam.Name})");// + "{}"
+                        WriteBeginBlock();
+                    }
+                }*/
 
                 #region Array Parameters Prologue
                 if(commandInfo.HasArrayParams)
@@ -1261,7 +1316,7 @@ namespace Tanagra.Generator
                             existingCounts.Add(countName);
                         }
 
-                        if (InteropMarshalAsArrays && commandInfo.ParamListCountMap.ContainsKey(kv.Key))
+                        if (InteropMarshalAsArrays)
                         {
                             var arrayType = (paramIsHandle) ? GetHandleType(paramType as VkHandle) : paramTypeName;
                             if (paramIsInterop)
@@ -1315,7 +1370,7 @@ namespace Tanagra.Generator
                 const string returnListLength = "listLength";
 
                 #region List Return Prologue
-                if(commandInfo.ReturnsList && commandInfo.ReturnListCountParam != null)
+                if(commandInfo.ReturnsList)
                 {
                     if(!commandInfo.ReturnListHasKnownLength)
                     {
@@ -1336,14 +1391,14 @@ namespace Tanagra.Generator
                 if(!commandInfo.ReturnsList || (commandInfo.ReturnsList && !commandInfo.ReturnListHasKnownLength))
                 {
                     WriteTabs();
-                    if(commandInfo.InternalReturnsVkResult || commandInfo.HasReturnValue)
+                    if(vkCommand.ReturnType != null)
                         Write("var result = ");
 
                     var commandParams = CreateCommandCallParams(vkCommand.Parameters.ToList(), commandInfo, false);
                     Write($"{vkCommand.SpecName}({commandParams});");
                     Write(LineEnding);
-
-                    if(commandInfo.InternalReturnsVkResult)
+                    
+                    if(vkCommand.ReturnType?.Name == "Result" && ThrowExceptionOnBadResult(vkCommand))
                     {
                         WriteLine("if(result != Result.Success)");
                         _tabs++;
@@ -1362,27 +1417,35 @@ namespace Tanagra.Generator
                     WriteEndBlock();
                 #endregion
 
+                /*foreach(var vkParam in cmdParams)
+                {
+                    if(vkParam.IsPointer && !vkParam.IsConst)
+                    {
+                        WriteEndBlock();
+                    }
+                }*/
+
                 #region List Return 2nd Function Call
                 if(commandInfo.ReturnsList)
                 {
                     WriteLine("");
 
-                    var isNotManaged = !IsManagedStruct(commandInfo.ReturnParam.Type);
-                    var interop = (isNotManaged || commandInfo.ReturnParam.Type is VkHandle || commandInfo.ReturnParam.Type is VkEnum) ? "" : $"{UnmanagedNS}.";
-                    var sizeType = commandInfo.ReturnParam.Type.Name;
-                    if(commandInfo.ReturnParam.Type is VkHandle)
-                        sizeType = GetHandleType((VkHandle)commandInfo.ReturnParam.Type);
+                    var isManaged = IsManagedStruct(commandInfo.ReturnType);
+                    var interop = (isManaged) ? $"{UnmanagedNS}." : string.Empty;
+                    var sizeType = commandInfo.ReturnType.Name;
+                    if(commandInfo.ReturnType is VkHandle)
+                        sizeType = GetHandleType((VkHandle)commandInfo.ReturnType);
 
-                    var stackallocReturnList = StackallocReturnList & !IsManagedStruct(commandInfo.ReturnParam.Type);
+                    var stackallocReturnList = StackallocReturnList & !IsManagedStruct(commandInfo.ReturnType);
 
                     if (stackallocReturnList)
                     {
                         // todo: yeah, still can't use stackalloc here, this is a -return value-
-                        WriteLine($"var array{commandInfo.ReturnParam.Type} = stackalloc {interop}{sizeType}[(Int32){returnListLength}];");
+                        WriteLine($"var array{commandInfo.ReturnType} = stackalloc {interop}{sizeType}[(Int32){returnListLength}];");
                     }
                     else
                     {
-                        var paramType = commandInfo.ReturnParam.Type;
+                        var paramType = commandInfo.ReturnType;
                         WriteLine($"var resultPtr = ({UnmanagedNS}.{paramType}*)IntPtr.Zero;");
                         WriteLine($"var resultSize = Marshal.SizeOf(typeof({UnmanagedNS}.{paramType}));");
                         WriteLine($"resultPtr = ({UnmanagedNS}.{paramType}*)Marshal.AllocHGlobal((Int32)(resultSize * {returnListLength}));");
@@ -1390,7 +1453,7 @@ namespace Tanagra.Generator
                     
                     #region Internal Function Call 2
                     WriteTabs();
-                    if(commandInfo.InternalReturnsVkResult)
+                    if(vkCommand.ReturnType != null)
                         Write("result = ");
 
                     var commandParams2 = CreateCommandCallParams(vkCommand.Parameters.ToList(), commandInfo, true);
@@ -1398,7 +1461,7 @@ namespace Tanagra.Generator
                     Write(LineEnding);
                     #endregion
                     
-                    if(commandInfo.InternalReturnsVkResult)
+                    if(vkCommand.ReturnType?.Name == "Result" && ThrowExceptionOnBadResult(vkCommand))
                     {
                         WriteLine("if(result != Result.Success)");
                         _tabs++;
@@ -1411,7 +1474,6 @@ namespace Tanagra.Generator
                 #region Array Parameters Prologue
                 if(commandInfo.HasArrayParams && !InteropMarshalAsArrays && !StackallocListArgs)
                 {
-                    // Emit a prologue block for each array param
                     foreach(var kv in commandInfo.ParamListCountMap)
                     {
                         var paramName = kv.Key.Name;
@@ -1431,42 +1493,42 @@ namespace Tanagra.Generator
                         WriteLine("");
                         if(UseLists)
                         {
-                            WriteLine($"var {returnListName} = new {commandInfo.ReturnType}();");
+                            WriteLine($"var {returnListName} = new List<{commandInfo.ReturnType}>();");
                         }
                         else
                         {
-                            WriteLine($"var {returnListName} = new {commandInfo.ReturnParam.Type}[(Int32)listLength];");
+                            WriteLine($"var {returnListName} = new {commandInfo.ReturnType}[(Int32)listLength];");
                         }
                         WriteLine($"for(var x = 0; x < (Int32){returnListLength}; x++)");
                         WriteBeginBlock();
 
                         var isInteropType = false;
-                        if(commandInfo.ReturnParam.Type is VkStruct)
+                        if(commandInfo.ReturnType is VkStruct)
                         {
-                            var vkStruct = commandInfo.ReturnParam.Type as VkStruct;
+                            var vkStruct = commandInfo.ReturnType as VkStruct;
                             isInteropType = !IsManagedStruct(vkStruct);
                         }
 
-                        if(isInteropType || commandInfo.ReturnParam.Type is VkEnum)
+                        if(isInteropType || commandInfo.ReturnType is VkEnum)
                         {
                             if(UseLists)
                             {
-                                WriteLine($"{returnListName}.Add(array{commandInfo.ReturnParam.Type}[x]);");
+                                WriteLine($"{returnListName}.Add(array{commandInfo.ReturnType}[x]);");
                             }
                             else
                             {
-                                WriteLine($"{returnListName}[x] = array{commandInfo.ReturnParam.Type}[x];");
+                                WriteLine($"{returnListName}[x] = array{commandInfo.ReturnType}[x];");
                             }
                         }
                         else
                         {
-                            if(commandInfo.ReturnParam.Type is VkHandle)
+                            if(commandInfo.ReturnType is VkHandle)
                             {
-                                WriteLine($"var item = new {commandInfo.ReturnParam.Type}(array{commandInfo.ReturnParam.Type}[x]);");
+                                WriteLine($"var item = new {commandInfo.ReturnType}(array{commandInfo.ReturnType}[x]);");
                             }
                             else
                             {
-                                WriteLine($"var item = new {commandInfo.ReturnParam.Type}(&resultPtr[x]);");
+                                WriteLine($"var item = new {commandInfo.ReturnType}(&resultPtr[x]);");
                             }
 
                             if(UseLists)
@@ -1488,7 +1550,7 @@ namespace Tanagra.Generator
                         WriteLine($"return {commandInfo.ReturnParam.Name};");
                     }
                 }
-                else if(commandInfo.ReturnType != "void")
+                else if(commandInfo.ReturnStr != "void")
                 {
                     if(commandInfo.HasReturnValue)
                     {
@@ -1523,18 +1585,19 @@ namespace Tanagra.Generator
             {
                 var paramName = vkParam.Name;
                 var paramType = vkParam.Type;
+                //var refKwd = (vkParam.IsPointer && !vkParam.IsConst) ? "ref " : string.Empty;
 
                 #region Return Param
                 if(vkParam == commandInfo.ReturnParam && commandInfo.ReturnsList)
                 {
-                    var varname = (StackallocReturnList && !IsManagedStruct(commandInfo.ReturnParam.Type)) ? $"array{commandInfo.ReturnParam.Type}" : "resultPtr";
+                    var varname = (StackallocReturnList && !IsManagedStruct(commandInfo.ReturnType)) ? $"array{commandInfo.ReturnType}" : "resultPtr";
                     internalCallParams.Add(isSecondArrayCall ? varname : "null");
                     continue;
                 }
 
                 if(vkParam == commandInfo.ReturnParam && vkParam.IsFixed)
                 {
-                    internalCallParams.Add($"ptr{commandInfo.ReturnParam.Type}");
+                    internalCallParams.Add($"ptr{commandInfo.ReturnType}");
                     continue;
                 }
 
@@ -1667,7 +1730,7 @@ namespace Tanagra.Generator
 
                     #region Declaration
                     WriteTabs();
-                    Write($"public static {commandInfo.ReturnType} {commandName}(");
+                    Write($"public static {commandInfo.ReturnStr} {commandName}(");
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var vkParam = cmdParams[x];
@@ -1682,6 +1745,9 @@ namespace Tanagra.Generator
 
                         if(commandInfo.ParamArrays.Contains(vkParam))
                             paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
+
+                        //if(vkParam.IsPointer && !vkParam.IsConst) // todo
+                            //Write("ref ");
 
                         Write($"{paramType} {paramName}");
 
@@ -1703,6 +1769,8 @@ namespace Tanagra.Generator
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var param = cmdParams[x];
+                        //if(param.IsPointer && !param.IsConst) // todo
+                            //Write("ref ");
                         Write($"{param.Name}");
                         if(x + 1 < cmdParams.Count)
                             Write(", ");
@@ -1725,96 +1793,196 @@ namespace Tanagra.Generator
 
         CommandInfo CreateCommandInfo(VkCommand vkCommand)
         {
-            var commandInfo = new CommandInfo();
+            var nu = NewCreateCommandInfo(vkCommand);
 
-            commandInfo.ReturnType = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
-            commandInfo.InternalReturnsVkResult = commandInfo.ReturnType == "Result" && vkCommand.SuccessCodes.Length == 1 && vkCommand.SuccessCodes[0] == "VK_SUCCESS";
-            if(commandInfo.InternalReturnsVkResult)
-                commandInfo.ReturnType = "void";
+            var commandInfo = new CommandInfo(vkCommand);
 
-            var lastParam = vkCommand.Parameters.Last();
-
-            #region Determine Return Type
-            //
-            // If the last param is a non-constant pointer, it's a return value
-            //
-            if(lastParam != null && (lastParam.IsPointer && !lastParam.IsConst))
+            commandInfo.ReturnStr = (vkCommand.ReturnType != null) ? vkCommand.ReturnType.Name : "void";
+            if(ThrowExceptionOnBadResult(vkCommand))
+                commandInfo.ReturnStr = "void";
+            
+            commandInfo.ReturnParam = nu.ReturnParam;
+            commandInfo.InternalParams.Add(commandInfo.ReturnParam);
+            if(commandInfo.ReturnParam != null)
             {
-                if(string.IsNullOrEmpty(lastParam.Len))
+                var arrayInfo = nu.ArrayInfos.FirstOrDefault(x => x.ArrayParam == commandInfo.ReturnParam);
+                if(arrayInfo != null)
                 {
-                    // return value is a single object
-                    commandInfo.ReturnParam = lastParam;
-                    commandInfo.ReturnType = commandInfo.ReturnParam.Type.Name;
-                    commandInfo.InternalParams.Add(commandInfo.ReturnParam);
-                }
-                else
-                {
-                    // The return value is an array, the count variable can either be
-                    // a member of the current struct, or a member of another struct
-                    // in the same scope, indicated by the value of `Len`
-                    var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == lastParam.Len);
-                    if(countParam != null)
+                    commandInfo.ReturnsList = true;
+                    commandInfo.ReturnListCountParam = arrayInfo.CountParam;
+                    commandInfo.ReturnListCountMember = arrayInfo.CountParamMember;
+                    
+                    if(commandInfo.ReturnListCountMember == null)
                     {
-                        commandInfo.ReturnsList = true;
-                        commandInfo.ReturnParam = lastParam;
-                        commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
-                        commandInfo.InternalParams.Add(commandInfo.ReturnParam);
-                        commandInfo.ReturnListCountParam = countParam;
-                        commandInfo.InternalParams.Add(commandInfo.ReturnListCountParam);
-
-                        // If countParam is a pointer, then we don't know the length
-                        // of the array, so we have to call the function twice. Otherwise
-                        // we provide the length as an argument
-                        if(!countParam.IsPointer)
-                            commandInfo.ReturnListHasKnownLength = true;
+                        commandInfo.ReturnListHasKnownLength = !arrayInfo.CountParam.IsPointer;
+                        if(!commandInfo.ReturnListHasKnownLength)
+                            commandInfo.InternalParams.Add(commandInfo.ReturnListCountParam);
                     }
                     else
                     {
-                        var splitLen = lastParam.Len.Split(new[] { "->" }, StringSplitOptions.None);
-                        countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == splitLen[0]);
-                        var countStruct = countParam?.Type as VkStruct;
-                        var countMember = countStruct?.Members.ToList().FirstOrDefault(x => string.Equals(x.Name, splitLen[1], StringComparison.OrdinalIgnoreCase));
-                        if(countMember != null)
-                        {
-                            commandInfo.ReturnsList = true;
-                            commandInfo.ReturnParam = lastParam;
-                            commandInfo.ReturnType = (UseLists) ? $"List<{commandInfo.ReturnParam.Type.Name}>" : $"{commandInfo.ReturnParam.Type.Name}[]";
-                            commandInfo.ReturnListCountParam = countParam;
-                            commandInfo.ReturnListCountMember = countMember;
-                            commandInfo.ReturnListHasKnownLength = true;
-                            commandInfo.InternalParams.Add(commandInfo.ReturnParam);
-                        }
+                        commandInfo.ReturnListHasKnownLength = true;
                     }
+
+                    commandInfo.ReturnStr = (UseLists) ? $"List<{commandInfo.ReturnType.Name}>" : $"{commandInfo.ReturnType.Name}[]";
+                }
+                else
+                {
+                    commandInfo.ReturnStr = commandInfo.ReturnType.Name;
                 }
             }
-            #endregion
 
-            commandInfo.HasReturnValue = (commandInfo.ReturnParam == null) && (commandInfo.ReturnType != "void");
+            //commandInfo.InternalReturnsVkResult = commandInfo.InternalReturnsVkResult && commandInfo.ReturnParam == null;
 
-            #region Determine if command has Array Parameters
+            commandInfo.HasReturnValue = (commandInfo.ReturnParam == null) && (commandInfo.ReturnStr != "void");
+
             //
             // In C, arrays are passed using the pattern (uint32_t objectCount, const Object* pObject).
             // We can combine the count and array pointer into one object, List<T>. Then we can
             // read the length of the list inside the function as needed.
             //
-            commandInfo.ParamArrays = vkCommand.Parameters
-                .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "String")
+
+            commandInfo.ParamArrays = nu.ArrayInfos
+                .Select(x => x.ArrayParam)
                 .Except(new[] { commandInfo.ReturnParam });
 
-            commandInfo.HasArrayParams = commandInfo.ParamArrays.Any();
-            if(commandInfo.HasArrayParams)
+            foreach(var i in nu.ArrayInfos)
             {
-                foreach(var vkParam in commandInfo.ParamArrays)
+                if(i.ArrayParam == commandInfo.ReturnParam) continue;
+                commandInfo.ParamListCountMap.Add(i.ArrayParam, i.CountParam);
+                commandInfo.InternalParams.Add(i.CountParam);
+            }
+            
+            return commandInfo;
+        }
+
+        NewCommandInfo NewCreateCommandInfo(VkCommand vkCommand)
+        {
+            var commandInfo = new NewCommandInfo(vkCommand);
+            var cmdParamaters = vkCommand.Parameters;
+            
+            var mutablePointers = cmdParamaters.Where(x => x.IsPointer && !x.IsConst);
+
+            // Filter the mutablePointers array to remove pointers that are arrays
+            // and pointers that are the count value for an array
+            var mutableArrayInfos = new List<CommandArrayInfo>();
+            if(mutablePointers.Any())
+            {
+                // Find the count arguments / members
+                var mutableArrays = mutablePointers.Where(x => !string.IsNullOrEmpty(x.Len));
+                foreach(var param in mutableArrays)
                 {
-                    var countParam = vkCommand.Parameters.ToList().FirstOrDefault(x => x.Name == vkParam.Len);
-                    if(countParam != null)
+                    var info = new CommandArrayInfo();
+                    info.Parent = vkCommand;
+                    info.ArrayParam = param;
+
+                    var paramLenParts = param.Len.Split(new[] { "->" }, StringSplitOptions.None);
+
+                    var countParamName = paramLenParts.First();
+                    info.CountParam = cmdParamaters.FirstOrDefault(x => x.Name == countParamName);
+                    //commandInfo.InternalParams.Add(info.CountParam);
+
+                    if(paramLenParts.Length == 2)
                     {
-                        commandInfo.ParamListCountMap.Add(vkParam, countParam);
-                        commandInfo.InternalParams.Add(countParam);
+                        var countParamMemberName = paramLenParts[1];
+                        var countParamType = (VkStruct)info.CountParam.Type;
+                        info.CountParamMember = countParamType.Members.FirstOrDefault(x => string.Equals(x.Name, countParamMemberName, StringComparison.OrdinalIgnoreCase));
+                        if(info.CountParamMember == null)
+                            throw new InvalidOperationException();
                     }
+
+                    mutableArrayInfos.Add(info);
+                }
+
+                // Remove arrays and any count params
+                mutablePointers = mutablePointers
+                    .Except(mutableArrays)
+                    .Except(mutableArrayInfos.Select(x => x.CountParam));
+
+                //commandInfo.ArrayInfos.AddRange(mutableArrayInfos);
+            }
+
+            // mutablePointers now contains only pointers that are not
+            // arrays and are not used as a the count value of any array
+
+            VkParam returnParam = null;
+
+            if(mutableArrayInfos.Any() && !mutablePointers.Any())
+            {
+                if(mutableArrayInfos.Count() != 1)
+                    throw new InvalidOperationException();
+
+                returnParam = mutableArrayInfos.First().ArrayParam;
+                //mutableArrayInfos.RemoveAt(0);
+            }
+            else if(mutablePointers.Any() && !mutableArrayInfos.Any())
+            {
+                if(mutablePointers.Count() != 1)
+                    throw new InvalidOperationException();
+
+                returnParam = mutablePointers.First();
+            }
+            else
+            {
+                // commandInfo.ReturnType will return vkCommand.ReturnType
+            }
+
+            /*// todo
+            if(returnParam != null && vkCommand.ReturnType != null)
+            {
+                var isResult = vkCommand.ReturnType.Name == "Result";
+                var internalResult = ThrowExceptionOnBadResult(vkCommand);
+                if(!isResult || (isResult && !internalResult))
+                {
+                    Console.WriteLine($"Conflict {vkCommand.Name} {commandInfo.ReturnType.Name} {vkCommand.ReturnType.Name}");
+                    returnParam = null; // remove return param
+                }
+            }*/
+
+            commandInfo.ReturnParam = returnParam;
+            if(commandInfo.ReturnParam != null)
+                commandInfo.InternalParams.Add(commandInfo.ReturnParam);
+
+            #region Constant Arrays
+
+            var constantArrays = cmdParamaters
+                .Where(x => !string.IsNullOrEmpty(x.Len) && x.Type.Name != "String" && x.IsConst)
+                //.Except(mutablePointers)
+                .Except(new[] { commandInfo.ReturnParam });
+
+            var constantArrayInfos = new List<CommandArrayInfo>();
+
+            foreach(var vkParam in constantArrays)
+            {
+                var countParam = cmdParamaters.ToList().FirstOrDefault(x => x.Name == vkParam.Len);
+                if(countParam != null)
+                {
+                    constantArrayInfos.Add(new CommandArrayInfo {
+                        Parent = vkCommand,
+                        ArrayParam = vkParam,
+                        CountParam = countParam,
+                    });
+                    commandInfo.InternalParams.Add(countParam);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
                 }
             }
+
             #endregion
+
+            commandInfo.ArrayInfos.AddRange(mutableArrayInfos);
+            commandInfo.ArrayInfos.AddRange(constantArrayInfos);
+
+            // todo
+            var optionalArgs = new List<string>();
+            for(var x = cmdParamaters.Count() - 1; x > 0; x--)
+            {
+                if(!cmdParamaters[x].IsOptional)
+                    break;
+
+                optionalArgs.Add(cmdParamaters[x].Name);
+            }
 
             return commandInfo;
         }
@@ -1866,6 +2034,18 @@ namespace Tanagra.Generator
 
         bool IsNondispatchableHandle(VkType vkType)
             => vkType is VkHandle && !((VkHandle)vkType).IsDispatchable;
+
+        // We want to throw an exception on the `Result` value of a command in two instances: 
+        // - When the commands only valid success code is VK_SUCCESS
+        // - When the commands only valud success codes are either VK_SUCCESS or VK_INCOMPLETE
+        //   VK_INCOMPLETE is only called if the array we pass to the function is too small for
+        //   the data that will be returned. Though this may be a nice feature in lower-memory
+        //   enviroments, this library will always create an array of the required length.
+        bool ThrowExceptionOnBadResult(VkCommand vkCommand)
+            => (vkCommand.SuccessCodes.Length == 1 && vkCommand.SuccessCodes[0] == "VK_SUCCESS")
+            || (vkCommand.SuccessCodes.Length == 2 && (vkCommand.SuccessCodes[0] == "VK_SUCCESS" && vkCommand.SuccessCodes[1] == "VK_INCOMPLETE"));
+
+        //InternalyConsumedResult
 
         /// <summary>
         /// True if the struct contains any poiners, handles or special string objects

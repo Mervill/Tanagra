@@ -103,7 +103,7 @@ namespace TanagraExample
             var descriptorSet       = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniformData);
 
             pipelineLayout = CreatePipelineLayout(descriptorSetLayout);
-            pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
+            pipelines      = CreatePipelines(null, pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
             pipeline       = pipelines.First();
             
             var cmdBuffers = AllocateCommandBuffers(cmdPool, (uint)swapchainData.Images.Count());

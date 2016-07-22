@@ -111,10 +111,19 @@ namespace TanagraExample
             var descriptorSetLayout = CreateDescriptorSetLayout();
             var descriptorSet       = CreateDescriptorSet(descriptorPool, descriptorSetLayout, textureData, uniformData);
 
-            pipelineLayout = CreatePipelineLayout(descriptorSetLayout);
-            pipelines      = CreatePipelines(pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
-            pipeline       = pipelines.First();
+            var createInfo    = new PipelineCacheCreateInfo();
+            var pipelineCache = device.CreatePipelineCache(createInfo);
             
+            pipelineLayout = CreatePipelineLayout(descriptorSetLayout);
+            pipelines      = CreatePipelines(pipelineCache, pipelineLayout, renderPass, shaderInfos.ToArray(), vertexData);
+            pipeline       = pipelines.First();
+
+            var pipelineCacheBytes = device.GetPipelineCacheData(pipelineCache);
+            Console.WriteLine($"Got {pipelineCacheBytes.Length} pipeline cache bytes");
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
             var cmdBuffers = AllocateCommandBuffers(cmdPool, (uint)swapchainData.Images.Count());
             for(int x = 0; x < swapchainData.Images.Count(); x++)
                 CreateCommandBuffer(
@@ -161,6 +170,7 @@ namespace TanagraExample
             device.DestroyPipeline(pipeline);
             device.DestroyPipelineLayout(pipelineLayout);
             device.DestroyRenderPass(renderPass);
+            device.DestroyPipelineCache(pipelineCache);
 
             device.DestroyBuffer(vertexData.IndexBuffer);
             device.FreeMemory(vertexData.IndexDeviceMemory);

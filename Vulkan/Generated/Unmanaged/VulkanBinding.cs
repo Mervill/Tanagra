@@ -9,6 +9,7 @@ namespace Vulkan.Unmanaged
         const CallingConvention callingConvention = CallingConvention.Winapi;
         
         /// <param name="allocator">Optional</param>
+        /// <param name="instance">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateInstance", CallingConvention = callingConvention)]
         public static extern Result vkCreateInstance(InstanceCreateInfo* createInfo, AllocationCallbacks* allocator, IntPtr* instance);
         
@@ -17,7 +18,8 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyInstance", CallingConvention = callingConvention)]
         public static extern void vkDestroyInstance(IntPtr instance, AllocationCallbacks* allocator);
         
-        /// <param name="physicalDevices">Optional</param>
+        /// <param name="physicalDeviceCount">NonConstantPointer</param>
+        /// <param name="physicalDevices">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = callingConvention)]
         public static extern Result vkEnumeratePhysicalDevices(IntPtr instance, UInt32* physicalDeviceCount, IntPtr* physicalDevices);
         
@@ -28,27 +30,34 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = callingConvention)]
         public static extern IntPtr vkGetInstanceProcAddr(IntPtr instance, String name);
         
+        /// <param name="properties">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, PhysicalDeviceProperties* properties);
         
-        /// <param name="queueFamilyProperties">Optional</param>
+        /// <param name="queueFamilyPropertyCount">NonConstantPointer</param>
+        /// <param name="queueFamilyProperties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceQueueFamilyProperties(IntPtr physicalDevice, UInt32* queueFamilyPropertyCount, QueueFamilyProperties* queueFamilyProperties);
         
+        /// <param name="memoryProperties">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceMemoryProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceMemoryProperties(IntPtr physicalDevice, PhysicalDeviceMemoryProperties* memoryProperties);
         
+        /// <param name="features">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceFeatures", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceFeatures(IntPtr physicalDevice, PhysicalDeviceFeatures* features);
         
+        /// <param name="formatProperties">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceFormatProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceFormatProperties(IntPtr physicalDevice, Format format, FormatProperties* formatProperties);
         
         /// <param name="flags">Optional</param>
+        /// <param name="imageFormatProperties">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceImageFormatProperties", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceImageFormatProperties(IntPtr physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags, ImageFormatProperties* imageFormatProperties);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="device">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDevice", CallingConvention = callingConvention)]
         public static extern Result vkCreateDevice(IntPtr physicalDevice, DeviceCreateInfo* createInfo, AllocationCallbacks* allocator, IntPtr* device);
         
@@ -57,24 +66,29 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyDevice", CallingConvention = callingConvention)]
         public static extern void vkDestroyDevice(IntPtr device, AllocationCallbacks* allocator);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateInstanceLayerProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateInstanceLayerProperties(UInt32* propertyCount, LayerProperties* properties);
         
         /// <param name="layerName">Optional</param>
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateInstanceExtensionProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateInstanceExtensionProperties(String layerName, UInt32* propertyCount, ExtensionProperties* properties);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateDeviceLayerProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateDeviceLayerProperties(IntPtr physicalDevice, UInt32* propertyCount, LayerProperties* properties);
         
         /// <param name="layerName">Optional</param>
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkEnumerateDeviceExtensionProperties", CallingConvention = callingConvention)]
         public static extern Result vkEnumerateDeviceExtensionProperties(IntPtr physicalDevice, String layerName, UInt32* propertyCount, ExtensionProperties* properties);
         
+        /// <param name="queue">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetDeviceQueue", CallingConvention = callingConvention)]
         public static extern void vkGetDeviceQueue(IntPtr device, UInt32 queueFamilyIndex, UInt32 queueIndex, IntPtr* queue);
         
@@ -91,6 +105,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkDeviceWaitIdle(IntPtr device);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="memory">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkAllocateMemory", CallingConvention = callingConvention)]
         public static extern Result vkAllocateMemory(IntPtr device, MemoryAllocateInfo* allocateInfo, AllocationCallbacks* allocator, UInt64* memory);
         
@@ -101,6 +116,7 @@ namespace Vulkan.Unmanaged
         
         /// <param name="memory">ExternSync</param>
         /// <param name="flags">Optional</param>
+        /// <param name="data">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkMapMemory", CallingConvention = callingConvention)]
         public static extern Result vkMapMemory(IntPtr device, UInt64 memory, DeviceSize offset, DeviceSize size, MemoryMapFlags flags, IntPtr* data);
         
@@ -114,9 +130,11 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkInvalidateMappedMemoryRanges", CallingConvention = callingConvention)]
         public static extern Result vkInvalidateMappedMemoryRanges(IntPtr device, UInt32 memoryRangeCount, MappedMemoryRange* memoryRanges);
         
+        /// <param name="committedMemoryInBytes">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetDeviceMemoryCommitment", CallingConvention = callingConvention)]
         public static extern void vkGetDeviceMemoryCommitment(IntPtr device, UInt64 memory, DeviceSize* committedMemoryInBytes);
         
+        /// <param name="memoryRequirements">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetBufferMemoryRequirements", CallingConvention = callingConvention)]
         public static extern void vkGetBufferMemoryRequirements(IntPtr device, UInt64 buffer, MemoryRequirements* memoryRequirements);
         
@@ -124,6 +142,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkBindBufferMemory", CallingConvention = callingConvention)]
         public static extern Result vkBindBufferMemory(IntPtr device, UInt64 buffer, UInt64 memory, DeviceSize memoryOffset);
         
+        /// <param name="memoryRequirements">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetImageMemoryRequirements", CallingConvention = callingConvention)]
         public static extern void vkGetImageMemoryRequirements(IntPtr device, UInt64 image, MemoryRequirements* memoryRequirements);
         
@@ -131,11 +150,13 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkBindImageMemory", CallingConvention = callingConvention)]
         public static extern Result vkBindImageMemory(IntPtr device, UInt64 image, UInt64 memory, DeviceSize memoryOffset);
         
-        /// <param name="sparseMemoryRequirements">Optional</param>
+        /// <param name="sparseMemoryRequirementCount">NonConstantPointer</param>
+        /// <param name="sparseMemoryRequirements">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetImageSparseMemoryRequirements", CallingConvention = callingConvention)]
         public static extern void vkGetImageSparseMemoryRequirements(IntPtr device, UInt64 image, UInt32* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties", CallingConvention = callingConvention)]
         public static extern void vkGetPhysicalDeviceSparseImageFormatProperties(IntPtr physicalDevice, Format format, ImageType type, SampleCountFlags samples, ImageUsageFlags usage, ImageTiling tiling, UInt32* propertyCount, SparseImageFormatProperties* properties);
         
@@ -149,6 +170,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkQueueBindSparse(IntPtr queue, UInt32 bindInfoCount, BindSparseInfo* bindInfo, UInt64 fence);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="fence">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateFence", CallingConvention = callingConvention)]
         public static extern Result vkCreateFence(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* fence);
         
@@ -168,6 +190,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkWaitForFences(IntPtr device, UInt32 fenceCount, UInt64* fences, Bool32 waitAll, UInt64 timeout);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="semaphore">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateSemaphore", CallingConvention = callingConvention)]
         public static extern Result vkCreateSemaphore(IntPtr device, SemaphoreCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* semaphore);
         
@@ -177,6 +200,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroySemaphore(IntPtr device, UInt64 semaphore, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="@event">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateEvent", CallingConvention = callingConvention)]
         public static extern Result vkCreateEvent(IntPtr device, EventCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* @event);
         
@@ -197,6 +221,7 @@ namespace Vulkan.Unmanaged
         public static extern Result vkResetEvent(IntPtr device, UInt64 @event);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="queryPool">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateQueryPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateQueryPool(IntPtr device, QueryPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* queryPool);
         
@@ -205,11 +230,13 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyQueryPool", CallingConvention = callingConvention)]
         public static extern void vkDestroyQueryPool(IntPtr device, UInt64 queryPool, AllocationCallbacks* allocator);
         
+        /// <param name="data">NonConstantPointer</param>
         /// <param name="flags">Optional</param>
         [DllImport(DllName, EntryPoint = "vkGetQueryPoolResults", CallingConvention = callingConvention)]
         public static extern Result vkGetQueryPoolResults(IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, Byte* data, DeviceSize stride, QueryResultFlags flags);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="buffer">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateBuffer", CallingConvention = callingConvention)]
         public static extern Result vkCreateBuffer(IntPtr device, BufferCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* buffer);
         
@@ -219,6 +246,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyBuffer(IntPtr device, UInt64 buffer, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="view">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateBufferView", CallingConvention = callingConvention)]
         public static extern Result vkCreateBufferView(IntPtr device, BufferViewCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* view);
         
@@ -228,6 +256,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyBufferView(IntPtr device, UInt64 bufferView, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="image">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateImage", CallingConvention = callingConvention)]
         public static extern Result vkCreateImage(IntPtr device, ImageCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* image);
         
@@ -236,10 +265,12 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyImage", CallingConvention = callingConvention)]
         public static extern void vkDestroyImage(IntPtr device, UInt64 image, AllocationCallbacks* allocator);
         
+        /// <param name="layout">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetImageSubresourceLayout", CallingConvention = callingConvention)]
         public static extern void vkGetImageSubresourceLayout(IntPtr device, UInt64 image, ImageSubresource* subresource, SubresourceLayout* layout);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="view">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateImageView", CallingConvention = callingConvention)]
         public static extern Result vkCreateImageView(IntPtr device, ImageViewCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* view);
         
@@ -249,6 +280,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyImageView(IntPtr device, UInt64 imageView, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="shaderModule">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateShaderModule", CallingConvention = callingConvention)]
         public static extern Result vkCreateShaderModule(IntPtr device, ShaderModuleCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* shaderModule);
         
@@ -258,6 +290,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyShaderModule(IntPtr device, UInt64 shaderModule, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="pipelineCache">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreatePipelineCache", CallingConvention = callingConvention)]
         public static extern Result vkCreatePipelineCache(IntPtr device, PipelineCacheCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* pipelineCache);
         
@@ -266,7 +299,8 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyPipelineCache", CallingConvention = callingConvention)]
         public static extern void vkDestroyPipelineCache(IntPtr device, UInt64 pipelineCache, AllocationCallbacks* allocator);
         
-        /// <param name="data">Optional</param>
+        /// <param name="dataSize">NonConstantPointer</param>
+        /// <param name="data">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPipelineCacheData", CallingConvention = callingConvention)]
         public static extern Result vkGetPipelineCacheData(IntPtr device, UInt64 pipelineCache, Size* dataSize, Byte* data);
         
@@ -276,11 +310,13 @@ namespace Vulkan.Unmanaged
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
+        /// <param name="pipelines">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateGraphicsPipelines", CallingConvention = callingConvention)]
         public static extern Result vkCreateGraphicsPipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
         
         /// <param name="pipelineCache">Optional</param>
         /// <param name="allocator">Optional</param>
+        /// <param name="pipelines">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateComputePipelines", CallingConvention = callingConvention)]
         public static extern Result vkCreateComputePipelines(IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* createInfos, AllocationCallbacks* allocator, UInt64* pipelines);
         
@@ -290,6 +326,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyPipeline(IntPtr device, UInt64 pipeline, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="pipelineLayout">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreatePipelineLayout", CallingConvention = callingConvention)]
         public static extern Result vkCreatePipelineLayout(IntPtr device, PipelineLayoutCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* pipelineLayout);
         
@@ -299,6 +336,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyPipelineLayout(IntPtr device, UInt64 pipelineLayout, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="sampler">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateSampler", CallingConvention = callingConvention)]
         public static extern Result vkCreateSampler(IntPtr device, SamplerCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* sampler);
         
@@ -308,6 +346,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroySampler(IntPtr device, UInt64 sampler, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="setLayout">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDescriptorSetLayout", CallingConvention = callingConvention)]
         public static extern Result vkCreateDescriptorSetLayout(IntPtr device, DescriptorSetLayoutCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* setLayout);
         
@@ -317,6 +356,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyDescriptorSetLayout(IntPtr device, UInt64 descriptorSetLayout, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="descriptorPool">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDescriptorPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateDescriptorPool(IntPtr device, DescriptorPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* descriptorPool);
         
@@ -330,6 +370,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkResetDescriptorPool", CallingConvention = callingConvention)]
         public static extern Result vkResetDescriptorPool(IntPtr device, UInt64 descriptorPool, DescriptorPoolResetFlags flags);
         
+        /// <param name="descriptorSets">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkAllocateDescriptorSets", CallingConvention = callingConvention)]
         public static extern Result vkAllocateDescriptorSets(IntPtr device, DescriptorSetAllocateInfo* allocateInfo, UInt64* descriptorSets);
         
@@ -344,6 +385,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkUpdateDescriptorSets(IntPtr device, UInt32 descriptorWriteCount, WriteDescriptorSet* descriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="framebuffer">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateFramebuffer", CallingConvention = callingConvention)]
         public static extern Result vkCreateFramebuffer(IntPtr device, FramebufferCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* framebuffer);
         
@@ -353,6 +395,7 @@ namespace Vulkan.Unmanaged
         public static extern void vkDestroyFramebuffer(IntPtr device, UInt64 framebuffer, AllocationCallbacks* allocator);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="renderPass">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateRenderPass", CallingConvention = callingConvention)]
         public static extern Result vkCreateRenderPass(IntPtr device, RenderPassCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* renderPass);
         
@@ -361,10 +404,12 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroyRenderPass", CallingConvention = callingConvention)]
         public static extern void vkDestroyRenderPass(IntPtr device, UInt64 renderPass, AllocationCallbacks* allocator);
         
+        /// <param name="granularity">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetRenderAreaGranularity", CallingConvention = callingConvention)]
         public static extern void vkGetRenderAreaGranularity(IntPtr device, UInt64 renderPass, Extent2D* granularity);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="commandPool">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateCommandPool", CallingConvention = callingConvention)]
         public static extern Result vkCreateCommandPool(IntPtr device, CommandPoolCreateInfo* createInfo, AllocationCallbacks* allocator, UInt64* commandPool);
         
@@ -378,6 +423,7 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkResetCommandPool", CallingConvention = callingConvention)]
         public static extern Result vkResetCommandPool(IntPtr device, UInt64 commandPool, CommandPoolResetFlags flags);
         
+        /// <param name="commandBuffers">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkAllocateCommandBuffers", CallingConvention = callingConvention)]
         public static extern Result vkAllocateCommandBuffers(IntPtr device, CommandBufferAllocateInfo* allocateInfo, IntPtr* commandBuffers);
         
@@ -718,46 +764,57 @@ namespace Vulkan.Unmanaged
         public static extern void vkCmdExecuteCommands(IntPtr commandBuffer, UInt32 commandBufferCount, IntPtr* commandBuffers);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateAndroidSurfaceKHR(IntPtr instance, AndroidSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceDisplayPropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(IntPtr physicalDevice, UInt32* propertyCount, DisplayPropertiesKHR* properties);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceDisplayPlanePropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR(IntPtr physicalDevice, UInt32* propertyCount, DisplayPlanePropertiesKHR* properties);
         
-        /// <param name="displays">Optional</param>
+        /// <param name="displayCount">NonConstantPointer</param>
+        /// <param name="displays">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetDisplayPlaneSupportedDisplaysKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetDisplayPlaneSupportedDisplaysKHR(IntPtr physicalDevice, UInt32 planeIndex, UInt32* displayCount, UInt64* displays);
         
-        /// <param name="properties">Optional</param>
+        /// <param name="propertyCount">NonConstantPointer</param>
+        /// <param name="properties">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetDisplayModePropertiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetDisplayModePropertiesKHR(IntPtr physicalDevice, UInt64 display, UInt32* propertyCount, DisplayModePropertiesKHR* properties);
         
         /// <param name="display">ExternSync</param>
         /// <param name="allocator">Optional</param>
+        /// <param name="mode">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDisplayModeKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateDisplayModeKHR(IntPtr physicalDevice, UInt64 display, DisplayModeCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* mode);
         
         /// <param name="mode">ExternSync</param>
+        /// <param name="capabilities">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetDisplayPlaneCapabilitiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetDisplayPlaneCapabilitiesKHR(IntPtr physicalDevice, UInt64 mode, UInt32 planeIndex, DisplayPlaneCapabilitiesKHR* capabilities);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDisplayPlaneSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateDisplayPlaneSurfaceKHR(IntPtr instance, DisplaySurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="swapchains">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateSharedSwapchainsKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateSharedSwapchainsKHR(IntPtr device, UInt32 swapchainCount, SwapchainCreateInfoKHR* createInfos, AllocationCallbacks* allocator, UInt64* swapchains);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateMirSurfaceKHR(IntPtr instance, MirSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
+        /// <param name="connection">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceMirPresentationSupportKHR", CallingConvention = callingConvention)]
         public static extern Bool32 vkGetPhysicalDeviceMirPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, IntPtr* connection);
         
@@ -766,21 +823,26 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroySurfaceKHR", CallingConvention = callingConvention)]
         public static extern void vkDestroySurfaceKHR(IntPtr instance, UInt64 surface, AllocationCallbacks* allocator);
         
+        /// <param name="supported">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceSupportKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfaceSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, UInt64 surface, Bool32* supported);
         
+        /// <param name="surfaceCapabilities">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceCapabilitiesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfaceCapabilitiesKHR(IntPtr physicalDevice, UInt64 surface, SurfaceCapabilitiesKHR* surfaceCapabilities);
         
-        /// <param name="surfaceFormats">Optional</param>
+        /// <param name="surfaceFormatCount">NonConstantPointer</param>
+        /// <param name="surfaceFormats">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfaceFormatsKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, UInt64 surface, UInt32* surfaceFormatCount, SurfaceFormatKHR* surfaceFormats);
         
-        /// <param name="presentModes">Optional</param>
+        /// <param name="presentModeCount">NonConstantPointer</param>
+        /// <param name="presentModes">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice, UInt64 surface, UInt32* presentModeCount, PresentModeKHR* presentModes);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="swapchain">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateSwapchainKHR(IntPtr device, SwapchainCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* swapchain);
         
@@ -789,13 +851,15 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDestroySwapchainKHR", CallingConvention = callingConvention)]
         public static extern void vkDestroySwapchainKHR(IntPtr device, UInt64 swapchain, AllocationCallbacks* allocator);
         
-        /// <param name="swapchainImages">Optional</param>
+        /// <param name="swapchainImageCount">NonConstantPointer</param>
+        /// <param name="swapchainImages">Optional, NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetSwapchainImagesKHR", CallingConvention = callingConvention)]
         public static extern Result vkGetSwapchainImagesKHR(IntPtr device, UInt64 swapchain, UInt32* swapchainImageCount, UInt64* swapchainImages);
         
         /// <param name="swapchain">ExternSync</param>
         /// <param name="semaphore">ExternSync, Optional</param>
         /// <param name="fence">ExternSync, Optional</param>
+        /// <param name="imageIndex">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkAcquireNextImageKHR", CallingConvention = callingConvention)]
         public static extern Result vkAcquireNextImageKHR(IntPtr device, UInt64 swapchain, UInt64 timeout, UInt64 semaphore, UInt64 fence, UInt32* imageIndex);
         
@@ -804,13 +868,16 @@ namespace Vulkan.Unmanaged
         public static extern Result vkQueuePresentKHR(IntPtr queue, PresentInfoKHR* presentInfo);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateWaylandSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateWaylandSurfaceKHR(IntPtr instance, WaylandSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
+        /// <param name="display">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceWaylandPresentationSupportKHR", CallingConvention = callingConvention)]
         public static extern Bool32 vkGetPhysicalDeviceWaylandPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, IntPtr* display);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateWin32SurfaceKHR(IntPtr instance, Win32SurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
@@ -818,20 +885,25 @@ namespace Vulkan.Unmanaged
         public static extern Bool32 vkGetPhysicalDeviceWin32PresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateXlibSurfaceKHR(IntPtr instance, XlibSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
+        /// <param name="dpy">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXlibPresentationSupportKHR", CallingConvention = callingConvention)]
         public static extern Bool32 vkGetPhysicalDeviceXlibPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, IntPtr* dpy, IntPtr visualID);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="surface">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = callingConvention)]
         public static extern Result vkCreateXcbSurfaceKHR(IntPtr instance, XcbSurfaceCreateInfoKHR* createInfo, AllocationCallbacks* allocator, UInt64* surface);
         
+        /// <param name="connection">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkGetPhysicalDeviceXcbPresentationSupportKHR", CallingConvention = callingConvention)]
         public static extern Bool32 vkGetPhysicalDeviceXcbPresentationSupportKHR(IntPtr physicalDevice, UInt32 queueFamilyIndex, IntPtr* connection, IntPtr visual_id);
         
         /// <param name="allocator">Optional</param>
+        /// <param name="callback">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCreateDebugReportCallbackEXT", CallingConvention = callingConvention)]
         public static extern Result vkCreateDebugReportCallbackEXT(IntPtr instance, DebugReportCallbackCreateInfoEXT* createInfo, AllocationCallbacks* allocator, UInt64* callback);
         
@@ -843,15 +915,18 @@ namespace Vulkan.Unmanaged
         [DllImport(DllName, EntryPoint = "vkDebugReportMessageEXT", CallingConvention = callingConvention)]
         public static extern void vkDebugReportMessageEXT(IntPtr instance, DebugReportFlagsEXT flags, DebugReportObjectTypeEXT objectType, UInt64 @object, Size location, Int32 messageCode, String layerPrefix, String message);
         
+        /// <param name="nameInfo">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectNameEXT", CallingConvention = callingConvention)]
         public static extern Result vkDebugMarkerSetObjectNameEXT(IntPtr device, DebugMarkerObjectNameInfoEXT* nameInfo);
         
+        /// <param name="tagInfo">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkDebugMarkerSetObjectTagEXT", CallingConvention = callingConvention)]
         public static extern Result vkDebugMarkerSetObjectTagEXT(IntPtr device, DebugMarkerObjectTagInfoEXT* tagInfo);
         
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
+        /// <param name="markerInfo">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCmdDebugMarkerBeginEXT", CallingConvention = callingConvention)]
         public static extern void vkCmdDebugMarkerBeginEXT(IntPtr commandBuffer, DebugMarkerMarkerInfoEXT* markerInfo);
         
@@ -864,6 +939,7 @@ namespace Vulkan.Unmanaged
         /// <summary>
         /// [<see cref="CommandBufferLevel"/>: Primary, Secondary] [Render Pass: Both] [<see cref="QueueFlags"/>: Graphics, Compute] 
         /// </summary>
+        /// <param name="markerInfo">NonConstantPointer</param>
         [DllImport(DllName, EntryPoint = "vkCmdDebugMarkerInsertEXT", CallingConvention = callingConvention)]
         public static extern void vkCmdDebugMarkerInsertEXT(IntPtr commandBuffer, DebugMarkerMarkerInfoEXT* markerInfo);
         

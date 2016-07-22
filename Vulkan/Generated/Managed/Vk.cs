@@ -31,10 +31,14 @@ namespace Vulkan.Managed
         public static PhysicalDevice[] EnumeratePhysicalDevices(Instance instance)
         {
             UInt32 listLength;
-            vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, null);
+            var result = vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumeratePhysicalDevices), result);
             
             var arrayPhysicalDevice = stackalloc IntPtr[(Int32)listLength];
-            vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, arrayPhysicalDevice);
+            result = vkEnumeratePhysicalDevices(instance.NativePointer, &listLength, arrayPhysicalDevice);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumeratePhysicalDevices), result);
             
             var list = new PhysicalDevice[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -137,12 +141,16 @@ namespace Vulkan.Managed
         public static LayerProperties[] EnumerateInstanceLayerProperties()
         {
             UInt32 listLength;
-            vkEnumerateInstanceLayerProperties(&listLength, null);
+            var result = vkEnumerateInstanceLayerProperties(&listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateInstanceLayerProperties), result);
             
             var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
             resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
+            result = vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateInstanceLayerProperties), result);
             
             var list = new LayerProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -158,12 +166,16 @@ namespace Vulkan.Managed
         public static ExtensionProperties[] EnumerateInstanceExtensionProperties(String layerName)
         {
             UInt32 listLength;
-            vkEnumerateInstanceExtensionProperties(layerName, &listLength, null);
+            var result = vkEnumerateInstanceExtensionProperties(layerName, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
             var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
             resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
+            result = vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
             var list = new ExtensionProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -178,12 +190,16 @@ namespace Vulkan.Managed
         public static LayerProperties[] EnumerateDeviceLayerProperties(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
-            vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, null);
+            var result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateDeviceLayerProperties), result);
             
             var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
             resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateDeviceLayerProperties), result);
             
             var list = new LayerProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -199,12 +215,16 @@ namespace Vulkan.Managed
         public static ExtensionProperties[] EnumerateDeviceExtensionProperties(PhysicalDevice physicalDevice, String layerName = default(String))
         {
             UInt32 listLength;
-            vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, null);
+            var result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
             var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
             resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
+            result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
             var list = new ExtensionProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -542,16 +562,21 @@ namespace Vulkan.Managed
         }
         
         /// <param name="flags">Optional</param>
-        public static Result GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Byte[] data, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
+        public static Byte[] GetQueryPoolResults(Device device, QueryPool queryPool, UInt32 firstQuery, UInt32 queryCount, Size dataSize, DeviceSize stride, QueryResultFlags flags = default(QueryResultFlags))
         {
-            var dataSize = (data != null) ? (UInt32)data.Length : 0;
-            var _dataPtr = stackalloc Byte[(Int32)dataSize];
-            if(data != null)
-                for(var x = 0; x < dataSize; x++)
-                    _dataPtr[x] = data[x];
+            var listLength = dataSize;
+            Result result;
             
-            var result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, dataSize, _dataPtr, stride, flags);
-            return result;
+            var arrayByte = stackalloc Byte[(Int32)listLength];
+            result = vkGetQueryPoolResults(device.NativePointer, queryPool.NativePointer, firstQuery, queryCount, listLength, arrayByte, stride, flags);
+            
+            var list = new Byte[(Int32)listLength];
+            for(var x = 0; x < (Int32)listLength; x++)
+            {
+                list[x] = arrayByte[x];
+            }
+            
+            return list;
         }
         
         /// <param name="allocator">Optional</param>
@@ -684,10 +709,14 @@ namespace Vulkan.Managed
         public static Byte[] GetPipelineCacheData(Device device, PipelineCache pipelineCache)
         {
             Size listLength;
-            vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
+            var result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
             
             var arrayByte = stackalloc Byte[(Int32)listLength];
-            vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, arrayByte);
+            result = vkGetPipelineCacheData(device.NativePointer, pipelineCache.NativePointer, &listLength, arrayByte);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPipelineCacheData), result);
             
             var list = new Byte[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1620,12 +1649,16 @@ namespace Vulkan.Managed
         public static DisplayPropertiesKHR[] GetPhysicalDeviceDisplayPropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
-            vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, null);
+            var result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
             var resultPtr = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPropertiesKHR));
             resultPtr = (Unmanaged.DisplayPropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
             var list = new DisplayPropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1640,12 +1673,16 @@ namespace Vulkan.Managed
         public static DisplayPlanePropertiesKHR[] GetPhysicalDeviceDisplayPlanePropertiesKHR(PhysicalDevice physicalDevice)
         {
             UInt32 listLength;
-            vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, null);
+            var result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
             var resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPlanePropertiesKHR));
             resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
             var list = new DisplayPlanePropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1660,10 +1697,14 @@ namespace Vulkan.Managed
         public static DisplayKHR[] GetDisplayPlaneSupportedDisplaysKHR(PhysicalDevice physicalDevice, UInt32 planeIndex)
         {
             UInt32 listLength;
-            vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, null);
+            var result = vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetDisplayPlaneSupportedDisplaysKHR), result);
             
             var arrayDisplayKHR = stackalloc UInt64[(Int32)listLength];
-            vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, arrayDisplayKHR);
+            result = vkGetDisplayPlaneSupportedDisplaysKHR(physicalDevice.NativePointer, planeIndex, &listLength, arrayDisplayKHR);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetDisplayPlaneSupportedDisplaysKHR), result);
             
             var list = new DisplayKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1678,12 +1719,16 @@ namespace Vulkan.Managed
         public static DisplayModePropertiesKHR[] GetDisplayModePropertiesKHR(PhysicalDevice physicalDevice, DisplayKHR display)
         {
             UInt32 listLength;
-            vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, null);
+            var result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetDisplayModePropertiesKHR), result);
             
             var resultPtr = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayModePropertiesKHR));
             resultPtr = (Unmanaged.DisplayModePropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
+            result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetDisplayModePropertiesKHR), result);
             
             var list = new DisplayModePropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1775,7 +1820,7 @@ namespace Vulkan.Managed
         public static IntPtr GetPhysicalDeviceMirPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var connection = new IntPtr();
-            vkGetPhysicalDeviceMirPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &connection);
+            var result = vkGetPhysicalDeviceMirPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &connection);
             return connection;
         }
         
@@ -1807,10 +1852,14 @@ namespace Vulkan.Managed
         public static SurfaceFormatKHR[] GetPhysicalDeviceSurfaceFormatsKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
-            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
+            var result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceSurfaceFormatsKHR), result);
             
             var arraySurfaceFormatKHR = stackalloc SurfaceFormatKHR[(Int32)listLength];
-            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arraySurfaceFormatKHR);
+            result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arraySurfaceFormatKHR);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceSurfaceFormatsKHR), result);
             
             var list = new SurfaceFormatKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1824,10 +1873,14 @@ namespace Vulkan.Managed
         public static PresentModeKHR[] GetPhysicalDeviceSurfacePresentModesKHR(PhysicalDevice physicalDevice, SurfaceKHR surface)
         {
             UInt32 listLength;
-            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
+            var result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
             
             var arrayPresentModeKHR = stackalloc PresentModeKHR[(Int32)listLength];
-            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arrayPresentModeKHR);
+            result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.NativePointer, surface.NativePointer, &listLength, arrayPresentModeKHR);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR), result);
             
             var list = new PresentModeKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1861,10 +1914,14 @@ namespace Vulkan.Managed
         public static Image[] GetSwapchainImagesKHR(Device device, SwapchainKHR swapchain)
         {
             UInt32 listLength;
-            vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, null);
+            var result = vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, null);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetSwapchainImagesKHR), result);
             
             var arrayImage = stackalloc UInt64[(Int32)listLength];
-            vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, arrayImage);
+            result = vkGetSwapchainImagesKHR(device.NativePointer, swapchain.NativePointer, &listLength, arrayImage);
+            if(result != Result.Success)
+                throw new VulkanResultException(nameof(vkGetSwapchainImagesKHR), result);
             
             var list = new Image[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
@@ -1882,7 +1939,7 @@ namespace Vulkan.Managed
         public static UInt32 AcquireNextImageKHR(Device device, SwapchainKHR swapchain, UInt64 timeout, Semaphore semaphore = default(Semaphore), Fence fence = default(Fence))
         {
             var imageIndex = new UInt32();
-            vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, (semaphore != null) ? semaphore.NativePointer : 0, (fence != null) ? fence.NativePointer : 0, &imageIndex);
+            var result = vkAcquireNextImageKHR(device.NativePointer, swapchain.NativePointer, timeout, (semaphore != null) ? semaphore.NativePointer : 0, (fence != null) ? fence.NativePointer : 0, &imageIndex);
             return imageIndex;
         }
         
@@ -1909,7 +1966,7 @@ namespace Vulkan.Managed
         public static IntPtr GetPhysicalDeviceWaylandPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex)
         {
             var display = new IntPtr();
-            vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &display);
+            var result = vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &display);
             return display;
         }
         
@@ -1945,10 +2002,11 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        public static Bool32 GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr dpy, IntPtr visualID)
+        public static IntPtr GetPhysicalDeviceXlibPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr visualID)
         {
+            var dpy = new IntPtr();
             var result = vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &dpy, visualID);
-            return result;
+            return dpy;
         }
         
         /// <param name="allocator">Optional</param>
@@ -1964,10 +2022,11 @@ namespace Vulkan.Managed
             return surface;
         }
         
-        public static Bool32 GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr connection, IntPtr visual_id)
+        public static IntPtr GetPhysicalDeviceXcbPresentationSupportKHR(PhysicalDevice physicalDevice, UInt32 queueFamilyIndex, IntPtr visual_id)
         {
+            var connection = new IntPtr();
             var result = vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice.NativePointer, queueFamilyIndex, &connection, visual_id);
-            return result;
+            return connection;
         }
         
         /// <param name="allocator">Optional</param>

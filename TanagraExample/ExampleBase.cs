@@ -363,7 +363,7 @@ namespace TanagraExample
             return device.CreatePipelineLayout(createInfo);
         }
 
-        protected Pipeline[] CreatePipelines(PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexData vertexData)
+        protected Pipeline[] CreatePipelines(PipelineCache cache, PipelineLayout pipelineLayout, RenderPass renderPass, PipelineShaderStageCreateInfo[] shaderStageCreateInfos, VertexData vertexData)
         {
             var inputAssemblyState = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList, false);
 
@@ -398,7 +398,7 @@ namespace TanagraExample
                 }
             };
 
-            return device.CreateGraphicsPipelines(null, createInfos);
+            return device.CreateGraphicsPipelines(cache, createInfos);
         }
 
         protected Framebuffer CreateFramebuffer(RenderPass renderPass, params ImageData[] imageData)

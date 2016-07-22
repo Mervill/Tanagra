@@ -300,7 +300,7 @@ namespace Tanagra.Generator
         public bool ExternSync { get; set; }
         
         public bool IsPointer => PointerRank > 0;
-        public bool IsOut => IsPointer && !IsConst;
+        //public bool IsConstantPointer => IsPointer && IsConst;
         public bool IsFixed => Type is VkHandle && !IsConst;
         public bool IsOptional => Optional.Length != 0 && Optional[0] == "true";
 
