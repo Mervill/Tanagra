@@ -19,6 +19,29 @@ namespace TanagraExample
 {
     public class ExampleDrawCube : ExampleBase
     {
+        class InstanceInfo
+        {
+            public LayerProperties[] Layers;
+            public ExtensionProperties[] Extensions;
+        }
+
+        class PhysicalDeviceInfo
+        {
+            public PhysicalDeviceProperties Properties;
+            public LayerProperties[] Layers;
+            public ExtensionProperties[] Extensions;
+            public PhysicalDeviceFeatures Features;
+            public PhysicalDeviceMemoryProperties Memory;
+            public QueueFamilyProperties[] QueueFamlies;
+
+            public void Dispose()
+            {
+                Properties.Dispose();
+                foreach(var l in Layers) l.Dispose();
+                foreach(var e in Extensions) e.Dispose();
+            }
+        }
+
         class UniformData
         {
             public Buffer Buffer;
@@ -33,7 +56,9 @@ namespace TanagraExample
             public OpenTK.Matrix4 model;
             public OpenTK.Matrix4 view;
         }
-        
+
+        PhysicalDeviceInfo physDeviceInfo;
+
         public ExampleDrawCube()
         {
             var window = new RenderForm(GetType().Name);
@@ -56,6 +81,7 @@ namespace TanagraExample
             instance      = CreateInstance();                      // Create a new Vulkan Instance
             physDevices   = EnumeratePhysicalDevices(instance);    // Discover the physical devices attached to the system
             physDevice    = physDevices.First();                   // Select the first physical device
+            physDeviceInfo = GetPhysicalDeviceInfo(physDevice);
             queueFamilies = physDevice.GetQueueFamilyProperties(); // Get properties about the queues on the physical device
             physDeviceMem = physDevice.GetMemoryProperties();      // Get properties about the memory on the physical device
             
@@ -187,8 +213,37 @@ namespace TanagraExample
 
             instance.Destroy();
             #endregion
+
+            physDeviceInfo.Dispose();
         }
-        
+
+        InstanceInfo GetInstanceInfo(Instance instance)
+        {
+            //var layers = Vk.EnumerateInstanceLayerProperties();
+            // todo
+            //Vk.EnumerateInstanceExtensionProperties()
+            return null;
+        }
+
+        PhysicalDeviceInfo GetPhysicalDeviceInfo(PhysicalDevice physDevice)
+        {
+            var info = new PhysicalDeviceInfo
+            {
+                Properties = physDevice.GetProperties(),
+                Layers     = physDevice.EnumerateDeviceLayerProperties(),
+                Extensions = physDevice.EnumerateDeviceExtensionProperties(),
+                Features   = physDevice.GetFeatures(),
+                Memory     = physDevice.GetMemoryProperties(),
+                QueueFamlies = physDevice.GetQueueFamilyProperties(),
+            };
+
+            //physDevice.GetFormatProperties();
+            //physDevice.GetImageFormatProperties();
+            //physDevice.GetSparseImageFormatProperties();
+
+            return info;
+        }
+
         VertexData CreateVertexData()
         {
             var data = new VertexData();
