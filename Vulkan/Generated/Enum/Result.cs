@@ -81,6 +81,6 @@ namespace Vulkan
         ErrorOutOfDateKHR = -1000001004,
         ErrorIncompatibleDisplayKHR = -1000003001,
         ErrorValidationFailedEXT = -1000011001,
-        ErrorInvalidShaderNv = -1000012000,
+        ErrorInvalidShaderNV = -1000012000,
     }
 }

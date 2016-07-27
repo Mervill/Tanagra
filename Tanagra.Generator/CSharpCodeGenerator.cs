@@ -1220,8 +1220,8 @@ namespace Tanagra.Generator
                     if(commandInfo.ParamArrays.Contains(vkParam))
                         paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
 
-                    if(vkParam.IsPointer && !vkParam.IsConst)
-                        Write("ref ");
+                    //if(vkParam.IsPointer && !vkParam.IsConst) // todo ref/multiret
+                        //Write("ref ");
 
                     Write($"{paramType} {paramName}");
 
@@ -1262,7 +1262,7 @@ namespace Tanagra.Generator
                 }
                 #endregion
 
-                /*foreach(var vkParam in cmdParams)
+                /*foreach(var vkParam in cmdParams) // todo ref/multiret
                 {
                     if(vkParam.IsPointer && !vkParam.IsConst)
                     {
@@ -1417,7 +1417,7 @@ namespace Tanagra.Generator
                     WriteEndBlock();
                 #endregion
 
-                /*foreach(var vkParam in cmdParams)
+                /*foreach(var vkParam in cmdParams) // todo ref/multiret
                 {
                     if(vkParam.IsPointer && !vkParam.IsConst)
                     {
@@ -1436,11 +1436,12 @@ namespace Tanagra.Generator
                     if(commandInfo.ReturnType is VkHandle)
                         sizeType = GetHandleType((VkHandle)commandInfo.ReturnType);
 
-                    var stackallocReturnList = StackallocReturnList & !IsManagedStruct(commandInfo.ReturnType);
+                    var stackallocReturnList = StackallocReturnList;// & !IsManagedStruct(commandInfo.ReturnType);
 
                     if (stackallocReturnList)
                     {
-                        // todo: yeah, still can't use stackalloc here, this is a -return value-
+                        if(IsManagedStruct(commandInfo.ReturnType))
+                            WriteLine($"var resultSize = Marshal.SizeOf(typeof({UnmanagedNS}.{commandInfo.ReturnType}));");
                         WriteLine($"var array{commandInfo.ReturnType} = stackalloc {interop}{sizeType}[(Int32){returnListLength}];");
                     }
                     else
@@ -1528,7 +1529,8 @@ namespace Tanagra.Generator
                             }
                             else
                             {
-                                WriteLine($"var item = new {commandInfo.ReturnType}(&resultPtr[x]);");
+                                WriteLine($"var item = new {commandInfo.ReturnType}();");
+                                WriteLine($"MemUtil.Copy(new IntPtr(&array{commandInfo.ReturnType}[x]), new IntPtr(item.NativePointer), resultSize);");
                             }
 
                             if(UseLists)
@@ -1590,7 +1592,7 @@ namespace Tanagra.Generator
                 #region Return Param
                 if(vkParam == commandInfo.ReturnParam && commandInfo.ReturnsList)
                 {
-                    var varname = (StackallocReturnList && !IsManagedStruct(commandInfo.ReturnType)) ? $"array{commandInfo.ReturnType}" : "resultPtr";
+                    var varname = (StackallocReturnList) ? $"array{commandInfo.ReturnType}" : "resultPtr";
                     internalCallParams.Add(isSecondArrayCall ? varname : "null");
                     continue;
                 }
@@ -1746,7 +1748,7 @@ namespace Tanagra.Generator
                         if(commandInfo.ParamArrays.Contains(vkParam))
                             paramType = (UseLists) ? $"List<{paramType}>" : $"{paramType}[]";
 
-                        //if(vkParam.IsPointer && !vkParam.IsConst) // todo
+                        //if(vkParam.IsPointer && !vkParam.IsConst) // todo ref/multiret
                             //Write("ref ");
 
                         Write($"{paramType} {paramName}");
@@ -1769,7 +1771,7 @@ namespace Tanagra.Generator
                     for(var x = 0; x < cmdParams.Count; x++)
                     {
                         var param = cmdParams[x];
-                        //if(param.IsPointer && !param.IsConst) // todo
+                        //if(param.IsPointer && !param.IsConst) // todo ref/multiret
                             //Write("ref ");
                         Write($"{param.Name}");
                         if(x + 1 < cmdParams.Count)
@@ -1926,7 +1928,7 @@ namespace Tanagra.Generator
                 // commandInfo.ReturnType will return vkCommand.ReturnType
             }
 
-            /*// todo
+            /*// todo ref/multiret
             if(returnParam != null && vkCommand.ReturnType != null)
             {
                 var isResult = vkCommand.ReturnType.Name == "Result";

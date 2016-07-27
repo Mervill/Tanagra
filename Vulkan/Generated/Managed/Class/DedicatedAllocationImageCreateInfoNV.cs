@@ -22,7 +22,7 @@ namespace Vulkan.Managed
         public DedicatedAllocationImageCreateInfoNV()
         {
             NativePointer = (Unmanaged.DedicatedAllocationImageCreateInfoNV*)MemUtil.Alloc(typeof(Unmanaged.DedicatedAllocationImageCreateInfoNV));
-            NativePointer->SType = StructureType.DedicatedAllocationImageCreateInfoNv;
+            NativePointer->SType = StructureType.DedicatedAllocationImageCreateInfoNV;
         }
         
         internal DedicatedAllocationImageCreateInfoNV(Unmanaged.DedicatedAllocationImageCreateInfoNV* ptr)

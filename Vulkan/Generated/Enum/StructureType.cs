@@ -72,8 +72,8 @@ namespace Vulkan
         DebugMarkerObjectNameInfoEXT = 1000022000,
         DebugMarkerObjectTagInfoEXT = 1000022001,
         DebugMarkerMarkerInfoEXT = 1000022002,
-        DedicatedAllocationImageCreateInfoNv = 1000026000,
-        DedicatedAllocationBufferCreateInfoNv = 1000026001,
-        DedicatedAllocationMemoryAllocateInfoNv = 1000026002,
+        DedicatedAllocationImageCreateInfoNV = 1000026000,
+        DedicatedAllocationBufferCreateInfoNV = 1000026001,
+        DedicatedAllocationMemoryAllocateInfoNV = 1000026002,
     }
 }

@@ -22,7 +22,7 @@ namespace Vulkan.Managed
         public DedicatedAllocationBufferCreateInfoNV()
         {
             NativePointer = (Unmanaged.DedicatedAllocationBufferCreateInfoNV*)MemUtil.Alloc(typeof(Unmanaged.DedicatedAllocationBufferCreateInfoNV));
-            NativePointer->SType = StructureType.DedicatedAllocationBufferCreateInfoNv;
+            NativePointer->SType = StructureType.DedicatedAllocationBufferCreateInfoNV;
         }
         
         internal DedicatedAllocationBufferCreateInfoNV(Unmanaged.DedicatedAllocationBufferCreateInfoNV* ptr)

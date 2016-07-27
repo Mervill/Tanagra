@@ -145,17 +145,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateInstanceLayerProperties), result);
             
-            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
-            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkEnumerateInstanceLayerProperties(&listLength, resultPtr);
+            var arrayLayerProperties = stackalloc Unmanaged.LayerProperties[(Int32)listLength];
+            result = vkEnumerateInstanceLayerProperties(&listLength, arrayLayerProperties);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateInstanceLayerProperties), result);
             
             var list = new LayerProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new LayerProperties(&resultPtr[x]);
+                var item = new LayerProperties();
+                MemUtil.Copy(new IntPtr(&arrayLayerProperties[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -170,17 +170,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
-            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
-            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkEnumerateInstanceExtensionProperties(layerName, &listLength, resultPtr);
+            var arrayExtensionProperties = stackalloc Unmanaged.ExtensionProperties[(Int32)listLength];
+            result = vkEnumerateInstanceExtensionProperties(layerName, &listLength, arrayExtensionProperties);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateInstanceExtensionProperties), result);
             
             var list = new ExtensionProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new ExtensionProperties(&resultPtr[x]);
+                var item = new ExtensionProperties();
+                MemUtil.Copy(new IntPtr(&arrayExtensionProperties[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -194,17 +194,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateDeviceLayerProperties), result);
             
-            var resultPtr = (Unmanaged.LayerProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.LayerProperties));
-            resultPtr = (Unmanaged.LayerProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, resultPtr);
+            var arrayLayerProperties = stackalloc Unmanaged.LayerProperties[(Int32)listLength];
+            result = vkEnumerateDeviceLayerProperties(physicalDevice.NativePointer, &listLength, arrayLayerProperties);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateDeviceLayerProperties), result);
             
             var list = new LayerProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new LayerProperties(&resultPtr[x]);
+                var item = new LayerProperties();
+                MemUtil.Copy(new IntPtr(&arrayLayerProperties[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -219,17 +219,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
-            var resultPtr = (Unmanaged.ExtensionProperties*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.ExtensionProperties));
-            resultPtr = (Unmanaged.ExtensionProperties*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, resultPtr);
+            var arrayExtensionProperties = stackalloc Unmanaged.ExtensionProperties[(Int32)listLength];
+            result = vkEnumerateDeviceExtensionProperties(physicalDevice.NativePointer, layerName, &listLength, arrayExtensionProperties);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkEnumerateDeviceExtensionProperties), result);
             
             var list = new ExtensionProperties[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new ExtensionProperties(&resultPtr[x]);
+                var item = new ExtensionProperties();
+                MemUtil.Copy(new IntPtr(&arrayExtensionProperties[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -1653,17 +1653,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
-            var resultPtr = (Unmanaged.DisplayPropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPropertiesKHR));
-            resultPtr = (Unmanaged.DisplayPropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var arrayDisplayPropertiesKHR = stackalloc Unmanaged.DisplayPropertiesKHR[(Int32)listLength];
+            result = vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice.NativePointer, &listLength, arrayDisplayPropertiesKHR);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR), result);
             
             var list = new DisplayPropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new DisplayPropertiesKHR(&resultPtr[x]);
+                var item = new DisplayPropertiesKHR();
+                MemUtil.Copy(new IntPtr(&arrayDisplayPropertiesKHR[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -1677,17 +1677,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
-            var resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayPlanePropertiesKHR));
-            resultPtr = (Unmanaged.DisplayPlanePropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, resultPtr);
+            var arrayDisplayPlanePropertiesKHR = stackalloc Unmanaged.DisplayPlanePropertiesKHR[(Int32)listLength];
+            result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice.NativePointer, &listLength, arrayDisplayPlanePropertiesKHR);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR), result);
             
             var list = new DisplayPlanePropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new DisplayPlanePropertiesKHR(&resultPtr[x]);
+                var item = new DisplayPlanePropertiesKHR();
+                MemUtil.Copy(new IntPtr(&arrayDisplayPlanePropertiesKHR[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             
@@ -1723,17 +1723,17 @@ namespace Vulkan.Managed
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetDisplayModePropertiesKHR), result);
             
-            var resultPtr = (Unmanaged.DisplayModePropertiesKHR*)IntPtr.Zero;
             var resultSize = Marshal.SizeOf(typeof(Unmanaged.DisplayModePropertiesKHR));
-            resultPtr = (Unmanaged.DisplayModePropertiesKHR*)Marshal.AllocHGlobal((Int32)(resultSize * listLength));
-            result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, resultPtr);
+            var arrayDisplayModePropertiesKHR = stackalloc Unmanaged.DisplayModePropertiesKHR[(Int32)listLength];
+            result = vkGetDisplayModePropertiesKHR(physicalDevice.NativePointer, display.NativePointer, &listLength, arrayDisplayModePropertiesKHR);
             if(result != Result.Success)
                 throw new VulkanResultException(nameof(vkGetDisplayModePropertiesKHR), result);
             
             var list = new DisplayModePropertiesKHR[(Int32)listLength];
             for(var x = 0; x < (Int32)listLength; x++)
             {
-                var item = new DisplayModePropertiesKHR(&resultPtr[x]);
+                var item = new DisplayModePropertiesKHR();
+                MemUtil.Copy(new IntPtr(&arrayDisplayModePropertiesKHR[x]), new IntPtr(item.NativePointer), resultSize);
                 list[x] = item;
             }
             

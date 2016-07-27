@@ -311,6 +311,10 @@ namespace Tanagra.Generator
                 if(name.EndsWith("Ext"))
                     name = name.Remove(name.Length - 3, 3) + "EXT";
 
+                // TODO: replace with lookup on `tags` list in the spec
+                if(name.EndsWith("Nv"))
+                    name = name.Remove(name.Length - 2, 2) + "NV";
+
                 if(name.EndsWith("Amd"))
                     name = name.Remove(name.Length - 3, 3) + "AMD";
 

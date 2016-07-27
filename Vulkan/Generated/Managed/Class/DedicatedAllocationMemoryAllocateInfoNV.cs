@@ -33,7 +33,7 @@ namespace Vulkan.Managed
         public DedicatedAllocationMemoryAllocateInfoNV()
         {
             NativePointer = (Unmanaged.DedicatedAllocationMemoryAllocateInfoNV*)MemUtil.Alloc(typeof(Unmanaged.DedicatedAllocationMemoryAllocateInfoNV));
-            NativePointer->SType = StructureType.DedicatedAllocationMemoryAllocateInfoNv;
+            NativePointer->SType = StructureType.DedicatedAllocationMemoryAllocateInfoNV;
         }
         
         internal DedicatedAllocationMemoryAllocateInfoNV(Unmanaged.DedicatedAllocationMemoryAllocateInfoNV* ptr)
